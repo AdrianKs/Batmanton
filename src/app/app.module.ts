@@ -9,6 +9,7 @@ import { MyGamesComponent } from '../pages/myGames/myGames.component';
 import { ProfileComponent } from '../pages/profile/profile.component';
 import { RegisterComponent } from '../pages/register/register.component';
 import { UserManagementComponent } from '../pages/userManagement/userManagement.component';
+import { ResetPasswordComponent } from '../pages/resetPassword/resetPassword.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { UserManagementComponent } from '../pages/userManagement/userManagement.
     MyGamesComponent,
     ProfileComponent,
     RegisterComponent,
-    UserManagementComponent
+    UserManagementComponent,
+    ResetPasswordComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -35,7 +37,8 @@ import { UserManagementComponent } from '../pages/userManagement/userManagement.
     MyGamesComponent,
     ProfileComponent,
     RegisterComponent,
-    UserManagementComponent
+    UserManagementComponent,
+    ResetPasswordComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

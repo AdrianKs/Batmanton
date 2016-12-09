@@ -7,7 +7,18 @@ import { InvitesComponent } from '../pages/invites/invites.component';
 import { MatchdayComponent } from '../pages/matchday/matchday.component';
 import { MyGamesComponent } from '../pages/myGames/myGames.component';
 import { UserManagementComponent } from '../pages/userManagement/userManagement.component';
+import {LoginComponent} from "../pages/login/login.component";
+import firebase from 'firebase';
 
+
+
+firebase.initializeApp({
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  storageBucket: "",
+  messagingSenderId: ""
+});
 
 @Component({
   templateUrl: 'app.html'
@@ -20,7 +31,15 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform) {
-    this.initializeApp();
+
+
+    this.initializeApp2();
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        this.rootPage = LoginComponent;
+      }
+    });
 
     // used for an example of ngFor and navigation
     this.pages = [
@@ -33,7 +52,7 @@ export class MyApp {
 
   }
 
-  initializeApp() {
+  initializeApp2() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -46,5 +65,11 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
+  }
+
+  logOut(){
+    firebase.auth().signOut();
+    this.nav.setRoot(LoginComponent);
+    //this.nav.setRoot(LoginComponent);
   }
 }
