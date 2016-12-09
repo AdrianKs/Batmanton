@@ -9,16 +9,10 @@ import { MyGamesComponent } from '../pages/myGames/myGames.component';
 import { UserManagementComponent } from '../pages/userManagement/userManagement.component';
 import {LoginComponent} from "../pages/login/login.component";
 import firebase from 'firebase';
+import {firebaseConfig} from "./firebaseAppData";
 
 
-
-firebase.initializeApp({
-  apiKey: "",
-  authDomain: "",
-  databaseURL: "",
-  storageBucket: "",
-  messagingSenderId: ""
-});
+firebase.initializeApp(firebaseConfig);
 
 @Component({
   templateUrl: 'app.html'
