@@ -3,16 +3,137 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Meine Spiele</ion-title>
+    <ion-title center>Meine Spiele</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+  <div [ngSwitch]="gameStatus">
+    <ion-list *ngSwitchCase="'vergangende'">
+      <ion-item href="#">
+        <ion-thumbnail item-right>
+          <img src="assets/img/TSV Heimaterde.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-right>
+          <img src="assets/img/TSV Heimaterde.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-right>
+          <img src="assets/img/TSV Heimaterde.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-right>
+          <img src="assets/img/TSV Heimaterde.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+      <ion-item href="#">
+        <ion-thumbnail item-right>
+          <img src="assets/img/TSV Heimaterde.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-right>
+          <img src="assets/img/TSV Heimaterde.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-right>
+          <img src="assets/img/TSV Heimaterde.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-right>
+          <img src="assets/img/TSV Heimaterde.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+    </ion-list>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
+    <ion-list *ngSwitchCase="'bevorstehende'">
+      <ion-item>
+        <ion-thumbnail item-right>
+          <img src="assets/img/KSV.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-right>
+          <img src="assets/img/KSV.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-right>
+          <img src="assets/img/KSV.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+      <ion-item>
+        <ion-thumbnail item-right>
+          <img src="assets/img/KSV.png">
+        </ion-thumbnail>
+        <h2><b>Spieltag 14</b></h2>
+        <p>TSV Heimaterde</p>
+        <p>Einsätze: 1</p>
+        <p>Heim</p>
+      </ion-item>
+    </ion-list>
+  </div>
   <button ion-button secondary menuToggle>Toggle Menu</button>
 </ion-content>
+<ion-footer>
+  <ion-toolbar no-border-bottom>
+    <ion-segment [(ngModel)]="gameStatus">
+      <ion-segment-button value="vergangende">
+        Vergangende
+      </ion-segment-button>
+      <ion-segment-button value="bevorstehende">
+        Bevorstehende
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-footer>
