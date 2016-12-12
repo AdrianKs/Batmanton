@@ -1,9 +1,7 @@
-/**
- * Created by kochsiek on 08.12.2016.
- */
 import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
+import { EditRoleComponent } from '../editRole/editRole.component';
 
 @Component({
   selector: 'page-userManagement',
@@ -15,31 +13,31 @@ export class UserManagementComponent {
   testDataPlayer: any[];
   testDataTeams: any[];
 
-  constructor(public navCtrl: NavController) {
+  constructor(private navCtrl: NavController) {
     this.initializeItems();
   }
 
   initializeItems() {
-   /* this.testDataTeams = [
-      {
-        name: "Mannschaft auswählen"
-      },
-      {
-        name: "S1"
-      },
-      {
-        name: "S2"
-      },
-      {
-        name: "J1",
-      },
-      {
-        name: "J2"
-      },
-      {
-        name: "J3"
-      }
-    ]*/
+    /* this.testDataTeams = [
+       {
+         name: "Mannschaft auswählen"
+       },
+       {
+         name: "S1"
+       },
+       {
+         name: "S2"
+       },
+       {
+         name: "J1",
+       },
+       {
+         name: "J2"
+       },
+       {
+         name: "J3"
+       }
+     ]*/
 
     this.testDataPlayer = [
       {
@@ -69,8 +67,8 @@ export class UserManagementComponent {
     ]
   }
 
-  openEditor(ev){
-    console.log("test");
+  openEditor(ev) {
+   this.navCtrl.push(EditRoleComponent);
   }
 
   getItems(ev) {
