@@ -10,120 +10,59 @@
 <ion-content padding>
   <div [ngSwitch]="gameStatus">
     <ion-list *ngSwitchCase="'vergangende'">
-      <ion-item href="#">
-        <ion-thumbnail item-right>
-          <img src="assets/img/TSV Heimaterde.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-right>
-          <img src="assets/img/TSV Heimaterde.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-right>
-          <img src="assets/img/TSV Heimaterde.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-right>
-          <img src="assets/img/TSV Heimaterde.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
-      <ion-item href="#">
-        <ion-thumbnail item-right>
-          <img src="assets/img/TSV Heimaterde.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-right>
-          <img src="assets/img/TSV Heimaterde.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-right>
-          <img src="assets/img/TSV Heimaterde.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-right>
-          <img src="assets/img/TSV Heimaterde.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
+      <div *ngFor="let item of testData">
+        <ion-item>
+          <ion-thumbnail item-left>
+            <img src="assets/img/TSV Heimaterde.png">
+          </ion-thumbnail>
+          <p>{{ item.date }}</p>
+          <h2><b>{{ item.matchday }}</b></h2>
+          <p>{{ item.team }}</p>
+          <p>{{ item.location }}</p>
+        </ion-item>
+      </div>
     </ion-list>
 
     <ion-list *ngSwitchCase="'bevorstehende'">
-      <ion-item>
-        <ion-thumbnail item-right>
-          <img src="assets/img/KSV.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-right>
-          <img src="assets/img/KSV.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-right>
-          <img src="assets/img/KSV.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
-      <ion-item>
-        <ion-thumbnail item-right>
-          <img src="assets/img/KSV.png">
-        </ion-thumbnail>
-        <h2><b>Spieltag 14</b></h2>
-        <p>TSV Heimaterde</p>
-        <p>Einsätze: 1</p>
-        <p>Heim</p>
-      </ion-item>
+      <div *ngFor="let item of testData">
+        <ion-item>
+          <ion-thumbnail item-left>
+            <img src="assets/img/TSV Heimaterde.png">
+          </ion-thumbnail>
+          <p>{{ item.date }}</p>
+          <h2><b>{{ item.matchday }}</b></h2>
+          <p>{{ item.team }}</p>
+          <p>{{ item.location }}</p>
+          <button ion-button color="danger" icon-left>
+          <ion-icon name='close'></ion-icon>
+            Absagen
+        </button>
+        </ion-item>
+      </div>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'offene'">
+      <div *ngFor="let item of testData">
+        <ion-item>
+          <ion-thumbnail item-left>
+            <img src="assets/img/KSV.png">
+          </ion-thumbnail>
+          <p>{{ item.date }}</p>
+          <h2><b>{{ item.matchday }}</b></h2>
+          <p>{{ item.team }}</p>
+          <p>{{ item.location }}</p>
+          <button ion-button color="secondary" icon-left>
+          <ion-icon name='checkmark'></ion-icon>
+            Zusagen
+          </button>
+          <button ion-button color="danger" icon-left>
+          <ion-icon name='close'></ion-icon>
+            Absagen
+        </button>
+        </ion-item>
+      </div>
     </ion-list>
   </div>
-  <button ion-button secondary menuToggle>Toggle Menu</button>
 </ion-content>
 <ion-footer>
   <ion-toolbar no-border-bottom>
@@ -133,6 +72,9 @@
       </ion-segment-button>
       <ion-segment-button value="bevorstehende">
         Bevorstehende
+      </ion-segment-button>
+      <ion-segment-button value="offene">
+        Offene
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
