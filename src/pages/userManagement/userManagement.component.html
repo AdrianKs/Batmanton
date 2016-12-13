@@ -33,7 +33,7 @@
     <ion-list *ngSwitchCase="'maenner'">
       <div *ngFor="let item of testDataPlayer">
         <div *ngIf="item.geschlecht == 'm'">
-          <ion-item (click)="openEditor($event)">
+          <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
                 <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
@@ -54,7 +54,7 @@
     <ion-list *ngSwitchCase="'frauen'">
       <div *ngFor="let item of testDataPlayer">
         <div *ngIf="item.geschlecht == 'w'">
-          <ion-item>
+          <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
                 <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />

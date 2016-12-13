@@ -46,7 +46,8 @@ export class UserManagementComponent {
         geburtstag: "19.12.1996",
         mannschaft: "J2",
         email: "max.mustermann@gmx.com",
-        geschlecht: "m"
+        geschlecht: "m",
+        rolle: [true, false]
       },
       {
         vorname: "Marc",
@@ -54,7 +55,8 @@ export class UserManagementComponent {
         geburtstag: "12.19.1991",
         mannschaft: "S2",
         email: "marc.mannmuster@gmail.com",
-        geschlecht: "m"
+        geschlecht: "m",
+        rolle: [true, true]
       },
       {
         vorname: "Maria",
@@ -62,13 +64,14 @@ export class UserManagementComponent {
         geburtstag: "07.02.1990",
         mannschaft: "S1",
         email: "test@web.de",
-        geschlecht: 'w'
+        geschlecht: 'w',
+        rolle: [true, false]
       }
     ]
   }
 
-  openEditor(ev) {
-   this.navCtrl.push(EditRoleComponent);
+  openEditor(ev, value) {
+   this.navCtrl.push(EditRoleComponent, {player: value});
   }
 
   getItems(ev) {

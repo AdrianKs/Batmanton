@@ -5,5 +5,40 @@
 </ion-header>
 
 <ion-content padding>
-    Test
+  <div class="topContainer">
+    <div class="pictureContainer">
+      <img src="../../assets/images/ic_account_circle_black_48dp_2x.png" />
+    </div>
+    <div class="playerDataContainer">
+      <ion-item>
+        <ion-label>Vorname:</ion-label>
+        <ion-label>{{player.vorname}} {{player.nachname}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>E-Mail:</ion-label>
+        <ion-label>{{player.email}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Geburtstag:</ion-label>
+        <ion-label>{{player.geburtstag}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Mannschaft:</ion-label>
+        <ion-label>{{player.mannschaft}}</ion-label>
+      </ion-item>
+    </div>
+  </div>
+  <div class="bottomContainer">
+    <div class="labelRoleContainer">
+      <ion-label class="label label-md myLabel">Rolle bearbeiten</ion-label>
+    </div>
+    <div class="changeRoleContainer">
+      <ion-checkbox [(ngModel)]="player.rolle[0]" class="myChk"></ion-checkbox>
+      <ion-checkbox [(ngModel)]="player.rolle[1]" class="myChk"></ion-checkbox>
+    </div>
+    <div class="saveButtonContainer">
+      <button ion-button round>Speichern</button>
+    </div>
+  </div>
+
 </ion-content>
