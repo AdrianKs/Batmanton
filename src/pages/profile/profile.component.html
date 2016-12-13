@@ -4,15 +4,59 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Profil</ion-title>
+    <ion-buttons right>
+      <button ion-button outline="false">
+        <ion-icon name="create"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+<ion-content>
+  <div>
+    <div class="picture-container">
+      <img class="profile-image" src="https://scontent-fra3-1.xx.fbcdn.net/v/t31.0-8/14125474_1349299668432513_7718445018116444592_o.jpg?oh=e6480088dced86a864d9525bd997cc4a&oe=58AF1B4D" />
+    </div>
+    <div>
+      <ion-item>
+        <ion-label>Name:</ion-label>
+        <ion-label>{{testDataPlayer.vorname}} {{testDataPlayer.nachname}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>E-Mail:</ion-label>
+        <ion-label>{{testDataPlayer.email}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Geburtstag:</ion-label>
+        <ion-label>{{testDataPlayer.geburtstag}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label>Mannschaft:</ion-label>
+        <ion-label>{{testDataPlayer.mannschaft}}</ion-label>
+      </ion-item>
+    </div>
+  </div>
+  <div class="bottomContainer">
+    <!--<div class="labelRoleContainer">-->
+      <!--<ion-label class="label label-md myLabel">Rolle bearbeiten</ion-label>-->
+    <!--</div>-->
+    <!--<div class="changeRoleContainer">-->
+      <!--<ion-item>-->
+        <!--&lt;!&ndash;<ion-checkbox [(ngModel)]="player.rolle[0]" class="myChk"></ion-checkbox>&ndash;&gt;-->
+        <!--<ion-label>Spieler</ion-label>-->
+      <!--</ion-item>-->
+      <!--<ion-item>-->
+        <!--&lt;!&ndash;<ion-checkbox [(ngModel)]="player.rolle[1]" class="myChk"></ion-checkbox>&ndash;&gt;-->
+        <!--<ion-label>Trainer</ion-label>-->
+      <!--</ion-item>-->
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+  <!--</div>-->
+    <div class="saveButtonContainer">
+      <button ion-button round color="danger" icon-left outline>
+        <ion-icon name="log-out"></ion-icon>
+        Logout
+      </button>
+    </div>
+  </div>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
 </ion-content>
