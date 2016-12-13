@@ -33,8 +33,15 @@
       <ion-label class="label label-md myLabel">Rolle bearbeiten</ion-label>
     </div>
     <div class="changeRoleContainer">
-      <ion-checkbox [(ngModel)]="player.rolle[0]" class="myChk"></ion-checkbox>
-      <ion-checkbox [(ngModel)]="player.rolle[1]" class="myChk"></ion-checkbox>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="player.rolle[0]" class="myChk"></ion-checkbox>
+        <ion-label>Spieler</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="player.rolle[1]" class="myChk"></ion-checkbox>
+        <ion-label>Trainer</ion-label>
+      </ion-item>
+      
     </div>
     <div class="saveButtonContainer">
       <button ion-button round>Speichern</button>
