@@ -11,8 +11,24 @@ import { NavController } from 'ionic-angular';
 })
 export class ProfileComponent {
 
-  constructor(public navCtrl: NavController) {
+  testDataPlayer: any;
 
+  constructor(public navCtrl: NavController) {
+    this.initializeItems();
+  }
+
+  initializeItems() {
+    this.testDataPlayer =
+      {
+        vorname: "Max",
+        nachname: "Mustermann",
+        geburtstag: "19.12.1996",
+        mannschaft: "J2",
+        email: "max.mustermann@gmx.com",
+        geschlecht: "m",
+        admin: true,
+        player: true
+      };
   }
 
 }
