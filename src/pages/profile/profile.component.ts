@@ -31,4 +31,11 @@ export class ProfileComponent {
       };
   }
 
+  editProfile(){
+    console.log("editProfile pressesd")
+  }
+
+  logout(){
+    console.log("Logout Pressed")
+  }
 }
