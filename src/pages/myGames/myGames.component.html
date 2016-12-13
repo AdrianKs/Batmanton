@@ -33,10 +33,10 @@
           <h2><b>{{ item.matchday }}</b></h2>
           <p>{{ item.team }}</p>
           <p>{{ item.location }}</p>
-          <button ion-button color="danger" icon-left>
-          <ion-icon name='close'></ion-icon>
-            Absagen
-        </button>
+          <button ion-button color="danger" icon-left (click)="doRadio()">
+            <ion-icon name='close'></ion-icon>
+              Absagen
+          </button>
         </ion-item>
       </div>
     </ion-list>
@@ -55,10 +55,10 @@
           <ion-icon name='checkmark'></ion-icon>
             Zusagen
           </button>
-          <button ion-button color="danger" icon-left>
-          <ion-icon name='close'></ion-icon>
-            Absagen
-        </button>
+          <button ion-button color="danger" icon-left (click)="doRadio()">
+            <ion-icon name='close'></ion-icon>
+              Absagen
+          </button>
         </ion-item>
       </div>
     </ion-list>
