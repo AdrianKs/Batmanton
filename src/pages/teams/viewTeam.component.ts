@@ -26,6 +26,7 @@ export class ViewTeamComponent {
       }
   }
 
+
    presentPopover(myEvent) {
     let popover = this.popoverCtrl.create(PopoverPage, 
     {
@@ -35,10 +36,4 @@ export class ViewTeamComponent {
       ev: myEvent
     });
   }
-
-
-
-
- 
-
 }

@@ -2,9 +2,7 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
-
 import { ViewTeamComponent } from './viewTeam.component';
-
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 
@@ -21,6 +19,7 @@ export class TeamsComponent {
     console.log(this.teams);
   }
 
+
   testGetData(){
     var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
     console.log(test);
@@ -29,50 +28,6 @@ export class TeamsComponent {
   initializeTeams() {
     this.teams = [
       {
-        isAdult: true, 
-        name: "J1", 
-        type: "0",
-        players: {
-        15: { 
-          name: 'Thomas Test',
-          geschlecht: 'm' ,
-          geburtstag: '01.01.1996'
-        },
-        16: {
-          name: 'Tina Turner',
-          geschlecht: 'w',
-          geburtstag: '02.02.1997' 
-        },
-        17:  {
-          name: 'Tim Turner',
-          geschlecht: 'm',
-          geburtstag: '02.02.1997' 
-        }
-      }
-    },
-    {
-        isAdult: false, 
-        name: "J2", 
-        type: "0",
-        players: {
-        15: { 
-          name: 'Jonas Friedrich',
-          geschlecht: 'm' ,
-          geburtstag: '01.01.1996'
-        },
-        16: {
-          name: 'Lisa Albert',
-          geschlecht: 'w',
-          geburtstag: '02.02.1997' 
-        },
-        17:  {
-          name: 'Stefan Knolle',
-          geschlecht: 'm',
-          geburtstag: '02.02.1997' 
-        }
-      }
-    },
-    {
         isAdult: true, 
         name: "J3", 
         type: "0",
@@ -98,22 +53,17 @@ export class TeamsComponent {
   }
 
 
-
-
-
-
-
-
-
-  viewTeam(ev, value){
-    this.navCtrl.push(ViewTeamComponent, {team: value});
+  viewTeam(ev, value) {
+    this.navCtrl.push(ViewTeamComponent, { team: value });
   }
 
-  addTeam(ev, value){
+  addTeam(ev, value) {
     //Team hinzufügen View aufrufen
   }
 
-  getItems(ev){
+
+ 
+  getItems(ev) {
 
     this.initializeTeams();
     let val = ev.target.value;
