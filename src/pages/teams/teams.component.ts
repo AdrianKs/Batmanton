@@ -2,7 +2,9 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
+
 import { ViewTeamComponent } from './viewTeam.component';
+
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 
@@ -14,7 +16,6 @@ import { FirebaseProvider } from '../../providers/firebase-provider';
 export class TeamsComponent {
 
   teams: any[];
-
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
     this.initializeTeams();
     console.log(this.teams);
@@ -96,19 +97,29 @@ export class TeamsComponent {
     ]
   }
 
-  viewTeam(ev, value) {
-    this.navCtrl.push(ViewTeamComponent, { team: value });
+
+
+
+
+
+
+
+
+  viewTeam(ev, value){
+    this.navCtrl.push(ViewTeamComponent, {team: value});
   }
 
-  addTeam(ev, value) {
+  addTeam(ev, value){
     //Team hinzufügen View aufrufen
   }
 
-  getItems(ev) {
+  getItems(ev){
+
     this.initializeTeams();
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
+
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }

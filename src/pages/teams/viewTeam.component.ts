@@ -2,7 +2,6 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
-
 import { NavController, NavParams, PopoverController } from 'ionic-angular';
 
 import { PopoverPage } from './popover.component';
@@ -38,5 +37,8 @@ export class ViewTeamComponent {
   }
 
 
+
+
+ 
 
 }
