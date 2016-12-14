@@ -11,9 +11,20 @@ import { NavController, NavParams } from 'ionic-angular';
 export class ViewTeamComponent {
 
     team: any;
+    geschlecht: string = "maenner";
+    playersOfTeam: any[];
+    justPlayers = [];
 
   constructor(public navCtrl: NavController, private navP: NavParams) {
       this.team = navP.get("team");
+      this.playersOfTeam = this.team.spieler;
+      for ( var key in this.playersOfTeam){
+          if(this.playersOfTeam.hasOwnProperty(key)){
+              this.justPlayers.push(this.playersOfTeam[key]);
+          }
+      }
   }
+
+
 
 }
