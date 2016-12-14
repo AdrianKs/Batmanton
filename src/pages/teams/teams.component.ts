@@ -19,6 +19,7 @@ export class TeamsComponent {
 
 
 
+
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
     this.database = firebase.database();
     this.getAllTeamData();
@@ -122,22 +123,28 @@ export class TeamsComponent {
   }
 
 
-  viewTeam(ev, value) {
-    this.navCtrl.push(ViewTeamComponent, { team: value });
+ 
+
+
+  viewTeam(ev, value){
+    this.navCtrl.push(ViewTeamComponent, {team: value});
   }
 
-  addTeam(ev, value) {
+  addTeam(ev, value){
     //Team hinzufügen View aufrufen
   }
 
-  getItems(ev) {
+  getItems(ev){
+
     this.initializeTeams();
     this.getAllTeamData();
 
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
+
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+
       })
     }
   }

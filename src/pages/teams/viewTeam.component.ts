@@ -72,9 +72,6 @@ export class ViewTeamComponent {
       ev: myEvent
     });
   }
-
-
-
 }
 
 

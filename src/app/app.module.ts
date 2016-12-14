@@ -20,6 +20,7 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
 import { PopoverPage } from '../pages/teams/popover.component';
 import { EditTeamComponent } from '../pages/teams/editTeam.component';
 
+
 @NgModule({
   declarations: [
     MyApp,
@@ -65,7 +66,6 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     ViewTeamComponent,
     PopoverPage,
     EditTeamComponent,
-    ViewTeamComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
