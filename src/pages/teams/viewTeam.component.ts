@@ -7,8 +7,9 @@ import { PopoverPage } from './popover.component';
 
 import firebase from 'firebase';
 
+
 @Component({
-    templateUrl: 'viewTeam.component.html'
+  templateUrl: 'viewTeam.component.html'
 })
 export class ViewTeamComponent {
 
@@ -71,4 +72,8 @@ export class ViewTeamComponent {
     }
 
 }
+
+
+
+
 

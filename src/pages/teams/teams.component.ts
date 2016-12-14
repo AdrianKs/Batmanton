@@ -2,7 +2,8 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
-import { ViewTeamComponent } from './viewTeam.component';
+
+import { ViewTeamComponent} from './viewTeam.component';
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import firebase from 'firebase';
@@ -74,5 +75,7 @@ export class TeamsComponent {
       })
     }
   }
+
+ 
 
 }

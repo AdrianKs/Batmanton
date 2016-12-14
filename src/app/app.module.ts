@@ -15,6 +15,7 @@ import { EditRoleComponent } from '../pages/editRole/editRole.component';
 import { TeamsComponent } from '../pages/teams/teams.component';
 <<<<<<< HEAD
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
+<<<<<<< HEAD
 import {Birthday} from './pipes/birthday'
 import {Gender} from './pipes/gender'
 import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
@@ -26,6 +27,10 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
 >>>>>>> Basisfunktionalität TeamComponent
 =======
 >>>>>>> Weiter Funktionalitäten zu ViewTeam und EditTeam hinzugefügt
+=======
+import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
+
+>>>>>>> Basisfunktionalität TeamComponent
 
 @NgModule({
   declarations: [
@@ -44,6 +49,7 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
     TeamsComponent,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     SelectProfilePictureComponent,
     ViewTeamComponent,
     PopoverPage,
@@ -59,6 +65,10 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
     PopoverPage,
     EditTeamComponent
 >>>>>>> Weiter Funktionalitäten zu ViewTeam und EditTeam hinzugefügt
+=======
+    SelectProfilePictureComponent,
+    ViewTeamComponent
+>>>>>>> Basisfunktionalität TeamComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -80,6 +90,7 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
     TeamsComponent,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     SelectProfilePictureComponent,
     ViewTeamComponent,
     PopoverPage,
@@ -92,6 +103,10 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
     PopoverPage,
     EditTeamComponent
 >>>>>>> Weiter Funktionalitäten zu ViewTeam und EditTeam hinzugefügt
+=======
+    SelectProfilePictureComponent,
+    ViewTeamComponent
+>>>>>>> Basisfunktionalität TeamComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
