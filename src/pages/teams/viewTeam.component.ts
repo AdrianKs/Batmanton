@@ -3,9 +3,13 @@
  */
 import { Component } from '@angular/core';
 
+<<<<<<< HEAD
 import { NavController, NavParams, PopoverController } from 'ionic-angular';
 
 import { PopoverPage } from './popover.component';
+=======
+import { NavController, NavParams } from 'ionic-angular';
+>>>>>>> Basisfunktionalität TeamComponent
 
 @Component({
   templateUrl: 'viewTeam.component.html'
@@ -13,6 +17,7 @@ import { PopoverPage } from './popover.component';
 export class ViewTeamComponent {
 
     team: any;
+<<<<<<< HEAD
     geschlecht: string = "maenner";
     playersOfTeam: any[];
     justPlayers = [];
@@ -39,4 +44,11 @@ export class ViewTeamComponent {
 
 
 
+=======
+
+  constructor(public navCtrl: NavController, private navP: NavParams) {
+      this.team = navP.get("team");
+  }
+
+>>>>>>> Basisfunktionalität TeamComponent
 }

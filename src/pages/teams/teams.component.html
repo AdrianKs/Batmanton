@@ -25,6 +25,11 @@
           </div>
           <div *ngIf="item.isAdult==false">
             Altersklasse: Jugend
+            Teamname: {{item.teamName}} <br>
+          </div>
+          <div>
+            Jugendgruppe: {{item.jugendBez}}
+
           </div>
         </div>
       </ion-item>
@@ -40,5 +45,4 @@
   </p>
 
   <button ion-button secondary menuToggle>Toggle Menu</button>
-
 </ion-content>

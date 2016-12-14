@@ -13,11 +13,15 @@ import { UserManagementComponent } from '../pages/userManagement/userManagement.
 import { ResetPasswordComponent } from '../pages/resetPassword/resetPassword.component';
 import { EditRoleComponent } from '../pages/editRole/editRole.component';
 import { TeamsComponent } from '../pages/teams/teams.component';
+<<<<<<< HEAD
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
 import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
 import { PopoverPage } from '../pages/teams/popover.component';
 import { EditTeamComponent } from '../pages/teams/editTeam.component';
 
+=======
+import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
+>>>>>>> Basisfunktionalität TeamComponent
 
 @NgModule({
   declarations: [
@@ -34,10 +38,14 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     ResetPasswordComponent,
     EditRoleComponent,
     TeamsComponent,
+<<<<<<< HEAD
     SelectProfilePictureComponent,
     ViewTeamComponent,
     PopoverPage,
     EditTeamComponent
+=======
+    ViewTeamComponent
+>>>>>>> Basisfunktionalität TeamComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -57,10 +65,14 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     ResetPasswordComponent,
     EditRoleComponent,
     TeamsComponent,
+<<<<<<< HEAD
     SelectProfilePictureComponent,
     ViewTeamComponent,
     PopoverPage,
     EditTeamComponent
+=======
+    ViewTeamComponent
+>>>>>>> Basisfunktionalität TeamComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
