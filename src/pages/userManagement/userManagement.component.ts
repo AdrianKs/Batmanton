@@ -52,7 +52,7 @@ export class UserManagementComponent {
       {
         vorname: "Marc",
         nachname: "Mannmuster",
-        geburtstag: "12.19.1991",
+        geburtstag: "12.10.1991",
         mannschaft: "S2",
         email: "marc.mannmuster@gmail.com",
         geschlecht: "m",
