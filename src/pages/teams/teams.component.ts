@@ -3,6 +3,7 @@
  */
 import { Component } from '@angular/core';
 import { ViewTeamComponent} from './viewTeam.component';
+
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import firebase from 'firebase';
@@ -16,9 +17,6 @@ export class TeamsComponent {
 
   teams: any[];
   database: any;
-
-
-
 
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
     this.database = firebase.database();
@@ -143,8 +141,8 @@ export class TeamsComponent {
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
 
-        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
 
+        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
   }

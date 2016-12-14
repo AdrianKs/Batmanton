@@ -1,5 +1,4 @@
 <ion-header>
-<<<<<<< HEAD
     <ion-navbar>
         <ion-title>Mannschaftsdetails</ion-title>
         <ion-buttons right>
@@ -73,7 +72,6 @@
                 </div>
             </div>
         </ion-list>
-=======
   <ion-navbar>
     <ion-title>Mannschaftsdetails</ion-title>
   </ion-navbar>
@@ -89,7 +87,67 @@
     <div class="section_details">
         Teamname: {{team.teamName}} <br>
         Jugendklasse: {{team.jugendBez}}
->>>>>>> Basisfunktionalität TeamComponent
+    <ion-navbar>
+        <ion-title>Mannschaftsdetails</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-card>
+        <div class="image_large">
+            <img class="img_large" src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+        </div>
+        <ion-card-content>
+            <ion-card-title class="card_title">
+                Details
+            </ion-card-title>
+            <div class="section_details">
+                Teamname: {{team.teamName}} <br> Jugendklasse: {{team.jugendBez}}
+            </div>
+        </ion-card-content>
+    </ion-card>
+            <ion-card-title>Spieler</ion-card-title>
+            <ion-toolbar no-border-top>
+                <ion-segment [(ngModel)]="geschlecht">
+                    <ion-segment-button value="maenner">
+                        Männer
+                    </ion-segment-button>
+                    <ion-segment-button value="frauen">
+                        Frauen
+                    </ion-segment-button>
+                </ion-segment>
+            </ion-toolbar>
+    <div [ngSwitch]="geschlecht">
+        <ion-list *ngSwitchCase="'maenner'">
+            <div *ngFor="let p of justPlayers">
+                <div *ngIf="p.geschlecht=='m'">
+                    <ion-item>
+                        <div class="playerListContentLeft">
+                            <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+                        </div>
+                        <div class="playerListContentRight">
+                            Name: {{p.name}} <br> 
+                            Geburtstag: {{p.geburtstag}}
+                        </div>
+                    </ion-item>
+                </div>
+            </div>
+        </ion-list>
+        <ion-list *ngSwitchCase="'frauen'">
+            <div *ngFor="let p of justPlayers">
+                <div *ngIf="p.geschlecht=='w'">
+                    <ion-item>
+                        <div class="playerListContentLeft">
+                            <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+                        </div>
+                        <div class="playerListContentRight">
+                            Name: {{p.name}} <br>
+                            Geburtstag: {{p.geburtstag}}
+                        </div>
+                    </ion-item>
+                </div>
+            </div>
+        </ion-list>
     </div>
 
 </ion-content>

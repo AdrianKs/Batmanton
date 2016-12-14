@@ -4,11 +4,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, PopoverController } from 'ionic-angular';
 import { PopoverPage } from './popover.component';
-
 import firebase from 'firebase';
-
-
-
 
 @Component({
   templateUrl: 'viewTeam.component.html'
@@ -73,8 +69,4 @@ export class ViewTeamComponent {
     });
   }
 }
-
-
-
-
 
