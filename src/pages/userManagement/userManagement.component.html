@@ -8,11 +8,70 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+  <!--<div class="selectContainer">
+    <select class="selectTeam">
+    <div *ngFor="let itemTeam of testDataTeams">
+        <option value="itemTeam.name">{{itemTeam.name}}</option>
+    </div>
+  </select>
+  </div>-->
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="geschlecht">
+      <ion-segment-button value="maenner">
+        Männer
+      </ion-segment-button>
+      <ion-segment-button value="frauen">
+        Frauen
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+
+  <div [ngSwitch]="geschlecht">
+    <ion-list *ngSwitchCase="'maenner'">
+      <div *ngFor="let item of testDataPlayer">
+        <div *ngIf="item.geschlecht == 'm'">
+          <ion-item (click)="openEditor($event, item)">
+            <div class="itemPlayer">
+              <div class="itemPlayerLeft">
+                <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+              </div>
+              <div class="itemPlayerRight">
+                <div class="mainDetails">
+                  {{ item.nachname }}, {{item.vorname}} <br/>
+                </div>
+                <div>
+                  Mannschaft: {{item.mannschaft}}, Geb.: {{item.geburtstag}}
+                </div>
+              </div>
+            </div>
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'frauen'">
+      <div *ngFor="let item of testDataPlayer">
+        <div *ngIf="item.geschlecht == 'w'">
+          <ion-item (click)="openEditor($event, item)">
+            <div class="itemPlayer">
+              <div class="itemPlayerLeft">
+                <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+              </div>
+              <div class="itemPlayerRight">
+                <div class="mainDetails">
+                  {{ item.nachname }}, {{item.vorname}} <br/>
+                </div>
+                <div>
+                  Mannschaft: {{item.mannschaft}}, Geb.: {{item.geburtstag}}
+                </div>
+              </div>
+            </div>
+          </ion-item>
+        </div>
+      </div>
+    </ion-list>
+  </div>
+
 </ion-content>

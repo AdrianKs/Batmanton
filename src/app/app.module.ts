@@ -10,6 +10,7 @@ import { ProfileComponent } from '../pages/profile/profile.component';
 import { RegisterComponent } from '../pages/register/register.component';
 import { UserManagementComponent } from '../pages/userManagement/userManagement.component';
 import { ResetPasswordComponent } from '../pages/resetPassword/resetPassword.component';
+import { EditRoleComponent } from '../pages/editRole/editRole.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ResetPasswordComponent } from '../pages/resetPassword/resetPassword.com
     ProfileComponent,
     RegisterComponent,
     UserManagementComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    EditRoleComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -38,7 +40,8 @@ import { ResetPasswordComponent } from '../pages/resetPassword/resetPassword.com
     ProfileComponent,
     RegisterComponent,
     UserManagementComponent,
-    ResetPasswordComponent
+    ResetPasswordComponent,
+    EditRoleComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
