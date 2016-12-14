@@ -23,10 +23,12 @@
       <ion-item>
         <ion-label>Name:</ion-label>
         <ion-label id="name-label">{{testDataPlayer.vorname}} {{testDataPlayer.nachname}}</ion-label>
+        <!--<input id="name-label" disabled="true" ng-disabled="true">{{testDataPlayer.vorname}} {{testDataPlayer.nachname}}</input>-->
       </ion-item>
       <ion-item>
         <ion-label>E-Mail:</ion-label>
         <ion-label>{{testDataPlayer.email}}</ion-label>
+        <ion-input hidden>{{testDataPlayer.email}}</ion-input>
       </ion-item>
       <ion-item>
         <ion-label>Geburtstag:</ion-label>
