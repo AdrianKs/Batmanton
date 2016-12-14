@@ -23,7 +23,7 @@ export class UserManagementComponent {
          name: "Mannschaft auswählen"
        },
        {
-         name: "S1"
+         name: "S1"sdsd
        },
        {
          name: "S2"
