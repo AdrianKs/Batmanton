@@ -27,7 +27,7 @@ export class MyApp {
   constructor(public platform: Platform) {
 
 
-    this.initializeApp2();
+    this.initializeApp();
 
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
@@ -46,7 +46,7 @@ export class MyApp {
 
   }
 
-  initializeApp2() {
+  initializeApp() {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
