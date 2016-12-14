@@ -6,7 +6,6 @@
                      <ion-icon name="more"></ion-icon>
             </button>
         </ion-buttons>
-
     </ion-navbar>
 </ion-header>
 
@@ -27,6 +26,7 @@
                 <div *ngIf="team.isAdult==false">
                 Altersklasse: Jugend
                 </div>
+                Teamname: {{team.teamName}} <br> Jugendklasse: {{team.jugendBez}}
             </div>
         </ion-card-content>
     </ion-card>
@@ -72,4 +72,6 @@
                 </div>
             </div>
         </ion-list>
+    </div>
+
 </ion-content>

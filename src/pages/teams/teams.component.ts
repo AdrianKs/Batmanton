@@ -2,8 +2,12 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
+<<<<<<< HEAD
 
 import { ViewTeamComponent} from './viewTeam.component';
+=======
+import { ViewTeamComponent } from './viewTeam.component';
+>>>>>>> View Team Component erweitert
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import firebase from 'firebase';
@@ -18,6 +22,7 @@ export class TeamsComponent {
   teams: any[];
   database: any;
 
+<<<<<<< HEAD
 
 
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
@@ -54,6 +59,43 @@ export class TeamsComponent {
   }
 
 
+=======
+  constructor(public navCtrl: NavController) {
+    this.initializeTeams();
+    console.log(this.teams);
+  }
+
+  initializeTeams() {
+    this.teams = [
+      {
+        jugendBez: "J1", 
+        teamName: "Jugend", 
+        path: "pfadZuBild",
+        spieler: {
+        15: { 
+          name: 'Thomas Test',
+          geschlecht: 'm' ,
+          geburtstag: '01.01.1996'
+        },
+        16: {
+          name: 'Tina Turner',
+          geschlecht: 'w',
+          geburtstag: '02.02.1997' 
+        },
+        17:  {
+          name: 'Tim Turner',
+          geschlecht: 'm',
+          geburtstag: '02.02.1997' 
+        }
+      }
+    },
+      { jugendBez: "J2", teamName: "Erwachsen", path: "pfadZuBild" },
+      { jugendBez: "J3", teamName: "Erwachsen", path: "pfadZuBild" },
+      { jugendBez: "J4", teamName: "Jugend", path: "pfadZuBild" }
+    ]
+  }
+
+>>>>>>> View Team Component erweitert
   viewTeam(ev, value) {
     this.navCtrl.push(ViewTeamComponent, { team: value });
   }
@@ -62,8 +104,11 @@ export class TeamsComponent {
     //Team hinzufügen View aufrufen
   }
 
+<<<<<<< HEAD
 
  
+=======
+>>>>>>> View Team Component erweitert
   getItems(ev) {
     this.initializeTeams();
     this.getAllTeamData();
