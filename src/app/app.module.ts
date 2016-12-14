@@ -14,6 +14,8 @@ import { ResetPasswordComponent } from '../pages/resetPassword/resetPassword.com
 import { EditRoleComponent } from '../pages/editRole/editRole.component';
 import { TeamsComponent } from '../pages/teams/teams.component';
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
+import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selec
     ResetPasswordComponent,
     EditRoleComponent,
     TeamsComponent,
-    SelectProfilePictureComponent
+    SelectProfilePictureComponent,
+    ViewTeamComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -50,7 +53,8 @@ import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selec
     ResetPasswordComponent,
     EditRoleComponent,
     TeamsComponent,
-    SelectProfilePictureComponent
+    SelectProfilePictureComponent,
+    ViewTeamComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
