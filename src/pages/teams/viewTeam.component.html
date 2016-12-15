@@ -1,6 +1,11 @@
 <ion-header>
     <ion-navbar>
         <ion-title>Mannschaftsdetails</ion-title>
+        <ion-buttons right>
+            <button ion-button (click)="presentPopover($event)">
+                     <ion-icon name="more"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
@@ -14,7 +19,13 @@
                 Details
             </ion-card-title>
             <div class="section_details">
-                Teamname: {{team.teamName}} <br> Jugendklasse: {{team.jugendBez}}
+                Teamname: {{team.name}} <br> 
+                <div *ngIf="team.isAdult==true">
+                Altersklasse: Erwachsen
+                </div>
+                <div *ngIf="team.isAdult==false">
+                Altersklasse: Jugend
+                </div>
             </div>
         </ion-card-content>
     </ion-card>
