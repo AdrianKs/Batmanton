@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { ViewTeamComponent } from './viewTeam.component';
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
+import firebase from 'firebase';
 
 
 @Component({
@@ -14,91 +15,40 @@ import { FirebaseProvider } from '../../providers/firebase-provider';
 export class TeamsComponent {
 
   teams: any[];
+  database: any;
 
 
 
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
-    this.initializeTeams();
-    console.log(this.teams);
+    this.database = firebase.database();
+    this.getAllTeamData();
   }
 
-  testGetData(){
+  testGetData() {
     var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
     console.log(test);
   }
 
+  getAllTeamData() {
+    this.database.ref("/clubs/12/teams/").once('value', snapshot => {
+      console.log(snapshot.val());
+      let teamArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        teamArray[counter] = snapshot.val()[i];
+        teamArray[counter].id = i;
+        counter++;
+      }
+      this.teams = teamArray;
+    });
+    console.log("ITEMS:");
+    console.log(this.teams);
+
+    //this.teams = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
+  }
+
   initializeTeams() {
     this.teams = [
-      {
-        isAdult: true, 
-
-        name: "J3", 
-
-        type: "0",
-        players: {
-        15: { 
-          name: 'Tim Turbo',
-          geschlecht: 'm' ,
-          geburtstag: '01.01.1996'
-        },
-        16: {
-          name: 'Christina Kralle',
-          geschlecht: 'w',
-          geburtstag: '02.02.1997' 
-        },
-        17:  {
-          name: 'ASAP Ferg',
-          geschlecht: 'm',
-          geburtstag: '02.02.1997' 
-        }
-      }
-
-    },
-    {
-        isAdult: false, 
-        name: "J2", 
-        type: "0",
-        players: {
-        15: { 
-          name: 'Jonas Friedrich',
-          geschlecht: 'm' ,
-          geburtstag: '01.01.1996'
-        },
-        16: {
-          name: 'Lisa Albert',
-          geschlecht: 'w',
-          geburtstag: '02.02.1997' 
-        },
-        17:  {
-          name: 'Stefan Knolle',
-          geschlecht: 'm',
-          geburtstag: '02.02.1997' 
-        }
-      }
-    },
-    {
-        isAdult: true, 
-        name: "J3", 
-        type: "0",
-        players: {
-        15: { 
-          name: 'Tim Turbo',
-          geschlecht: 'm' ,
-          geburtstag: '01.01.1996'
-        },
-        16: {
-          name: 'Christina Kralle',
-          geschlecht: 'w',
-          geburtstag: '02.02.1997' 
-        },
-        17:  {
-          name: 'ASAP Ferg',
-          geschlecht: 'm',
-          geburtstag: '02.02.1997' 
-        }
-      }
-
-    }
     ]
   }
 
