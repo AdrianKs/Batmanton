@@ -11,20 +11,20 @@
     </div>
     <div class="playerDataContainer">
       <ion-item>
-        <ion-label>Name:</ion-label>
-        <ion-label>{{player.vorname}} {{player.nachname}}</ion-label>
+        <ion-label class="playerLabel">Name:</ion-label>
+        <ion-label class="playerValue">{{player.firstname}} {{player.lastname}}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label>E-Mail:</ion-label>
-        <ion-label>{{player.email}}</ion-label>
+        <ion-label class="playerLabel">E-Mail:</ion-label>
+        <ion-label class="playerValue">{{player.email}}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label>Geburtstag:</ion-label>
-        <ion-label>{{player.geburtstag}}</ion-label>
+        <ion-label class="playerLabel">Geburtstag:</ion-label>
+        <ion-label class="playerValue">{{player.birthday}}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label>Mannschaft:</ion-label>
-        <ion-label>{{player.mannschaft}}</ion-label>
+        <ion-label class="playerLabel">Mannschaft:</ion-label>
+        <ion-label class="playerValue">{{player.team}}</ion-label>
       </ion-item>
     </div>
   </div>
@@ -34,17 +34,17 @@
     </div>
     <div class="changeRoleContainer">
       <ion-item>
-        <ion-checkbox [(ngModel)]="player.rolle[0]" class="myChk"></ion-checkbox>
+        <ion-checkbox [(ngModel)]="player.isPlayer" class="myChk"></ion-checkbox>
         <ion-label>Spieler</ion-label>
       </ion-item>
       <ion-item>
-        <ion-checkbox [(ngModel)]="player.rolle[1]" class="myChk"></ion-checkbox>
+        <ion-checkbox [(ngModel)]="player.isTrainer" class="myChk"></ion-checkbox>
         <ion-label>Trainer</ion-label>
       </ion-item>
       
     </div>
     <div class="saveButtonContainer">
-      <button ion-button round>Speichern</button>
+      <button ion-button round (click)="saveChange($event, player)">Speichern</button>
     </div>
   </div>
 
