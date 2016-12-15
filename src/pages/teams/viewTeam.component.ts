@@ -3,8 +3,8 @@
  */
 import { Component } from '@angular/core';
 import { NavController, NavParams, PopoverController } from 'ionic-angular';
-
 import { PopoverPage } from './popover.component';
+
 
 
 @Component({

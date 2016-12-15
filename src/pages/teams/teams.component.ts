@@ -17,7 +17,6 @@ export class TeamsComponent {
 
   teams: any[];
 
-
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
     this.initializeTeams();
     console.log(this.teams);
@@ -104,7 +103,7 @@ export class TeamsComponent {
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
-        return (item.teamName.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
   }
