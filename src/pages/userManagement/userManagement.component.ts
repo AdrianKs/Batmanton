@@ -2,42 +2,30 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 import { EditRoleComponent } from '../editRole/editRole.component';
+import { UserManagementService } from '../../providers/userManagament.service';
 
 @Component({
   selector: 'page-userManagement',
-  templateUrl: 'userManagement.component.html'
+  templateUrl: 'userManagement.component.html',
+  providers: [UserManagementService]
 })
 export class UserManagementComponent {
 
   geschlecht: string = "maenner";
   testDataPlayer: any[];
-  testDataTeams: any[];
+  dataPlayer: any[];
 
-  constructor(private navCtrl: NavController) {
+  constructor(private navCtrl: NavController, private userManagementService: UserManagementService) {
     this.initializeItems();
+    //Load data in array
+   /* this.userManagementService.getTasks()
+      .subscribe(players => {
+        this.dataPlayer = players;
+      });
+      console.log(this.dataPlayer);*/
   }
 
   initializeItems() {
-    /* this.testDataTeams = [
-       {
-         name: "Mannschaft auswählen"
-       },
-       {
-         name: "S1"sdsd
-       },
-       {
-         name: "S2"
-       },
-       {
-         name: "J1",
-       },
-       {
-         name: "J2"
-       },
-       {
-         name: "J3"
-       }
-     ]*/
 
     this.testDataPlayer = [
       {
@@ -71,7 +59,7 @@ export class UserManagementComponent {
   }
 
   openEditor(ev, value) {
-   this.navCtrl.push(EditRoleComponent, {player: value});
+    this.navCtrl.push(EditRoleComponent, { player: value });
   }
 
   getItems(ev) {
