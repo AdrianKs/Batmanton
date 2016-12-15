@@ -24,7 +24,7 @@
       <ion-label stacked>Nachname</ion-label>
       <ion-input #lastname formControlName="lastname" (change)="elementChanged(lastname)"
                  placeholder="Nachname"
-                 [class.invalid]="!signupForm.controls.lastname.valid  && (lastChanged || submitAttempt)"></ion-input>
+                 [class.invalid]="!signupForm.controls.lastname.valid  && (lastnameChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!signupForm.controls.lastname.valid  && (lastnameChanged || submitAttempt)">
       <p>Bitte geben Sie Ihren Nachnamen ein.</p>
@@ -91,6 +91,5 @@
     <button ion-button block type="submit">
       Create an Account
     </button>
-
   </form>
 </ion-content>
