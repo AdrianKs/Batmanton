@@ -1,45 +1,27 @@
-page-profile {
-  .picture-container{
-    text-align: center;
-    margin-top: 20px;
-  }
+.picture-container{
+  text-align: center;
+  margin-top: 20px;
+}
 
-  .profile-image{
-    border-radius: 10rem;
-    width: 17rem;
-    height: 17rem;
-  }
+.profile-image{
+  border-radius: 10rem;
+  width: 12em;
+  height: 12em;
+}
 
-  .bottomContainer{
-    margin-top: 30px;
-    text-align: center;
-  }
+.bottomContainer{
+  margin-top: 30px;
+  text-align: center;
+}
 
-  //.labelRoleContainer{
-  //  text-align: center;
-  //  border-top: 1px solid black;
-  //  border-bottom: 1px solid black;
-  //  background: #cccccc;
-  //  font-weight: bold;
-  //  font-size: 18px;
-  //}
+.saveButtonContainer{
+  margin-top: 30px;
+}
 
-  //.label.label-md.myLabel{
-  //  margin: 8px 3px 8px 0px;
-  //}
+input{
+  text-align:right;
+}
 
-  //.changeRoleContainer{
-  //  text-align: center;
-  //  padding: 8px;
-  //  margin-top: 30px;
-  //}
-
-  //.myChk{
-  //  margin-right: 10px;
-  //  margin-left: 10px;
-  //}
-  //
-  .saveButtonContainer{
-    margin-top: 30px;
-  }
+.checkmarkIcon{
+  font-size: 2em;
 }
