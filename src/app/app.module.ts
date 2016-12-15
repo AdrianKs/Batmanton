@@ -43,6 +43,7 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     //Pipes
     Birthday,
     Gender
+
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -65,7 +66,7 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     SelectProfilePictureComponent,
     ViewTeamComponent,
     PopoverPage,
-    EditTeamComponent,
+    EditTeamComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

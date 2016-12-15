@@ -18,6 +18,7 @@ export class TeamsComponent {
   teams: any[];
   database: any;
 
+
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
     this.database = firebase.database();
     this.getAllTeamData();
@@ -140,7 +141,6 @@ export class TeamsComponent {
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
-
 
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })

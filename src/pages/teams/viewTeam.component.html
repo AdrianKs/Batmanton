@@ -102,7 +102,13 @@
                 Details
             </ion-card-title>
             <div class="section_details">
-                Teamname: {{team.teamName}} <br> Jugendklasse: {{team.jugendBez}}
+                Teamname: {{team.name}} <br> 
+                <div *ngIf="team.isAdult==true">
+                Altersklasse: Erwachsen
+                </div>
+                <div *ngIf="team.isAdult==false">
+                Altersklasse: Jugend
+                </div>
             </div>
         </ion-card-content>
     </ion-card>
