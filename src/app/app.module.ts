@@ -13,6 +13,8 @@ import { ResetPasswordComponent } from '../pages/resetPassword/resetPassword.com
 import { EditRoleComponent } from '../pages/editRole/editRole.component';
 import { TeamsComponent } from '../pages/teams/teams.component';
 import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
+import { PopoverPage } from '../pages/teams/popover.component';
+import { EditTeamComponent } from '../pages/teams/editTeam.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
     ResetPasswordComponent,
     EditRoleComponent,
     TeamsComponent,
-    ViewTeamComponent
+    ViewTeamComponent,
+    PopoverPage,
+    EditTeamComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -47,7 +51,9 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
     ResetPasswordComponent,
     EditRoleComponent,
     TeamsComponent,
-    ViewTeamComponent
+    ViewTeamComponent,
+    PopoverPage,
+    EditTeamComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
