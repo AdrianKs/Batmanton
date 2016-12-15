@@ -7,16 +7,19 @@ import { NavController, NavParams, PopoverController } from 'ionic-angular';
 
 import { PopoverPage } from './popover.component';
 
+
 import firebase from 'firebase';
 
+
 @Component({
-    templateUrl: 'viewTeam.component.html'
+  templateUrl: 'viewTeam.component.html'
 })
 export class ViewTeamComponent {
 
     team: any;
     geschlecht: string = "maenner";
     playersOfTeam: any[];
+
     justPlayers: any;
     database: any;
 
@@ -61,6 +64,9 @@ presentPopover(myEvent) {
         ev: myEvent
     });
 }
+
+
+  
 
 
 
