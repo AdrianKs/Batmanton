@@ -8,7 +8,7 @@ import firebase from 'firebase';
 
 
 @Component({
-  templateUrl: 'viewTeam.component.html'
+    templateUrl: 'viewTeam.component.html'
 })
 export class ViewTeamComponent {
 
@@ -18,10 +18,6 @@ export class ViewTeamComponent {
     justPlayers: any;
     database: any;
 
-
-
-
-   
 
 
 
@@ -40,34 +36,33 @@ export class ViewTeamComponent {
 
     fetchPlayersByID() {
         this.database.ref("/clubs/12/players/").once('value', snapshot => {
-            //Wie kann man auf die ID im Snapshot zugreifen?
             let playerArray = [];
             let counter = 0;
-            for (let y in this.justPlayers) {
-                for (let i in snapshot.val()) {
-                    let id = this.justPlayers.id;
-                    let id_snap = snapshot.val()[0];
-                    console.log("SNAPSHOT KEY: " + id_snap);
-                    if (id == id_snap) {
-                        playerArray[counter] = snapshot.val()[i];
-                        playerArray[counter].id = i;
-                    }
-                    counter++;
+            for (let y in this.justPlayers) { 
+            for (let i in snapshot.val()) {
+                let id = this.justPlayers.id;
+                let id_snap = snapshot.val()[0];
+                console.log("SNAPSHOT KEY: "+ id_snap);
+                if (id == id_snap) {
+                    playerArray[counter] = snapshot.val()[i];
+                    playerArray[counter].id = i;
                 }
+                counter++;
             }
-        })
-    }
+        }
+      })
+}
 
-
-
-   presentPopover(myEvent) {
-    let popover = this.popoverCtrl.create(PopoverPage, 
-    {
-        value: this.team
-    });
+presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create(PopoverPage,
+        {
+            value: this.team
+        });
     popover.present({
-      ev: myEvent
+        ev: myEvent
     });
+
   }
+
 }
 
