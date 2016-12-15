@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 export class FirebaseProvider{
 
 
-    items: any[];
+    items: any;
     database: any;
 
     constructor(){
@@ -13,13 +13,22 @@ export class FirebaseProvider{
     }
 
     getItemsOfRefOn(path: string){
-        var data = new Array;
-        var sample = function(){
-            return this.database.ref(path).on('value', function(snapshot){
-            return snapshot.val();
-        })();
-
+        this.database.ref("/clubs/12/teams/").once('value', snapshot => {
+      console.log(snapshot.val());
+      let teamArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        teamArray[counter] = snapshot.val()[i];
+        teamArray[counter].id = i;
+        counter++;
+      }
+      this.items = teamArray;
+      this.returnItemArray();
+    });
     }
+
+    returnItemArray(){
+        return this.items;
     }
 
 }
