@@ -17,6 +17,8 @@ import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selec
 import {Birthday} from './pipes/birthday'
 import {Gender} from './pipes/gender'
 import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
+import { PopoverPage } from '../pages/teams/popover.component';
+import { EditTeamComponent } from '../pages/teams/editTeam.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
     TeamsComponent,
     SelectProfilePictureComponent,
     ViewTeamComponent,
+    PopoverPage,
+    EditTeamComponent,
     //Pipes
     Birthday,
     Gender
@@ -58,7 +62,9 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
     EditRoleComponent,
     TeamsComponent,
     SelectProfilePictureComponent,
-    ViewTeamComponent
+    ViewTeamComponent,
+    PopoverPage,
+    EditTeamComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

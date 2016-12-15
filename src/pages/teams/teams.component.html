@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content padding>
+  <button ion-button (click)="testGetData()">Print Data</button>
   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
     <div *ngFor="let item of teams">
@@ -17,10 +18,13 @@
         </div>
         <div class="teamItem-right">
           <div class="teamItem-details">
-            Teamname: {{item.teamName}} <br>
+            Teamname: {{item.name}} <br>
           </div>
-          <div>
-            Jugendgruppe: {{item.jugendBez}}
+          <div *ngIf="item.isAdult==true">
+            Altersklasse: Erwachsen
+          </div>
+          <div *ngIf="item.isAdult==false">
+            Altersklasse: Jugend
           </div>
         </div>
       </ion-item>
