@@ -1,0 +1,32 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Mannschaftsdetails</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding="">
+    <ion-card>
+        <div class="image_large">
+            <img class="img_large" src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+        </div>
+        <ion-card-content>
+            <ion-card-title class="card_title">
+                Details
+            </ion-card-title>
+            <div class="section_details">
+                <ion-list>
+                    <ion-label stacked>Teamname</ion-label>
+                    <ion-input placeholder="Teamname" value="{{team.name}}"></ion-input>
+                    <div *ngIf="team.isAdult==true">
+                        <ion-label stacked>Altersklasse</ion-label>
+                        <ion-input placeholder="Altersklasse" value="Erwachsen"></ion-input>
+                    </div>
+                    <div *ngIf="team.isAdult==false">
+                        <ion-label stacked>Altersklasse</ion-label>
+                        <ion-input placeholder="Altersklasse" value="Jugend"></ion-input>
+                    </div>
+                </ion-list>
+            </div>
+        </ion-card-content>
+    </ion-card>
+</ion-content>

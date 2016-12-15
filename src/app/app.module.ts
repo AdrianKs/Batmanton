@@ -15,6 +15,8 @@ import { EditRoleComponent } from '../pages/editRole/editRole.component';
 import { TeamsComponent } from '../pages/teams/teams.component';
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
 import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
+import { PopoverPage } from '../pages/teams/popover.component';
+import { EditTeamComponent } from '../pages/teams/editTeam.component';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
     EditRoleComponent,
     TeamsComponent,
     SelectProfilePictureComponent,
-    ViewTeamComponent
+    ViewTeamComponent,
+    PopoverPage,
+    EditTeamComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -54,7 +58,9 @@ import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
     EditRoleComponent,
     TeamsComponent,
     SelectProfilePictureComponent,
-    ViewTeamComponent
+    ViewTeamComponent,
+    PopoverPage,
+    EditTeamComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
