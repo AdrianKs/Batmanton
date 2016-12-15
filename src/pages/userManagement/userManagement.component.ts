@@ -21,9 +21,8 @@ export class UserManagementComponent {
     /* this.userManagementService.getPlayers()
        .subscribe(players => {
          this.dataPlayer = players;
-       });*/   
+       });*/
     this.getPlayer();
-    this.initializeItems();
   }
 
   getPlayer(): void {
@@ -36,9 +35,8 @@ export class UserManagementComponent {
         counter++;
       }
       this.dataPlayerSearch = playerArray;
-       console.log(this.dataPlayerSearch);
       this.dataPlayer = playerArray;
-    })
+      })
   }
 
   initializeItems() {
