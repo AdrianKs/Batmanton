@@ -43,7 +43,7 @@
 
     <ion-item>
       <ion-label stacked>Geschlecht</ion-label>
-      <ion-select [(ngModel)]="gender" (ionChange)="genderSelectChaned(gender)" [ngModelOptions]="{standalone: true}"
+      <ion-select [(ngModel)]="gender" (ionChange)="genderSelectChanged(gender)" [ngModelOptions]="{standalone: true}"
                   placeholder="Geschlecht"
                   [class.invalid]="(!genderChanged && submitAttempt)">
         <ion-option value="m">männlich</ion-option>
@@ -52,6 +52,19 @@
     </ion-item>
     <ion-item class="error-message" *ngIf="(!genderChanged && submitAttempt)">
       <p>Bitte geben Sie Ihr Geschlecht an.</p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>Mannschaft</ion-label>
+      <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"
+                  placeholder="Mannschaft"
+                  [class.invalid]="(!teamChanged && submitAttempt)">
+        <ion-option *ngFor="let item of teams" value=0>in keiner Mannschaft</ion-option>
+        <ion-option *ngFor="let item of teams" value="{{item.id}}">{{item.name}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item class="error-message" *ngIf="(!teamChanged && submitAttempt)">
+      <p>Bitte geben Sie Ihr Team an.</p>
     </ion-item>
 
     <ion-item>
@@ -80,5 +93,4 @@
     </button>
 
   </form>
-
 </ion-content>

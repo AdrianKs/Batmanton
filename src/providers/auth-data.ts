@@ -14,7 +14,6 @@ export class AuthData {
   public userProfile: any;
 
   constructor() {
-    console.log('Hello AuthData Provider');
     this.fireAuth = firebase.auth();
     this.userProfile = firebase.database().ref('clubs/12/players');
   }
@@ -23,7 +22,7 @@ export class AuthData {
     return this.fireAuth.signInWithEmailAndPassword(email, password);
   }
 
-  signupUser(email: string, password: string, firstname: string, lastname: string, birthday: string, gender: string): any {
+  signupUser(email: string, password: string, firstname: string, lastname: string, birthday: string, gender: string, team: string): any {
     return this.fireAuth.createUserWithEmailAndPassword(email, password)
       .then((newUser) => {
         this.userProfile.child(newUser.uid).set({
@@ -31,7 +30,12 @@ export class AuthData {
           firstname: firstname,
           lastname: lastname,
           birthday: birthday,
-          gender: gender
+          gender: gender,
+          team: team,
+          state: 0,
+          isPlayer: true,
+          isTrainer: false,
+          pushid: ''
           });
       });
   }
