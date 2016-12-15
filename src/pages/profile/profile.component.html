@@ -5,10 +5,10 @@
     </button>
     <ion-title>Mein Profil</ion-title>
     <ion-buttons right>
-      <!--<button ion-button outline small (click)="editProfile()" >-->
       <button ion-button large (click)="editProfile()" >
         <!--Bearbeiten-->
-        <ion-icon name="create"></ion-icon>
+        <ion-icon id="editButtonIcon" name="create"></ion-icon>
+        <ion-icon hidden id="doneButtonIcon" name="checkmark" class="checkmarkIcon"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -20,30 +20,52 @@
       <img class="profile-image" src="https://scontent-fra3-1.xx.fbcdn.net/v/t31.0-8/14125474_1349299668432513_7718445018116444592_o.jpg?oh=e6480088dced86a864d9525bd997cc4a&oe=58AF1B4D" />
     </div>
     <div>
-      <ion-item>
+      <ion-item id="nameItem">
         <ion-label>Name:</ion-label>
-        <ion-label id="name-label">{{testDataPlayer.vorname}} {{testDataPlayer.nachname}}</ion-label>
-        <!--<input id="name-label" disabled="true" ng-disabled="true">{{testDataPlayer.vorname}} {{testDataPlayer.nachname}}</input>-->
+        <ion-label>{{testDataPlayer.vorname}} {{testDataPlayer.nachname}}</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item id="editFirstNameItem" hidden>
+        <ion-label color="primary">Vorname:</ion-label>
+        <ion-input value="{{testDataPlayer.vorname}}"></ion-input>
+      </ion-item>
+      <ion-item id="editLastNameItem" hidden>
+        <ion-label color="primary">Nachname:</ion-label>
+        <ion-input value="{{testDataPlayer.nachname}}"></ion-input>
+      </ion-item>
+
+      <ion-item id="mailItem">
         <ion-label>E-Mail:</ion-label>
         <ion-label>{{testDataPlayer.email}}</ion-label>
-        <ion-input hidden>{{testDataPlayer.email}}</ion-input>
       </ion-item>
-      <ion-item>
+      <ion-item id="editMailItem" hidden>
+        <ion-label color="primary">Mail:</ion-label>
+        <ion-input type="email" value="{{testDataPlayer.email}}"></ion-input>
+      </ion-item>
+
+      <ion-item id="birthdayItem">
         <ion-label>Geburtstag:</ion-label>
         <ion-label>{{testDataPlayer.geburtstag}}</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item id="editBirthdayItem" hidden>
+        <ion-label color="primary">Geburtstag:</ion-label>
+        <ion-input value="{{testDataPlayer.geburtstag}}"></ion-input>
+      </ion-item>
+
+      <ion-item id="teamItem">
         <ion-label>Mannschaft:</ion-label>
         <ion-label>{{testDataPlayer.mannschaft}}</ion-label>
       </ion-item>
+      <ion-item id="editTeamItem" hidden>
+        <ion-label color="primary">Mannschaft:</ion-label>
+        <ion-input type="email" value="{{testDataPlayer.mannschaft}}"></ion-input>
+      </ion-item>
+
     </div>
   </div>
 
-  <div class="bottomContainer">
+  <div id="bottomContainer" class="bottomContainer">
     <div class="saveButtonContainer">
-      <button ion-button round color="danger" icon-left outline (click)="logout()">
+      <button ion-button round color="danger" icon-left outline (click)="logOut()">
         <ion-icon name="log-out"></ion-icon>
         Logout
       </button>
