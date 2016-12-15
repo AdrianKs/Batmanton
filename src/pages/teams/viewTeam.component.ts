@@ -8,6 +8,8 @@ import { PopoverPage } from './popover.component';
 import firebase from 'firebase';
 
 
+
+
 @Component({
   templateUrl: 'viewTeam.component.html'
 })
@@ -59,20 +61,17 @@ export class ViewTeamComponent {
         })
     }
 
-    presentPopover(myEvent) {
-        let popover = this.popoverCtrl.create(PopoverPage,
-            {
-                value: this.team
-            });
-
-        popover.present({
-            ev: myEvent
-        });
-
-    }
 
 
-
+   presentPopover(myEvent) {
+    let popover = this.popoverCtrl.create(PopoverPage, 
+    {
+        value: this.team
+    });
+    popover.present({
+      ev: myEvent
+    });
+  }
 
 
 

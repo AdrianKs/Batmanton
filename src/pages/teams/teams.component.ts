@@ -2,12 +2,7 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
-<<<<<<< HEAD
-
 import { ViewTeamComponent} from './viewTeam.component';
-=======
-import { ViewTeamComponent } from './viewTeam.component';
->>>>>>> View Team Component erweitert
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import firebase from 'firebase';
@@ -22,7 +17,6 @@ export class TeamsComponent {
   teams: any[];
   database: any;
 
-<<<<<<< HEAD
 
 
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
@@ -30,10 +24,6 @@ export class TeamsComponent {
     this.getAllTeamData();
   }
 
-  testGetData() {
-    var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
-    console.log(test);
-  }
 
   getAllTeamData() {
     this.database.ref("/clubs/12/teams/").once('value', snapshot => {
@@ -50,28 +40,23 @@ export class TeamsComponent {
     console.log("ITEMS:");
     console.log(this.teams);
 
+
     //this.teams = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
   }
 
-  initializeTeams() {
-    this.teams = [
-    ]
-  }
 
-
-=======
-  constructor(public navCtrl: NavController) {
-    this.initializeTeams();
-    console.log(this.teams);
+  testGetData(){
+    var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
+    console.log(test);
   }
 
   initializeTeams() {
     this.teams = [
       {
-        jugendBez: "J1", 
-        teamName: "Jugend", 
-        path: "pfadZuBild",
-        spieler: {
+        isAdult: true, 
+        name: "J1", 
+        type: "0",
+        players: {
         15: { 
           name: 'Thomas Test',
           geschlecht: 'm' ,
@@ -89,13 +74,54 @@ export class TeamsComponent {
         }
       }
     },
-      { jugendBez: "J2", teamName: "Erwachsen", path: "pfadZuBild" },
-      { jugendBez: "J3", teamName: "Erwachsen", path: "pfadZuBild" },
-      { jugendBez: "J4", teamName: "Jugend", path: "pfadZuBild" }
+    {
+        isAdult: false, 
+        name: "J2", 
+        type: "0",
+        players: {
+        15: { 
+          name: 'Jonas Friedrich',
+          geschlecht: 'm' ,
+          geburtstag: '01.01.1996'
+        },
+        16: {
+          name: 'Lisa Albert',
+          geschlecht: 'w',
+          geburtstag: '02.02.1997' 
+        },
+        17:  {
+          name: 'Stefan Knolle',
+          geschlecht: 'm',
+          geburtstag: '02.02.1997' 
+        }
+      }
+    },
+    {
+        isAdult: true, 
+        name: "J3", 
+        type: "0",
+        players: {
+        15: { 
+          name: 'Tim Turbo',
+          geschlecht: 'm' ,
+          geburtstag: '01.01.1996'
+        },
+        16: {
+          name: 'Christina Kralle',
+          geschlecht: 'w',
+          geburtstag: '02.02.1997' 
+        },
+        17:  {
+          name: 'ASAP Ferg',
+          geschlecht: 'm',
+          geburtstag: '02.02.1997' 
+        }
+      }
+    }
     ]
   }
 
->>>>>>> View Team Component erweitert
+
   viewTeam(ev, value) {
     this.navCtrl.push(ViewTeamComponent, { team: value });
   }
@@ -104,11 +130,6 @@ export class TeamsComponent {
     //Team hinzufügen View aufrufen
   }
 
-<<<<<<< HEAD
-
- 
-=======
->>>>>>> View Team Component erweitert
   getItems(ev) {
     this.initializeTeams();
     this.getAllTeamData();
