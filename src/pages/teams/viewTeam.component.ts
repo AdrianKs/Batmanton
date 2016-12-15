@@ -3,7 +3,6 @@
  */
 import { Component } from '@angular/core';
 import { NavController, NavParams, PopoverController } from 'ionic-angular';
-
 import { PopoverPage } from './popover.component';
 
 @Component({
@@ -26,7 +25,7 @@ export class ViewTeamComponent {
       }
   }
 
-
+  
    presentPopover(myEvent) {
     let popover = this.popoverCtrl.create(PopoverPage, 
     {

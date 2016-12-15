@@ -14,11 +14,13 @@ import { FirebaseProvider } from '../../providers/firebase-provider';
 export class TeamsComponent {
 
   teams: any[];
+
+
+
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
     this.initializeTeams();
     console.log(this.teams);
   }
-
 
   testGetData(){
     var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
@@ -28,6 +30,53 @@ export class TeamsComponent {
   initializeTeams() {
     this.teams = [
       {
+        isAdult: true, 
+
+        name: "J3", 
+
+        type: "0",
+        players: {
+        15: { 
+          name: 'Tim Turbo',
+          geschlecht: 'm' ,
+          geburtstag: '01.01.1996'
+        },
+        16: {
+          name: 'Christina Kralle',
+          geschlecht: 'w',
+          geburtstag: '02.02.1997' 
+        },
+        17:  {
+          name: 'ASAP Ferg',
+          geschlecht: 'm',
+          geburtstag: '02.02.1997' 
+        }
+      }
+
+    },
+    {
+        isAdult: false, 
+        name: "J2", 
+        type: "0",
+        players: {
+        15: { 
+          name: 'Jonas Friedrich',
+          geschlecht: 'm' ,
+          geburtstag: '01.01.1996'
+        },
+        16: {
+          name: 'Lisa Albert',
+          geschlecht: 'w',
+          geburtstag: '02.02.1997' 
+        },
+        17:  {
+          name: 'Stefan Knolle',
+          geschlecht: 'm',
+          geburtstag: '02.02.1997' 
+        }
+      }
+    },
+    {
         isAdult: true, 
         name: "J3", 
         type: "0",
@@ -48,6 +97,7 @@ export class TeamsComponent {
           geburtstag: '02.02.1997' 
         }
       }
+
     }
     ]
   }
@@ -69,7 +119,6 @@ export class TeamsComponent {
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
-
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
