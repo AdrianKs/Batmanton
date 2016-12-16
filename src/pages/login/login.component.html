@@ -1,5 +1,5 @@
 <ion-content padding>
-  <form [formGroup]="loginForm" (submit)="loginUser()" novalidate>
+  <form [formGroup]="loginForm" class="center-form" (submit)="loginUser()" novalidate>
 
     <ion-item>
       <ion-label stacked>Email</ion-label>
@@ -21,17 +21,19 @@
       <p>Ihr Passwort besteht aus mindestens 6 Zeichen.</p>
     </ion-item>
     <br>
-    <button ion-button block type="submit">
+    <button ion-button round type="submit">
       Login
     </button>
 
   </form>
 
-  <button ion-button block clear (click)="goToSignup()">
-    Registrieren
-  </button>
-
-  <button ion-button block clear (click)="goToResetPassword()">
-    Ich habe mein Passwort vergessen...
-  </button>
+  <div class="button-center">
+    <button ion-button round clear (click)="goToSignup()">
+      Registrieren
+    </button>
+    <br>
+    <button ion-button round clear (click)="goToResetPassword()">
+      Ich habe mein Passwort vergessen
+    </button>
+  </div>
 </ion-content>

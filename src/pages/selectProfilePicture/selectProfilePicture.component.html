@@ -6,26 +6,27 @@
 
 <ion-content padding>
   <div class="pictureContainer">
-    <img src="../../assets/images/ic_account_circle_black_48dp_2x.png" *ngIf="!base64Image" class="img-circle"/>
+    <img src="assets/images/ic_account_circle_black_48dp_2x.png" *ngIf="!base64Image" class="img-circle"/>
     <img class="img-circle" [src]="base64Image" *ngIf="base64Image" align="center"/>
   </div>
 
   <div class="pictureContainer">
-    <button class="buttonApart" ion-button icon-only color="dark" (click)="takePicture()">
+    <button class="buttonApart" ion-button clear large icon-only color="dark" (click)="takePicture()">
       <ion-icon name="camera"></ion-icon>
     </button>
 
-    <button class="buttonApart" ion-button icon-only color="dark" (click)="getPicture()">
+    <button class="buttonApart" ion-button clear large icon-only color="dark" (click)="getPicture()">
       <ion-icon name="images"></ion-icon>
     </button>
   </div>
 
-
-  <button ion-button block (click)="uploadPicture()">
-    Bestätigen
-  </button>
-
-  <button ion-button block clear (click)="goToStartPage()">
-    Später
-  </button>
+  <div class="buttom-center">
+    <button ion-button round (click)="uploadPicture()">
+      Bestätigen
+    </button>
+    <br>
+    <button ion-button round clear (click)="goToStartPage()">
+      Später
+    </button>
+  </div>
 </ion-content>

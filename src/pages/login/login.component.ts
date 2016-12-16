@@ -3,7 +3,7 @@
  */
 import { Component } from '@angular/core';
 
-import { NavController, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, AlertController, MenuController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
 import { MatchdayComponent } from '../matchday/matchday.component';
@@ -24,7 +24,11 @@ export class LoginComponent {
 
   constructor(public navCtrl: NavController, public authData: AuthData,
               public formBuilder: FormBuilder,public alertCtrl: AlertController,
-              public loadingCtrl: LoadingController) {
+              public loadingCtrl: LoadingController, public menuCtrl: MenuController) {
+
+
+    this.menuCtrl.close('mainMenu');
+    this.menuCtrl.enable(false, 'mainMenu');
 
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required])],
@@ -46,6 +50,7 @@ export class LoginComponent {
     } else {
       this.authData.loginUser(this.loginForm.value.email, this.loginForm.value.password).then( authData => {
         this.navCtrl.setRoot(MatchdayComponent);
+        this.menuCtrl.enable(true, 'mainMenu');
       }, error => {
         this.loading.dismiss().then( () => {
           let alert = this.alertCtrl.create({

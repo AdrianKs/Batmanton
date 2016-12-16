@@ -11,9 +11,12 @@ import {LoginComponent} from "../pages/login/login.component";
 import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
 import {firebaseConfig} from "./firebaseAppData";
+import {setUser} from "./globalVars";
+
 
 
 firebase.initializeApp(firebaseConfig);
+
 
 @Component({
   templateUrl: 'app.html'
@@ -32,6 +35,7 @@ export class MyApp {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
+        setUser(user);
         this.rootPage = LoginComponent;
       }
     });

@@ -5,7 +5,6 @@ import {Component, OnInit} from '@angular/core';
 import { NavController, LoadingController, AlertController } from 'ionic-angular';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
-import { MatchdayComponent } from '../matchday/matchday.component';
 import firebase from 'firebase';
 import {SelectProfilePictureComponent} from "../selectProfilePicture/selectProfilePicture.component";
 
