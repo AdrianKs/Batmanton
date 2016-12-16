@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 
-import {ViewMatchdayComponent} from "../matchday/viewmatchday.component";
+//import {ViewMatchdayComponent} from "../matchday/viewmatchday.component";
 
 @Component({
   selector: 'page-invitesmatchday',
@@ -19,7 +19,7 @@ export class InvitesMatchdayComponent {
 
 
  goToPage(){
-    this.navCtrl.push(ViewMatchdayComponent);
+    //this.navCtrl.push(ViewMatchdayComponent);
   }
 
 }
