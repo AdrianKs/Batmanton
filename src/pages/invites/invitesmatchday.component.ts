@@ -3,23 +3,33 @@
  */
 import { Component } from '@angular/core';
 
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
-//import {ViewMatchdayComponent} from "../matchday/viewmatchday.component";
+import { InvitesService } from '../../providers/invitesService';
+
+import firebase from 'firebase';
 
 @Component({
   selector: 'page-invitesmatchday',
-  templateUrl: 'invitesmatchday.component.html'
+  templateUrl: 'invitesmatchday.component.html',
+  providers: [InvitesService]
 })
 export class InvitesMatchdayComponent {
+  matchday: any;
+  invites: any;
+  players: any;
 
-  constructor(public navCtrl: NavController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private invitesService: InvitesService) {
+    //Load data in array
+    this.matchday = navP.get('matchday');
+    this.invites = navP.get('invites');
+    this.players = navP.get('players');
+  }
+  
+
+    
+
+  goToPage() {
 
   }
-
-
- goToPage(){
-    //this.navCtrl.push(ViewMatchdayComponent);
-  }
-
 }

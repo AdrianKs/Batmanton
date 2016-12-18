@@ -3,61 +3,35 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Gesendete Einladungen</ion-title>
+    <ion-title>Spieltag</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <ion-item (click)="goToPage()">
-      <p>
-          17.01.2017<br>
-          Heimspiel<br>
-          Adresse Heimaterde<br>
-          Spieler: Max Mustermann<br>
-          <br>
-      </p>
-         <button ion-button icon-only clear item-right>
-            <ion-icon name="arrow-dropright-circle"></ion-icon>
-          </button>
-          <ion-badge color="secondary" item-bottom>Angenommen</ion-badge>
-    </ion-item>
-    <ion-item>
-      <p>
-          17.01.2017<br>
-          Heimspiel<br>
-          Adresse Heimaterde<br>
-          Spieler: Max Mustermann<br>
-          <br>
-      </p>
-         <button ion-button icon-only clear item-right>
-            <ion-icon name="arrow-dropright-circle"></ion-icon>
-          </button>
-          <ion-badge color="secondary" item-bottom>Angenommen</ion-badge>
-    </ion-item>
-    <ion-item>
-      <p>
-          17.01.2017<br>
-          Heimspiel<br>
-          Adresse Heimaterde<br>
-          Spieler: Max Mustermann<br>
-          <br>
-      </p>
-         <button ion-button icon-only clear item-right>
-            <ion-icon name="arrow-dropright-circle"></ion-icon>
-          </button>
-          <ion-badge color="secondary" item-bottom>Angenommen</ion-badge>
-    </ion-item>
-    <ion-item>
-      <p>
-          17.01.2017<br>
-          Heimspiel<br>
-          Adresse Heimaterde<br>
-          Spieler: Max Mustermann<br>
-          <br>
-      </p>
-         <button ion-button icon-only clear item-right>
-            <ion-icon name="arrow-dropright-circle"></ion-icon>
-          </button>
-          <ion-badge color="secondary" item-bottom>Angenommen</ion-badge>
-    </ion-item>
+
+  <div *ngFor="let item of invites">
+    <div *ngIf="item.match == matchday.id">
+      <ion-item (click)="goToPage()">
+        <div *ngFor="let player of players">
+         <div *ngIf="player.id == item.recipient">
+            <p>
+              <br> {{player.firstname}} {{player.lastname}}
+              <br>
+              <br>
+            </p>
+         </div>
+        </div>
+        <ion-icon name="arrow-dropright-circle" clear item-right></ion-icon>
+        <div *ngIf="item.state == '0'">
+          <ion-badge color="primary" item-bottom> Keine Antwort</ion-badge>
+        </div>
+        <div *ngIf="item.state == '1'">
+          <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
+        </div>
+        <div *ngIf="item.state == '2'">
+          <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>
+        </div>
+      </ion-item>
+    </div>
+  </div>
 </ion-content>

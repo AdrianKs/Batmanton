@@ -4,6 +4,7 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { AboutComponent } from '../pages/about/about.component';
 import { InvitesComponent } from '../pages/invites/invites.component';
+import { InvitesMatchdayComponent } from '../pages/invites/invitesmatchday.component';
 import { MatchdayComponent } from '../pages/matchday/matchday.component';
 import { MyGamesComponent } from '../pages/myGames/myGames.component';
 import { ProfileComponent } from '../pages/profile/profile.component';

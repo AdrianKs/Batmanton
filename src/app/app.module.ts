@@ -3,6 +3,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 import { AboutComponent } from '../pages/about/about.component';
 import { InvitesComponent } from '../pages/invites/invites.component';
+import { InvitesMatchdayComponent } from '../pages/invites/invitesmatchday.component';
 import { LoginComponent } from '../pages/login/login.component';
 import { MatchdayComponent } from '../pages/matchday/matchday.component';
 import { MyGamesComponent } from '../pages/myGames/myGames.component';
@@ -19,6 +20,7 @@ import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selec
     MyApp,
     AboutComponent,
     InvitesComponent,
+    InvitesMatchdayComponent,
     LoginComponent,
     MatchdayComponent,
     MyGamesComponent,
@@ -38,6 +40,7 @@ import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selec
     MyApp,
     AboutComponent,
     InvitesComponent,
+    InvitesMatchdayComponent,
     LoginComponent,
     MatchdayComponent,
     MyGamesComponent,
