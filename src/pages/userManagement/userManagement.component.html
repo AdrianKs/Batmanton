@@ -31,8 +31,8 @@
 
   <div [ngSwitch]="geschlecht">
     <ion-list *ngSwitchCase="'maenner'">
-      <div *ngFor="let item of testDataPlayer">
-        <div *ngIf="item.geschlecht == 'm'">
+      <div *ngFor="let item of dataPlayer">
+        <div *ngIf="item.gender == 'm'">
           <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
@@ -40,10 +40,10 @@
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
-                  {{ item.nachname }}, {{item.vorname}} <br/>
+                  {{ item.lastname }}, {{item.firstname}} <br/>
                 </div>
-                <div>
-                  Mannschaft: {{item.mannschaft}}, Geb.: {{item.geburtstag}}
+                <div class="secondaryDetails">
+                  Mannschaft: {{item.team}}, Geb.: {{item.birthday}}
                 </div>
               </div>
             </div>
@@ -52,8 +52,8 @@
       </div>
     </ion-list>
     <ion-list *ngSwitchCase="'frauen'">
-      <div *ngFor="let item of testDataPlayer">
-        <div *ngIf="item.geschlecht == 'w'">
+      <div *ngFor="let item of dataPlayer">
+        <div *ngIf="item.gender == 'w'">
           <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
@@ -61,10 +61,10 @@
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
-                  {{ item.nachname }}, {{item.vorname}} <br/>
+                  {{ item.lastname }}, {{item.firstname}} <br/>
                 </div>
                 <div>
-                  Mannschaft: {{item.mannschaft}}, Geb.: {{item.geburtstag}}
+                  Mannschaft: {{item.team}}, Geb.: {{item.birthday}}
                 </div>
               </div>
             </div>
