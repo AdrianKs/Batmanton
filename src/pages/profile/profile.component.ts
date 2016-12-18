@@ -70,7 +70,7 @@ export class ProfileComponent {
 
       };
 
-    this.birthdayFormatted = this.playerData.birthday.split("-")[2] + "/" + this.playerData.birthday.split("-")[1] + "/" + this.playerData.birthday.split("-")[0];
+    this.birthdayFormatted = this.playerData.birthday.split("-")[2] + "." + this.playerData.birthday.split("-")[1] + "." + this.playerData.birthday.split("-")[0];
   }
 
   editProfile() {
