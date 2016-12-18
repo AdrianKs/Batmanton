@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { EditRoleComponent } from '../editRole/editRole.component';
 import { UserManagementService } from '../../providers/userManagament.service';
@@ -9,7 +9,11 @@ import firebase from 'firebase';
   templateUrl: 'userManagement.component.html',
   providers: [UserManagementService]
 })
-export class UserManagementComponent {
+export class UserManagementComponent implements OnInit {
+
+  ngOnInit() {
+    this.getPlayer();
+  }
 
   geschlecht: string = "maenner";
   testDataPlayer: any[];
@@ -22,7 +26,6 @@ export class UserManagementComponent {
        .subscribe(players => {
          this.dataPlayer = players;
        });*/
-    this.getPlayer();
   }
 
   getPlayer(): void {
@@ -36,7 +39,7 @@ export class UserManagementComponent {
       }
       this.dataPlayerSearch = playerArray;
       this.dataPlayer = playerArray;
-      })
+    })
   }
 
   initializeItems() {
