@@ -24,7 +24,6 @@ export class ProfileComponent {
   public profileForm;
   playerData: any;
   editMode: boolean = false;
-  birthdayFormatted: String;
   today: String = new Date().toISOString();
 
   // Save values from form before entering edit view to check for changes
@@ -69,8 +68,14 @@ export class ProfileComponent {
         team: "15"
 
       };
+  }
 
-    this.birthdayFormatted = this.playerData.birthday.split("-")[2] + "." + this.playerData.birthday.split("-")[1] + "." + this.playerData.birthday.split("-")[0];
+  /**
+   * Formats the birthday coming from the player data value to "dd.mm.yyyy" to display it with a label
+   * @returns {string} Formatted birthday
+   */
+  formatBirthday(){
+    return this.playerData.birthday.split("-")[2] + "." + this.playerData.birthday.split("-")[1] + "." + this.playerData.birthday.split("-")[0];
   }
 
   editProfile() {
@@ -96,9 +101,6 @@ export class ProfileComponent {
     console.log("Team " + this.playerData.team);
     if (this.firstnameOld || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.teamChanged) {
       console.log("do DB Op");
-    }
-    if(this.birthdayChanged){
-      this.birthdayFormatted = this.playerData.birthday.split("-")[2] + "/" + this.playerData.birthday.split("-")[1] + "/" + this.playerData.birthday.split("-")[0];
     }
     this.firstnameChanged = false;
     this.lastnameChanged = false;
