@@ -90,5 +90,4 @@ export class InvitesComponent {
   goToPage(ev, value, invites, players) {
     this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players });
   }
-
 }
