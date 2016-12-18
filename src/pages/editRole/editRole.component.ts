@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, ToastController } from 'ionic-angular';
 import firebase from 'firebase';
 
 @Component({
@@ -10,13 +10,13 @@ export class EditRoleComponent {
 
     player: any;
 
-    constructor(private navCtrl: NavController, private navParams: NavParams) {
+    constructor(private navCtrl: NavController, private navParams: NavParams, public toastCtrl: ToastController) {
         this.player = navParams.get('player');
     }
 
     changeRole(ev, player) {
         console.log(player);
-       firebase.database().ref('clubs/12/players/' + player.id).set({
+        firebase.database().ref('clubs/12/players/' + player.id).set({
             birthday: player.birthday,
             email: player.email,
             firstname: player.firstname,
@@ -28,9 +28,15 @@ export class EditRoleComponent {
             state: player.state,
             team: player.team
         });
-       //TODO navigation back to list
-       //maybe alert for success or error
+        this.presentToast();
     }
 
-
+    presentToast() {
+        let toast = this.toastCtrl.create({
+            message: 'Rolle wurde erfolgreich bearbeitet',
+            duration: 3000,
+            position: "top"
+        });
+        toast.present();
+    }
 }
