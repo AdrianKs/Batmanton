@@ -6,14 +6,18 @@ import { AboutComponent } from '../pages/about/about.component';
 import { InvitesComponent } from '../pages/invites/invites.component';
 import { MatchdayComponent } from '../pages/matchday/matchday.component';
 import { MyGamesComponent } from '../pages/myGames/myGames.component';
+import { ProfileComponent } from '../pages/profile/profile.component';
 import { UserManagementComponent } from '../pages/userManagement/userManagement.component';
 import {LoginComponent} from "../pages/login/login.component";
 import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
 import {firebaseConfig} from "./firebaseAppData";
+import {setUser} from "./globalVars";
+
 
 
 firebase.initializeApp(firebaseConfig);
+
 
 @Component({
   templateUrl: 'app.html'
@@ -32,6 +36,7 @@ export class MyApp {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (!user) {
+        setUser(user);
         this.rootPage = LoginComponent;
       }
     });
@@ -43,6 +48,7 @@ export class MyApp {
       { title: 'Mannschaften', component: TeamsComponent},
       { title: 'Meine Spiele', component: MyGamesComponent },
       { title: 'Benutzerverwaltung', component: UserManagementComponent },
+      { title: 'Mein Profil', component: ProfileComponent },
       { title: 'About', component: AboutComponent }
     ];
 

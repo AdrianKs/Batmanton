@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import firebase from 'firebase';
-
+import {setUser} from "../app/globalVars";
+//import myGlobals from '../app/globalVars';
 /*
   Generated class for the AuthData provider.
 
@@ -37,6 +38,7 @@ export class AuthData {
           isTrainer: false,
           pushid: ''
           });
+        setUser(newUser);
       });
   }
 

@@ -5,8 +5,8 @@ import {Component, OnInit} from '@angular/core';
 import { NavController, LoadingController, AlertController } from 'ionic-angular';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import { AuthData } from '../../providers/auth-data';
-import { MatchdayComponent } from '../matchday/matchday.component';
 import firebase from 'firebase';
+import {SelectProfilePictureComponent} from "../selectProfilePicture/selectProfilePicture.component";
 
 
 @Component({
@@ -136,7 +136,7 @@ export class RegisterComponent implements OnInit{
         this.gender,
         this.team
       ).then(() => {
-        this.navCtrl.setRoot(MatchdayComponent);
+        this.navCtrl.setRoot(SelectProfilePictureComponent);
       }, (error) => {
         this.loading.dismiss();
         let alert = this.alertCtrl.create({

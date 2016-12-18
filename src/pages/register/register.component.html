@@ -8,7 +8,7 @@
 
 
 <ion-content padding>
-  <form [formGroup]="signupForm" (submit)="signupUser()" novalidate>
+  <form class="center-form" [formGroup]="signupForm" (submit)="signupUser()" novalidate>
 
     <ion-item>
       <ion-label stacked>Vorname</ion-label>
@@ -24,7 +24,7 @@
       <ion-label stacked>Nachname</ion-label>
       <ion-input #lastname formControlName="lastname" (change)="elementChanged(lastname)"
                  placeholder="Nachname"
-                 [class.invalid]="!signupForm.controls.lastname.valid  && (lastChanged || submitAttempt)"></ion-input>
+                 [class.invalid]="!signupForm.controls.lastname.valid  && (lastnameChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!signupForm.controls.lastname.valid  && (lastnameChanged || submitAttempt)">
       <p>Bitte geben Sie Ihren Nachnamen ein.</p>
@@ -88,9 +88,8 @@
     </ion-item>
 
     <br>
-    <button ion-button block type="submit">
-      Create an Account
+    <button ion-button round type="submit">
+      Account erstellen
     </button>
-
   </form>
 </ion-content>

@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Profilbild aufnehmen</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="pictureContainer">
+    <img src="assets/images/ic_account_circle_black_48dp_2x.png" *ngIf="!base64Image" class="img-circle"/>
+    <img class="img-circle" [src]="base64Image" *ngIf="base64Image" align="center"/>
+  </div>
+
+  <div class="pictureContainer">
+    <button class="buttonApart" ion-button clear large icon-only color="dark" (click)="takePicture()">
+      <ion-icon name="camera"></ion-icon>
+    </button>
+
+    <button class="buttonApart" ion-button clear large icon-only color="dark" (click)="getPicture()">
+      <ion-icon name="images"></ion-icon>
+    </button>
+  </div>
+
+  <div class="buttom-center">
+    <button ion-button round (click)="uploadPicture()">
+      Bestätigen
+    </button>
+    <br>
+    <button ion-button round clear (click)="goToStartPage()">
+      Später
+    </button>
+  </div>
+</ion-content>
