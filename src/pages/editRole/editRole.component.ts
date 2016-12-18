@@ -14,7 +14,7 @@ export class EditRoleComponent {
         this.player = navParams.get('player');
     }
 
-    saveChange(ev, player) {
+    changeRole(ev, player) {
         console.log(player);
        firebase.database().ref('clubs/12/players/' + player.id).set({
             birthday: player.birthday,
