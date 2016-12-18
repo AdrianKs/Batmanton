@@ -53,7 +53,7 @@
     </ion-list>
     <ion-list *ngSwitchCase="'frauen'">
       <div *ngFor="let item of dataPlayer">
-        <div *ngIf="item.gender == 'w'">
+        <div *ngIf="item.gender == 'f'">
           <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
@@ -63,7 +63,7 @@
                 <div class="mainDetails">
                   {{ item.lastname }}, {{item.firstname}} <br/>
                 </div>
-                <div>
+                <div class="secondaryDetails">
                   Mannschaft: {{item.team}}, Geb.: {{item.birthday}}
                 </div>
               </div>
