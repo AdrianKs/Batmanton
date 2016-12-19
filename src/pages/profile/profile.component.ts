@@ -34,16 +34,16 @@ export class ProfileComponent implements OnInit {
 
   public profileForm;
   loggedInUserID: string = loggedInUser.uid;
-  player: any;
+  player: any = "";
   profilePictureUrl: string;
   editMode: boolean = false;
   actionSheetOptions: any;
+  formatBirthdayFunction = function (){};
 
   /**
    * Indicates whether the data for the view has been successfully loaded or not. If true, the profile-form in the template can be displayed
    * @type {boolean}
    */
-  dataLoaded: boolean = false;
   today: String = new Date().toISOString();
 
   /**
@@ -82,12 +82,19 @@ export class ProfileComponent implements OnInit {
   }
 
   /**
-   * Gets the data for the logged in player from the database and sets the "dataLoaded" flag afterwards "true".
+   * Gets the data for the logged in player from the database.
    */
   getPlayer(): void {
     firebase.database().ref('clubs/12/players/' + this.loggedInUserID).once('value', snapshot => {
       this.player = snapshot.val();
-      this.dataLoaded = true;
+
+      /**
+       * Formats the birthday coming from the player data value to "dd.mm.yyyy" to display it with a label
+       * @returns {string} Formatted birthday
+       */
+      this.formatBirthdayFunction = function () {
+        return this.player.birthday.split("-")[2] + "." + this.player.birthday.split("-")[1] + "." + this.player.birthday.split("-")[0];
+      }
     })
   }
 
@@ -125,7 +132,7 @@ export class ProfileComponent implements OnInit {
         ]
       };
     }).catch(function(error) {
-      that.profilePictureUrl = "../../assets/images/ic_account_circle_black_48dp_2x.png";
+      that.profilePictureUrl = "assets/images/ic_account_circle_black_48dp_2x.png";
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
       that.actionSheetOptions = {
         title: 'Profilbild ändern',
@@ -147,14 +154,6 @@ export class ProfileComponent implements OnInit {
         ]
       };
     });
-  }
-
-  /**
-   * Formats the birthday coming from the player data value to "dd.mm.yyyy" to display it with a label
-   * @returns {string} Formatted birthday
-   */
-  formatBirthday() {
-    return this.player.birthday.split("-")[2] + "." + this.player.birthday.split("-")[1] + "." + this.player.birthday.split("-")[0];
   }
 
   editProfile() {
@@ -307,7 +306,7 @@ export class ProfileComponent implements OnInit {
     var that = this;
     // firebase.storage().ref().child('profilePictures/test.jpg').delete().then(function() {
     firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + '.jpg').delete().then(function() {
-      that.profilePictureUrl = "../../assets/images/ic_account_circle_black_48dp_2x.png";
+      that.profilePictureUrl = "assets/images/ic_account_circle_black_48dp_2x.png";
 
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
       that.actionSheetOptions = {
