@@ -4,12 +4,11 @@
 // todo:
 // Label-/ Inputausrichtungen?
 // Geschlecht ändern?
-// passwort ändern?
-// Einstellungsscreen (Benachrichtigungen, Verein ändern)
+// Einstellungsscreen (Benachrichtigungen, Verein ändern, PW ändern)
 // Error Handling (global)
 // Teams
 // "Profil aufnehmen" --> "Profilbild ändern" in Register Screen
-// set PB after change
+// kleinere Fonts
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
@@ -38,6 +37,8 @@ export class ProfileComponent implements OnInit {
   profilePictureUrl: string;
   editMode: boolean = false;
   actionSheetOptions: any;
+  dataLoaded: boolean = false;
+  formValid: boolean = true;
   formatBirthdayFunction = function (){};
 
   /**
@@ -82,7 +83,7 @@ export class ProfileComponent implements OnInit {
   }
 
   /**
-   * Gets the data for the logged in player from the database.
+   * Gets the data for the logged in player from the database and sets the "dataLoaded" flag to "true" so the "edit-button" for the profile can be displayed.
    */
   getPlayer(): void {
     firebase.database().ref('clubs/12/players/' + this.loggedInUserID).once('value', snapshot => {
@@ -95,6 +96,8 @@ export class ProfileComponent implements OnInit {
       this.formatBirthdayFunction = function () {
         return this.player.birthday.split("-")[2] + "." + this.player.birthday.split("-")[1] + "." + this.player.birthday.split("-")[0];
       }
+
+      this.dataLoaded = true;
     })
   }
 
@@ -166,7 +169,7 @@ export class ProfileComponent implements OnInit {
   }
 
   finishEditProfile() {
-    if (this.firstnameOld || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.teamChanged) {
+    if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.teamChanged) && this.formValid) {
       firebase.database().ref('clubs/12/players/' + this.loggedInUserID).set({
         birthday: this.player.birthday,
         email: this.player.email,
@@ -206,6 +209,11 @@ export class ProfileComponent implements OnInit {
       this[field + "Changed"] = true;
     } else {
       this[field + "Changed"] = false;
+    }
+    if(this.profileForm.controls.firstname.valid && this.profileForm.controls.lastname.valid && this.profileForm.controls.email.valid){
+      this.formValid = true;
+    } else{
+      this.formValid = false;
     }
   }
 
@@ -267,8 +275,7 @@ export class ProfileComponent implements OnInit {
   uploadPicture() {
     firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
       .then(callback => {
-        console.log("Image upload success");
-
+        this.profilePictureUrl = this.base64Image;
         // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
         this.actionSheetOptions = {
           title: 'Profilbild ändern',

@@ -60,8 +60,6 @@ export class SelectProfilePictureComponent {
 
 
   uploadPicture() {
-    this.navCtrl.setRoot(MatchdayComponent);
-
     console.log(loggedInUser);
 
     firebase.storage().ref().child('profilePictures/' + loggedInUser.uid + "/" + loggedInUser.uid + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
