@@ -10,29 +10,27 @@
 <ion-content padding>
   <div [ngSwitch]="gameStatus">
     <ion-list *ngSwitchCase="'vergangende'">
-      <div *ngFor="let item of testData">
+      <div *ngFor="let item of dataGames">
         <ion-item>
           <ion-thumbnail item-left>
             <img src="assets/img/TSV Heimaterde.png">
           </ion-thumbnail>
-          <p>{{ item.date }}</p>
-          <h2><b>{{ item.matchday }}</b></h2>
-          <p>{{ item.team }}</p>
-          <p>{{ item.location }}</p>
+          <p>{{ item.time }}</p>
+          <p>{{ item.opponent }}</p>
+          <p>{{ item.home }}</p>
         </ion-item>
       </div>
     </ion-list>
 
     <ion-list *ngSwitchCase="'bevorstehende'">
-      <div *ngFor="let item of testData">
+      <div *ngFor="let item of dataGames">
         <ion-item>
           <ion-thumbnail item-left>
             <img src="assets/img/TSV Heimaterde.png">
           </ion-thumbnail>
-          <p>{{ item.date }}</p>
-          <h2><b>{{ item.matchday }}</b></h2>
-          <p>{{ item.team }}</p>
-          <p>{{ item.location }}</p>
+          <p>{{ item.time }}</p>
+          <p>{{ item.opponent }}</p>
+          <p>{{ item.home }}</p>
           <button ion-button color="danger" icon-left (click)="doRadio()">
             <ion-icon name='close'></ion-icon>
               Absagen
@@ -42,15 +40,14 @@
     </ion-list>
 
     <ion-list *ngSwitchCase="'offene'">
-      <div *ngFor="let item of testData">
+      <div *ngFor="let item of dataGames">
         <ion-item>
           <ion-thumbnail item-left>
             <img src="assets/img/KSV.png">
           </ion-thumbnail>
-          <p>{{ item.date }}</p>
-          <h2><b>{{ item.matchday }}</b></h2>
-          <p>{{ item.team }}</p>
-          <p>{{ item.location }}</p>
+          <p>{{ item.time }}</p>
+          <p>{{ item.opponent }}</p>
+          <p>{{ item.home }}</p>
           <button ion-button color="secondary" icon-left>
           <ion-icon name='checkmark'></ion-icon>
             Zusagen
