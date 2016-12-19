@@ -20,11 +20,12 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
+
 <ion-content>
   <div *ngIf="(dataLoaded)">
     <div class="picture-container">
-      <img class="profile-image"
-           src="https://scontent-fra3-1.xx.fbcdn.net/v/t31.0-8/14125474_1349299668432513_7718445018116444592_o.jpg?oh=e6480088dced86a864d9525bd997cc4a&oe=58AF1B4D"/>
+      <img class="profile-image picture-click" (click)="changeProfilePicture()"
+           src={{profilePictureUrl}}>
     </div>
     <br/>
     <form class="center-form" [formGroup]="profileForm" novalidate>

@@ -27,7 +27,7 @@ export class SelectProfilePictureComponent {
       .then((imageData) => {
         // imageData is a base64 encoded string
         this.base64Image = "data:image/jpeg;base64," + imageData;
-        this. base64String = imageData;
+        this.base64String = imageData;
       }, (err) => {
         console.log(err);
       });
