@@ -8,7 +8,7 @@
     </ion-buttons>
     <ion-title>Mein Profil</ion-title>
     <ion-buttons right>
-      <button *ngIf="(!editMode)" ion-button (click)="editProfile()">Bearbeiten
+      <button *ngIf="(!editMode && dataLoaded)" ion-button (click)="editProfile()">Bearbeiten
         <!--<ion-icon name="create"></ion-icon>-->
       </button>
       <button [disabled]="!firstnameChanged && !lastnameChanged && !emailChanged && !birthdayChanged && !teamChanged"
