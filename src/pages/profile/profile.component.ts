@@ -4,13 +4,11 @@
 // todo:
 // Label-/ Inputausrichtungen?
 // Geschlecht ändern?
-// passwort ändern?
-// Einstellungsscreen (Benachrichtigungen, Verein ändern)
+// Einstellungsscreen (Benachrichtigungen, Verein ändern, PW ändern)
 // Error Handling (global)
 // Teams
 // "Profil aufnehmen" --> "Profilbild ändern" in Register Screen
-// set PB after change
-// Back --> Abbrechen
+// kleinere Fonts
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
@@ -40,6 +38,7 @@ export class ProfileComponent implements OnInit {
   editMode: boolean = false;
   actionSheetOptions: any;
   dataLoaded: boolean = false;
+  formValid: boolean = true;
   formatBirthdayFunction = function (){};
 
   /**
@@ -170,7 +169,7 @@ export class ProfileComponent implements OnInit {
   }
 
   finishEditProfile() {
-    if (this.firstnameOld || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.teamChanged) {
+    if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.teamChanged) && this.formValid) {
       firebase.database().ref('clubs/12/players/' + this.loggedInUserID).set({
         birthday: this.player.birthday,
         email: this.player.email,
@@ -210,6 +209,11 @@ export class ProfileComponent implements OnInit {
       this[field + "Changed"] = true;
     } else {
       this[field + "Changed"] = false;
+    }
+    if(this.profileForm.controls.firstname.valid && this.profileForm.controls.lastname.valid && this.profileForm.controls.email.valid){
+      this.formValid = true;
+    } else{
+      this.formValid = false;
     }
   }
 

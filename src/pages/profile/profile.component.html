@@ -11,8 +11,9 @@
       <button *ngIf="(!editMode && dataLoaded)" ion-button (click)="editProfile()">Bearbeiten
         <!--<ion-icon name="create"></ion-icon>-->
       </button>
-      <button [disabled]="!firstnameChanged && !lastnameChanged && !emailChanged && !birthdayChanged && !teamChanged"
-              *ngIf="(editMode)" ion-button (click)="finishEditProfile()">Fertig
+      <button
+        [disabled]="(!firstnameChanged && !lastnameChanged && !emailChanged && !birthdayChanged && !teamChanged) || !formValid"
+        *ngIf="(editMode)" ion-button (click)="finishEditProfile()">Fertig
         <!--<ion-icon name="checkmark" class="checkmarkIcon"></ion-icon>-->
       </button>
     </ion-buttons>
@@ -65,7 +66,7 @@
                    (input)="elementChanged(email)"
                    [class.invalid]="!profileForm.controls.email.valid  && emailChanged"></ion-input>
       </ion-item>
-      <ion-item class="error-message" *ngIf="!profileForm.controls.email.valid  && emailChanged">
+      <ion-item class="error-message" *ngIf="!profileForm.controls.email.valid && emailChanged">
         <p>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
       </ion-item>
 
