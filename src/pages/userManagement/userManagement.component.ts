@@ -39,6 +39,8 @@ export class UserManagementComponent implements OnInit {
       }
       this.dataPlayerSearch = playerArray;
       this.dataPlayer = playerArray;
+    }).catch(function(error){
+      console.log("Fehler beim Laden der Spieler "+ error)
     })
   }
 
@@ -71,5 +73,7 @@ export class UserManagementComponent implements OnInit {
 //manuel-entenmann@web.de
 //Test123
 
-//Spielerliste mit Tabs
+//TODO Promise based Callbacks with Erro Handling
+//Navigation back to List
+//Update List
 
