@@ -2,23 +2,23 @@
  * Created by kochsiek on 08.12.2016.
  */
 // todo:
-// change pb
-// db anbindung
 // Label-/ Inputausrichtungen?
 // Geschlecht ändern?
 // passwort ändern?
-// Verein wählen
 // Einstellungsscreen (Benachrichtigungen, Verein ändern)
-// UserManagement --> DB Call auf Rollen begrenzen
-// Error Handling
+// Error Handling (global)
+// Teams
+// "Profil aufnehmen" --> "Profilbild ändern" in Register Screen
+// set PB after change
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
-import {NavController, Button} from 'ionic-angular';
+import {NavController, ActionSheetController} from 'ionic-angular';
 import firebase from 'firebase';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import {loggedInUser} from "../../app/globalVars";
 import {AuthData} from '../../providers/auth-data';
+import {Camera} from 'ionic-native';
 
 @Component({
   selector: 'page-profile',
@@ -29,14 +29,18 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.getPlayer();
+    this.getProfilePicture();
   }
 
   public profileForm;
   loggedInUserID: string = loggedInUser.uid;
   player: any;
+  profilePictureUrl: string;
   editMode: boolean = false;
+  actionSheetOptions: any;
+
   /**
-   * Indicates wether the data for the view has been successfully loaded or not. If true, the profile-form in the template can be displayed
+   * Indicates whether the data for the view has been successfully loaded or not. If true, the profile-form in the template can be displayed
    * @type {boolean}
    */
   dataLoaded: boolean = false;
@@ -51,15 +55,23 @@ export class ProfileComponent implements OnInit {
   birthdayOld: string;
   teamOld: string;
 
-
-  // Flags to check wether a field has been changed or not
+  /**
+   *  Flags to check whether a field has been changed or not
+   */
   firstnameChanged: boolean = false;
   lastnameChanged: boolean = false;
   emailChanged: boolean = false;
   birthdayChanged: boolean = false;
   teamChanged: boolean = false;
 
-  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, public authData: AuthData,) {
+  /**
+   * Variables to change and save profile image
+   */
+  public base64Image: string;
+  public base64String: string;
+
+
+  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, public authData: AuthData, public actionSheetCtrl: ActionSheetController) {
     this.profileForm = formBuilder.group({
       firstname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
       lastname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
@@ -77,6 +89,64 @@ export class ProfileComponent implements OnInit {
       this.player = snapshot.val();
       this.dataLoaded = true;
     })
+  }
+
+  /**
+   * Gets the url to the profile picture. If no profile picture has been uploaded, the default picture is set to the src url
+   */
+  getProfilePicture(){
+    var that = this;
+    firebase.storage().ref().child("profilePictures/" + this.loggedInUserID + "/" + this.loggedInUserID + ".jpg").getDownloadURL().then(function(url) {
+      that.profilePictureUrl = url;
+      // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
+      that.actionSheetOptions = {
+        title: 'Profilbild ändern',
+        buttons: [
+          {
+            text: "Kamera",
+            icon: "camera",
+            handler: () => that.takePicture()
+          },
+          {
+            text: 'Fotos',
+            icon: "images",
+            handler: () => that.getPicture()
+          },
+          {
+            text: 'Profilbild löschen',
+            role: 'destructive',
+            icon: "trash",
+            handler: () => that.deleteProfilePicture()
+          },
+          {
+            text: 'Abbrechen',
+            role: 'cancel'
+          }
+        ]
+      };
+    }).catch(function(error) {
+      that.profilePictureUrl = "../../assets/images/ic_account_circle_black_48dp_2x.png";
+      // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
+      that.actionSheetOptions = {
+        title: 'Profilbild ändern',
+        buttons: [
+          {
+            text: "Kamera",
+            icon: "camera",
+            handler: () => that.takePicture()
+          },
+          {
+            text: 'Fotos',
+            icon: "images",
+            handler: () => that.getPicture()
+          },
+          {
+            text: 'Abbrechen',
+            role: 'cancel'
+          }
+        ]
+      };
+    });
   }
 
   /**
@@ -154,6 +224,114 @@ export class ProfileComponent implements OnInit {
     } else {
       this.teamChanged = false;
     }
+  }
+
+  changeProfilePicture(){
+    let actionSheet = this.actionSheetCtrl.create(this.actionSheetOptions);
+
+    actionSheet.present();
+  }
+  takePicture() {
+    let options = {
+      destinationType: Camera.DestinationType.DATA_URL,
+      allowEdit: true,
+      quality: 100,
+      targetWidth: 500,
+      targetHeight: 500
+    };
+
+    this.callCamera(options);
+  }
+  getPicture() {
+    let options = {
+      destinationType: Camera.DestinationType.DATA_URL,
+      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+      allowEdit: true,
+      quality: 100,
+      targetWidth: 500,
+      targetHeight: 500
+    };
+
+    this.callCamera(options);
+  }
+  callCamera(options) {
+    Camera.getPicture(options)
+      .then((imageData) => {
+        // imageData is a base64 encoded string
+        this.base64Image = "data:image/jpeg;base64," + imageData;
+        this.base64String = imageData;
+        this.uploadPicture();
+      }, (err) => {
+        console.log(err);
+      });
+  }
+  uploadPicture() {
+    firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
+      .then(callback => {
+        console.log("Image upload success");
+
+        // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
+        this.actionSheetOptions = {
+          title: 'Profilbild ändern',
+          buttons: [
+            {
+              text: "Kamera",
+              icon: "camera",
+              handler: () => this.takePicture()
+            },
+            {
+              text: 'Fotos',
+              icon: "images",
+              handler: () => this.getPicture()
+            },
+            {
+              text: 'Profilbild löschen',
+              role: 'destructive',
+              icon: "trash",
+              handler: () => this.deleteProfilePicture()
+            },
+            {
+              text: 'Abbrechen',
+              role: 'cancel'
+            }
+          ]
+        };
+      })
+      .catch(function (error) {
+        alert(error.message);
+        console.log(error);
+      });
+  }
+
+  deleteProfilePicture(){
+    var that = this;
+    // firebase.storage().ref().child('profilePictures/test.jpg').delete().then(function() {
+    firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + '.jpg').delete().then(function() {
+      that.profilePictureUrl = "../../assets/images/ic_account_circle_black_48dp_2x.png";
+
+      // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
+      that.actionSheetOptions = {
+        title: 'Profilbild ändern',
+        buttons: [
+          {
+            text: "Kamera",
+            icon: "camera",
+            handler: () => that.takePicture()
+          },
+          {
+            text: 'Fotos',
+            icon: "images",
+            handler: () => that.getPicture()
+          },
+          {
+            text: 'Abbrechen',
+            role: 'cancel'
+          }
+        ]
+      };
+    }).catch(function(error) {
+      alert(error.message);
+    });
   }
 
   logOut() {
