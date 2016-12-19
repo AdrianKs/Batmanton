@@ -46,6 +46,14 @@ export class AuthData {
     return this.fireAuth.sendPasswordResetEmail(email);
   }
 
+  changeEmail(email: string): any {
+    return this.fireAuth.currentUser.updateEmail(email).then(function() {
+      // Update successful.
+    }, function(error) {
+      // An error happened.
+    });
+  }
+
   logoutUser(): any {
     return this.fireAuth.signOut();
   }

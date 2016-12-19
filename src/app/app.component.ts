@@ -36,8 +36,8 @@ export class MyApp {
     this.initializeApp();
 
     firebase.auth().onAuthStateChanged((user) => {
+      setUser(user);
       if (!user) {
-        setUser(user);
         this.rootPage = LoginComponent;
       }
     });
