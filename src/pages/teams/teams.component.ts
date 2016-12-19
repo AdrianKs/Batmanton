@@ -17,6 +17,7 @@ import firebase from 'firebase';
 export class TeamsComponent {
 
   teams: any[];
+  teamsSearch: any[];
   database: any;
 
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
@@ -29,6 +30,14 @@ export class TeamsComponent {
     console.log(test);
   }
 
+  viewTeam(ev, value) {
+    this.navCtrl.push(ViewTeamComponent, { team: value });
+  }
+
+  addTeam(ev, value) {
+    //Team hinzufügen View aufrufen
+  }
+
   getAllTeamData() {
     this.database.ref("/clubs/12/teams/").once('value', snapshot => {
       console.log(snapshot.val());
@@ -39,6 +48,7 @@ export class TeamsComponent {
         teamArray[counter].id = i;
         counter++;
       }
+      this.teamsSearch = teamArray;
       this.teams = teamArray;
     });
     console.log("ITEMS:");
@@ -48,7 +58,8 @@ export class TeamsComponent {
   }
 
   initializeTeams() {
-    this.teams = [
+    this.teams = this.teamsSearch;
+    /*this.teams = [
       {
         isAdult: true,
         name: "J1",
@@ -115,11 +126,11 @@ export class TeamsComponent {
           }
         }
       }
-    ]
+    ]*/
   }
 
   getItems(ev) {
-    this.getAllTeamData();
+    this.initializeTeams();
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
