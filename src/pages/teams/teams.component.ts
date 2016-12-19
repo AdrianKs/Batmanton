@@ -1,8 +1,9 @@
 /**
  * Created by kochsiek on 08.12.2016.
  */
-import { Component } from '@angular/core';
-import { ViewTeamComponent} from './viewTeam.component';
+
+import { Component, OnInit } from '@angular/core';
+import { ViewTeamComponent } from './viewTeam.component';
 
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
@@ -13,17 +14,28 @@ import firebase from 'firebase';
   templateUrl: 'teams.component.html',
   providers: [FirebaseProvider]
 })
-export class TeamsComponent {
+export class TeamsComponent implements OnInit {
 
   teams: any[];
   teamsSearch: any[];
   database: any;
+  playerArray: any[];
+
+  ngOnInit(): void {
+    this.getAllTeamData();
+  }
 
 
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
     this.database = firebase.database();
-    this.getAllTeamData();
+    //this.getAllTeamData();
   }
+
+  testGetData() {
+    var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
+    console.log(test);
+  }
+
 
 
   viewTeam(ev, value) {
@@ -46,21 +58,54 @@ export class TeamsComponent {
       }
       this.teamsSearch = teamArray;
       this.teams = teamArray;
+      let playerPlaceholder = [];
+      counter = 0;
+      for (let y in this.teams) {
+        playerPlaceholder[counter] = this.teams[y].players;
+        counter++;
+      }
+      console.log("PRINT BEFORE TEST");
+      this.playerArray = playerPlaceholder;
+      this.addPlayersToArray(this.playerArray);
+      /* console.log(playerPlaceholder);
+       counter = 0;
+       let playerIDs = [];
+       for (let j in playerPlaceholder){
+         let test = playerPlaceholder[j][counter];
+         console.log("ID: " + test);
+         playerIDs.push(test);
+         counter++;
+       }
+       console.log("PLAYER IDs");
+       console.log(playerIDs);*/
     });
-    console.log("ITEMS:");
-    console.log(this.teams);
+
 
 
     //this.teams = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
   }
 
+  addPlayersToArray(valueArray: any) {
+    this.database.ref("/clubs/12/players/").once('value', snapshot => {
+      let allPlayers = snapshot.val();
+      let idPlaceholder = 0;
+      let counter = 0;
+      for (let i in valueArray) {
+        for (let y in valueArray[i]) {
+          idPlaceholder = valueArray[i][y];
+          let player = snapshot.child("" + idPlaceholder).val();
+          console.log("PLAYER: ");
+          console.log(player);
+          this.teams[i].players[y] = player;
+          console.log("TEAMS:");
+          console.log(this.teams);
+        }
+      }
+    })
 
-
-  testGetData() {
-
-    var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
-    console.log(test);
   }
+
+
 
 
 
@@ -136,8 +181,7 @@ export class TeamsComponent {
     ]*/
   }
 
-
-  getItems(ev){
+  getItems(ev) {
     this.initializeTeams();
     let val = ev.target.value;
     if (val && val.trim() != '') {

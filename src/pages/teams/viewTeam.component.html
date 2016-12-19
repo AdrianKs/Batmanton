@@ -43,14 +43,15 @@
     <div [ngSwitch]="geschlecht">
         <ion-list *ngSwitchCase="'maenner'">
             <div *ngFor="let p of justPlayers">
-                <div *ngIf="p.geschlecht=='m'">
+                <div *ngIf="p.gender=='m'">
                     <ion-item>
                         <div class="playerListContentLeft">
                             <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
                         </div>
                         <div class="playerListContentRight">
-                            Name: {{p.name}} <br> 
-                            Geburtstag: {{p.geburtstag}}
+                            Vorname: {{p.firstname}} <br> 
+                            Nachname: {{p.lastname}} <br>
+                            Geburtstag: {{p.birthday}}
                         </div>
                     </ion-item>
                 </div>
@@ -58,14 +59,15 @@
         </ion-list>
         <ion-list *ngSwitchCase="'frauen'">
             <div *ngFor="let p of justPlayers">
-                <div *ngIf="p.geschlecht=='w'">
+                <div *ngIf="p.gender=='w'">
                     <ion-item>
                         <div class="playerListContentLeft">
                             <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
                         </div>
                         <div class="playerListContentRight">
-                            Name: {{p.name}} <br>
-                            Geburtstag: {{p.geburtstag}}
+                            Vorname: {{p.firstname}} <br> 
+                            Nachname: {{p.lastname}} <br>
+                            Geburtstag: {{p.birthday}}
                         </div>
                     </ion-item>
                 </div>

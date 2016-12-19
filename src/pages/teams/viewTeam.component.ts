@@ -14,6 +14,7 @@ export class ViewTeamComponent {
 
     team: any;
     geschlecht: string = "maenner";
+    //allPlayers : any;
     playersOfTeam: any[];
     justPlayers: any;
     database: any;
@@ -25,17 +26,23 @@ export class ViewTeamComponent {
         this.justPlayers = [];
         this.database = firebase.database();
         this.team = navP.get("team");
-        this.playersOfTeam = this.team.players;
-        for (var key in this.playersOfTeam) {
-            if (this.playersOfTeam.hasOwnProperty(key)) {
-                this.justPlayers.push(this.playersOfTeam[key]);
-            }
-        }
-        this.fetchPlayersByID();
+        console.log("TEAM IN VIEWTEAM VIEW");
+        console.log(this.team);
+        this.justPlayers = this.team.players;
     }
 
-    fetchPlayersByID() {
-        this.database.ref("/clubs/12/players/").once('value', snapshot => {
+    fetchAllPlayers() {
+
+        this.justPlayers = this.team.players;
+        console.log("PLAYERS IN TEAM VIEW");
+        console.log(this.justPlayers);
+
+
+
+        /*this.database.ref("/clubs/12/players/").once('value', snapshot => {
+            let allPlayers = snapshot.val();
+            this.findPlayersOfTeam(allPlayers);
+            //this.allPlayers = snapshot.val();
             //Wie kann man auf die ID im Snapshot zugreifen?
             let playerArray = [];
             let counter = 0;
@@ -50,20 +57,31 @@ export class ViewTeamComponent {
                 }
                 counter++;
             }
+        }*/
+        //})
+
+    }
+
+    findPlayersOfTeam(allPlayerArray: any) {
+        for (let j in this.playersOfTeam) {
+            let playerID = this.playersOfTeam[j];
+            for (let i in allPlayerArray) {
+
+            }
         }
-      })
-}
+    }
 
-presentPopover(myEvent) {
-    let popover = this.popoverCtrl.create(PopoverPage,
-        {
-            value: this.team
+    presentPopover(myEvent) {
+        let popover = this.popoverCtrl.create(PopoverPage,
+            {
+                value: this.team
+            });
+        popover.present({
+            ev: myEvent
         });
-    popover.present({
-        ev: myEvent
-    });
-
-  }
+    }
 
 }
+
+
 
