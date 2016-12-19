@@ -1,23 +1,45 @@
 /**
  * Created by kochsiek on 08.12.2016.
  */
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { NavController, AlertController } from 'ionic-angular';
-import { TestData } from './testData';
+import { MyGamesService } from '../../providers/myGames.service';
+import firebase from 'firebase';
 
 @Component({
-  templateUrl: 'myGames.component.html'
+  templateUrl: 'myGames.component.html',
+  providers: [MyGamesService]
 })
 
-export class MyGamesComponent {
+export class MyGamesComponent implements OnInit {
+
+  ngOnInit() {
+    this.getGames();
+  }
+
+  id: string = "13";
   gameStatus: string = "vergangende";
+  dataGames: any;
   testRadioOpen: boolean;
   testRadioResult;
   
   constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
     
   }
+
+  getGames(): void {
+      firebase.database().ref('clubs/12/matches').once('value', snapshot => {
+        let gamesArray = [];
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          gamesArray[counter] = snapshot.val()[i];
+          gamesArray[counter].id = i;
+          counter++;
+        }
+        this.dataGames = gamesArray;
+      })
+    }
 
 
   doRadio() {
