@@ -37,7 +37,7 @@ export class UserManagementComponent implements OnInit {
       }
       this.dataPlayerSearch = playerArray;
       this.dataPlayer = playerArray;
-<<<<<<< f0c897b798a68509f3007acd04e12cef414bbc05
+<<<<<<< 55857b0e6a3a0451148ea0d6c0975760ec57c9fb
     });
 =======
     }).catch(function(error){
@@ -76,7 +76,7 @@ export class UserManagementComponent implements OnInit {
 //Test123
 
 //TODO Promise based Callbacks with Erro Handling
-<<<<<<< f0c897b798a68509f3007acd04e12cef414bbc05
+<<<<<<< 55857b0e6a3a0451148ea0d6c0975760ec57c9fb
 //Link to check http://stackoverflow.com/questions/40869631/angular-2-w-typescript-firebase-api-returns-array-of-objects-in-service-but-und
 =======
 //Navigation back to List

@@ -1,12 +1,12 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
     <ion-buttons left>
-      <button ion-button (click)="navigateBackToList()">
+      <button  ion-button (click)="navigateBackToList()">
         Abbrechen
     </button>
     </ion-buttons>
     <ion-title>Benutzerverwaltung</ion-title>
-<<<<<<< f0c897b798a68509f3007acd04e12cef414bbc05
+<<<<<<< 55857b0e6a3a0451148ea0d6c0975760ec57c9fb
     <ion-buttons right>
 =======
     <ion-buttons right class="btnMore">

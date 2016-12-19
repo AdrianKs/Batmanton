@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
+<<<<<<< 55857b0e6a3a0451148ea0d6c0975760ec57c9fb
+import { NavController, NavParams, ToastController, AlertController, ViewController } from 'ionic-angular';
+=======
 import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+>>>>>>> update editRole Navigation and View..
 import firebase from 'firebase';
 
 @Component({
@@ -13,7 +17,15 @@ export class EditRoleComponent {
     isSpielerOld: boolean;
     isChanged: boolean;
 
+<<<<<<< 55857b0e6a3a0451148ea0d6c0975760ec57c9fb
+    constructor(private navCtrl: NavController,
+        private navParams: NavParams,
+        public toastCtrl: ToastController,
+        public alertCtrl: AlertController,
+        public viewCtrl: ViewController) {
+=======
     constructor(private navCtrl: NavController, private navParams: NavParams, public toastCtrl: ToastController, public alertCtrl: AlertController) {
+>>>>>>> update editRole Navigation and View..
         this.player = navParams.get('player');
         this.isTrainerOld = this.player.isTrainer;
         this.isSpielerOld = this.player.isPlayer;
@@ -47,6 +59,34 @@ export class EditRoleComponent {
             pushid: player.pushid,
             state: player.state,
             team: player.team
+<<<<<<< 55857b0e6a3a0451148ea0d6c0975760ec57c9fb
+        }).catch(function (error) {
+            console.log(error);
+            successFlag = false;
+        });
+
+        if (successFlag) {
+            this.presentToast("Rolle wurde erfolgreich bearbeitet");
+        } else {
+            this.presentToast("Error. Bitte versuchen Sie es erneut!");
+        }
+
+    }
+
+    deleteUser(player) {
+        firebase.database().ref('clubs/12/players/' + player.id).remove();
+        this.navigateBackToList();
+    }
+
+
+    navigateBackToList() {
+        this.navCtrl.pop(this);
+    }
+
+    presentToast(customMessage: string) {
+        let toast = this.toastCtrl.create({
+            message: customMessage,
+=======
         }).catch(function(error){
             console.log(error);
             successFlag = false;
@@ -61,20 +101,6 @@ export class EditRoleComponent {
     }
 
     deleteUser(player) {
-<<<<<<< f0c897b798a68509f3007acd04e12cef414bbc05
-        firebase.database().ref('clubs/12/players/' + player.id).remove();
-        this.navigateBackToList();
-    } 
-    
-
-    navigateBackToList(){
-        this.navCtrl.pop(this);
-    }
-
-    presentToast(customMessage: string) {
-        let toast = this.toastCtrl.create({
-            message: customMessage,
-=======
         let deleteSucces = true;
         console.log(player.id);
         firebase.database().ref('clubs/12/players/' + player.id).remove()
@@ -114,7 +140,11 @@ export class EditRoleComponent {
                 {
                     text: 'Löschen',
                     handler: () => {
+<<<<<<< 55857b0e6a3a0451148ea0d6c0975760ec57c9fb
+                        this.deleteUser(player);
+=======
                        this.deleteUser(player);
+>>>>>>> update editRole Navigation and View..
                     }
                 }
             ]
