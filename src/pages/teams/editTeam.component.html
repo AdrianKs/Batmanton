@@ -29,4 +29,83 @@
             </div>
         </ion-card-content>
     </ion-card>
+    <ion-grid>
+        <ion-row>
+            <ion-col width-70>
+                Spieler
+            </ion-col>
+            <ion-col width-30>
+                <button ion-button>Bearbeiten</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="geschlecht">
+            <ion-segment-button value="maenner">
+                Männer
+            </ion-segment-button>
+            <ion-segment-button value="frauen">
+                Frauen
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+    <div [ngSwitch]="geschlecht">
+        <ion-list *ngSwitchCase="'maenner'">
+            <div *ngFor="let p of justPlayers">
+                <div *ngIf="p.gender=='m'">
+                    <ion-item>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col width-15>
+
+                                    <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+
+                                </ion-col>
+                                <ion-col width-70>
+
+                                    Vorname: {{p.firstname}} <br> Nachname: {{p.lastname}} <br> Geburtstag: {{p.birthday}}
+
+                                </ion-col>
+                                <ion-col width-15>
+                                    <button ion-button icon-only color="danger" (click)="removePlayer(p)">
+                                <ion-icon name="remove"></ion-icon>
+                            </button>
+
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-item>
+                </div>
+            </div>
+        </ion-list>
+        <ion-list *ngSwitchCase="'frauen'">
+            <div *ngFor="let p of justPlayers">
+                <div *ngIf="p.gender=='f'">
+                    <ion-item>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col width-15>
+
+                                    <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+
+                                </ion-col>
+                                <ion-col width-70>
+
+                                    Vorname: {{p.firstname}} <br> Nachname: {{p.lastname}} <br> Geburtstag: {{p.birthday}}
+
+                                </ion-col>
+                                <ion-col width-15>
+
+                                    <button ion-button icon-only color="danger" (click)="removePlayer(p)">
+                                <ion-icon name="remove"></ion-icon>
+                            </button>
+
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-item>
+                </div>
+            </div>
+        </ion-list>
+    </div>
 </ion-content>
