@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content padding>
-  <button ion-button (click)="testGetData()">Print Data</button>
+  <!--<button ion-button (click)="testGetData()">Print Data</button>-->
   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
     <div *ngFor="let item of teams">
@@ -30,19 +30,6 @@
           <div>
             Jugendgruppe: {{item.jugendBez}}
           </div>
-          <div *ngIf="item.isAdult==true">
-            Altersklasse: Erwachsen
-          </div>
-          <div *ngIf="item.isAdult==false">
-            Altersklasse: Jugend
-          </div>
-          </div>
-          <div *ngIf="item.isAdult==true">
-            Altersklasse: Erwachsen
-          </div>
-          <div *ngIf="item.isAdult==false">
-            Altersklasse: Jugend
-          </div>
         </div>
       </ion-item>
     </div>
@@ -50,11 +37,4 @@
   <button ion-button icon-only class="addTeamButton">
     <ion-icon name="add-circle" class="iconAdd"></ion-icon>
   </button>
-  <h3>Ionic Menu Starter</h3>
-  <h2>TEST for new branch</h2>
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
-
-  <button ion-button secondary menuToggle>Toggle Menu</button>
 </ion-content>
