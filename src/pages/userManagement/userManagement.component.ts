@@ -37,7 +37,9 @@ export class UserManagementComponent implements OnInit {
       }
       this.dataPlayerSearch = playerArray;
       this.dataPlayer = playerArray;
-    });
+    }).catch(function(error){
+      console.log("Fehler beim Laden der Spieler "+ error)
+    })
   }
 
   initializeItems() {
@@ -71,4 +73,8 @@ export class UserManagementComponent implements OnInit {
 
 //TODO Promise based Callbacks with Erro Handling
 //Link to check http://stackoverflow.com/questions/40869631/angular-2-w-typescript-firebase-api-returns-array-of-objects-in-service-but-und
+
+//Navigation back to List
+//Update List
+
 
