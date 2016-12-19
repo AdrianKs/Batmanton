@@ -36,6 +36,7 @@ export class ViewTeamComponent {
 
     fetchPlayersByID() {
         this.database.ref("/clubs/12/players/").once('value', snapshot => {
+            //Wie kann man auf die ID im Snapshot zugreifen?
             let playerArray = [];
             let counter = 0;
             for (let y in this.justPlayers) { 
