@@ -119,7 +119,7 @@ export class TeamsComponent {
   }
 
   getItems(ev) {
-    this.initializeTeams();
+    this.getAllTeamData();
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
