@@ -28,6 +28,7 @@
           <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
         </div>
         <div *ngIf="item.state == '2'">
+          <p>Begründung: {{item.excuse}}</p>
           <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>
         </div>
       </ion-item>

@@ -9,6 +9,8 @@ import { InvitesMatchdayComponent } from "../invites/invitesmatchday.component";
 
 import { InvitesService } from '../../providers/invitesService';
 
+import loggedInUser from '../../app/globalVars'
+
 import firebase from 'firebase';
 
 @Component({
@@ -18,21 +20,19 @@ import firebase from 'firebase';
 })
 
 export class InvitesComponent {
+  login: any;
   dataMatchday: any;
   dataInvite: any;
   dataPlayers: any;
   dataTeams: any;
 
-  //  matchday: any;
-  data: any;
-
   constructor(private navCtrl: NavController, private navP: NavParams, private invitesService: InvitesService) {
-    //Load data in array
-    this.getMatchday();
+    //Load data in arrays
+    this.login = loggedInUser;
     this.getInvite();
+    this.getMatchday();
     this.getPlayers();
     this.getTeams();
-    this.data = [{ dataPlayer: this.dataMatchday }, { dataInvite: this.dataInvite }]
   }
 
   getInvite(): void {
@@ -85,6 +85,30 @@ export class InvitesComponent {
       }
       this.dataMatchday = matchdayArray;
     })
+  }
+
+  countStates(match) {
+    let accepted = 0;
+    let declined = 0;
+    let pending = 0;
+    for (let i of this.dataInvite) {
+      if (i.match == match.id) {
+        if (i.state == 0) {
+          pending = pending +1;
+        } else if (i.state == 1) {
+          accepted = accepted + 1;
+        } else if (i.state == 2) {
+          declined = declined + 1;
+        }
+      }
+    }
+    //return [{pen: pending, acc: accepted, dec: declined}];
+    return [pending, accepted, declined];
+  }
+
+  formatMatchTime(match) {
+    return match.time.split("-")[2] + "." + match.time.split("-")[1] + "." + match.time.split("-")[0]
+      + " " + match.time.split("-")[3] + ":" + match.time.split("-")[4];
   }
 
   goToPage(ev, value, invites, players) {
