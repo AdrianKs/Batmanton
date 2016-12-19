@@ -9,11 +9,16 @@ import { NavController, NavParams } from 'ionic-angular';
 export class EditTeamComponent{
 
     team: any;
-    players: any[];
+    justPlayers: any[];
+    geschlecht: string = "maenner";
 
     constructor(public nav: NavController, public nParam: NavParams){
         this.team = nParam.get("value");
         console.log(this.team);
-        this.players = this.team.players;
+        this.justPlayers = this.team.players;
     }   
+
+    removePlayer(player: any){
+        
+    }
 }
