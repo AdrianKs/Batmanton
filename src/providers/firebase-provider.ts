@@ -4,7 +4,6 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class FirebaseProvider{
 
-
     items: any;
     database: any;
 

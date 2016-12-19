@@ -2,9 +2,7 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
-
 import { ViewTeamComponent } from './viewTeam.component';
-
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import firebase from 'firebase';
@@ -25,10 +23,11 @@ export class TeamsComponent {
     this.getAllTeamData();
   }
 
-  testGetData() {
+  testGetData(){
     var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
     console.log(test);
   }
+
 
   viewTeam(ev, value) {
     this.navCtrl.push(ViewTeamComponent, { team: value });
@@ -37,6 +36,7 @@ export class TeamsComponent {
   addTeam(ev, value) {
     //Team hinzufügen View aufrufen
   }
+
 
   getAllTeamData() {
     this.database.ref("/clubs/12/teams/").once('value', snapshot => {
@@ -56,6 +56,7 @@ export class TeamsComponent {
 
     //this.teams = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
   }
+
 
   initializeTeams() {
     this.teams = this.teamsSearch;
@@ -128,9 +129,10 @@ export class TeamsComponent {
       }
     ]*/
   }
-
+  
   getItems(ev) {
-    this.initializeTeams();
+    this.getAllTeamData();
+
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {

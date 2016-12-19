@@ -19,6 +19,7 @@ import { PopoverPage } from '../pages/teams/popover.component';
 import { EditTeamComponent } from '../pages/teams/editTeam.component';
 
 
+
 @NgModule({
   declarations: [
     MyApp,
@@ -35,9 +36,6 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     EditRoleComponent,
     TeamsComponent,
     SelectProfilePictureComponent,
-    ViewTeamComponent,
-    PopoverPage,
-    EditTeamComponent,
     ViewTeamComponent,
     PopoverPage,
     EditTeamComponent
@@ -61,9 +59,6 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     EditRoleComponent,
     TeamsComponent,
     SelectProfilePictureComponent,
-    ViewTeamComponent,
-    PopoverPage,
-    EditTeamComponent,
     ViewTeamComponent,
     PopoverPage,
     EditTeamComponent
