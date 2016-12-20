@@ -1,10 +1,8 @@
 /**
  * Created by kochsiek on 08.12.2016.
  */
-
 import { Component, OnInit } from '@angular/core';
 import { ViewTeamComponent } from './viewTeam.component';
-
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import firebase from 'firebase';
@@ -25,17 +23,16 @@ export class TeamsComponent implements OnInit {
     this.getAllTeamData();
   }
 
-
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
     this.database = firebase.database();
     //this.getAllTeamData();
   }
 
+
   testGetData() {
     var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
     console.log(test);
   }
-
 
 
   viewTeam(ev, value) {
@@ -45,6 +42,7 @@ export class TeamsComponent implements OnInit {
   addTeam(ev, value) {
     //Team hinzufügen View aufrufen
   }
+
 
   getAllTeamData() {
     this.database.ref("/clubs/12/teams/").once('value', snapshot => {
@@ -81,7 +79,6 @@ export class TeamsComponent implements OnInit {
     });
 
 
-
     //this.teams = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
   }
 
@@ -106,10 +103,6 @@ export class TeamsComponent implements OnInit {
     })
 
   }
-
-
-
-
 
   initializeTeams() {
     this.teams = this.teamsSearch;
@@ -185,15 +178,12 @@ export class TeamsComponent implements OnInit {
 
   getItems(ev) {
     this.initializeTeams();
+
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
-
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
   }
-
- 
-
 }

@@ -7,6 +7,11 @@ import { PopoverPage } from './popover.component';
 import firebase from 'firebase';
 
 
+
+
+
+
+
 @Component({
     templateUrl: 'viewTeam.component.html'
 })
@@ -18,6 +23,9 @@ export class ViewTeamComponent {
     playersOfTeam: any[];
     justPlayers: any;
     database: any;
+
+
+
 
 
 
@@ -38,6 +46,10 @@ export class ViewTeamComponent {
         console.log(this.justPlayers);
 
 
+
+
+
+        
 
         /*this.database.ref("/clubs/12/players/").once('value', snapshot => {
             let allPlayers = snapshot.val();
@@ -82,6 +94,9 @@ export class ViewTeamComponent {
     }
 
 }
+
+
+
 
 
 
