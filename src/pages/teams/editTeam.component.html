@@ -1,0 +1,111 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Mannschaftsdetails</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding="">
+    <ion-card>
+        <div class="image_large">
+            <img class="img_large" src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+        </div>
+        <ion-card-content>
+            <ion-card-title class="card_title">
+                Details
+            </ion-card-title>
+            <div class="section_details">
+                <ion-list>
+                    <ion-label stacked>Teamname</ion-label>
+                    <ion-input placeholder="Teamname" value="{{team.name}}"></ion-input>
+                    <div *ngIf="team.isAdult==true">
+                        <ion-label stacked>Altersklasse</ion-label>
+                        <ion-input placeholder="Altersklasse" value="Erwachsen"></ion-input>
+                    </div>
+                    <div *ngIf="team.isAdult==false">
+                        <ion-label stacked>Altersklasse</ion-label>
+                        <ion-input placeholder="Altersklasse" value="Jugend"></ion-input>
+                    </div>
+                </ion-list>
+            </div>
+        </ion-card-content>
+    </ion-card>
+    <ion-grid>
+        <ion-row>
+            <ion-col width-70>
+                Spieler
+            </ion-col>
+            <ion-col width-30>
+                <button ion-button (click)="editPlayers()">Bearbeiten</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+    <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="geschlecht">
+            <ion-segment-button value="maenner">
+                Männer
+            </ion-segment-button>
+            <ion-segment-button value="frauen">
+                Frauen
+            </ion-segment-button>
+        </ion-segment>
+    </ion-toolbar>
+    <div [ngSwitch]="geschlecht">
+        <ion-list *ngSwitchCase="'maenner'">
+            <div *ngFor="let p of justPlayers">
+                <div *ngIf="p.gender=='m'">
+                    <ion-item>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col width-15>
+
+                                    <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+
+                                </ion-col>
+                                <ion-col width-70>
+
+                                    Vorname: {{p.firstname}} <br> Nachname: {{p.lastname}} <br> Geburtstag: {{p.birthday}}
+
+                                </ion-col>
+                                <ion-col width-15>
+                                    <button ion-button icon-only color="danger" (click)="removePlayer(p)">
+                                <ion-icon name="remove"></ion-icon>
+                            </button>
+
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-item>
+                </div>
+            </div>
+        </ion-list>
+        <ion-list *ngSwitchCase="'frauen'">
+            <div *ngFor="let p of justPlayers">
+                <div *ngIf="p.gender=='f'">
+                    <ion-item>
+                        <ion-grid>
+                            <ion-row>
+                                <ion-col width-15>
+
+                                    <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+
+                                </ion-col>
+                                <ion-col width-70>
+
+                                    Vorname: {{p.firstname}} <br> Nachname: {{p.lastname}} <br> Geburtstag: {{p.birthday}}
+
+                                </ion-col>
+                                <ion-col width-15>
+
+                                    <button ion-button icon-only color="danger" (click)="removePlayer(p)">
+                                <ion-icon name="remove"></ion-icon>
+                            </button>
+
+                                </ion-col>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-item>
+                </div>
+            </div>
+        </ion-list>
+    </div>
+</ion-content>

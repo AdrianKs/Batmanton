@@ -16,6 +16,11 @@ import { TeamsComponent } from '../pages/teams/teams.component';
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
 import {Birthday} from './pipes/birthday'
 import {Gender} from './pipes/gender'
+import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
+import { PopoverPage } from '../pages/teams/popover.component';
+import { EditTeamComponent } from '../pages/teams/editTeam.component';
+import { EditPlayerComponent } from '../pages/teams/editPlayers.component';
+
 
 @NgModule({
   declarations: [
@@ -33,6 +38,10 @@ import {Gender} from './pipes/gender'
     EditRoleComponent,
     TeamsComponent,
     SelectProfilePictureComponent,
+    ViewTeamComponent,
+    PopoverPage,
+    EditTeamComponent,
+    EditPlayerComponent,
     //Pipes
     Birthday,
     Gender
@@ -55,7 +64,11 @@ import {Gender} from './pipes/gender'
     ResetPasswordComponent,
     EditRoleComponent,
     TeamsComponent,
-    SelectProfilePictureComponent
+    SelectProfilePictureComponent,
+    ViewTeamComponent,
+    PopoverPage,
+    EditTeamComponent,
+    EditPlayerComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
