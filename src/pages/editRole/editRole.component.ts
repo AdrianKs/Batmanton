@@ -61,24 +61,18 @@ export class EditRoleComponent {
     }
 
     deleteUser(player) {
-        let deleteSucces = true;
-        console.log(player.id);
-        firebase.database().ref('clubs/12/players/' + player.id).remove()
-            .catch(function(error){
-                console.log(error);
-                deleteSucces = false;
-            });
+        firebase.database().ref('clubs/12/players/' + player.id).remove();
+        this.navigateBackToList();
+    } 
+    
 
-            if(deleteSucces){
-                //Back to list
-            }else{
-                this.presentToast("Error. Bitte versuchen Sie es erneut!");
-            }
+    navigateBackToList(){
+        this.navCtrl.pop(this);
     }
 
-    presentToast(message: string) {
+    presentToast(customMessage: string) {
         let toast = this.toastCtrl.create({
-            message: message,
+            message: customMessage,
             duration: 3000,
             position: "top"
         });

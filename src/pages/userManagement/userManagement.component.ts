@@ -12,24 +12,22 @@ import firebase from 'firebase';
 export class UserManagementComponent implements OnInit {
 
   ngOnInit() {
+  }
+
+  ionViewDidEnter() {
     this.getPlayer();
   }
 
   geschlecht: string = "maenner";
-  testDataPlayer: any[];
   dataPlayer: any;
   dataPlayerSearch: any;
 
   constructor(private navCtrl: NavController, private userManagementService: UserManagementService) {
     //Load data in array
-    /* this.userManagementService.getPlayers()
-       .subscribe(players => {
-         this.dataPlayer = players;
-       });*/
   }
 
   getPlayer(): void {
-    firebase.database().ref('clubs/12/players').once('value', snapshot => {
+    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
       let playerArray = [];
       let counter = 0;
       for (let i in snapshot.val()) {
@@ -39,9 +37,7 @@ export class UserManagementComponent implements OnInit {
       }
       this.dataPlayerSearch = playerArray;
       this.dataPlayer = playerArray;
-    }).catch(function(error){
-      console.log("Fehler beim Laden der Spieler "+ error)
-    })
+    });
   }
 
   initializeItems() {
@@ -74,6 +70,5 @@ export class UserManagementComponent implements OnInit {
 //Test123
 
 //TODO Promise based Callbacks with Erro Handling
-//Navigation back to List
-//Update List
+//Link to check http://stackoverflow.com/questions/40869631/angular-2-w-typescript-firebase-api-returns-array-of-objects-in-service-but-und
 
