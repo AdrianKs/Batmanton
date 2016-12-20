@@ -32,16 +32,17 @@ export class ProfileComponent implements OnInit {
   public profileForm;
   loggedInUserID: string = loggedInUser.uid;
   player: any = "";
+  teams = allTeams;
   profilePictureUrl: string;
   editMode: boolean = false;
   actionSheetOptions: any;
-  dataLoaded: boolean = false;
-  formValid: boolean = true;
-
   /**
    * Indicates whether the data for the view has been successfully loaded or not. If true, the profile-form in the template can be displayed
    * @type {boolean}
    */
+  dataLoaded: boolean = false;
+  formValid: boolean = true;
+
   today: String = new Date().toISOString();
 
   /**
