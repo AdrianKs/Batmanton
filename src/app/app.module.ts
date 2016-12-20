@@ -19,6 +19,7 @@ import {Gender} from './pipes/gender'
 import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
 import { PopoverPage } from '../pages/teams/popover.component';
 import { EditTeamComponent } from '../pages/teams/editTeam.component';
+import { EditPlayerComponent } from '../pages/teams/editPlayers.component';
 
 
 @NgModule({
@@ -40,10 +41,10 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     ViewTeamComponent,
     PopoverPage,
     EditTeamComponent,
+    EditPlayerComponent,
     //Pipes
     Birthday,
     Gender
-
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -66,7 +67,8 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     SelectProfilePictureComponent,
     ViewTeamComponent,
     PopoverPage,
-    EditTeamComponent
+    EditTeamComponent,
+    EditPlayerComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
