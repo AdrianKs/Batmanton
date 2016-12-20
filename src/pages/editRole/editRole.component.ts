@@ -61,7 +61,6 @@ export class EditRoleComponent {
         } else {
             this.presentToast("Error. Bitte versuchen Sie es erneut!");
         }
-
     }
 
     deleteUser(player) {
@@ -69,8 +68,7 @@ export class EditRoleComponent {
         this.navigateBackToList();
     }
 
-
-    navigateBackToList() {
+    navigateBackToList(){
         this.navCtrl.pop(this);
     }
 
