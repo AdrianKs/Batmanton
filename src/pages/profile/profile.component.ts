@@ -53,6 +53,7 @@ export class ProfileComponent implements OnInit {
   lastnameOld: string;
   emailOld: string;
   birthdayOld: string;
+  genderOld: string;
   teamOld: string;
 
   /**
@@ -62,6 +63,7 @@ export class ProfileComponent implements OnInit {
   lastnameChanged: boolean = false;
   emailChanged: boolean = false;
   birthdayChanged: boolean = false;
+  genderChanged: boolean = false;
   teamChanged: boolean = false;
 
   /**
@@ -77,6 +79,7 @@ export class ProfileComponent implements OnInit {
       lastname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
       email: ['', Validators.compose([Validators.required, this.isAMail])],
       birthday: [],
+      gender: [],
       team: []
     })
   }
@@ -159,7 +162,7 @@ export class ProfileComponent implements OnInit {
   }
 
   finishEditProfile() {
-    if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.teamChanged) && this.formValid) {
+    if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.genderChanged || this.teamChanged) && this.formValid) {
       firebase.database().ref('clubs/12/players/' + this.loggedInUserID).set({
         birthday: this.player.birthday,
         email: this.player.email,
@@ -181,6 +184,7 @@ export class ProfileComponent implements OnInit {
     this.emailChanged = false;
     this.birthdayChanged = false;
     this.teamChanged = false;
+    this.genderChanged = false;
     this.editMode = false;
   }
 
@@ -190,6 +194,7 @@ export class ProfileComponent implements OnInit {
     this.emailChanged = false;
     this.birthdayChanged = false;
     this.teamChanged = false;
+    this.genderChanged = false;
     this.editMode = false;
   }
 
@@ -212,6 +217,14 @@ export class ProfileComponent implements OnInit {
       this.birthdayChanged = true;
     } else {
       this.birthdayChanged = false;
+    }
+  }
+
+  genderSelectChanged(input) {
+    if (this.genderOld != input) {
+      this.genderChanged = true;
+    } else {
+      this.genderChanged = false;
     }
   }
 
