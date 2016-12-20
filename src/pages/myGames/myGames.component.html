@@ -10,53 +10,74 @@
 <ion-content padding>
   <div [ngSwitch]="gameStatus">
     <ion-list *ngSwitchCase="'vergangende'">
-      <div *ngFor="let item of dataGames">
-        <ion-item>
-          <ion-thumbnail item-left>
-            <img src="assets/img/TSV Heimaterde.png">
-          </ion-thumbnail>
-          <p>{{ item.time }}</p>
-          <p>{{ item.opponent }}</p>
-          <p>{{ item.home }}</p>
-        </ion-item>
+      <div *ngFor="let inviteItem of dataInvites">
+        <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
+          <div *ngFor="let gameItem of dataGames">
+            <div *ngIf="inviteItem.match == gameItem.id">
+              <ion-item>
+                <ion-thumbnail item-left>
+                  <img src="assets/img/TSV Heimaterde.png">
+                </ion-thumbnail>
+                <p>{{ gameItem.id }}</p>
+                <p>{{ gameItem.time }}</p>
+                <p>{{ gameItem.opponent }}</p>
+                <p>{{ gameItem.home }}</p>
+              </ion-item>
+            </div>
+          </div>
+        </div>
       </div>
     </ion-list>
 
     <ion-list *ngSwitchCase="'bevorstehende'">
-      <div *ngFor="let item of dataGames">
-        <ion-item>
-          <ion-thumbnail item-left>
-            <img src="assets/img/TSV Heimaterde.png">
-          </ion-thumbnail>
-          <p>{{ item.time }}</p>
-          <p>{{ item.opponent }}</p>
-          <p>{{ item.home }}</p>
-          <button ion-button color="danger" icon-left (click)="doRadio()">
-            <ion-icon name='close'></ion-icon>
-              Absagen
-          </button>
-        </ion-item>
+      <div *ngFor="let inviteItem of dataInvites">
+        <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
+          <div *ngFor="let gameItem of dataGames">
+            <div *ngIf="inviteItem.match == gameItem.id">
+              <ion-item>
+                <ion-thumbnail item-left>
+                  <img src="assets/img/TSV Heimaterde.png">
+                </ion-thumbnail>
+                <p>{{ gameItem.id }}</p>
+                <p>{{ gameItem.time }}</p>
+                <p>{{ gameItem.opponent }}</p>
+                <p>{{ gameItem.home }}</p>
+                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem)">
+                <ion-icon name='close'></ion-icon>
+                  Absagen
+                </button>
+              </ion-item>
+            </div>
+          </div>
+        </div>
       </div>
     </ion-list>
 
     <ion-list *ngSwitchCase="'offene'">
-      <div *ngFor="let item of dataGames">
-        <ion-item>
-          <ion-thumbnail item-left>
-            <img src="assets/img/KSV.png">
-          </ion-thumbnail>
-          <p>{{ item.time }}</p>
-          <p>{{ item.opponent }}</p>
-          <p>{{ item.home }}</p>
-          <button ion-button color="secondary" icon-left>
-          <ion-icon name='checkmark'></ion-icon>
-            Zusagen
-          </button>
-          <button ion-button color="danger" icon-left (click)="doRadio()">
-            <ion-icon name='close'></ion-icon>
-              Absagen
-          </button>
-        </ion-item>
+      <div *ngFor="let inviteItem of dataInvites">
+        <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 0">
+          <div *ngFor="let gameItem of dataGames">
+            <div *ngIf="inviteItem.match == gameItem.id">
+              <ion-item>
+                <ion-thumbnail item-left>
+                  <img src="assets/img/TSV Heimaterde.png">
+                </ion-thumbnail>
+                <p>{{ gameItem.id }}</p>
+                <p>{{ gameItem.time }}</p>
+                <p>{{ gameItem.opponent }}</p>
+                <p>{{ gameItem.home }}</p>
+                <button ion-button color="secondary" icon-left (click)="doAlert(inviteItem)">
+                <ion-icon name='checkmark'></ion-icon>
+                  Zusagen
+                </button>
+                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem)">
+                <ion-icon name='close'></ion-icon>
+                  Absagen
+                </button>
+              </ion-item>
+            </div>
+          </div>
+        </div>
       </div>
     </ion-list>
   </div>

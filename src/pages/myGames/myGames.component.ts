@@ -5,9 +5,11 @@ import { Component, OnInit } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { NavController, AlertController } from 'ionic-angular';
 import { MyGamesService } from '../../providers/myGames.service';
+import {loggedInUser} from "../../app/globalVars";
 import firebase from 'firebase';
 
 @Component({
+  selector: 'page-myGames',
   templateUrl: 'myGames.component.html',
   providers: [MyGamesService]
 })
@@ -15,17 +17,27 @@ import firebase from 'firebase';
 export class MyGamesComponent implements OnInit {
 
   ngOnInit() {
+    this.getPlayer();
     this.getGames();
+    this.getInvites();
   }
 
-  id: string = "13";
   gameStatus: string = "vergangende";
+  loggedInUserID: string = loggedInUser.uid;
+  player: any = ""
   dataGames: any;
+  dataInvites: any;
   testRadioOpen: boolean;
   testRadioResult;
   
   constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
     
+  }
+
+  getPlayer(): void {
+    firebase.database().ref('clubs/12/players/' + this.loggedInUserID).once('value', snapshot => {
+      this.player = snapshot.val();
+    })
   }
 
   getGames(): void {
@@ -41,8 +53,36 @@ export class MyGamesComponent implements OnInit {
       })
     }
 
+  getInvites(): void {
+    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+      let inviteArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        inviteArray[counter] = snapshot.val()[i];
+        inviteArray[counter].id = i;
+        counter++;
+      }
+      this.dataInvites = inviteArray;
+    })
+  }
 
-  doRadio() {
+  doAlert(inviteItem){
+    firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
+      excuse: "",
+      match: inviteItem.match,
+      recipient: inviteItem.recipient,
+      sender: inviteItem.sender,
+      state: 1
+    });
+    let alert = this.alertCtrl.create({
+      title: 'Zugesagt',
+      message: 'Du wirst diesem Spieltag zugeteilt!',
+      buttons: ['Ok']
+    });
+    alert.present()
+  }
+
+  doRadio(inviteItem) {
     let alert = this.alertCtrl.create();
     alert.setTitle('Grund der Abwesenheit:');
 
@@ -85,14 +125,21 @@ export class MyGamesComponent implements OnInit {
         this.testRadioResult = data;
         if(this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private'){
           console.log('Radio data:', data);
+          firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
+            excuse: data,
+            match: inviteItem.match,
+            recipient: inviteItem.recipient,
+            sender: inviteItem.sender,
+            state: 2
+          });
         }
-        if(this.testRadioResult == 'miscellaneous' || this.testRadioResult == 'injured'){
+        if(this.testRadioResult == 'injured'){
           let prompt = this.alertCtrl.create({
-            title: 'Verletzt/Sonstige',
+            title: 'Verletzt',
             message: "Bitte näher ausführen:",
             inputs: [
               {
-                name: 'cause',
+                name: 'injured',
                 placeholder: 'Wie lange wirst du ausfallen?'
               },
             ],
@@ -108,6 +155,47 @@ export class MyGamesComponent implements OnInit {
                 handler: data => {
                   console.log('Radio data:', data);
                   console.log('Send clicked');
+                  firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
+                    excuse: data,
+                    match: inviteItem.match,
+                    recipient: inviteItem.recipient,
+                    sender: inviteItem.sender,
+                    state: 2
+                  });
+                }
+              }
+            ]
+           });
+          }
+          if(this.testRadioResult == 'miscellaneous'){
+          let prompt = this.alertCtrl.create({
+            title: 'Verletzt/Sonstige',
+            message: "Bitte kurz näher ausführen:",
+            inputs: [
+              {
+                name: 'miscellaneous',
+                placeholder: 'Warum wirst du ausfallen?'
+              },
+            ],
+            buttons: [
+              {
+                text: 'Abbruch',
+                handler: data => {
+                  console.log('Cancel clicked');
+                }
+              },
+              {
+                text: 'Absenden',
+                handler: data => {
+                  console.log('Radio data:', data);
+                  console.log('Send clicked');
+                  firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
+                    excuse: data,
+                    match: inviteItem.match,
+                    recipient: inviteItem.recipient,
+                    sender: inviteItem.sender,
+                    state: 2
+                  });
                 }
               }
             ]
@@ -121,26 +209,4 @@ export class MyGamesComponent implements OnInit {
       this.testRadioOpen = true;
     });
   }
-
-  testData = [
-      {
-        date: "13.12.2016",
-        matchday: "Spieltag 15",
-        team: "Gladbacher KV",
-        location: "Auswärts",
-      },
-      {
-        date: "11.1.2017",
-        matchday: "Spieltag 17",
-        team: "Grostedt TCU",
-        location: "Auswärts",
-      },
-      {
-        date: "18.1.2017",
-        matchday: "Spieltag 18",
-        team: "RB Krefeld",
-        location: "Heim",
-      }
-    ]
-
 }
