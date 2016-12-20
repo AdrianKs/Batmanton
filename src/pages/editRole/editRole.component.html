@@ -41,11 +41,11 @@
   <div class="bottomContainer">
     <div class="changeRoleContainer">
       <ion-item>
-        <ion-checkbox [(ngModel)]="player.isPlayer" class="myChk" (ionChange)="changeValue($ev)"></ion-checkbox>
+        <ion-checkbox [(ngModel)]="player.isPlayer" class="myChk" (ionChange)="changeValue($event)"></ion-checkbox>
         <ion-label>Spieler</ion-label>
       </ion-item>
       <ion-item>
-        <ion-checkbox [(ngModel)]="player.isTrainer" class="myChk" (ionChange)="changeValue($ev)"></ion-checkbox>
+        <ion-checkbox [(ngModel)]="player.isTrainer" class="myChk" (ionChange)="changeValue($event)"></ion-checkbox>
         <ion-label>Trainer</ion-label>
       </ion-item>
     </div>
