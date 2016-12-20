@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Spieler hinzufügen</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-list>
+        <ion-item>
+            <ion-searchbar (ionInput)="getItemsLastName($event)"></ion-searchbar>
+        </ion-item>
+        <ion-item>
+            <ion-label stacked>Nach Mannschaft filtern:</ion-label>
+            <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}" placeholder="Mannschaft auswählen">
+                <!--<ion-option *ngFor="let item of teams" value=0>in keiner Mannschaft</ion-option>-->
+                <ion-option *ngFor="let item of teams" value="{{item.id}}">{{item.name}}</ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
+    <!--<ion-searchbar (ionInput)="getItemsTeamName($event)"></ion-searchbar>-->
+    <ion-list>
+        <ion-card-title>Verfügbare Spieler</ion-card-title>
+        <div *ngFor="let item of allPlayers">
+            <ion-item>
+                <div class="teamItem-left">
+                    <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+                </div>
+                <div class="teamItem-right">
+                    <div class="teamItem-details">
+                        Vorname: {{item.firstname}} <br> Nachname: {{item.lastname}}
+                    </div>
+                    <div *ngIf="item.isAdult==true">
+                        Altersklasse: Erwachsen
+                    </div>
+                    <div *ngIf="item.isAdult==false">
+                        Altersklasse: Jugend
+                    </div>
+                </div>
+            </ion-item>
+        </div>
+    </ion-list>
+</ion-content>

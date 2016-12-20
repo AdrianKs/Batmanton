@@ -17,6 +17,7 @@ import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selec
 import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
 import { PopoverPage } from '../pages/teams/popover.component';
 import { EditTeamComponent } from '../pages/teams/editTeam.component';
+import { EditPlayerComponent } from '../pages/teams/editPlayers.component';
 
 
 
@@ -38,7 +39,8 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     SelectProfilePictureComponent,
     ViewTeamComponent,
     PopoverPage,
-    EditTeamComponent
+    EditTeamComponent,
+    EditPlayerComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -61,7 +63,8 @@ import { EditTeamComponent } from '../pages/teams/editTeam.component';
     SelectProfilePictureComponent,
     ViewTeamComponent,
     PopoverPage,
-    EditTeamComponent
+    EditTeamComponent,
+    EditPlayerComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
