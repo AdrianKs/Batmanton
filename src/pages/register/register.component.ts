@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit{
   teams: Array<any>;
 
   public signupForm;
+  public passwordGroup;
   gender: string = '';
   team: string = '';
   firstnameChanged: boolean = false;
@@ -32,6 +33,7 @@ export class RegisterComponent implements OnInit{
   teamChanged: boolean = false;
   emailChanged: boolean = false;
   passwordChanged: boolean = false;
+  passwordConfirmChanged: boolean = false;
   submitAttempt: boolean = false;
   loading: any;
 
@@ -46,8 +48,23 @@ export class RegisterComponent implements OnInit{
       lastname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
       birthday: ['', Validators.compose([Validators.required])],
       email: ['', Validators.compose([Validators.required, this.isAMail])],
-      password: ['', Validators.compose([Validators.minLength(6), Validators.required])]
-    })
+      passwords: formBuilder.group({
+        password: ['', Validators.compose([Validators.minLength(6), Validators.required])],
+        passwordConfirm: ['', Validators.compose([Validators.required])]
+      }, {validator: this.matchPassword})
+    });
+    this.passwordGroup = this.signupForm.controls.passwords;
+  }
+
+  matchPassword(group) {
+    let password = group.controls.password;
+    let confirm = group.controls.passwordConfirm;
+
+    if (!(password.value === confirm.value)) {
+      console.log("sollte nicht gleich sein");
+      return {"incorrectConfirm": true};
+    }
+    return null;
   }
 
   getTeams(): void {
@@ -91,8 +108,7 @@ export class RegisterComponent implements OnInit{
    */
   startsWithACapital(c: FormControl){
     let NAME_REGEXP = new RegExp("[A-Z]");
-    //let NAME_REGEXP = /^[A-Z]*/i;
-    if(!NAME_REGEXP.test(c.value)){
+    if(!NAME_REGEXP.test(c.value.charAt(0))){
       return { "incorrectNameFormat": true}
     }
     return null;
@@ -129,7 +145,7 @@ export class RegisterComponent implements OnInit{
     } else {
       this.authData.signupUser(
         this.signupForm.value.email,
-        this.signupForm.value.password,
+        this.passwordGroup.value.password,
         this.signupForm.value.firstname,
         this.signupForm.value.lastname,
         this.signupForm.value.birthday,
