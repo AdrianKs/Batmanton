@@ -77,15 +77,27 @@
       <p>Bitte geben Sie eine gültige Email-Adresse ein.</p>
     </ion-item>
 
-    <ion-item>
-      <ion-label stacked>Passwort</ion-label>
-      <ion-input #password formControlName="password" type="password" (change)="elementChanged(password)"
-                 placeholder="Ihr sicheres Passwort"
-                 [class.invalid]="!signupForm.controls.password.valid && (passwordChanged || submitAttempt)"></ion-input>
-    </ion-item>
-    <ion-item class="error-message" *ngIf="!signupForm.controls.password.valid  && (passwordChanged || submitAttempt)">
-      <p>Ihr Passwort muss mehr als 6 Zeichen haben.</p>
-    </ion-item>
+    <div [formGroup]="passwordGroup">
+      <ion-item>
+        <ion-label stacked>Passwort</ion-label>
+        <ion-input #password formControlName="password" type="password" (change)="elementChanged(password)"
+                   placeholder="Ihr sicheres Passwort"
+                   [class.invalid]="!passwordGroup.controls.password.valid && (passwordChanged || submitAttempt)"></ion-input>
+      </ion-item>
+      <ion-item class="error-message" *ngIf="!passwordGroup.controls.password.valid  && (passwordChanged || submitAttempt)">
+        <p>Ihr Passwort muss mehr als 6 Zeichen haben.</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label stacked>Passwort bestätigen</ion-label>
+        <ion-input #passwordConfirm  formControlName="passwordConfirm" type="password" (change)="elementChanged(passwordConfirm)"
+                   placeholder="Bestätigen Sie Ihr Passwort"
+                   [class.invalid]="!passwordGroup.valid && (passwordConfirmChanged || submitAttempt)"></ion-input>
+      </ion-item>
+      <ion-item class="error-message" *ngIf="!passwordGroup.valid  && (passwordConfirmChanged || submitAttempt)">
+        <p>Ihre Passwörter stimmen nicht überein.</p>
+      </ion-item>
+    </div>
 
     <br>
     <button ion-button round type="submit">
