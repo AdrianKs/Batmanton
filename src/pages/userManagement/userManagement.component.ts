@@ -37,9 +37,7 @@ export class UserManagementComponent implements OnInit {
       }
       this.dataPlayerSearch = playerArray;
       this.dataPlayer = playerArray;
-    }).catch(function(error){
-      console.log("Fehler beim Laden der Spieler "+ error)
-    })
+    });
   }
 
   initializeItems() {
@@ -76,5 +74,6 @@ export class UserManagementComponent implements OnInit {
 
 //Navigation back to List
 //Update List
+
 
 

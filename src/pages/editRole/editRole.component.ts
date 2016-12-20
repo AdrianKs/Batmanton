@@ -74,9 +74,9 @@ export class EditRoleComponent {
         this.navCtrl.pop(this);
     }
 
-    presentToast(message: string) {
+    presentToast(customMessage: string) {
         let toast = this.toastCtrl.create({
-            message: message,
+            message: customMessage,
             duration: 3000,
             position: "top"
         });
