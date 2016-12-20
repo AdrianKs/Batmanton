@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, ToastController, AlertController, ViewController } from 'ionic-angular';
 import firebase from 'firebase';
 
 @Component({
@@ -13,7 +13,11 @@ export class EditRoleComponent {
     isSpielerOld: boolean;
     isChanged: boolean;
 
-    constructor(private navCtrl: NavController, private navParams: NavParams, public toastCtrl: ToastController, public alertCtrl: AlertController) {
+    constructor(private navCtrl: NavController,
+        private navParams: NavParams,
+        public toastCtrl: ToastController,
+        public alertCtrl: AlertController,
+        public viewCtrl: ViewController) {
         this.player = navParams.get('player');
         this.isTrainerOld = this.player.isTrainer;
         this.isSpielerOld = this.player.isPlayer;
@@ -47,26 +51,26 @@ export class EditRoleComponent {
             pushid: player.pushid,
             state: player.state,
             team: player.team
-        }).catch(function(error){
+        }).catch(function (error) {
             console.log(error);
             successFlag = false;
         });
-        
-        if(successFlag){
-            this.presentToast("Rolle wurde erfolgreich bearbeitet");            
-        }else{
+
+        if (successFlag) {
+            this.presentToast("Rolle wurde erfolgreich bearbeitet");
+        } else {
             this.presentToast("Error. Bitte versuchen Sie es erneut!");
         }
-        
+
     }
 
     deleteUser(player) {
         firebase.database().ref('clubs/12/players/' + player.id).remove();
         this.navigateBackToList();
-    } 
-    
+    }
 
-    navigateBackToList(){
+
+    navigateBackToList() {
         this.navCtrl.pop(this);
     }
 
@@ -93,7 +97,7 @@ export class EditRoleComponent {
                 {
                     text: 'Löschen',
                     handler: () => {
-                       this.deleteUser(player);
+                        this.deleteUser(player);
                     }
                 }
             ]
