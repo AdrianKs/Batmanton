@@ -1,7 +1,12 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button ion-button (click)="navigateBackToList()">
+        Abbrechen
+    </button>
+    </ion-buttons>
     <ion-title>Benutzerverwaltung</ion-title>
-    <ion-buttons right class="btnMore">
+    <ion-buttons right>
       <button ion-button [disabled]="!isChanged" (click)="changeRole($event, player)">
          Fertig
       </button>
