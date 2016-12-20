@@ -33,7 +33,7 @@ import {Gender} from './pipes/gender'
     EditRoleComponent,
     TeamsComponent,
     SelectProfilePictureComponent,
-    // Pipes
+    //Pipes
     Birthday,
     Gender
   ],

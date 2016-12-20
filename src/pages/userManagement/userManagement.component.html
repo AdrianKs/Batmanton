@@ -36,14 +36,14 @@
           <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
-                <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+                <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
                   {{ item.lastname }}, {{item.firstname}} <br/>
                 </div>
                 <div class="secondaryDetails">
-                  Mannschaft: {{item.team}}, Geb.: {{item.birthday}}
+                  Mannschaft: {{item.team}}, Geb.: {{item.birthday | birthday}}
                 </div>
               </div>
             </div>
@@ -53,18 +53,18 @@
     </ion-list>
     <ion-list *ngSwitchCase="'frauen'">
       <div *ngFor="let item of dataPlayer">
-        <div *ngIf="item.gender == 'w'">
+        <div *ngIf="item.gender == 'f'">
           <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
-                <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+                <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
                   {{ item.lastname }}, {{item.firstname}} <br/>
                 </div>
-                <div>
-                  Mannschaft: {{item.team}}, Geb.: {{item.birthday}}
+                <div class="secondaryDetails">
+                  Mannschaft: {{item.team}}, Geb.: {{item.birthday | birthday}}
                 </div>
               </div>
             </div>
