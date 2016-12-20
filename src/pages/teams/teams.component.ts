@@ -87,6 +87,8 @@ export class TeamsComponent implements OnInit {
 
   addPlayersToArray(valueArray: any) {
     this.database.ref("/clubs/12/players/").once('value', snapshot => {
+      console.log("VALUE ARRAY");
+      console.log(valueArray);
       let allPlayers = snapshot.val();
       let idPlaceholder = 0;
       let counter = 0;
