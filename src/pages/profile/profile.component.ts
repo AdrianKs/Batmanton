@@ -39,7 +39,6 @@ export class ProfileComponent implements OnInit {
   actionSheetOptions: any;
   dataLoaded: boolean = false;
   formValid: boolean = true;
-  formatBirthdayFunction = function (){};
 
   /**
    * Indicates whether the data for the view has been successfully loaded or not. If true, the profile-form in the template can be displayed
@@ -88,15 +87,6 @@ export class ProfileComponent implements OnInit {
   getPlayer(): void {
     firebase.database().ref('clubs/12/players/' + this.loggedInUserID).once('value', snapshot => {
       this.player = snapshot.val();
-
-      /**
-       * Formats the birthday coming from the player data value to "dd.mm.yyyy" to display it with a label
-       * @returns {string} Formatted birthday
-       */
-      this.formatBirthdayFunction = function () {
-        return this.player.birthday.split("-")[2] + "." + this.player.birthday.split("-")[1] + "." + this.player.birthday.split("-")[0];
-      }
-
       this.dataLoaded = true;
     })
   }
