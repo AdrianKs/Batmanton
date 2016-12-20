@@ -39,7 +39,6 @@ export class ProfileComponent implements OnInit {
   actionSheetOptions: any;
   dataLoaded: boolean = false;
   formValid: boolean = true;
-  formatBirthdayFunction = function (){};
 
   /**
    * Indicates whether the data for the view has been successfully loaded or not. If true, the profile-form in the template can be displayed
@@ -54,6 +53,7 @@ export class ProfileComponent implements OnInit {
   lastnameOld: string;
   emailOld: string;
   birthdayOld: string;
+  genderOld: string;
   teamOld: string;
 
   /**
@@ -63,6 +63,7 @@ export class ProfileComponent implements OnInit {
   lastnameChanged: boolean = false;
   emailChanged: boolean = false;
   birthdayChanged: boolean = false;
+  genderChanged: boolean = false;
   teamChanged: boolean = false;
 
   /**
@@ -78,6 +79,7 @@ export class ProfileComponent implements OnInit {
       lastname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
       email: ['', Validators.compose([Validators.required, this.isAMail])],
       birthday: [],
+      gender: [],
       team: []
     })
   }
@@ -88,15 +90,6 @@ export class ProfileComponent implements OnInit {
   getPlayer(): void {
     firebase.database().ref('clubs/12/players/' + this.loggedInUserID).once('value', snapshot => {
       this.player = snapshot.val();
-
-      /**
-       * Formats the birthday coming from the player data value to "dd.mm.yyyy" to display it with a label
-       * @returns {string} Formatted birthday
-       */
-      this.formatBirthdayFunction = function () {
-        return this.player.birthday.split("-")[2] + "." + this.player.birthday.split("-")[1] + "." + this.player.birthday.split("-")[0];
-      }
-
       this.dataLoaded = true;
     })
   }
@@ -169,7 +162,7 @@ export class ProfileComponent implements OnInit {
   }
 
   finishEditProfile() {
-    if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.teamChanged) && this.formValid) {
+    if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.genderChanged || this.teamChanged) && this.formValid) {
       firebase.database().ref('clubs/12/players/' + this.loggedInUserID).set({
         birthday: this.player.birthday,
         email: this.player.email,
@@ -191,6 +184,7 @@ export class ProfileComponent implements OnInit {
     this.emailChanged = false;
     this.birthdayChanged = false;
     this.teamChanged = false;
+    this.genderChanged = false;
     this.editMode = false;
   }
 
@@ -200,6 +194,7 @@ export class ProfileComponent implements OnInit {
     this.emailChanged = false;
     this.birthdayChanged = false;
     this.teamChanged = false;
+    this.genderChanged = false;
     this.editMode = false;
   }
 
@@ -222,6 +217,14 @@ export class ProfileComponent implements OnInit {
       this.birthdayChanged = true;
     } else {
       this.birthdayChanged = false;
+    }
+  }
+
+  genderSelectChanged(input) {
+    if (this.genderOld != input) {
+      this.genderChanged = true;
+    } else {
+      this.genderChanged = false;
     }
   }
 

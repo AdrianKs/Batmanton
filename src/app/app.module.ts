@@ -14,6 +14,8 @@ import { ResetPasswordComponent } from '../pages/resetPassword/resetPassword.com
 import { EditRoleComponent } from '../pages/editRole/editRole.component';
 import { TeamsComponent } from '../pages/teams/teams.component';
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
+import {Birthday} from './pipes/birthday'
+import {Gender} from './pipes/gender'
 
 @NgModule({
   declarations: [
@@ -30,7 +32,10 @@ import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selec
     ResetPasswordComponent,
     EditRoleComponent,
     TeamsComponent,
-    SelectProfilePictureComponent
+    SelectProfilePictureComponent,
+    // Pipes
+    Birthday,
+    Gender
   ],
   imports: [
     IonicModule.forRoot(MyApp)
