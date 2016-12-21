@@ -6,6 +6,11 @@
 // Error Handling (global)
 // "Profil aufnehmen" --> "Profilbild ändern" in Register Screen
 // kleinere Fonts
+// Einheitliche Namen
+// i18n
+// globale Funktionen
+// globale Variablen
+// globale Services
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
