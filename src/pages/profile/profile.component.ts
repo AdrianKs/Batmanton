@@ -2,8 +2,6 @@
  * Created by kochsiek on 08.12.2016.
  */
 // todo:
-// Label-/ Inputausrichtungen?
-// Geschlecht ändern?
 // Einstellungsscreen (Benachrichtigungen, Verein ändern, PW ändern)
 // Error Handling (global)
 // Teams
@@ -15,7 +13,7 @@ import {LoginComponent} from "../login/login.component";
 import {NavController, ActionSheetController} from 'ionic-angular';
 import firebase from 'firebase';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
-import {loggedInUser} from "../../app/globalVars";
+import {loggedInUser, allTeams} from "../../app/globalVars";
 import {AuthData} from '../../providers/auth-data';
 import {Camera} from 'ionic-native';
 
@@ -34,16 +32,17 @@ export class ProfileComponent implements OnInit {
   public profileForm;
   loggedInUserID: string = loggedInUser.uid;
   player: any = "";
+  teams = allTeams;
   profilePictureUrl: string;
   editMode: boolean = false;
   actionSheetOptions: any;
-  dataLoaded: boolean = false;
-  formValid: boolean = true;
-
   /**
    * Indicates whether the data for the view has been successfully loaded or not. If true, the profile-form in the template can be displayed
    * @type {boolean}
    */
+  dataLoaded: boolean = false;
+  formValid: boolean = true;
+
   today: String = new Date().toISOString();
 
   /**
@@ -97,9 +96,9 @@ export class ProfileComponent implements OnInit {
   /**
    * Gets the url to the profile picture. If no profile picture has been uploaded, the default picture is set to the src url
    */
-  getProfilePicture(){
+  getProfilePicture() {
     var that = this;
-    firebase.storage().ref().child("profilePictures/" + this.loggedInUserID + "/" + this.loggedInUserID + ".jpg").getDownloadURL().then(function(url) {
+    firebase.storage().ref().child("profilePictures/" + this.loggedInUserID + "/" + this.loggedInUserID + ".jpg").getDownloadURL().then(function (url) {
       that.profilePictureUrl = url;
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
       that.actionSheetOptions = {
@@ -127,7 +126,7 @@ export class ProfileComponent implements OnInit {
           }
         ]
       };
-    }).catch(function(error) {
+    }).catch(function (error) {
       that.profilePictureUrl = "assets/images/ic_account_circle_black_48dp_2x.png";
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
       that.actionSheetOptions = {
@@ -205,9 +204,9 @@ export class ProfileComponent implements OnInit {
     } else {
       this[field + "Changed"] = false;
     }
-    if(this.profileForm.controls.firstname.valid && this.profileForm.controls.lastname.valid && this.profileForm.controls.email.valid){
+    if (this.profileForm.controls.firstname.valid && this.profileForm.controls.lastname.valid && this.profileForm.controls.email.valid) {
       this.formValid = true;
-    } else{
+    } else {
       this.formValid = false;
     }
   }
@@ -236,11 +235,12 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  changeProfilePicture(){
+  changeProfilePicture() {
     let actionSheet = this.actionSheetCtrl.create(this.actionSheetOptions);
 
     actionSheet.present();
   }
+
   takePicture() {
     let options = {
       destinationType: Camera.DestinationType.DATA_URL,
@@ -252,6 +252,7 @@ export class ProfileComponent implements OnInit {
 
     this.callCamera(options);
   }
+
   getPicture() {
     let options = {
       destinationType: Camera.DestinationType.DATA_URL,
@@ -264,6 +265,7 @@ export class ProfileComponent implements OnInit {
 
     this.callCamera(options);
   }
+
   callCamera(options) {
     Camera.getPicture(options)
       .then((imageData) => {
@@ -275,6 +277,7 @@ export class ProfileComponent implements OnInit {
         console.log(err);
       });
   }
+
   uploadPicture() {
     firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
       .then(callback => {
@@ -312,10 +315,10 @@ export class ProfileComponent implements OnInit {
       });
   }
 
-  deleteProfilePicture(){
+  deleteProfilePicture() {
     var that = this;
     // firebase.storage().ref().child('profilePictures/test.jpg').delete().then(function() {
-    firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + '.jpg').delete().then(function() {
+    firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + '.jpg').delete().then(function () {
       that.profilePictureUrl = "assets/images/ic_account_circle_black_48dp_2x.png";
 
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
@@ -338,13 +341,13 @@ export class ProfileComponent implements OnInit {
           }
         ]
       };
-    }).catch(function(error) {
+    }).catch(function (error) {
       alert(error.message);
     });
   }
 
-  logOut() {
-    firebase.auth().signOut();
+  logout() {
+    this.authData.logoutUser();
     this.navCtrl.setRoot(LoginComponent);
   }
 

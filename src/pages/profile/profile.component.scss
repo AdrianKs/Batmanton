@@ -1,35 +1,37 @@
-.picture-container{
-  text-align: center;
-  margin-top: 20px;
-}
+page-profile {
+  .picture-container {
+    text-align: center;
+    margin-top: 20px;
+  }
 
-.profile-image{
-  border-radius: 10rem;
-  width: 12em;
-  height: 12em;
-}
+  .profile-image {
+    border-radius: 10rem;
+    width: 12em;
+    height: 12em;
+  }
 
-.bottomContainer{
-  margin-top: 30px;
-  text-align: center;
-}
+  .bottomContainer {
+    margin-top: 30px;
+    text-align: center;
+  }
 
-.saveButtonContainer{
-  margin-top: 30px;
-}
+  .saveButtonContainer {
+    margin-top: 30px;
+  }
 
-.profile-inputs input{
-  text-align:right;
-}
+  .profile-inputs input {
+    text-align: right;
+  }
 
-.checkmarkIcon{
-  font-size: 2em;
-}
+  .checkmarkIcon {
+    font-size: 2em;
+  }
 
-.error-message .item-inner {
-  border-bottom: 0 !important;
-}
+  .error-message .item-inner {
+    border-bottom: 0 !important;
+  }
 
-.picture-click:active {
-  opacity:0.5;
+  .picture-click:active {
+    opacity: 0.5;
+  }
 }
