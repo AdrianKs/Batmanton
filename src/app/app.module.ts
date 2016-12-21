@@ -16,6 +16,7 @@ import { TeamsComponent } from '../pages/teams/teams.component';
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
 import {Birthday} from './pipes/birthday'
 import {Gender} from './pipes/gender'
+import {Teams} from './pipes/teams'
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {Gender} from './pipes/gender'
     SelectProfilePictureComponent,
     // Pipes
     Birthday,
-    Gender
+    Gender,
+    Teams
   ],
   imports: [
     IonicModule.forRoot(MyApp)
