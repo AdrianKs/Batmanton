@@ -14,7 +14,7 @@
         <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
           <div *ngFor="let gameItem of dataGames">
             <div *ngIf="inviteItem.match == gameItem.id">
-              <ion-item>
+              <ion-item (click)="openDetails($event, gameItem)">
                 <ion-thumbnail item-left>
                   <img src="assets/img/TSV Heimaterde.png">
                 </ion-thumbnail>
