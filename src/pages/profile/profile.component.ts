@@ -4,7 +4,6 @@
 // todo:
 // Einstellungsscreen (Benachrichtigungen, Verein ändern, PW ändern)
 // Error Handling (global)
-// Teams
 // "Profil aufnehmen" --> "Profilbild ändern" in Register Screen
 // kleinere Fonts
 
@@ -16,6 +15,7 @@ import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import {loggedInUser, allTeams} from "../../app/globalVars";
 import {AuthData} from '../../providers/auth-data';
 import {Camera} from 'ionic-native';
+import {document} from "@angular/platform-browser/src/facade/browser";
 
 @Component({
   selector: 'page-profile',
@@ -33,7 +33,6 @@ export class ProfileComponent implements OnInit {
   loggedInUserID: string = loggedInUser.uid;
   player: any = "";
   teams = allTeams;
-  profilePictureUrl: string;
   editMode: boolean = false;
   actionSheetOptions: any;
   /**
@@ -99,7 +98,7 @@ export class ProfileComponent implements OnInit {
   getProfilePicture() {
     var that = this;
     firebase.storage().ref().child("profilePictures/" + this.loggedInUserID + "/" + this.loggedInUserID + ".jpg").getDownloadURL().then(function (url) {
-      that.profilePictureUrl = url;
+      document.getElementById("profileImage").src = url;
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
       that.actionSheetOptions = {
         title: 'Profilbild ändern',
@@ -127,7 +126,7 @@ export class ProfileComponent implements OnInit {
         ]
       };
     }).catch(function (error) {
-      that.profilePictureUrl = "assets/images/ic_account_circle_black_48dp_2x.png";
+      document.getElementById("profileImage").src = "assets/images/ic_account_circle_black_48dp_2x.png";
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
       that.actionSheetOptions = {
         title: 'Profilbild ändern',
@@ -281,7 +280,7 @@ export class ProfileComponent implements OnInit {
   uploadPicture() {
     firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
       .then(callback => {
-        this.profilePictureUrl = this.base64Image;
+        document.getElementById("profileImage").src = this.base64Image;
         // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
         this.actionSheetOptions = {
           title: 'Profilbild ändern',
@@ -319,7 +318,7 @@ export class ProfileComponent implements OnInit {
     var that = this;
     // firebase.storage().ref().child('profilePictures/test.jpg').delete().then(function() {
     firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + '.jpg').delete().then(function () {
-      that.profilePictureUrl = "assets/images/ic_account_circle_black_48dp_2x.png";
+      document.getElementById("profileImage").src = "assets/images/ic_account_circle_black_48dp_2x.png";
 
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
       that.actionSheetOptions = {
