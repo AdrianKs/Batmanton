@@ -11,6 +11,8 @@ import { AboutComponent } from '../about/about.component'
 
 import firebase from 'firebase';
 
+import { loggedInUser } from '../../app/globalVars.ts';
+
 @Component({
   selector: 'page-invitesmatchday',
   templateUrl: 'invitesmatchday.component.html',
@@ -21,6 +23,7 @@ export class InvitesMatchdayComponent {
   invites: any;
   players: any;
   profilePictureURL: any;
+  loggedInUserID: string = loggedInUser.uid;
 
   constructor(private navCtrl: NavController, private navP: NavParams, private invitesService: InvitesService) {
     //Load data in array
@@ -30,13 +33,13 @@ export class InvitesMatchdayComponent {
   }
 
   getProfilePictureURL(player) {
-   /* var that = this;
-    firebase.storage().ref().child("profilePictures/" + player.id + "/" + player.id + ".jpg").getDownloadURL().then(function (url) {
-      that.profilePictureURL = url;
-    }).catch(function(error) {
-      that.profilePictureURL = "../../assets/images/ic_account_circle_black_48dp_2x.png";
-    });
-    return that.profilePictureURL;*/
+    /* var that = this;
+     firebase.storage().ref().child("profilePictures/" + player.id + "/" + player.id + ".jpg").getDownloadURL().then(function (url) {
+       that.profilePictureURL = url;
+     }).catch(function(error) {
+       that.profilePictureURL = "../../assets/images/ic_account_circle_black_48dp_2x.png";
+     });
+     return that.profilePictureURL;*/
     return "../../assets/images/ic_account_circle_black_48dp_2x.png";
   }
 

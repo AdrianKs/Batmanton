@@ -7,6 +7,8 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { InvitesMatchdayComponent } from "../invites/invitesmatchday.component";
 
+import { loggedInUser } from '../../app/globalVars.ts';
+
 import firebase from 'firebase';
 
 @Component({
@@ -15,12 +17,13 @@ import firebase from 'firebase';
   //providers: [InvitesService]
 })
 
-export class InvitesComponent implements OnInit{
+export class InvitesComponent implements OnInit {
   login: any;
   dataMatchday: any;
   dataInvite: any;
   dataPlayers: any;
   dataTeams: any;
+  loggedInUserID: string = loggedInUser.uid;
 
   ngOnInit() {
     this.getInvite();
@@ -31,7 +34,7 @@ export class InvitesComponent implements OnInit{
 
   constructor(private navCtrl: NavController, private navP: NavParams) {
     //Load data in arrays
-    
+
   }
 
   getInvite(): void {
@@ -91,7 +94,7 @@ export class InvitesComponent implements OnInit{
     let declined = 0;
     let pending = 0;
     for (let i of this.dataInvite) {
-      if (i.match == match.id) {
+      if (i.match == match.id && i.sender == this.loggedInUserID) {
         if (i.state == 0) {
           pending = pending + 1;
         } else if (i.state == 1) {

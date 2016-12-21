@@ -17,50 +17,52 @@
     <div *ngIf="item.match == matchday.id">
       <!--<ion-item>-->
       <div *ngFor="let player of players">
-        <div *ngIf="player.id == item.recipient">
-          <div *ngIf="item.state == '0'">
-            <ion-card>
-              <ion-item>
-                <ion-avatar item-left>
-                  <img src="{{getProfilePictureURL(player)}}">
-                </ion-avatar>
-                <h2>{{player.firstname}} {{player.lastname}}</h2>
-                <ion-badge color="primary" item-bottom> Keine Antwort</ion-badge>
-                <br>
-              </ion-item>
-              <ion-card-content>
-                <p>{{item.excuse}}</p>
-              </ion-card-content>
-            </ion-card>
-          </div>
-          <div *ngIf="item.state == '1'">
-            <ion-card>
-              <ion-item>
-                <ion-avatar item-left>
-                  <img src="{{getProfilePictureURL(player)}}">
-                </ion-avatar>
-                <h2>{{player.firstname}} {{player.lastname}}</h2>
-                <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
-                <br>
-              </ion-item>
-              <ion-card-content>
-              </ion-card-content>
-            </ion-card>
-          </div>
-          <div *ngIf="item.state == '2'">
-            <ion-card>
-              <ion-item>
-                <ion-avatar item-left>
-                  <img src="{{getProfilePictureURL(player)}}">
-                </ion-avatar>
-                <h2>{{player.firstname}} {{player.lastname}}</h2>
-                <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>
-                <br>
-              </ion-item>
-              <ion-card-content>
-                <p align="center"> {{item.excuse}} </p>
-              </ion-card-content>
-            </ion-card>
+        <div *ngIf="item.sender == loggedInUserID">
+          <div *ngIf="player.id == item.recipient">
+            <div *ngIf="item.state == '0'">
+              <ion-card>
+                <ion-item>
+                  <ion-avatar item-left>
+                    <img src="{{getProfilePictureURL(player)}}">
+                  </ion-avatar>
+                  <h2>{{player.firstname}} {{player.lastname}}</h2>
+                  <ion-badge color="primary" item-bottom> Keine Antwort</ion-badge>
+                  <br>
+                </ion-item>
+                <ion-card-content>
+                  <p>{{item.excuse}}</p>
+                </ion-card-content>
+              </ion-card>
+            </div>
+            <div *ngIf="item.state == '1'">
+              <ion-card>
+                <ion-item>
+                  <ion-avatar item-left>
+                    <img src="{{getProfilePictureURL(player)}}">
+                  </ion-avatar>
+                  <h2>{{player.firstname}} {{player.lastname}}</h2>
+                  <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
+                  <br>
+                </ion-item>
+                <ion-card-content>
+                </ion-card-content>
+              </ion-card>
+            </div>
+            <div *ngIf="item.state == '2'">
+              <ion-card>
+                <ion-item>
+                  <ion-avatar item-left>
+                    <img src="{{getProfilePictureURL(player)}}">
+                  </ion-avatar>
+                  <h2>{{player.firstname}} {{player.lastname}}</h2>
+                  <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>
+                  <br>
+                </ion-item>
+                <ion-card-content>
+                  <p align="center"> {{item.excuse}} </p>
+                </ion-card-content>
+              </ion-card>
+            </div>
           </div>
         </div>
       </div>
