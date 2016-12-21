@@ -4,7 +4,6 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { AboutComponent } from '../pages/about/about.component';
 import { InvitesComponent } from '../pages/invites/invites.component';
-import { InvitesMatchdayComponent } from '../pages/invites/invitesmatchday.component';
 import { MatchdayComponent } from '../pages/matchday/matchday.component';
 import { MyGamesComponent } from '../pages/myGames/myGames.component';
 import { ProfileComponent } from '../pages/profile/profile.component';
@@ -14,6 +13,8 @@ import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
 import {firebaseConfig} from "./firebaseAppData";
 import {setUser} from "./globalVars";
+import {AuthData} from '../providers/auth-data';
+import {GlobalServices} from '../providers/globalServices';
 
 
 
@@ -21,7 +22,8 @@ firebase.initializeApp(firebaseConfig);
 
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
+  providers: [AuthData, GlobalServices]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -30,7 +32,7 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform) {
+  constructor(public platform: Platform, public authData: AuthData, public globalServices: GlobalServices) {
 
 
     this.initializeApp();
@@ -53,6 +55,7 @@ export class MyApp {
       { title: 'About', component: AboutComponent }
     ];
 
+    globalServices.getTeams();
   }
 
   initializeApp() {
@@ -70,9 +73,8 @@ export class MyApp {
     this.nav.setRoot(page.component);
   }
 
-  logOut(){
-    firebase.auth().signOut();
+  logout() {
+    this.authData.logoutUser();
     this.nav.setRoot(LoginComponent);
-    //this.nav.setRoot(LoginComponent);
   }
 }

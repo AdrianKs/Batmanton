@@ -14,13 +14,13 @@ import { ResetPasswordComponent } from '../pages/resetPassword/resetPassword.com
 import { EditRoleComponent } from '../pages/editRole/editRole.component';
 import { TeamsComponent } from '../pages/teams/teams.component';
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
-import {Birthday} from './pipes/birthday'
-import {Gender} from './pipes/gender'
 import { ViewTeamComponent} from '../pages/teams/viewTeam.component';
 import { PopoverPage } from '../pages/teams/popover.component';
 import { EditTeamComponent } from '../pages/teams/editTeam.component';
 import { EditPlayerComponent } from '../pages/teams/editPlayers.component';
-
+import {Birthday} from './pipes/birthday';
+import {Gender} from './pipes/gender';
+import {Teams} from './pipes/teams';
 
 @NgModule({
   declarations: [
@@ -44,7 +44,8 @@ import { EditPlayerComponent } from '../pages/teams/editPlayers.component';
     EditPlayerComponent,
     //Pipes
     Birthday,
-    Gender
+    Gender,
+    Teams
   ],
   imports: [
     IonicModule.forRoot(MyApp)

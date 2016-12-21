@@ -59,7 +59,7 @@
       <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"
                   placeholder="Mannschaft"
                   [class.invalid]="(!teamChanged && submitAttempt)">
-        <ion-option *ngFor="let item of teams" value=0>in keiner Mannschaft</ion-option>
+        <ion-option value=0>keine Mannschaft</ion-option>
         <ion-option *ngFor="let item of teams" value="{{item.id}}">{{item.name}}</ion-option>
       </ion-select>
     </ion-item>
