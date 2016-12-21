@@ -2,12 +2,13 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component, OnInit } from '@angular/core';
-import { Platform } from 'ionic-angular';
-import { NavController} from 'ionic-angular';
+import { NavController } from 'ionic-angular';
+import { GameDetailsComponent } from '../gameDetails/gameDetails.component';
 import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
 
 @Component({
+  selector: 'page-matchday',
   templateUrl: 'matchday.component.html',
   providers: [MatchdayService]
 })
@@ -18,10 +19,9 @@ export class MatchdayComponent implements OnInit {
     this.getGames();
   }
 
-  id: string = "13";
   dataGames: any;
   
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService) {
     
   }
 
@@ -37,5 +37,10 @@ export class MatchdayComponent implements OnInit {
         this.dataGames = gamesArray;
       })
     }
+  
+  openDetails(ev, value) {
+    this.navCtrl.push(GameDetailsComponent, { gameItem: value });
+  }
+
 }
 

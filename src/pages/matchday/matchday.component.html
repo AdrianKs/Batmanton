@@ -9,7 +9,7 @@
 
 <ion-content padding>
     <div *ngFor="let item of dataGames">
-      <ion-item>
+      <ion-item (click)="openDetails($event, item)">
         <ion-thumbnail item-left>
           <img src="assets/img/TSV Heimaterde.png">
         </ion-thumbnail>

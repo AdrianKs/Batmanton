@@ -1,11 +1,8 @@
-/**
- * Created by kochsiek on 08.12.2016.
- */
 import { Component, OnInit } from '@angular/core';
-import { Platform } from 'ionic-angular';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, NavParams } from 'ionic-angular';
+import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
 import { MyGamesService } from '../../providers/myGames.service';
-import {loggedInUser} from "../../app/globalVars";
+import { loggedInUser } from "../../app/globalVars";
 import firebase from 'firebase';
 
 @Component({
@@ -24,13 +21,13 @@ export class MyGamesComponent implements OnInit {
 
   gameStatus: string = "vergangende";
   loggedInUserID: string = loggedInUser.uid;
-  player: any = ""
+  player: any = "";
   dataGames: any;
   dataInvites: any;
   testRadioOpen: boolean;
   testRadioResult;
   
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService) {
     
   }
 
@@ -64,6 +61,10 @@ export class MyGamesComponent implements OnInit {
       }
       this.dataInvites = inviteArray;
     })
+  }
+
+  openDetails(ev, value) {
+    this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 
   doAlert(inviteItem){
