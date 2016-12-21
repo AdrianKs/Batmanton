@@ -9,23 +9,23 @@
 
 <ion-content padding>
   <div *ngFor="let matchday of dataMatchday">
-    <ion-item (click)="goToPage($event, matchday, dataInvite, dataPlayers)">
-      <p>{{matchday.time}}</p>
-      <h2><b>Matchday {{matchday.id}}</b></h2>
+    <ion-item (click)="goToPage($event, matchday, dataInvite, dataPlayers, profilePictureURL)">
+      <p>{{formatMatchTime(matchday)}}</p>
+      <h2><b>Spieltag {{matchday.id}}</b></h2>
       <div *ngFor="let team of dataTeams">
         <div *ngIf="team.id == matchday.team">
           <p>{{team.name}} gg. {{matchday.opponent}}</p>
         </div>
       </div>
-      <p>Location</p>
+      <p>{{matchday.location.street}} (PLZ: {{matchday.location.zipcode}})</p>
       <br>
-      <ion-icon name="arrow-dropright-circle" clear item-right></ion-icon>
+      <ion-icon name="play" clear item-right></ion-icon>
       <ion-badge color="secondary" item-bottom>
-        <ion-icon name="thumbs-up"></ion-icon> X </ion-badge>
+        <ion-icon name="thumbs-up"></ion-icon> {{countStates(matchday)[1]}} </ion-badge>
       <ion-badge color="danger" item-bottom>
-        <ion-icon name="thumbs-down"></ion-icon> X </ion-badge>
+        <ion-icon name="thumbs-down"></ion-icon> {{countStates(matchday)[2]}} </ion-badge>
       <ion-badge item-bottom>
-        <ion-icon name="mail"></ion-icon> X </ion-badge>
+        <ion-icon name="mail"></ion-icon> {{countStates(matchday)[0]}} </ion-badge>
       <!--besseres Icon finden-->
     </ion-item>
   </div>
