@@ -1,38 +1,37 @@
 /**
  * Created by kochsiek on 08.12.2016.
  */
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 
 import { InvitesMatchdayComponent } from "../invites/invitesmatchday.component";
-
-import { InvitesService } from '../../providers/invitesService';
-
-import loggedInUser from '../../app/globalVars'
 
 import firebase from 'firebase';
 
 @Component({
   selector: 'page-invites',
   templateUrl: 'invites.component.html',
-  providers: [InvitesService]
+  //providers: [InvitesService]
 })
 
-export class InvitesComponent {
+export class InvitesComponent implements OnInit{
   login: any;
   dataMatchday: any;
   dataInvite: any;
   dataPlayers: any;
   dataTeams: any;
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private invitesService: InvitesService) {
-    //Load data in arrays
-    this.login = loggedInUser;
+  ngOnInit() {
     this.getInvite();
     this.getMatchday();
     this.getPlayers();
     this.getTeams();
+  }
+
+  constructor(private navCtrl: NavController, private navP: NavParams) {
+    //Load data in arrays
+    
   }
 
   getInvite(): void {
@@ -94,7 +93,7 @@ export class InvitesComponent {
     for (let i of this.dataInvite) {
       if (i.match == match.id) {
         if (i.state == 0) {
-          pending = pending +1;
+          pending = pending + 1;
         } else if (i.state == 1) {
           accepted = accepted + 1;
         } else if (i.state == 2) {
@@ -111,7 +110,7 @@ export class InvitesComponent {
       + " " + match.time.split("-")[3] + ":" + match.time.split("-")[4];
   }
 
-  goToPage(ev, value, invites, players) {
+  goToPage(ev, value, invites, players, picture) {
     this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players });
   }
 }

@@ -9,7 +9,7 @@
 
 <ion-content padding>
   <div *ngFor="let matchday of dataMatchday">
-    <ion-item (click)="goToPage($event, matchday, dataInvite, dataPlayers)">
+    <ion-item (click)="goToPage($event, matchday, dataInvite, dataPlayers, profilePictureURL)">
       <p>{{formatMatchTime(matchday)}}</p>
       <h2><b>Spieltag {{matchday.id}}</b></h2>
       <div *ngFor="let team of dataTeams">
@@ -19,7 +19,7 @@
       </div>
       <p>{{matchday.location.street}} (PLZ: {{matchday.location.zipcode}})</p>
       <br>
-      <ion-icon name="arrow-dropright-circle" clear item-right></ion-icon>
+      <ion-icon name="play" clear item-right></ion-icon>
       <ion-badge color="secondary" item-bottom>
         <ion-icon name="thumbs-up"></ion-icon> {{countStates(matchday)[1]}} </ion-badge>
       <ion-badge color="danger" item-bottom>
