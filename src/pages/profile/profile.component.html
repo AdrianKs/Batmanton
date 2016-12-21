@@ -23,8 +23,9 @@
 <ion-content>
   <div>
     <div class="picture-container">
-      <img class="profile-image picture-click" (click)="changeProfilePicture()"
-           src={{profilePictureUrl}}>
+      <!--<img class="profile-image picture-click" (click)="changeProfilePicture()"-->
+           <!--src={{profilePictureUrl}}>-->
+      <img id="profileImage" class="profile-image picture-click" (click)="changeProfilePicture()">
     </div>
     <br/>
     <form class="center-form profile-inputs" [formGroup]="profileForm" novalidate>
