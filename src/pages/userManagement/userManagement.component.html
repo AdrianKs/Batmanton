@@ -9,15 +9,6 @@
 
 <ion-content padding>
   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
-
-  <!--<div class="selectContainer">
-    <select class="selectTeam">
-    <div *ngFor="let itemTeam of testDataTeams">
-        <option value="itemTeam.name">{{itemTeam.name}}</option>
-    </div>
-  </select>
-  </div>-->
-
   <ion-toolbar no-border-top>
     <ion-segment [(ngModel)]="geschlecht">
       <ion-segment-button value="maenner">
@@ -43,7 +34,7 @@
                   {{ item.lastname }}, {{item.firstname}} <br/>
                 </div>
                 <div class="secondaryDetails">
-                  Mannschaft: {{item.team}}, Geb.: {{item.birthday | birthday}}
+                  Mannschaft: {{item.team | teams}}, Geb.: {{item.birthday | birthday}}
                 </div>
               </div>
             </div>
@@ -64,7 +55,7 @@
                   {{ item.lastname }}, {{item.firstname}} <br/>
                 </div>
                 <div class="secondaryDetails">
-                  Mannschaft: {{item.team}}, Geb.: {{item.birthday | birthday}}
+                  Mannschaft: {{item.team | teams}}, Geb.: {{item.birthday | birthday}}
                 </div>
               </div>
             </div>
