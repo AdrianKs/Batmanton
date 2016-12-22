@@ -23,8 +23,13 @@
           <div *ngIf="item.ageLimit==0">
             Altersklasse: Erwachsen
           </div>
+
           <div *ngIf="item.ageLimit!=0">
             Altersklasse: U {{item.ageLimit}}
+
+          <div *ngIf="item.isAdult==false">
+            Altersklasse: Jugend
+
           </div>
         </div>
       </ion-item>

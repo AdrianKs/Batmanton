@@ -38,6 +38,10 @@ export class EditPlayerComponent implements OnInit {
         this.checkIfUndefined();
     }
 
+    constructor(public nav: NavController, public nParam: NavParams) {
+        this.playersOfTeam = nParam.get("param");
+    }
+
     initializePlayers() {
         this.allPlayers = this.allPlayersSearch;
         this.playersOfTeam = this.playersOfTeamSearch;
@@ -138,6 +142,7 @@ export class EditPlayerComponent implements OnInit {
         }
     }
 
+
     removePlayer(p: any) {
         this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + p.id).remove();
         this.getPlayersOfTeam();
@@ -195,8 +200,12 @@ export class EditPlayerComponent implements OnInit {
                 return (item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1);
             })
         }
+
+    removePlayer(p: any){
+        
+
     }
 
 
 
-}
+}}
