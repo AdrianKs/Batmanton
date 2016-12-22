@@ -33,7 +33,9 @@ export class EditTeamComponent implements OnInit{
     }
 
     editPlayers(){
-        this.nav.push(EditPlayerComponent);
+        this.nav.push(EditPlayerComponent, {
+            param: this.justPlayers
+        });
     }
     
 }

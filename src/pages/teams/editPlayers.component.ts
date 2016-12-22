@@ -16,7 +16,7 @@ export class EditPlayerComponent implements OnInit {
     geschlecht: string = "maenner";
     database: any;
     teams: any[];
-
+    playersOfTeam: any;
 
     ngOnInit(): void {
         this.database = firebase.database();
@@ -25,6 +25,7 @@ export class EditPlayerComponent implements OnInit {
     }
 
     constructor(public nav: NavController, public nParam: NavParams) {
+        this.playersOfTeam = nParam.get("param");
     }
 
     initializePlayers() {
@@ -95,6 +96,10 @@ export class EditPlayerComponent implements OnInit {
                 return (item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1);
             })
         }
+    }
+
+    removePlayer(p: any){
+        
     }
 
 
