@@ -24,6 +24,13 @@ export class EditRoleComponent {
         this.isChanged = false;
     }
 
+
+    ionViewDidEnter() {
+        this.isTrainerOld = this.player.isTrainer;
+        this.isSpielerOld = this.player.isPlayer;
+        this.isChanged = false;
+    }
+
     changeValue(ev) {
         if (!(this.player.isPlayer == false && this.player.isTrainer == false)) {
             if (this.isSpielerOld != this.player.isPlayer || this.isTrainerOld != this.player.isTrainer) {
@@ -58,6 +65,7 @@ export class EditRoleComponent {
 
         if (successFlag) {
             this.presentToast("Rolle wurde erfolgreich bearbeitet");
+            this.navigateBackToList();
         } else {
             this.presentToast("Error. Bitte versuchen Sie es erneut!");
         }

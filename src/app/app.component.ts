@@ -8,13 +8,13 @@ import { MatchdayComponent } from '../pages/matchday/matchday.component';
 import { MyGamesComponent } from '../pages/myGames/myGames.component';
 import { ProfileComponent } from '../pages/profile/profile.component';
 import { UserManagementComponent } from '../pages/userManagement/userManagement.component';
-import {LoginComponent} from "../pages/login/login.component";
+import { LoginComponent } from "../pages/login/login.component";
 import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
-import {firebaseConfig} from "./firebaseAppData";
-import {setUser} from "./globalVars";
-import {AuthData} from '../providers/auth-data';
-import {GlobalServices} from '../providers/globalServices';
+import { firebaseConfig } from "./firebaseAppData";
+import { setUser } from "./globalVars";
+import { AuthData } from '../providers/auth-data';
+import { GlobalServices } from '../providers/globalServices';
 
 
 
@@ -29,11 +29,19 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = MatchdayComponent;
+  aboutPage: any = {
+    title: "About",
+    component: AboutComponent
+  }
 
-  pages: Array<{title: string, component: any}>;
+  myProfilePage: any = {
+    title: "Mein Profil",
+    component: ProfileComponent
+  }
+
+  pages: Array<{ title: string, component: any, icon: string }>;
 
   constructor(public platform: Platform, public authData: AuthData, public globalServices: GlobalServices) {
-
 
     this.initializeApp();
 
@@ -46,13 +54,11 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Spieltage', component: MatchdayComponent },
-      { title: 'Einladungen', component: InvitesComponent },
-      { title: 'Mannschaften', component: TeamsComponent},
-      { title: 'Meine Spiele', component: MyGamesComponent },
-      { title: 'Benutzerverwaltung', component: UserManagementComponent },
-      { title: 'Mein Profil', component: ProfileComponent },
-      { title: 'About', component: AboutComponent }
+      { title: 'Spieltage', component: MatchdayComponent, icon: "clipboard" },
+      { title: 'Einladungen', component: InvitesComponent, icon: "mail" },
+      { title: 'Mannschaften', component: TeamsComponent, icon: "people" },
+      { title: 'Meine Spiele', component: MyGamesComponent, icon: "ribbon" },
+      { title: 'Benutzerverwaltung', component: UserManagementComponent, icon: "settings" }
     ];
 
     globalServices.getTeams();
