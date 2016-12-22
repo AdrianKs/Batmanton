@@ -26,9 +26,6 @@ export class EditRoleComponent {
 
 
     ionViewDidEnter() {
-        this.isTrainerOld = this.player.isTrainer;
-        this.isSpielerOld = this.player.isPlayer;
-        this.isChanged = false;
     }
 
     changeValue(ev) {
@@ -47,7 +44,7 @@ export class EditRoleComponent {
     changeRole(ev, player) {
         let successFlag = true;
 
-        firebase.database().ref('club/12/players/' + player.id).set({
+        firebase.database().ref('clubs/12/players/' + player.id).set({
             birthday: player.birthday,
             email: player.email,
             firstname: player.firstname,
