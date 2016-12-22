@@ -11,7 +11,7 @@
   <div *ngFor="let matchday of dataMatchday">
     <div *ngIf="countStates(matchday)[1] > 0 || countStates(matchday)[1] > 0 || countStates(matchday)[2] > 0">
       <ion-item (click)="goToPage($event, matchday, dataInvite, dataPlayers, profilePictureURL)">
-        <p>{{formatMatchTime(matchday)}}</p>
+        <p>{{matchday.time | matchTime}}</p>
         <h2><b>Spieltag {{matchday.id}}</b></h2>
         <div *ngFor="let team of dataTeams">
           <div *ngIf="team.id == matchday.team">
@@ -20,7 +20,7 @@
         </div>
         <p>{{matchday.location.street}} (PLZ: {{matchday.location.zipcode}})</p>
         <br>
-        <ion-icon name="play" clear item-right></ion-icon>
+        <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
         <ion-badge color="secondary" item-bottom>
           <ion-icon name="thumbs-up"></ion-icon> {{countStates(matchday)[1]}} </ion-badge>
         <ion-badge color="danger" item-bottom>

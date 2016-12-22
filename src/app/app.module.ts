@@ -22,6 +22,7 @@ import { EditPlayerComponent } from '../pages/teams/editPlayers.component';
 import {Birthday} from './pipes/birthday';
 import {Gender} from './pipes/gender';
 import {Teams} from './pipes/teams';
+import {MatchTime} from './pipes/matchTime';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {Teams} from './pipes/teams';
     //Pipes
     Birthday,
     Gender,
-    Teams
+    Teams,
+    MatchTime
   ],
   imports: [
     IonicModule.forRoot(MyApp)

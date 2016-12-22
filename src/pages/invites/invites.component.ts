@@ -108,11 +108,6 @@ export class InvitesComponent implements OnInit {
     return [pending, accepted, declined];
   }
 
-  formatMatchTime(match) {
-    return match.time.split("-")[2] + "." + match.time.split("-")[1] + "." + match.time.split("-")[0]
-      + " " + match.time.split("-")[3] + ":" + match.time.split("-")[4];
-  }
-
   goToPage(ev, value, invites, players, picture) {
     this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players });
   }
