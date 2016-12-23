@@ -11,6 +11,11 @@
 // globale Funktionen
 // globale Variablen
 // globale Services
+// Admin/ Spieler Rolle
+// Enter App Screen
+// Passwort validate
+// globalServices --> globalFunctions
+// Datenmodell-Teams
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
