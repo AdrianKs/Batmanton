@@ -11,7 +11,7 @@ import { AboutComponent } from '../about/about.component'
 
 import firebase from 'firebase';
 
-import { loggedInUser } from '../../app/globalVars.ts';
+import { loggedInUser } from '../../app/globalVars';
 
 @Component({
   selector: 'page-invitesmatchday',

@@ -7,7 +7,7 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { InvitesMatchdayComponent } from "../invites/invitesmatchday.component";
 
-import { loggedInUser } from '../../app/globalVars.ts';
+import { loggedInUser } from '../../app/globalVars';
 
 import firebase from 'firebase';
 
