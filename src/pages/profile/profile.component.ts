@@ -166,6 +166,7 @@ export class ProfileComponent implements OnInit {
     this.emailOld = this.player.email;
     this.birthdayOld = this.player.birthday;
     this.teamOld = this.player.team;
+    this.genderOld = this.player.gender;
     this.editMode = true;
   }
 
@@ -197,6 +198,13 @@ export class ProfileComponent implements OnInit {
   }
 
   cancelEditProfile() {
+    this.player.firstname = this.firstnameOld;
+    this.player.lastname = this.lastnameOld;
+    this.player.email = this.emailOld;
+    this.player.birthday = this.birthdayOld;
+    this.player.team = this.teamOld;
+    this.player.gender = this.genderOld;
+
     this.firstnameChanged = false;
     this.lastnameChanged = false;
     this.emailChanged = false;
