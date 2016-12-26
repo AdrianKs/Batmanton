@@ -12,6 +12,7 @@
 // Passwort validate
 // Datenmodell-Teams
 // Change Teams Properly
+// Fix LogOut set user bug
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
