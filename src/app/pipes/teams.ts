@@ -9,19 +9,13 @@ import {Utilities} from "../../app/utilities";
 })
 export class Teams {
   constructor(public utilities: Utilities){}
-  transform(inputTeam) {
-    if(inputTeam != undefined && this.utilities.allTeams != undefined){
-      if(inputTeam === "0"){
+  transform(inputTeamID) {
+    if(inputTeamID != undefined && this.utilities.allTeamsVal != undefined){
+      if(inputTeamID === "0"){
         return "keine Mannschaft"
+      }else{
+        return this.utilities.allTeamsVal[inputTeamID].name;
       }
-      let teamName = "";
-      this.utilities.allTeams.forEach(function (team){
-        if(team.id ===  inputTeam){
-          teamName = team.name;
-          return false;
-        }
-      });
-      return teamName;
     }
   }
 }

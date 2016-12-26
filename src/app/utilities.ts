@@ -10,6 +10,7 @@ export class Utilities {
   user: any;
   userData: any = "";
   allTeams: Array<any>;
+  allTeamsVal: Array<any>;
   teamsLoaded: boolean = false;
   userLoaded: boolean = false;
 
@@ -37,6 +38,7 @@ export class Utilities {
         teamArray[counter].id = i;
         counter++;
       }
+      this.allTeamsVal = snapshot.val();
       this.allTeams = teamArray;
       this.teamsLoaded = true;
     });
