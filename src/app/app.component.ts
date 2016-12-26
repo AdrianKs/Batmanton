@@ -1,15 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import {Component, ViewChild} from '@angular/core';
+import {Nav, Platform} from 'ionic-angular';
+import {StatusBar, Splashscreen} from 'ionic-native';
 
-import { AboutComponent } from '../pages/about/about.component';
-import { InvitesComponent } from '../pages/invites/invites.component';
-import { MatchdayComponent } from '../pages/matchday/matchday.component';
-import { MyGamesComponent } from '../pages/myGames/myGames.component';
-import { ProfileComponent } from '../pages/profile/profile.component';
-import { UserManagementComponent } from '../pages/userManagement/userManagement.component';
+import {AboutComponent} from '../pages/about/about.component';
+import {InvitesComponent} from '../pages/invites/invites.component';
+import {MatchdayComponent} from '../pages/matchday/matchday.component';
+import {MyGamesComponent} from '../pages/myGames/myGames.component';
+import {ProfileComponent} from '../pages/profile/profile.component';
+import {UserManagementComponent} from '../pages/userManagement/userManagement.component';
 import {LoginComponent} from "../pages/login/login.component";
-import { TeamsComponent } from "../pages/teams/teams.component";
+import {TeamsComponent} from "../pages/teams/teams.component";
 import firebase from 'firebase';
 import {firebaseConfig} from "./firebaseAppData";
 import {AuthData} from '../providers/auth-data';
@@ -37,26 +37,28 @@ export class MyApp {
 
     firebase.auth().onAuthStateChanged((user) => {
       utilities.user = user;
-      utilities.setUserData();
+      if (user != undefined) {
+        utilities.setUserData();
+      }
       if (!user) {
         this.rootPage = LoginComponent;
-      }else{
+      } else {
         this.rootPage = MatchdayComponent;
       }
     });
 
+    utilities.setTeams();
+
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Spieltage', component: MatchdayComponent },
-      { title: 'Einladungen', component: InvitesComponent },
-      { title: 'Mannschaften', component: TeamsComponent},
-      { title: 'Meine Spiele', component: MyGamesComponent },
-      { title: 'Benutzerverwaltung', component: UserManagementComponent },
-      { title: 'Mein Profil', component: ProfileComponent },
-      { title: 'About', component: AboutComponent }
+      {title: 'Spieltage', component: MatchdayComponent},
+      {title: 'Einladungen', component: InvitesComponent},
+      {title: 'Mannschaften', component: TeamsComponent},
+      {title: 'Meine Spiele', component: MyGamesComponent},
+      {title: 'Benutzerverwaltung', component: UserManagementComponent},
+      {title: 'Mein Profil', component: ProfileComponent},
+      {title: 'About', component: AboutComponent}
     ];
-
-    utilities.setTeams();
   }
 
   initializeApp() {
