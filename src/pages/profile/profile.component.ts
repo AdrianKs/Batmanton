@@ -8,7 +8,6 @@
 // Admin/ Spieler Rolle
 // Enter App Screen
 // Passwort validate
-// Datenmodell-Teams
 // Change Teams Properly
 
 import {Component, OnInit} from '@angular/core';
