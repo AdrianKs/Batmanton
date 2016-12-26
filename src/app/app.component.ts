@@ -15,10 +15,7 @@ import {firebaseConfig} from "./firebaseAppData";
 import {AuthData} from '../providers/auth-data';
 import {Utilities} from './utilities';
 
-
-
 firebase.initializeApp(firebaseConfig);
-
 
 @Component({
   templateUrl: 'app.html',

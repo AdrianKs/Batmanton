@@ -4,15 +4,12 @@
 // todo:
 // Einstellungsscreen (Benachrichtigungen, Verein ändern, PW ändern, E-Mail ändern)
 // Error Handling (global)
-// "Profil aufnehmen" --> "Profilbild ändern" in Register Screen
 // kleinere Fonts
-// Einheitliche Namen/ i18n
 // Admin/ Spieler Rolle
 // Enter App Screen
 // Passwort validate
 // Datenmodell-Teams
 // Change Teams Properly
-// Fix LogOut set user bug
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
