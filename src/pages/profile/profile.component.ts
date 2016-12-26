@@ -2,30 +2,26 @@
  * Created by kochsiek on 08.12.2016.
  */
 // todo:
-// Einstellungsscreen (Benachrichtigungen, Verein ändern, PW ändern)
+// Einstellungsscreen (Benachrichtigungen, Verein ändern, PW ändern, E-Mail ändern)
 // Error Handling (global)
 // "Profil aufnehmen" --> "Profilbild ändern" in Register Screen
 // kleinere Fonts
-// Einheitliche Namen
-// i18n
-// globale Funktionen
-// globale Variablen
-// globale Services
+// Einheitliche Namen/ i18n
 // Admin/ Spieler Rolle
 // Enter App Screen
 // Passwort validate
-// globalServices --> globalFunctions
 // Datenmodell-Teams
+// Change Teams Properly
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
 import {NavController, ActionSheetController} from 'ionic-angular';
 import firebase from 'firebase';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
-import {loggedInUser, allTeams} from "../../app/globalVars";
 import {AuthData} from '../../providers/auth-data';
 import {Camera} from 'ionic-native';
 import {document} from "@angular/platform-browser/src/facade/browser";
+import {Utilities} from '../../app/utilities';
 
 @Component({
   selector: 'page-profile',
@@ -35,21 +31,12 @@ import {document} from "@angular/platform-browser/src/facade/browser";
 export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
-    this.getPlayer();
     this.getProfilePicture();
   }
 
   public profileForm;
-  loggedInUserID: string = loggedInUser.uid;
-  player: any = "";
-  teams = allTeams;
   editMode: boolean = false;
   actionSheetOptions: any;
-  /**
-   * Indicates whether the data for the view has been successfully loaded or not. If true, the profile-form in the template can be displayed
-   * @type {boolean}
-   */
-  dataLoaded: boolean = false;
   formValid: boolean = true;
 
   today: String = new Date().toISOString();
@@ -81,7 +68,7 @@ export class ProfileComponent implements OnInit {
   public base64String: string;
 
 
-  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, public authData: AuthData, public actionSheetCtrl: ActionSheetController) {
+  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, public authData: AuthData, public actionSheetCtrl: ActionSheetController, public utilities: Utilities) {
     this.profileForm = formBuilder.group({
       firstname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
       lastname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
@@ -93,21 +80,12 @@ export class ProfileComponent implements OnInit {
   }
 
   /**
-   * Gets the data for the logged in player from the database and sets the "dataLoaded" flag to "true" so the "edit-button" for the profile can be displayed.
-   */
-  getPlayer(): void {
-    firebase.database().ref('clubs/12/players/' + this.loggedInUserID).once('value', snapshot => {
-      this.player = snapshot.val();
-      this.dataLoaded = true;
-    })
-  }
-
-  /**
    * Gets the url to the profile picture. If no profile picture has been uploaded, the default picture is set to the src url
    */
   getProfilePicture() {
     var that = this;
-    firebase.storage().ref().child("profilePictures/" + this.loggedInUserID + "/" + this.loggedInUserID + ".jpg").getDownloadURL().then(function (url) {
+    // firebase.storage().ref().child("profilePictures/" + this.utilities.userDataID + "/" + this.utilities.userDataID + ".jpg").getDownloadURL().then(function (url) {
+    firebase.storage().ref().child("profilePictures/" + this.utilities.user.uid + "/" + this.utilities.user.uid + ".jpg").getDownloadURL().then(function (url) {
       document.getElementById("profileImage").src = url;
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
       that.actionSheetOptions = {
@@ -161,32 +139,33 @@ export class ProfileComponent implements OnInit {
   }
 
   editProfile() {
-    this.firstnameOld = this.player.firstname;
-    this.lastnameOld = this.player.lastname;
-    this.emailOld = this.player.email;
-    this.birthdayOld = this.player.birthday;
-    this.teamOld = this.player.team;
-    this.genderOld = this.player.gender;
+    this.firstnameOld = this.utilities.userData.firstname;
+    this.lastnameOld = this.utilities.userData.lastname;
+    this.emailOld = this.utilities.userData.email;
+    this.birthdayOld = this.utilities.userData.birthday;
+    this.teamOld = this.utilities.userData.team;
+    this.genderOld = this.utilities.userData.gender;
     this.editMode = true;
   }
 
   finishEditProfile() {
     if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.genderChanged || this.teamChanged) && this.formValid) {
-      firebase.database().ref('clubs/12/players/' + this.loggedInUserID).set({
-        birthday: this.player.birthday,
-        email: this.player.email,
-        firstname: this.player.firstname,
-        gender: this.player.gender,
-        isTrainer: this.player.isTrainer,
-        isPlayer: this.player.isPlayer,
-        lastname: this.player.lastname,
-        pushid: this.player.pushid,
-        state: this.player.state,
-        team: this.player.team
+      // firebase.database().ref('clubs/12/players/' + this.utilities.userDataID).set({
+      firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).set({
+        birthday: this.utilities.userData.birthday,
+        email: this.utilities.userData.email,
+        firstname: this.utilities.userData.firstname,
+        gender: this.utilities.userData.gender,
+        isTrainer: this.utilities.userData.isTrainer,
+        isPlayer: this.utilities.userData.isPlayer,
+        lastname: this.utilities.userData.lastname,
+        pushid: this.utilities.userData.pushid,
+        state: this.utilities.userData.state,
+        team: this.utilities.userData.team
       });
     }
     if (this.emailChanged) {
-      this.authData.changeEmail(this.player.email);
+      this.authData.changeEmail(this.utilities.userData.email);
     }
     this.firstnameChanged = false;
     this.lastnameChanged = false;
@@ -198,12 +177,12 @@ export class ProfileComponent implements OnInit {
   }
 
   cancelEditProfile() {
-    this.player.firstname = this.firstnameOld;
-    this.player.lastname = this.lastnameOld;
-    this.player.email = this.emailOld;
-    this.player.birthday = this.birthdayOld;
-    this.player.team = this.teamOld;
-    this.player.gender = this.genderOld;
+    this.utilities.userData.firstname = this.firstnameOld;
+    this.utilities.userData.lastname = this.lastnameOld;
+    this.utilities.userData.email = this.emailOld;
+    this.utilities.userData.birthday = this.birthdayOld;
+    this.utilities.userData.team = this.teamOld;
+    this.utilities.userData.gender = this.genderOld;
 
     this.firstnameChanged = false;
     this.lastnameChanged = false;
@@ -296,7 +275,8 @@ export class ProfileComponent implements OnInit {
   }
 
   uploadPicture() {
-    firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
+    // firebase.storage().ref().child('profilePictures/' + this.utilities.userDataID + "/" + this.utilities.userDataID + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
+    firebase.storage().ref().child('profilePictures/' + this.utilities.user.uid + "/" + this.utilities.user.uid + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
       .then(callback => {
         document.getElementById("profileImage").src = this.base64Image;
         // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
@@ -335,7 +315,8 @@ export class ProfileComponent implements OnInit {
   deleteProfilePicture() {
     var that = this;
     // firebase.storage().ref().child('profilePictures/test.jpg').delete().then(function() {
-    firebase.storage().ref().child('profilePictures/' + this.loggedInUserID + "/" + this.loggedInUserID + '.jpg').delete().then(function () {
+    // firebase.storage().ref().child('profilePictures/' + this.utilities.userDataID + "/" + this.utilities.userDataID + '.jpg').delete().then(function () {
+    firebase.storage().ref().child('profilePictures/' + this.utilities.user.uid + "/" + this.utilities.user.uid + '.jpg').delete().then(function () {
       document.getElementById("profileImage").src = "assets/images/ic_account_circle_black_48dp_2x.png";
 
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not

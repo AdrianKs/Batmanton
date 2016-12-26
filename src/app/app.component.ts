@@ -12,9 +12,8 @@ import {LoginComponent} from "../pages/login/login.component";
 import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
 import {firebaseConfig} from "./firebaseAppData";
-import {setUser} from "./globalVars";
 import {AuthData} from '../providers/auth-data';
-import {GlobalServices} from '../providers/globalServices';
+import {Utilities} from './utilities';
 
 
 
@@ -23,24 +22,26 @@ firebase.initializeApp(firebaseConfig);
 
 @Component({
   templateUrl: 'app.html',
-  providers: [AuthData, GlobalServices]
+  providers: [AuthData, Utilities]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = MatchdayComponent;
+  rootPage: any;
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public authData: AuthData, public globalServices: GlobalServices) {
-
+  constructor(public platform: Platform, public authData: AuthData, public utilities: Utilities) {
 
     this.initializeApp();
 
     firebase.auth().onAuthStateChanged((user) => {
-      setUser(user);
+      utilities.user = user;
+      utilities.setUserData();
       if (!user) {
         this.rootPage = LoginComponent;
+      }else{
+        this.rootPage = MatchdayComponent;
       }
     });
 
@@ -55,7 +56,7 @@ export class MyApp {
       { title: 'About', component: AboutComponent }
     ];
 
-    globalServices.getTeams();
+    utilities.setTeams();
   }
 
   initializeApp() {

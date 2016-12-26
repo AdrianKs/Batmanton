@@ -17,7 +17,7 @@
     <div *ngIf="item.match == matchday.id">
       <!--<ion-item>-->
       <div *ngFor="let player of players">
-        <div *ngIf="item.sender == loggedInUserID">
+        <div *ngIf="item.sender == utilities.user.uid">
           <div *ngIf="player.id == item.recipient">
             <div *ngIf="item.state == '0'">
               <ion-card>

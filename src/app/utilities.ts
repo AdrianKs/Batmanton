@@ -3,18 +3,31 @@
  */
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
-import {setTeams} from "../app/globalVars";
 
 @Injectable()
-export class GlobalServices {
+export class Utilities {
   public fireAuth: any;
+  user: any;
+  userData: any = "";
+  allTeams: Array<any>;
   teamsLoaded: boolean = false;
+  userLoaded: boolean = false;
 
   constructor() {
     this.fireAuth = firebase.auth();
   }
 
-  getTeams(){
+  /**
+   * Gets the data for the logged in userData from the database and sets the "userLoaded" flag to "true"
+   */
+  setUserData(): void {
+    firebase.database().ref('clubs/12/players/' + this.user.uid).once('value', snapshot => {
+      this.userData = snapshot.val();
+      this.userLoaded = true;
+    })
+  }
+
+  setTeams(){
     this.teamsLoaded = false;
     firebase.database().ref('clubs/12/teams').once('value', snapshot => {
       let teamArray = [];
@@ -24,8 +37,9 @@ export class GlobalServices {
         teamArray[counter].id = i;
         counter++;
       }
-      setTeams(teamArray);
+      this.allTeams = teamArray;
       this.teamsLoaded = true;
     });
   }
+
 }
