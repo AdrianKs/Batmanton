@@ -19,9 +19,9 @@ export class MyGamesComponent implements OnInit {
     this.getInvites();
   }
 
-  gameStatus: string = "vergangende";
   loggedInUserID: string = loggedInUser.uid;
   player: any = "";
+  gameStatus: string = "vergangene";
   dataGames: any;
   dataInvites: any;
   testRadioOpen: boolean;
