@@ -105,7 +105,7 @@
         <ion-select #team formControlName="team" placeholder="Mannschaft" [(ngModel)]="utilities.userData.team"
                     (ionChange)="teamSelectChanged(utilities.userData.team)" doneText="Ok" cancelText="Abbrechen">
           <ion-option value=0>keine Mannschaft</ion-option>
-          <ion-option *ngFor="let item of utilities.allTeams" value="{{item.id}}">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
     </form>

@@ -35,7 +35,7 @@ export class ProfileComponent implements OnInit {
   editMode: boolean = false;
   actionSheetOptions: any;
   formValid: boolean = true;
-
+  relevantTeams: Array<any> = [];
   today: String = new Date().toISOString();
 
   /**
@@ -143,6 +143,7 @@ export class ProfileComponent implements OnInit {
     this.teamOld = this.utilities.userData.team;
     this.genderOld = this.utilities.userData.gender;
     this.editMode = true;
+    this.relevantTeams = this.utilities.getRelevantTeams(this.utilities.userData.birthday);
   }
 
   finishEditProfile() {
@@ -209,6 +210,14 @@ export class ProfileComponent implements OnInit {
       this.birthdayChanged = true;
     } else {
       this.birthdayChanged = false;
+    }
+    this.relevantTeams = this.utilities.getRelevantTeams(this.utilities.userData.birthday);
+    if (this.utilities.userData.team != undefined && this.utilities.allTeamsVal[this.utilities.userData.team] != undefined) {
+      if (this.utilities.userData.team != 0 && this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit != 0) {
+        if (this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit < this.utilities.calculateAge(this.utilities.userData.birthday)) {
+          this.utilities.userData.team = "0";
+        }
+      }
     }
   }
 
