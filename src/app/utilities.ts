@@ -74,4 +74,39 @@ export class Utilities {
     return relevantTeams;
   }
 
+  addPlayerToTeam(teamID, userID){
+    if (teamID != undefined && teamID != "0") {
+      firebase.database().ref('clubs/12/teams/' + teamID + '/players').once('value', snapshot => {
+        let playersArray = [];
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          playersArray[counter] = snapshot.val()[i];
+          counter++;
+        }
+        playersArray.push(userID);
+        firebase.database().ref('clubs/12/teams/' + teamID + '/').update({
+          players: playersArray
+        });
+      });
+    }
+  }
+
+  removePlayerFromTeam(teamID, userID){
+    if (teamID != undefined && teamID != "0") {
+      firebase.database().ref('clubs/12/teams/' + teamID + '/players').once('value', snapshot => {
+        let userPosition;
+        for (var i = 0; i < snapshot.val().length; i++) {
+          if (snapshot.val()[i] != undefined){
+            if (snapshot.val()[i] === userID){
+              userPosition = i;
+              break;
+            }
+          }
+        }
+        if(userPosition != undefined) {
+          firebase.database().ref('clubs/12/teams/' + teamID + '/players/' + userPosition).remove();
+        }
+      });
+    }
+  }
 }

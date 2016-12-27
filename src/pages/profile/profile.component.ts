@@ -8,7 +8,7 @@
 // Admin/ Spieler Rolle
 // Enter App Screen
 // Passwort validate
-// Change Teams Properly
+// Change Teams Kollisionsvermeidung (Trainer & Spieler ändern gleichzeitig Team des Spielers)
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
@@ -165,6 +165,13 @@ export class ProfileComponent implements OnInit {
     if (this.emailChanged) {
       this.authData.changeEmail(this.utilities.userData.email);
     }
+    if (this.teamChanged) {
+      console.log("TeamOld" + this.teamOld)
+      console.log("TeamNew" + this.utilities.userData.team)
+      this.utilities.removePlayerFromTeam(this.teamOld, this.utilities.user.uid);
+      this.utilities.addPlayerToTeam(this.utilities.userData.team, this.utilities.user.uid);
+    }
+
     this.firstnameChanged = false;
     this.lastnameChanged = false;
     this.emailChanged = false;
@@ -213,7 +220,7 @@ export class ProfileComponent implements OnInit {
     }
     this.relevantTeams = this.utilities.getRelevantTeams(this.utilities.userData.birthday);
     if (this.utilities.userData.team != undefined && this.utilities.allTeamsVal[this.utilities.userData.team] != undefined) {
-      if (this.utilities.userData.team != 0 && this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit != 0) {
+      if (this.utilities.userData.team != "0" && this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit != 0) {
         if (this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit < this.utilities.calculateAge(this.utilities.userData.birthday)) {
           this.utilities.userData.team = "0";
         }

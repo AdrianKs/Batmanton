@@ -146,6 +146,7 @@ export class RegisterComponent {
         this.gender,
         this.team
       ).then(() => {
+        this.utilities.addPlayerToTeam(this.team, this.utilities.user.uid);
         this.navCtrl.setRoot(SelectProfilePictureComponent);
       }, (error) => {
         this.loading.dismiss();
