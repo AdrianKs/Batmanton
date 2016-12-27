@@ -14,7 +14,7 @@ import firebase from 'firebase';
 import { firebaseConfig } from "./firebaseAppData";
 import { setUser } from "./globalVars";
 import { AuthData } from '../providers/auth-data';
-import { GlobalServices } from '../providers/globalServices';
+import {Utilities} from './utilities';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -38,7 +38,7 @@ export class MyApp {
 
   pages: Array<{ title: string, component: any, icon: string }>;
 
-  constructor(public platform: Platform, public authData: AuthData, public globalServices: GlobalServices) {
+  constructor(public platform: Platform, public authData: AuthData, public utilities: Utilities) {
 
     this.initializeApp();
 

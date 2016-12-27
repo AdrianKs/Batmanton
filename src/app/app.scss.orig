@@ -31,7 +31,11 @@ p {
 ion-label {
   margin-left: 5px;
 }
+<<<<<<< 2e5e54d0d98ae14e8ca99fff26cdf607ac34b9e0
 <<<<<<< dc0e64b282d5d0964d83ce08cc4416b5dedaee3f
+=======
+<<<<<<< 1235913068ef27b9839d4032cbf9d209837075c1
+>>>>>>> updated branch with utilities...
 =======
 
 ion-input {
