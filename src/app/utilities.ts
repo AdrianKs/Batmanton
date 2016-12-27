@@ -1,7 +1,7 @@
 /**
  * Created by Sebastian on 20.12.2016.
  */
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 
 @Injectable()
@@ -13,9 +13,11 @@ export class Utilities {
   allTeamsVal: Array<any>;
   teamsLoaded: boolean = false;
   userLoaded: boolean = false;
+  allPlayers: Array<any>;
 
   constructor() {
     this.fireAuth = firebase.auth();
+    this.setPlayers();
   }
 
   /**
@@ -41,6 +43,19 @@ export class Utilities {
       this.allTeamsVal = snapshot.val();
       this.allTeams = teamArray;
       this.teamsLoaded = true;
+    });
+  }
+
+  setPlayers() {
+    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
+      let playerArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        playerArray[counter] = snapshot.val()[i];
+        playerArray[counter].id = i;
+        counter++;
+      }
+      this.allPlayers = playerArray;
     });
   }
 
@@ -74,7 +89,7 @@ export class Utilities {
     return relevantTeams;
   }
 
-  addPlayerToTeam(teamID, userID){
+  addPlayerToTeam(teamID, userID) {
     if (teamID != undefined && teamID != "0") {
       firebase.database().ref('clubs/12/teams/' + teamID + '/players').once('value', snapshot => {
         let playersArray = [];
@@ -91,19 +106,19 @@ export class Utilities {
     }
   }
 
-  removePlayerFromTeam(teamID, userID){
+  removePlayerFromTeam(teamID, userID) {
     if (teamID != undefined && teamID != "0") {
       firebase.database().ref('clubs/12/teams/' + teamID + '/players').once('value', snapshot => {
         let userPosition;
         for (var i = 0; i < snapshot.val().length; i++) {
-          if (snapshot.val()[i] != undefined){
-            if (snapshot.val()[i] === userID){
+          if (snapshot.val()[i] != undefined) {
+            if (snapshot.val()[i] === userID) {
               userPosition = i;
               break;
             }
           }
         }
-        if(userPosition != undefined) {
+        if (userPosition != undefined) {
           firebase.database().ref('clubs/12/teams/' + teamID + '/players/' + userPosition).remove();
         }
       });
