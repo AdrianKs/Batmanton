@@ -30,6 +30,10 @@ export class MyApp {
     title: "About",
     component: AboutComponent
   }
+  aboutPage: any = {
+    title: "About",
+    component: AboutComponent
+  }
 
   myProfilePage: any = {
     title: "Mein Profil",
