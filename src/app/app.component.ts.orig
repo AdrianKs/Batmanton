@@ -1,3 +1,4 @@
+<<<<<<< 1235913068ef27b9839d4032cbf9d209837075c1
 import {Component, ViewChild} from '@angular/core';
 import {Nav, Platform} from 'ionic-angular';
 import {StatusBar, Splashscreen} from 'ionic-native';
@@ -8,13 +9,33 @@ import {MatchdayComponent} from '../pages/matchday/matchday.component';
 import {MyGamesComponent} from '../pages/myGames/myGames.component';
 import {ProfileComponent} from '../pages/profile/profile.component';
 import {UserManagementComponent} from '../pages/userManagement/userManagement.component';
-import { LoginComponent } from "../pages/login/login.component";
+import {LoginComponent} from "../pages/login/login.component";
 import {TeamsComponent} from "../pages/teams/teams.component";
+import firebase from 'firebase';
+import {firebaseConfig} from "./firebaseAppData";
+import {AuthData} from '../providers/auth-data';
+import {Utilities} from './utilities';
+=======
+import { Component, ViewChild } from '@angular/core';
+import { Nav, Platform } from 'ionic-angular';
+import { StatusBar, Splashscreen } from 'ionic-native';
+
+import { AboutComponent } from '../pages/about/about.component';
+import { InvitesComponent } from '../pages/invites/invites.component';
+import { MatchdayComponent } from '../pages/matchday/matchday.component';
+import { MyGamesComponent } from '../pages/myGames/myGames.component';
+import { ProfileComponent } from '../pages/profile/profile.component';
+import { UserManagementComponent } from '../pages/userManagement/userManagement.component';
+import { LoginComponent } from "../pages/login/login.component";
+import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
 import { firebaseConfig } from "./firebaseAppData";
 import { setUser } from "./globalVars";
 import { AuthData } from '../providers/auth-data';
-import {Utilities} from './utilities';
+import { GlobalServices } from '../providers/globalServices';
+
+
+>>>>>>> changed menu style...
 
 firebase.initializeApp(firebaseConfig);
 
@@ -25,7 +46,10 @@ firebase.initializeApp(firebaseConfig);
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
+<<<<<<< 1235913068ef27b9839d4032cbf9d209837075c1
   rootPage: any;
+=======
+  rootPage: any = MatchdayComponent;
   aboutPage: any = {
     title: "About",
     component: AboutComponent
@@ -35,10 +59,15 @@ export class MyApp {
     title: "Mein Profil",
     component: ProfileComponent
   }
+>>>>>>> changed menu style...
 
   pages: Array<{ title: string, component: any, icon: string }>;
 
+<<<<<<< 1235913068ef27b9839d4032cbf9d209837075c1
   constructor(public platform: Platform, public authData: AuthData, public utilities: Utilities) {
+=======
+  constructor(public platform: Platform, public authData: AuthData, public globalServices: GlobalServices) {
+>>>>>>> changed menu style...
 
     this.initializeApp();
 
@@ -58,11 +87,21 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
+<<<<<<< 1235913068ef27b9839d4032cbf9d209837075c1
+      {title: 'Spieltage', component: MatchdayComponent},
+      {title: 'Einladungen', component: InvitesComponent},
+      {title: 'Mannschaften', component: TeamsComponent},
+      {title: 'Meine Spiele', component: MyGamesComponent},
+      {title: 'Benutzerverwaltung', component: UserManagementComponent},
+      {title: 'Mein Profil', component: ProfileComponent},
+      {title: 'About', component: AboutComponent}
+=======
       { title: 'Spieltage', component: MatchdayComponent, icon: "clipboard" },
       { title: 'Einladungen', component: InvitesComponent, icon: "mail" },
       { title: 'Mannschaften', component: TeamsComponent, icon: "people" },
       { title: 'Meine Spiele', component: MyGamesComponent, icon: "ribbon" },
       { title: 'Benutzerverwaltung', component: UserManagementComponent, icon: "settings" }
+>>>>>>> changed menu style...
     ];
   }
 
