@@ -12,16 +12,19 @@ export class EditRoleComponent {
     isTrainerOld: boolean;
     isSpielerOld: boolean;
     isChanged: boolean;
+    isDeleted: boolean;
 
     constructor(private navCtrl: NavController,
-        private navParams: NavParams,
-        public toastCtrl: ToastController,
-        public alertCtrl: AlertController,
-        public viewCtrl: ViewController) {
+                private navParams: NavParams,
+                public toastCtrl: ToastController,
+                public alertCtrl: AlertController,
+                public viewCtrl: ViewController) {
+
         this.player = navParams.get('player');
         this.isTrainerOld = this.player.isTrainer;
         this.isSpielerOld = this.player.isPlayer;
         this.isChanged = false;
+        this.isDeleted = false;
     }
 
 
@@ -71,12 +74,13 @@ export class EditRoleComponent {
 
     deleteUser(player) {
         firebase.database().ref('clubs/12/players/' + player.id).remove();
+        this.isDeleted = true;
         this.navigateBackToList();
     }
 
 
     navigateBackToList() {
-        this.navCtrl.pop(this);
+        this.navCtrl.popToRoot();
     }
 
     presentToast(customMessage: string) {
@@ -110,3 +114,5 @@ export class EditRoleComponent {
         confirm.present();
     }
 }
+
+//TODO delete and update list without db connection
