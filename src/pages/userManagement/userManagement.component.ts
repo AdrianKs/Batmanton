@@ -12,10 +12,10 @@ import firebase from 'firebase';
 export class UserManagementComponent implements OnInit {
 
   ngOnInit() {
+    this.getPlayer();
   }
 
   ionViewDidEnter() {
-    this.getPlayer();
   }
 
   geschlecht: string = "maenner";
