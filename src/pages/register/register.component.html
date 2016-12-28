@@ -33,7 +33,7 @@
     <ion-item>
       <ion-label stacked>Geburtstag</ion-label>
       <ion-datetime #birthday formControlName="birthday" class="datetime-text" displayFormat="DD.MM.YYYY " pickerFormat="DD MM YYYY"
-                    (ionChange)="birthdaySelectChanged(birthday)"
+                    (ionChange)="birthdaySelectChanged()"
                 placeholder="Geburtstag"
                 [class.invalid]="!signupForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)"></ion-datetime>
     </ion-item>
