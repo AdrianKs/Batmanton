@@ -31,11 +31,7 @@ export class EditRoleComponent {
     ionViewDidEnter() {
     }
 
-
-    ionViewDidEnter() {
-    }
-
-    changeValue(ev) {
+   changeValue(ev) {
         if (!(this.player.isPlayer == false && this.player.isTrainer == false)) {
             if (this.isSpielerOld != this.player.isPlayer || this.isTrainerOld != this.player.isTrainer) {
                 this.isChanged = true;
