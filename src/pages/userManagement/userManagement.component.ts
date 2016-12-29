@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { EditRoleComponent } from '../editRole/editRole.component';
 import { UserManagementService } from '../../providers/userManagament.service';
+import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
 
 @Component({
@@ -15,18 +16,20 @@ export class UserManagementComponent implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.getPlayer();
+    console.log(this.selectedPlayer);
   }
 
   geschlecht: string = "maenner";
   dataPlayer: any;
   dataPlayerSearch: any;
+  selectedPlayer: any;
 
-  constructor(private navCtrl: NavController, private userManagementService: UserManagementService) {
-    //Load data in array
+  constructor(private navCtrl: NavController, private userManagementService: UserManagementService, public utilities: Utilities) {
+    this.dataPlayer = this.utilities.allPlayers;
+    this.dataPlayerSearch = this.utilities.allPlayers;
   }
 
-  getPlayer(): void {
+  /*getPlayer(): void {
     firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
       let playerArray = [];
       let counter = 0;
@@ -38,13 +41,14 @@ export class UserManagementComponent implements OnInit {
       this.dataPlayerSearch = playerArray;
       this.dataPlayer = playerArray;
     });
-  }
+  }*/
 
   initializeItems() {
     this.dataPlayer = this.dataPlayerSearch;
   }
 
   openEditor(ev, value) {
+    this.selectedPlayer = value;
     this.navCtrl.push(EditRoleComponent, { player: value });
   }
 

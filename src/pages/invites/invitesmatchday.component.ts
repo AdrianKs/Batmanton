@@ -8,10 +8,9 @@ import { NavController, NavParams } from 'ionic-angular';
 import { InvitesService } from '../../providers/invitesService';
 
 import { AboutComponent } from '../about/about.component'
+import {Utilities} from '../../app/utilities';
 
 import firebase from 'firebase';
-
-import { loggedInUser } from '../../app/globalVars';
 
 @Component({
   selector: 'page-invitesmatchday',
@@ -23,9 +22,8 @@ export class InvitesMatchdayComponent {
   invites: any;
   players: any;
   profilePictureURL: any;
-  loggedInUserID: string = loggedInUser.uid;
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private invitesService: InvitesService) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private invitesService: InvitesService, public utilities: Utilities) {
     //Load data in array
     this.matchday = navP.get('matchday');
     this.invites = navP.get('invites');
@@ -34,7 +32,7 @@ export class InvitesMatchdayComponent {
 
   getProfilePictureURL(player) {
     /* var that = this;
-     firebase.storage().ref().child("profilePictures/" + player.id + "/" + player.id + ".jpg").getDownloadURL().then(function (url) {
+     firebase.storage().ref().child("profilePictures/" + loggedInUser.id + "/" + loggedInUser.id + ".jpg").getDownloadURL().then(function (url) {
        that.profilePictureURL = url;
      }).catch(function(error) {
        that.profilePictureURL = "../../assets/images/ic_account_circle_black_48dp_2x.png";

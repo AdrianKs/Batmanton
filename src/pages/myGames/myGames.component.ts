@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
 import { MyGamesService } from '../../providers/myGames.service';
-import { loggedInUser } from "../../app/globalVars";
 import firebase from 'firebase';
+import {Utilities} from '../../app/utilities';
 
 @Component({
   selector: 'page-myGames',
@@ -14,27 +14,18 @@ import firebase from 'firebase';
 export class MyGamesComponent implements OnInit {
 
   ngOnInit() {
-    this.getPlayer();
     this.getGames();
     this.getInvites();
   }
 
-  gameStatus: string = "vergangende";
-  loggedInUserID: string = loggedInUser.uid;
-  player: any = "";
+  gameStatus: string = "vergangene";
   dataGames: any;
   dataInvites: any;
   testRadioOpen: boolean;
   testRadioResult;
-  
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService) {
-    
-  }
 
-  getPlayer(): void {
-    firebase.database().ref('clubs/12/players/' + this.loggedInUserID).once('value', snapshot => {
-      this.player = snapshot.val();
-    })
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService, public utilities: Utilities) {
+
   }
 
   getGames(): void {

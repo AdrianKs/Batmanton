@@ -7,7 +7,7 @@ import {Camera} from 'ionic-native';
 import { NavController, MenuController } from 'ionic-angular';
 import {MatchdayComponent} from "../matchday/matchday.component";
 import firebase from 'firebase';
-import {loggedInUser} from "../../app/globalVars";
+import {Utilities} from '../../app/utilities';
 
 @Component({
   selector: 'page-selectProfilePicture',
@@ -18,7 +18,7 @@ export class SelectProfilePictureComponent {
   public base64Image: string;
   public base64String: string;
 
-  constructor(public navCtrl: NavController, public menuCtrl: MenuController) {
+  constructor(public navCtrl: NavController, public menuCtrl: MenuController, public utilities: Utilities) {
 
   }
 
@@ -60,9 +60,7 @@ export class SelectProfilePictureComponent {
 
 
   uploadPicture() {
-    console.log(loggedInUser);
-
-    firebase.storage().ref().child('profilePictures/' + loggedInUser.uid + "/" + loggedInUser.uid + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
+    firebase.storage().ref().child('profilePictures/' + this.utilities.user.uid + "/" + this.utilities.user.uid + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
       .then(callback => {
         console.log("Image upload success");
         this.goToStartPage();
