@@ -32,8 +32,8 @@
 
     <ion-item>
       <ion-label stacked>Geburtstag</ion-label>
-      <ion-datetime #birthday formControlName="birthday" displayFormat="DD/MM/YYYY " pickerFormat="DD MM YYYY"
-                (change)="elementChanged(birthday)"
+      <ion-datetime #birthday formControlName="birthday" class="datetime-text" displayFormat="DD.MM.YYYY " pickerFormat="DD MM YYYY"
+                    (ionChange)="birthdaySelectChanged()"
                 placeholder="Geburtstag"
                 [class.invalid]="!signupForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)"></ion-datetime>
     </ion-item>
@@ -60,7 +60,7 @@
                   placeholder="Mannschaft"
                   [class.invalid]="(!teamChanged && submitAttempt)">
         <ion-option value=0>keine Mannschaft</ion-option>
-        <ion-option *ngFor="let item of teams" value="{{item.id}}">{{item.name}}</ion-option>
+        <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item class="error-message" *ngIf="(!teamChanged && submitAttempt)">

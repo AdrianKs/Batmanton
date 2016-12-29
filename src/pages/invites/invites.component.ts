@@ -7,9 +7,8 @@ import { NavController, NavParams } from 'ionic-angular';
 
 import { InvitesMatchdayComponent } from "../invites/invitesmatchday.component";
 
-import { loggedInUser } from '../../app/globalVars';
-
 import firebase from 'firebase';
+import {Utilities} from '../../app/utilities';
 
 @Component({
   selector: 'page-invites',
@@ -22,17 +21,14 @@ export class InvitesComponent implements OnInit {
   dataMatchday: any;
   dataInvite: any;
   dataPlayers: any;
-  dataTeams: any;
-  loggedInUserID: string = loggedInUser.uid;
 
   ngOnInit() {
     this.getInvite();
     this.getMatchday();
     this.getPlayers();
-    this.getTeams();
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams) {
+  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities) {
     //Load data in arrays
 
   }
@@ -47,19 +43,6 @@ export class InvitesComponent implements OnInit {
         counter++;
       }
       this.dataInvite = inviteArray;
-    })
-  }
-
-  getTeams(): void {
-    firebase.database().ref('clubs/12/teams').once('value', snapshot => {
-      let teamsArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        teamsArray[counter] = snapshot.val()[i];
-        teamsArray[counter].id = i;
-        counter++;
-      }
-      this.dataTeams = teamsArray;
     })
   }
 
@@ -94,7 +77,7 @@ export class InvitesComponent implements OnInit {
     let declined = 0;
     let pending = 0;
     for (let i of this.dataInvite) {
-      if (i.match == match.id && i.sender == this.loggedInUserID) {
+      if (i.match == match.id && i.sender == this.utilities.user.uid) {
         if (i.state == 0) {
           pending = pending + 1;
         } else if (i.state == 1) {

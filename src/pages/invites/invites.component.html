@@ -13,7 +13,7 @@
       <ion-item (click)="goToPage($event, matchday, dataInvite, dataPlayers, profilePictureURL)">
         <p>{{matchday.time | matchTime}}</p>
         <h2><b>Spieltag {{matchday.id}}</b></h2>
-        <div *ngFor="let team of dataTeams">
+        <div *ngFor="let team of utilities.userData.team">
           <div *ngIf="team.id == matchday.team">
             <p>{{team.name}} gg. {{matchday.opponent}}</p>
           </div>

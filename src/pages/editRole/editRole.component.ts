@@ -12,19 +12,26 @@ export class EditRoleComponent {
     isTrainerOld: boolean;
     isSpielerOld: boolean;
     isChanged: boolean;
+    isDeleted: boolean;
 
     constructor(private navCtrl: NavController,
-        private navParams: NavParams,
-        public toastCtrl: ToastController,
-        public alertCtrl: AlertController,
-        public viewCtrl: ViewController) {
+                private navParams: NavParams,
+                public toastCtrl: ToastController,
+                public alertCtrl: AlertController,
+                public viewCtrl: ViewController) {
+
         this.player = navParams.get('player');
         this.isTrainerOld = this.player.isTrainer;
         this.isSpielerOld = this.player.isPlayer;
         this.isChanged = false;
+        this.isDeleted = false;
     }
 
-    changeValue(ev) {
+
+    ionViewDidEnter() {
+    }
+
+   changeValue(ev) {
         if (!(this.player.isPlayer == false && this.player.isTrainer == false)) {
             if (this.isSpielerOld != this.player.isPlayer || this.isTrainerOld != this.player.isTrainer) {
                 this.isChanged = true;
@@ -40,7 +47,7 @@ export class EditRoleComponent {
     changeRole(ev, player) {
         let successFlag = true;
 
-        firebase.database().ref('club/12/players/' + player.id).set({
+        firebase.database().ref('clubs/12/players/' + player.id).set({
             birthday: player.birthday,
             email: player.email,
             firstname: player.firstname,
@@ -58,6 +65,7 @@ export class EditRoleComponent {
 
         if (successFlag) {
             this.presentToast("Rolle wurde erfolgreich bearbeitet");
+            this.navigateBackToList();
         } else {
             this.presentToast("Error. Bitte versuchen Sie es erneut!");
         }
@@ -66,12 +74,13 @@ export class EditRoleComponent {
 
     deleteUser(player) {
         firebase.database().ref('clubs/12/players/' + player.id).remove();
+        this.isDeleted = true;
         this.navigateBackToList();
     }
 
 
     navigateBackToList() {
-        this.navCtrl.pop(this);
+        this.navCtrl.popToRoot();
     }
 
     presentToast(customMessage: string) {
@@ -105,3 +114,5 @@ export class EditRoleComponent {
         confirm.present();
     }
 }
+
+//TODO delete and update list without db connection
