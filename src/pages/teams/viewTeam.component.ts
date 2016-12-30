@@ -36,8 +36,14 @@ export class ViewTeamComponent {
         this.team = navP.get("team");
         console.log("TEAM IN VIEWTEAM VIEW");
         console.log(this.team);
+
         this.justPlayersPlaceholder = this.team.players;
         this.checkIfUndefined();
+
+
+        this.justPlayers = this.team.players;
+        console.log("JUST PLAYERS ARRAY:");
+        console.log(this.justPlayers);
 
     }
 
