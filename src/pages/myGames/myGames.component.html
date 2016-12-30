@@ -5,6 +5,19 @@
     </button>
     <ion-title center>Meine Spiele</ion-title>
   </ion-navbar>
+  <ion-toolbar no-border-bottom>
+    <ion-segment [(ngModel)]="gameStatus">
+      <ion-segment-button value="vergangende">
+        Vergangende
+      </ion-segment-button>
+      <ion-segment-button value="bevorstehende">
+        Bevorstehende
+      </ion-segment-button>
+      <ion-segment-button value="offene">
+        Offene
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
@@ -82,18 +95,3 @@
     </ion-list>
   </div>
 </ion-content>
-<ion-footer>
-  <ion-toolbar no-border-bottom>
-    <ion-segment [(ngModel)]="gameStatus">
-      <ion-segment-button value="vergangende">
-        Vergangende
-      </ion-segment-button>
-      <ion-segment-button value="bevorstehende">
-        Bevorstehende
-      </ion-segment-button>
-      <ion-segment-button value="offene">
-        Offene
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
-</ion-footer>
