@@ -93,13 +93,17 @@ export class TeamsComponent implements OnInit {
         for (let y in valueArray[i]) {
           idPlaceholder = valueArray[i][y];
           let player = snapshot.child("" + idPlaceholder).val();
-          console.log("PLAYER: ");
-          console.log(player);
-          this.teams[i].players[y] = player;
-          console.log("TEAMS:");
-          console.log(this.teams);
+          if (player != null) {
+            console.log("PLAYER: ");
+            console.log(player);
+            this.teams[i].players[y] = player;
+          } else {
+            console.log("Spieler übersprungen, da null");
+          }
         }
       }
+      console.log("TEAMS:");
+      console.log(this.teams);
     })
 
   }
