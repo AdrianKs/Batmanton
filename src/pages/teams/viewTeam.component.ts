@@ -37,6 +37,8 @@ export class ViewTeamComponent {
         console.log("TEAM IN VIEWTEAM VIEW");
         console.log(this.team);
         this.justPlayers = this.team.players;
+        console.log("JUST PLAYERS ARRAY:");
+        console.log(this.justPlayers);
     }
 
     fetchAllPlayers() {
