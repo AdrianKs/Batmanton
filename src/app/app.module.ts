@@ -6,6 +6,7 @@ import {InvitesComponent} from '../pages/invites/invites.component';
 import {InvitesMatchdayComponent} from '../pages/invites/invitesmatchday.component';
 import {LoginComponent} from '../pages/login/login.component';
 import {MatchdayComponent} from '../pages/matchday/matchday.component';
+import {CreateMatchdayComponent} from '../pages/matchday/createMatchday.component';
 import {MyGamesComponent} from '../pages/myGames/myGames.component';
 import {GameDetailsComponent} from '../pages/gameDetails/gameDetails.component';
 import {ProfileComponent} from '../pages/profile/profile.component';
@@ -21,6 +22,7 @@ import {EditTeamComponent} from '../pages/teams/editTeam.component';
 import {EditPlayerComponent} from '../pages/teams/editPlayers.component';
 import {Birthday} from './pipes/birthday';
 import {Gender} from './pipes/gender';
+import {Player} from './pipes/player';
 import {Teams} from './pipes/teams';
 import {MatchTime} from './pipes/matchTime';
 
@@ -32,6 +34,7 @@ import {MatchTime} from './pipes/matchTime';
     InvitesMatchdayComponent,
     LoginComponent,
     MatchdayComponent,
+    CreateMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
     ProfileComponent,
@@ -48,6 +51,7 @@ import {MatchTime} from './pipes/matchTime';
     //Pipes
     Birthday,
     Gender,
+    Player,
     Teams,
     MatchTime
   ],
@@ -62,6 +66,7 @@ import {MatchTime} from './pipes/matchTime';
     InvitesMatchdayComponent,
     LoginComponent,
     MatchdayComponent,
+    CreateMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
     ProfileComponent,

@@ -31,10 +31,10 @@
                 <ion-thumbnail item-left>
                   <img src="assets/img/TSV Heimaterde.png">
                 </ion-thumbnail>
-                <p>{{ gameItem.id }}</p>
-                <p>{{ gameItem.time }}</p>
+                <p>{{ gameItem.time | matchTime}}</p>
                 <p>{{ gameItem.opponent }}</p>
-                <p>{{ gameItem.home }}</p>
+                <div *ngIf="gameItem.home == true"><p>Heim</p></div>
+                <div *ngIf="gameItem.home == false"><p>Auswärts</p></div>
               </ion-item>
             </div>
           </div>
@@ -47,15 +47,17 @@
         <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
           <div *ngFor="let gameItem of dataGames">
             <div *ngIf="inviteItem.match == gameItem.id">
-              <ion-item>
+              <ion-item (click)="openDetails($event, gameItem)">
                 <ion-thumbnail item-left>
                   <img src="assets/img/TSV Heimaterde.png">
                 </ion-thumbnail>
-                <p>{{ gameItem.id }}</p>
-                <p>{{ gameItem.time }}</p>
+                <p>{{ gameItem.time | matchTime}}</p>
                 <p>{{ gameItem.opponent }}</p>
-                <p>{{ gameItem.home }}</p>
-                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem)">
+                <div *ngIf="gameItem.home == true"><p>Heim</p></div>
+                <div *ngIf="gameItem.home == false"><p>Auswärts</p></div>
+              </ion-item>
+              <ion-item>
+                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem)" item-right>
                 <ion-icon name='close'></ion-icon>
                   Absagen
                 </button>
@@ -71,19 +73,21 @@
         <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 0">
           <div *ngFor="let gameItem of dataGames">
             <div *ngIf="inviteItem.match == gameItem.id">
-              <ion-item>
+              <ion-item (click)="openDetails($event, gameItem)">
                 <ion-thumbnail item-left>
                   <img src="assets/img/TSV Heimaterde.png">
                 </ion-thumbnail>
-                <p>{{ gameItem.id }}</p>
-                <p>{{ gameItem.time }}</p>
+                <p>{{ gameItem.time | matchTime}}</p>
                 <p>{{ gameItem.opponent }}</p>
-                <p>{{ gameItem.home }}</p>
-                <button ion-button color="secondary" icon-left (click)="doAlert(inviteItem)">
+                <div *ngIf="gameItem.home == true"><p>Heim</p></div>
+                <div *ngIf="gameItem.home == false"><p>Auswärts</p></div>
+              </ion-item>
+              <ion-item>
+                <button ion-button color="secondary" icon-left (click)="verifyAccept(inviteItem, gameItem)" item-right>
                 <ion-icon name='checkmark'></ion-icon>
                   Zusagen
                 </button>
-                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem)">
+                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem)" item-right>
                 <ion-icon name='close'></ion-icon>
                   Absagen
                 </button>

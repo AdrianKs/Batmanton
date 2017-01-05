@@ -8,15 +8,21 @@
 </ion-header>
 
 <ion-content padding>
-    <div *ngFor="let item of dataGames">
-      <ion-item (click)="openDetails($event, item)">
-        <ion-thumbnail item-left>
-          <img src="assets/img/TSV Heimaterde.png">
-        </ion-thumbnail>
-        <p>{{ item.time }}</p>
-        <p>{{ item.opponent }}</p>
-        <p>{{ item.home }}</p>
-      </ion-item>
-    </div>
+  <div *ngFor="let item of dataGames">
+    <ion-item (click)="openDetails($event, item)">
+      <ion-thumbnail item-left>
+        <img src="assets/img/TSV Heimaterde.png">
+      </ion-thumbnail>
+      <p>{{ item.time | matchTime }}</p>
+      <p>{{ item.opponent }}</p>
+      <div *ngIf="item.home == true"><p>Heim</p></div>
+      <div *ngIf="item.home == false"><p>Auswärts</p></div>
+    </ion-item>
+  </div>
+  <ion-fab right bottom>
+    <button ion-fab icon-only color="danger" (click)="createGame()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
 </ion-content>
 

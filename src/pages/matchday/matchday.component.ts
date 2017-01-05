@@ -1,9 +1,14 @@
 /**
  * Created by kochsiek on 08.12.2016.
  */
+//todo
+//Sort-Funktion
+//SCSS
+//Add Game-Funktion + Extra-Screen
 import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';
+import { CreateMatchdayComponent } from './createMatchday.component';
 import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
 
@@ -42,5 +47,8 @@ export class MatchdayComponent implements OnInit {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 
+  createGame(){
+    this.navCtrl.push(CreateMatchdayComponent);
+  }
 }
 
