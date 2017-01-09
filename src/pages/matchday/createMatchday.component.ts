@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
+import {Utilities} from "../../app/utilities";
 
 @Component({
   selector: 'page-createMatchday',
@@ -13,12 +14,25 @@ import firebase from 'firebase';
 })
 
 export class CreateMatchdayComponent implements OnInit {
+  team: string = '';
+  relevantTeams = this.Utilities.allTeams;
+  teamChanged: boolean = false;
+  dayChanged: boolean = false;
 
   ngOnInit() {
 
   }
   
-  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService) {
+  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities) {
     
+  }
+
+  teamSelectChanged(input) {
+    this.team = input;
+    this.teamChanged = true;
+  }
+
+  daySelectChanged() {
+    this.dayChanged = true;
   }
 }

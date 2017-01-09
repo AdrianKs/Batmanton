@@ -2,7 +2,7 @@
 //unterscheidung zwischen vergangende/bevorstehende ggf. Sortierung?
 //update nach klick
 //SCSS
-//DeclinedToAccepted?
+//Menüleiste für offene Games
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";

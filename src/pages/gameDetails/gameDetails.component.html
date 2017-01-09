@@ -58,11 +58,11 @@
     </ion-list>
     <ion-list *ngSwitchCase="'pending'">
       <div *ngFor="let item of gameItem.pendingPlayers">
-      <ion-item>{{item}}</ion-item></div>
+      <ion-item>{{item | player}}</ion-item></div>
     </ion-list>
     <ion-list *ngSwitchCase="'declined'">
       <div *ngFor="let item of gameItem.declinedPlayers">
-      <ion-item>{{item}}</ion-item></div>
+      <ion-item>{{item | player}}</ion-item></div>
     </ion-list>
   </div>
 </ion-content>
