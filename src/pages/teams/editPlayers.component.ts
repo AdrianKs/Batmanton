@@ -11,7 +11,9 @@ import firebase from 'firebase';
 export class EditPlayerComponent implements OnInit {
 
     team: string = "";
+
     teamId: string = "";
+
     spielerStatus: string = "chosen";
     allPlayers: any[];
     allPlayersMod: any[];

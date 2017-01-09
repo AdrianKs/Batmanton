@@ -128,6 +128,10 @@ export class TeamsComponent implements OnInit {
             console.log(player);
             this.teams[i].players[y] = player;
 
+
+
+            this.teams[i].players[y].id = y;
+
           } else {
             console.log("Spieler übersprungen, da null");
           }
