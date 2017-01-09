@@ -28,7 +28,18 @@ export class TeamsComponent implements OnInit {
 
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities) {
     this.database = firebase.database();
+
   }
+
+    //this.getAllTeamData();
+  }
+
+
+  /*testGetData() {
+    var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
+    console.log(test);
+  }*/
+
 
 
   viewTeam(ev, value) {
@@ -42,6 +53,7 @@ export class TeamsComponent implements OnInit {
 
   getAllTeamData() {
     let playerPlaceholder = [];
+
     let counter = 0;
     for (let y in this.teams) {
       playerPlaceholder[counter] = this.teams[y].players;
@@ -49,6 +61,52 @@ export class TeamsComponent implements OnInit {
     }
     this.playerArray = playerPlaceholder;
     this.addPlayersToArray(this.playerArray);
+
+      let counter = 0;
+      for (let y in this.teams) {
+        playerPlaceholder[counter] = this.teams[y].players;
+        counter++;
+      }
+      console.log("PRINT BEFORE TEST");
+      this.playerArray = playerPlaceholder;
+      this.addPlayersToArray(this.playerArray);
+
+    //this.database.ref("/clubs/12/teams/").once('value', snapshot => {
+      /*console.log(snapshot.val());
+      let teamArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        teamArray[counter] = snapshot.val()[i];
+        teamArray[counter].id = i;
+        counter++;
+      }
+      this.teamsSearch = teamArray;
+      this.teams = teamArray;
+      let playerPlaceholder = [];
+      counter = 0;
+      for (let y in this.teams) {
+        playerPlaceholder[counter] = this.teams[y].players;
+        counter++;
+      }
+      console.log("PRINT BEFORE TEST");
+      this.playerArray = playerPlaceholder;
+      this.addPlayersToArray(this.playerArray);*/
+      /* console.log(playerPlaceholder);
+       counter = 0;
+       let playerIDs = [];
+       for (let j in playerPlaceholder){
+         let test = playerPlaceholder[j][counter];
+         console.log("ID: " + test);
+         playerIDs.push(test);
+         counter++;
+       }
+       console.log("PLAYER IDs");
+       console.log(playerIDs);*/
+    //});
+
+
+    //this.teams = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
+
   }
 
   addPlayersToArray(valueArray: any) {
