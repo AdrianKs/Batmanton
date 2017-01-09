@@ -19,12 +19,13 @@
       </ion-item>
       <ion-item>
         <ion-label class="playerLabel">Team:</ion-label>
-        <ion-label class="playerValue">{{ gameItem.team }}</ion-label>
+        <ion-label class="playerValue">{{ gameItem.team | teams}}</ion-label>
       </ion-item>
       <ion-item>
         <ion-label class="playerLabel">Ort:</ion-label>
         <ion-label class="playerValue">
-          {{ gameItem.home }}
+          <div *ngIf="gameItem.home == true">Heim</div>
+          <div *ngIf="gameItem.home == false">Auswärts</div>
         </ion-label>
       </ion-item>
       <ion-item>
@@ -33,20 +34,35 @@
       </ion-item>
       <ion-item>
         <ion-label class="playerLabel">Wann:</ion-label>
-        <ion-label class="playerValue">{{ gameItem.time }}</ion-label>
+        <ion-label class="playerValue">{{ gameItem.time | matchTime}}</ion-label>
       </ion-item>
-      <ion-item>
-        <ion-label class="playerLabel">Zugesagte Spieler:</ion-label>
-        <ion-label class="playerValue">{{ gameItem.acceptedPlayers }}</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label class="playerLabel">Offene Spieler:</ion-label>
-        <ion-label class="playerValue">{{ gameItem.pendingPlayers }}</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label class="playerLabel">Abgesagte Spieler:</ion-label>
-        <ion-label class="playerValue">{{ gameItem.declinedPlayers }}</ion-label>
-      </ion-item>
+      <ion-toolbar no-border-top>
+        <ion-segment [(ngModel)]="playerStatus">
+          <ion-segment-button value="accepted">
+            Zugesagt
+          </ion-segment-button>
+          <ion-segment-button value="pending">
+            Offen
+          </ion-segment-button>
+          <ion-segment-button value="declined">
+            Abgesagt
+          </ion-segment-button>
+        </ion-segment>
+      </ion-toolbar>
     </div>
+  </div>
+  <div [ngSwitch]="playerStatus">
+    <ion-list *ngSwitchCase="'accepted'">
+      <div *ngFor="let item of gameItem.acceptedPlayers">
+      <ion-item (click)="checkItem(item)">{{item | player}}</ion-item></div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'pending'">
+      <div *ngFor="let item of gameItem.pendingPlayers">
+      <ion-item>{{item | player}}</ion-item></div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'declined'">
+      <div *ngFor="let item of gameItem.declinedPlayers">
+      <ion-item>{{item | player}}</ion-item></div>
+    </ion-list>
   </div>
 </ion-content>
