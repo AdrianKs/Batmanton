@@ -5,6 +5,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, PopoverController } from 'ionic-angular';
 import { PopoverPage } from './popover.component';
 import { EditTeamComponent } from './editTeam.component';
+import { Utilities } from '../../app/utilities';
+import { EditPlayerComponent } from './editPlayers.component';
 import firebase from 'firebase';
 
 
@@ -25,7 +27,7 @@ export class ViewTeamComponent {
     justPlayersPlaceholder: any;
     database: any;
     editMode: boolean = false;
-
+    isChanged: boolean = false;
 
     constructor(public navCtrl: NavController, private navP: NavParams, public popoverCtrl: PopoverController) {
         this.justPlayers = [];
@@ -35,13 +37,20 @@ export class ViewTeamComponent {
         console.log(this.team);
         this.justPlayersPlaceholder = this.team.players;
         this.checkIfUndefined();
-        
+
     }
 
-    checkIfUndefined(){
-        for(let i in this.justPlayersPlaceholder){
+    getPlayersOfTeam() {
+        this.database.ref("/clubs/12/teams/" + this.team.id + "/players/").once('value', snapshot => {
+            this.justPlayersPlaceholder = snapshot.val();
+            this.checkIfUndefined();
+        })
+    }
+
+    checkIfUndefined() {
+        for (let i in this.justPlayersPlaceholder) {
             let player = this.justPlayersPlaceholder[i];
-            if(player!=undefined){
+            if (player != undefined) {
                 this.justPlayers.push(player);
             }
         }
@@ -49,11 +58,28 @@ export class ViewTeamComponent {
         console.log(this.justPlayers);
     }
 
-    editTeam(){
+    editTeam() {
         this.editMode = true;
-        /*this.navCtrl.push(EditTeamComponent, {
-            value: this.team
-        })*/
+    }
+
+    editPlayers(){
+        this.navCtrl.push(EditPlayerComponent, {
+            param: this.justPlayers
+        })
+    }
+
+    toggleEditMode() {
+        this.editMode = false;
+    }
+
+    popToRoot(){
+        this.navCtrl.popToRoot();
+    }
+
+    removePlayer(p: any) {
+
+        this.database.ref('clubs/12/teams/' + this.team.id + '/players/' + p.id).remove();
+        this.getPlayersOfTeam();
     }
 
     presentPopover(myEvent) {

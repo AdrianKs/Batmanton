@@ -1,9 +1,17 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar hideBackButton="true">
+        <ion-buttons left>
+        <button  *ngIf="(editMode)" ion-button (click)="toggleEditMode()">
+        Abbrechen
+    </button>
+        <button *ngIf="(!editMode)" ion-button (click)="popToRoot()">
+            Zurück
+        </button>
+        </ion-buttons>
         <ion-title>Mannschaftsdetails</ion-title>
         <ion-buttons right>
             <button *ngIf="(!editMode)" ion-button (click)="editTeam()">Bearbeiten</button>
-            <button ion-button [disabled]="!isChanged" (click)="changeRole($event, player)">
+            <button ion-button *ngIf="(editMode)" [disabled]="!isChanged" (click)="changeRole($event, player)">
          Fertig
       </button>
         </ion-buttons>
@@ -16,35 +24,42 @@
 </ion-header>
 
 <ion-content padding>
-        <div class="topContainer">
-            <div class="pictureContainer">
+    <div class="topContainer">
+        <div class="pictureContainer">
             <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
-            </div>
-            <div class="playerDataContainer">
-                <ion-item>
-                    <ion-label class="playerLabel">Teamname:</ion-label>
-                </ion-item>
-            </div>
-            <div class="section_details">
-                <div *ngIf="(!editMode)">Teamname: {{team.name}}</div> <br>
-                <div *ngIf="team.isAdult==true">
-                    Altersklasse: Erwachsen
-                </div>
-                <div *ngIf="team.isAdult==false">
-                    Altersklasse: Jugend
-                </div>
-                <ion-input *ngIf="(editMode)" placeholder="Teamname" value="{{team.name}}"></ion-input>
-            </div>
         </div>
-    <ion-card-title>Spieler</ion-card-title>
+        <div class="playerDataContainer">
+            <ion-item *ngIf="(!editMode)">
+                <ion-label class="playerLabel">Teamname:</ion-label>
+                <ion-label class="playerValue">{{team.name}}</ion-label>
+            </ion-item>
+            <ion-item *ngIf="(!editMode)">
+                <ion-label class="playerLabel">Alterklasse:</ion-label>
+                <ion-label *ngIf="team.ageLimit==0" class="playerValue">Erwachsen</ion-label>
+                <ion-label *ngIf="team.ageLimit!=0" class="playerValue">U {{team.ageLimit}}</ion-label>
+            </ion-item>
+            <ion-item *ngIf="(!editMode) && team.ageLimit!=team.type">
+                <ion-label class="playerLabel">Altersbezeichnung:</ion-label>
+                <ion-label *ngIf="team.type==1" class="playerValue">Mini</ion-label>
+            </ion-item>
+            <ion-item *ngIf="(editMode)">
+                <ion-label class="playerLabel">Teamname:</ion-label>
+                <ion-input class="playerValue" value="{{team.name}}"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="(editMode)">
+                <ion-label class="playerLabel">Alterklasse:</ion-label>
+                <ion-input *ngIf="team.ageLimit==0" class="playerValue" value="Erwachsen"></ion-input>
+                <ion-input *ngIf="team.ageLimit!=0" class="playerValue" value="U {{team.ageLimit}}"></ion-input>
+            </ion-item>
+            <ion-item *ngIf="(editMode) && team.ageLimit!=team.type">
+                <ion-label class="playerLabel">Altersbezeichnung:</ion-label>
+                <ion-input *ngIf="team.type==1" class="playerValue" value="Mini"></ion-input>
+            </ion-item>
+        </div>
+    </div>
     <ion-grid *ngIf="(editMode)">
         <ion-row>
-            <ion-col width-70>
-                Spieler
-            </ion-col>
-            <ion-col width-30>
-                <button ion-button (click)="editPlayers()">Bearbeiten</button>
-            </ion-col>
+                <button class="editPlayerButton" ion-button block (click)="editPlayers()">Spieler bearbeiten</button>
         </ion-row>
     </ion-grid>
     <ion-toolbar no-border-top>
