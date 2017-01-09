@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { ViewTeamComponent } from './viewTeam.component';
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
+import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
 
 
@@ -20,19 +21,21 @@ export class TeamsComponent implements OnInit {
   playerArray: any[];
 
   ngOnInit(): void {
+    this.teams = this.utilities.allTeams;
+    this.teamsSearch = this.utilities.allTeams;
     this.getAllTeamData();
   }
 
-  constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
+  constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities) {
     this.database = firebase.database();
     //this.getAllTeamData();
   }
 
 
-  testGetData() {
+  /*testGetData() {
     var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
     console.log(test);
-  }
+  }*/
 
 
   viewTeam(ev, value) {
@@ -45,8 +48,18 @@ export class TeamsComponent implements OnInit {
 
 
   getAllTeamData() {
-    this.database.ref("/clubs/12/teams/").once('value', snapshot => {
-      console.log(snapshot.val());
+    let playerPlaceholder = [];
+      let counter = 0;
+      for (let y in this.teams) {
+        playerPlaceholder[counter] = this.teams[y].players;
+        counter++;
+      }
+      console.log("PRINT BEFORE TEST");
+      this.playerArray = playerPlaceholder;
+      this.addPlayersToArray(this.playerArray);
+
+    //this.database.ref("/clubs/12/teams/").once('value', snapshot => {
+      /*console.log(snapshot.val());
       let teamArray = [];
       let counter = 0;
       for (let i in snapshot.val()) {
@@ -64,7 +77,7 @@ export class TeamsComponent implements OnInit {
       }
       console.log("PRINT BEFORE TEST");
       this.playerArray = playerPlaceholder;
-      this.addPlayersToArray(this.playerArray);
+      this.addPlayersToArray(this.playerArray);*/
       /* console.log(playerPlaceholder);
        counter = 0;
        let playerIDs = [];
@@ -76,7 +89,7 @@ export class TeamsComponent implements OnInit {
        }
        console.log("PLAYER IDs");
        console.log(playerIDs);*/
-    });
+    //});
 
 
     //this.teams = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
