@@ -5,17 +5,14 @@ import { Component } from '@angular/core';
 
 import { NavController, NavParams } from 'ionic-angular';
 
-import { InvitesService } from '../../providers/invitesService';
-
-import { AboutComponent } from '../about/about.component'
 import {Utilities} from '../../app/utilities';
+import { GameDetailsComponent } from '../gameDetails/gameDetails.component'
 
 import firebase from 'firebase';
 
 @Component({
   selector: 'page-invitesmatchday',
-  templateUrl: 'invitesmatchday.component.html',
-  providers: [InvitesService]
+  templateUrl: 'invitesmatchday.component.html'
 })
 export class InvitesMatchdayComponent {
   matchday: any;
@@ -23,7 +20,8 @@ export class InvitesMatchdayComponent {
   players: any;
   profilePictureURL: any;
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private invitesService: InvitesService, public utilities: Utilities) {
+
+  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities) {
     //Load data in array
     this.matchday = navP.get('matchday');
     this.invites = navP.get('invites');
@@ -41,7 +39,7 @@ export class InvitesMatchdayComponent {
     return "../../assets/images/ic_account_circle_black_48dp_2x.png";
   }
 
-  goToPage() {
-    this.navCtrl.push(AboutComponent);
+  goToPage(value) {
+    this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 }
