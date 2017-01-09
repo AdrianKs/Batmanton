@@ -18,13 +18,13 @@
         </div>
         <div class="teamItem-right">
           <div class="teamItem-details">
-            Teamname: {{item.name}} <br>
+            {{item.name}} <br>
           </div>
-          <div *ngIf="item.isAdult==true">
+          <div *ngIf="item.ageLimit==0">
             Altersklasse: Erwachsen
           </div>
-          <div *ngIf="item.isAdult==false">
-            Altersklasse: Jugend
+          <div *ngIf="item.ageLimit!=0">
+            Altersklasse: U {{item.ageLimit}}
           </div>
         </div>
       </ion-item>

@@ -11,6 +11,7 @@ import firebase from 'firebase';
 export class EditPlayerComponent implements OnInit {
 
     team: string = "";
+    spielerStatus: string = "chosen";
     allPlayers: any[];
     allPlayersSearch: any[];
     geschlecht: string = "maenner";
