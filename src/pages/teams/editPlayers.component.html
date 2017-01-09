@@ -5,8 +5,18 @@
 </ion-header>
 
 <ion-content>
-    <ion-list>
-        <ion-card-title>Ausgewählte Spieler</ion-card-title>
+    <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="spielerStatus">
+                <ion-segment-button value="chosen">
+                    Ausgewählt
+                </ion-segment-button>
+                <ion-segment-button value="available">
+                    Verfügbar
+                </ion-segment-button>
+            </ion-segment>
+    </ion-toolbar>
+    <div [ngSwitch]="spielerStatus">
+    <ion-list *ngSwitchCase="'chosen'">
         <div *ngFor="let player of playersOfTeam">
             <ion-item>
                         <ion-grid>
@@ -18,7 +28,7 @@
                                 </ion-col>
                                 <ion-col width-70>
 
-                                    Vorname: {{player.firstname}} <br> Nachname: {{player.lastname}} <br> Geburtstag: {{player.birthday}}
+                                    {{player.firstname}} {{player.lastname}} <br> Geburtstag: {{player.birthday}}
 
                                 </ion-col>
                                 <ion-col width-15>
@@ -32,21 +42,7 @@
                     </ion-item>
         </div>
     </ion-list>
-    <ion-list>
-        <ion-card-title>Verfügbare Spieler</ion-card-title>
-        <ion-item>
-            <ion-searchbar (ionInput)="getItemsLastName($event)"></ion-searchbar>
-        </ion-item>
-        <ion-item>
-            <ion-label stacked>Nach Mannschaft filtern:</ion-label>
-            <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}" placeholder="Mannschaft auswählen">
-                <!--<ion-option *ngFor="let item of teams" value=0>in keiner Mannschaft</ion-option>-->
-                <ion-option *ngFor="let item of teams" value="{{item.id}}">{{item.name}}</ion-option>
-            </ion-select>
-        </ion-item>
-    </ion-list>
-    <!--<ion-searchbar (ionInput)="getItemsTeamName($event)"></ion-searchbar>-->
-    <ion-list>
+    <ion-list *ngSwitchCase="'available'">
         <ion-toolbar no-border-top>
             <ion-segment [(ngModel)]="geschlecht">
                 <ion-segment-button value="maenner">
@@ -67,13 +63,8 @@
                             </div>
                             <div class="teamItem-right">
                                 <div class="teamItem-details">
-                                    Vorname: {{item.firstname}} <br> Nachname: {{item.lastname}}
-                                </div>
-                                <div *ngIf="item.isAdult==true">
-                                    Altersklasse: Erwachsen
-                                </div>
-                                <div *ngIf="item.isAdult==false">
-                                    Altersklasse: Jugend
+                                    {{item.firstname}} {{item.lastname}} <br>
+                                    Geburtstag: {{item.birthday}}
                                 </div>
                             </div>
                         </ion-item>
@@ -89,13 +80,8 @@
                             </div>
                             <div class="teamItem-right">
                                 <div class="teamItem-details">
-                                    Vorname: {{item.firstname}} <br> Nachname: {{item.lastname}}
-                                </div>
-                                <div *ngIf="item.isAdult==true">
-                                    Altersklasse: Erwachsen
-                                </div>
-                                <div *ngIf="item.isAdult==false">
-                                    Altersklasse: Jugend
+                                    {{item.firstname}} {{item.lastname}} <br>
+                                    Geburtstag: {{item.birthday}}
                                 </div>
                             </div>
                         </ion-item>
@@ -122,4 +108,5 @@
             </ion-item>
         </div>-->
     </ion-list>
+    </div>
 </ion-content>
