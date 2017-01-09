@@ -14,6 +14,11 @@ import {Utilities} from "../../app/utilities";
 })
 
 export class CreateMatchdayComponent implements OnInit {
+  public event = {
+    month: '2017-01-01',
+    timeStarts: '00:00',
+  }
+
   team: string = '';
   relevantTeams = this.Utilities.allTeams;
   teamChanged: boolean = false;

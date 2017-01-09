@@ -45,3 +45,13 @@
     font-weight: bold;
 }
 
+.datetime-text:empty:not(:focus):before{
+    content: "Datum";
+    color: #999;
+}
+
+.time-text:empty:not(:focus):before{
+    content: "Uhrzeit";
+    color: #999;
+}
+
