@@ -13,7 +13,8 @@ import firebase from 'firebase';
 export class EditTeamComponent implements OnInit{
 
     team: any;
-    justPlayers: any[];
+    justPlayersPlaceholder: any[];
+    justPlayers: any;
     geschlecht: string = "maenner";
     database: any;
 
@@ -22,14 +23,28 @@ export class EditTeamComponent implements OnInit{
     }
 
     constructor(public nav: NavController, public nParam: NavParams){
+        this.justPlayers = []; 
         this.team = nParam.get("value");
         console.log(this.team);
         //ERROR HANDLING EINFÜGEN
-        this.justPlayers = this.team.players;
+        this.justPlayersPlaceholder = this.team.players;
+        this.checkIfUndefined();
     }   
 
     removePlayer(player: any){
         //REMOVE PLAYER
+    }
+
+
+    checkIfUndefined(){
+        for(let i in this.justPlayersPlaceholder){
+            let player = this.justPlayersPlaceholder[i];
+            if(player!=undefined){
+                this.justPlayers.push(player);
+            }
+        }
+        console.log("JUST PLAYERS ARRAY:");
+        console.log(this.justPlayers);
     }
 
     editPlayers(){
