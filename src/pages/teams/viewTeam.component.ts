@@ -23,6 +23,7 @@ export class ViewTeamComponent {
     team: any;
     geschlecht: string = "maenner";
     playersOfTeam: any[];
+    playerModel: any;
     justPlayers: any;
     justPlayersPlaceholder: any;
     database: any;
@@ -56,6 +57,7 @@ export class ViewTeamComponent {
         }
         console.log("JUST PLAYERS ARRAY:");
         console.log(this.justPlayers);
+        this.playerModel = this.justPlayers;
     }
 
     editTeam() {
@@ -64,7 +66,8 @@ export class ViewTeamComponent {
 
     editPlayers(){
         this.navCtrl.push(EditPlayerComponent, {
-            param: this.justPlayers
+            param: this.justPlayers,
+            teamId: this.team.id
         })
     }
 
