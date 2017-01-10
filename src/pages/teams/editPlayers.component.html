@@ -4,21 +4,24 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
+
     <ion-toolbar no-border-top>
-    <ion-segment [(ngModel)]="spielerStatus">
-                <ion-segment-button value="chosen">
-                    Ausgewählt
-                </ion-segment-button>
-                <ion-segment-button value="available">
-                    Verfügbar
-                </ion-segment-button>
-            </ion-segment>
+        <ion-segment [(ngModel)]="spielerStatus">
+            <ion-segment-button value="chosen">
+                Ausgewählt
+            </ion-segment-button>
+            <ion-segment-button value="available">
+                Verfügbar
+            </ion-segment-button>
+        </ion-segment>
     </ion-toolbar>
     <div [ngSwitch]="spielerStatus">
-    <ion-list *ngSwitchCase="'chosen'">
-        <div *ngFor="let player of playersOfTeam">
-            <ion-item>
+        <div *ngSwitchCase="'chosen'">
+            <ion-searchbar (ionInput)="getItemsChosen($event)"></ion-searchbar>
+            <ion-list>
+                <div *ngFor="let item of playersOfTeam">
+                    <ion-item>
                         <ion-grid>
                             <ion-row>
                                 <ion-col width-15>
@@ -28,11 +31,11 @@
                                 </ion-col>
                                 <ion-col width-70>
 
-                                    {{player.firstname}} {{player.lastname}} <br> Geburtstag: {{player.birthday}}
+                                    {{item.firstname}} {{item.lastname}} <br> Geburtstag: {{item.birthday}}
 
                                 </ion-col>
                                 <ion-col width-15>
-                                    <button ion-button icon-only color="danger" (click)="removePlayer(p)">
+                                    <button ion-button icon-only color="danger" (click)="removePlayer(item)">
                                 <ion-icon name="remove"></ion-icon>
                             </button>
 
@@ -40,25 +43,48 @@
                             </ion-row>
                         </ion-grid>
                     </ion-item>
+                </div>
+            </ion-list>
         </div>
-    </ion-list>
-    <ion-list *ngSwitchCase="'available'">
-        <ion-toolbar no-border-top>
-            <ion-segment [(ngModel)]="geschlecht">
-                <ion-segment-button value="maenner">
-                    Männer
-                </ion-segment-button>
-                <ion-segment-button value="frauen">
-                    Frauen
-                </ion-segment-button>
-            </ion-segment>
-        </ion-toolbar>
-        <div [ngSwitch]="geschlecht">
-            <ion-list *ngSwitchCase="'maenner'">
-                <div *ngFor="let item of allPlayers">
-                    <div *ngIf="item.gender=='m'">
-                        <ion-item>
-                            <div class="teamItem-left">
+        <div *ngSwitchCase="'available'">
+            <ion-searchbar (ionInput)="getItemsAvailable($event)"></ion-searchbar>
+            <ion-list>
+                <ion-toolbar no-border-top>
+                    <ion-segment [(ngModel)]="geschlecht" color="secondary">
+                        <ion-segment-button value="maenner">
+                            Männer
+                        </ion-segment-button>
+                        <ion-segment-button value="frauen">
+                            Frauen
+                        </ion-segment-button>
+                    </ion-segment>
+                </ion-toolbar>
+                <div [ngSwitch]="geschlecht">
+                    <ion-list *ngSwitchCase="'maenner'">
+                        <div *ngFor="let item of allPlayers">
+                            <div *ngIf="item.gender=='m'">
+                                <ion-item>
+                                    <ion-grid>
+                                        <ion-row>
+                                            <ion-col width-15>
+
+                                                <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+
+                                            </ion-col>
+                                            <ion-col width-70>
+
+                                                {{item.firstname}} {{item.lastname}} <br> Geburtstag: {{item.birthday}}
+
+                                            </ion-col>
+                                            <ion-col width-15>
+                                                <button ion-button icon-only color="secondary" (click)="addPlayer(item)">
+                                <ion-icon name="add"></ion-icon>
+                            </button>
+
+                                            </ion-col>
+                                        </ion-row>
+                                    </ion-grid>
+                                    <!--<div class="teamItem-left">
                                 <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
                             </div>
                             <div class="teamItem-right">
@@ -66,30 +92,41 @@
                                     {{item.firstname}} {{item.lastname}} <br>
                                     Geburtstag: {{item.birthday}}
                                 </div>
+                            </div>-->
+                                </ion-item>
                             </div>
-                        </ion-item>
-                    </div>
+                        </div>
+                    </ion-list>
+                    <ion-list *ngSwitchCase="'frauen'">
+                        <div *ngFor="let item of allPlayers">
+                            <div *ngIf="item.gender=='f'">
+                                <ion-item>
+                                    <ion-grid>
+                                        <ion-row>
+                                            <ion-col width-15>
+
+                                                <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+
+                                            </ion-col>
+                                            <ion-col width-70>
+
+                                                {{item.firstname}} {{item.lastname}} <br> Geburtstag: {{item.birthday}}
+
+                                            </ion-col>
+                                            <ion-col width-15>
+                                                <button ion-button icon-only color="secondary" (click)="addPlayer(p)">
+                                <ion-icon name="add"></ion-icon>
+                            </button>
+
+                                            </ion-col>
+                                        </ion-row>
+                                    </ion-grid>
+                                </ion-item>
+                            </div>
+                        </div>
+                    </ion-list>
                 </div>
-            </ion-list>
-            <ion-list *ngSwitchCase="'frauen'">
-                <div *ngFor="let item of allPlayers">
-                    <div *ngIf="item.gender=='f'">
-                        <ion-item>
-                            <div class="teamItem-left">
-                                <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
-                            </div>
-                            <div class="teamItem-right">
-                                <div class="teamItem-details">
-                                    {{item.firstname}} {{item.lastname}} <br>
-                                    Geburtstag: {{item.birthday}}
-                                </div>
-                            </div>
-                        </ion-item>
-                    </div>
-                </div>
-            </ion-list>
-        </div>
-        <!--<div *ngFor="let item of allPlayers">
+                <!--<div *ngFor="let item of allPlayers">
             <ion-item>
                 <div class="teamItem-left">
                     <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
@@ -107,6 +144,7 @@
                 </div>
             </ion-item>
         </div>-->
-    </ion-list>
+            </ion-list>
+        </div>
     </div>
 </ion-content>
