@@ -29,6 +29,7 @@ export class EditPlayerComponent implements OnInit {
     playersOfTeamPlaceholder: any;
     playersOfTeam: any;
     playersOfTeamSearch: any;
+    ageLimit: any = "";
 
     ngOnInit(): void {
     }
@@ -39,6 +40,7 @@ export class EditPlayerComponent implements OnInit {
         //NULL ABFRAGEN EINBAUEN
         this.playersOfTeamPlaceholder = nParam.get("param");
         this.teamId = nParam.get("teamId");
+        this.ageLimit = nParam.get("maxAge");
         this.getPlayers();
         this.getTeams();
         this.checkIfUndefined();

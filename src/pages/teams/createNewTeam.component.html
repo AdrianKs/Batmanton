@@ -6,17 +6,17 @@
         </button>
         </ion-buttons>
         <ion-title>Mannschaft hinzufügen</ion-title>
-        <ion-buttons right>
-            <button ion-button type="submit">
-         Fertig
+        <!--<ion-buttons right>
+            <button ion-button (click)="proceedProcess()">
+         Weiter
       </button>
-        </ion-buttons>
+        </ion-buttons>-->
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
     <h4 class="teamHeadline">Mannschaftsdetails</h4>
-    <form class="center-form" [formGroup]="addTeamForm" (submit)="addTeam()" novalidate>
+    <form class="center-form" [formGroup]="addTeamForm" (submit)="proceedProcess()" novalidate>
         <div class="topContainer">
             <div class="playerDataContainer">
                 <ion-item>
@@ -34,7 +34,6 @@
             </div>
 
         </div>
-        <h4 class="teamHeadline">Spieler hinzufügen</h4>
-        <!--<button class="submitButtonAdd" ion-button type="submit" color="secondary">Hinzufügen</button>-->
+        <button class="submitButtonAdd" ion-button type="submit" color="secondary">Hinzufügen</button>
     </form>
 </ion-content>

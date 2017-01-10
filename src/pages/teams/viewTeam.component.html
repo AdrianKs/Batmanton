@@ -1,10 +1,10 @@
 <ion-header>
     <ion-navbar hideBackButton="true">
         <ion-buttons left>
-        <button  *ngIf="(editMode)" ion-button (click)="toggleEditMode()">
+            <button *ngIf="(editMode)" ion-button (click)="toggleEditMode()">
         Abbrechen
     </button>
-        <button *ngIf="(!editMode)" ion-button (click)="popToRoot()">
+            <button *ngIf="(!editMode)" ion-button (click)="popToRoot()">
             Zurück
         </button>
         </ion-buttons>
@@ -69,6 +69,7 @@
     </div>
     <ion-grid *ngIf="(editMode)">
         <ion-row>
+
                 <button class="editPlayerButton" ion-button block (click)="editPlayers()">Spieler bearbeiten</button>
 
         <div class="topContainer">
@@ -121,6 +122,9 @@
 
                 <button class="editPlayerButton" ion-button block (click)="editPlayers()">Spieler bearbeiten</button>
 
+
+            <button class="editPlayerButton" ion-button block (click)="editPlayers()">Spieler bearbeiten</button>
+
         </ion-row>
     </ion-grid>
     <ion-toolbar no-border-top>
@@ -135,8 +139,12 @@
     </ion-toolbar>
     <div [ngSwitch]="geschlecht">
         <ion-list *ngSwitchCase="'maenner'">
+            <div *ngIf="justPlayers.length==0">
+                <p class="no-Players-p">Keine Spieler vorhanden</p>
+            </div>
             <div *ngFor="let p of justPlayers">
                 <div *ngIf="p.gender=='m'">
+
 
 
                     <ion-item >
@@ -145,6 +153,9 @@
 
 
                     <ion-item >
+
+
+                    <ion-item>
 
                         <ion-grid>
                             <ion-row>
@@ -155,7 +166,12 @@
                                 </ion-col>
                                 <ion-col width-70>
 
-                                    Vorname: {{p.firstname}} <br> Nachname: {{p.lastname}} <br> Geburtstag: {{p.birthday}}
+                                     <div class="firstName-lastName">
+                                        {{ p.lastname }}, {{p.firstname}} <br/>
+                                    </div>
+                                    <div class="birthday-details">
+                                        Geburtstag: {{p.birthday | birthday}}
+                                    </div>
 
                                 </ion-col>
                                 <ion-col width-15>
@@ -179,6 +195,9 @@
             </div>
         </ion-list>
         <ion-list *ngSwitchCase="'frauen'">
+            <div *ngIf="justPlayers.length==0">
+                <p class="no-Players-p">Keine Spieler vorhanden</p>
+            </div>
             <div *ngFor="let p of justPlayers">
                 <div *ngIf="p.gender=='f'">
                     <ion-item>
@@ -190,8 +209,15 @@
 
                                 </ion-col>
                                 <ion-col width-70>
+                                    <div class="firstName-lastName">
+                                        {{ p.lastname }}, {{p.firstname}} <br/>
+                                    </div>
+                                    <div class="birthday-details">
+                                        Geburtstag: {{p.birthday | birthday}}
+                                    </div>
 
-                                    Vorname: {{p.firstname}} <br> Nachname: {{p.lastname}} <br> Geburtstag: {{p.birthday}}
+                                   <!-- Vorname: {{p.firstname}} <br> Nachname: {{p.lastname}} <br> Geburtstag: {{p.birthday
+                                    | birthday}}-->
 
                                 </ion-col>
                                 <ion-col width-15>

@@ -84,7 +84,12 @@ export class ViewTeamComponent {
     editPlayers(){
         this.navCtrl.push(EditPlayerComponent, {
             param: this.justPlayers,
+
             teamId: this.team.id
+
+
+            teamId: this.team.id,
+            maxAge: this.team.ageLimit
 
         })
     }

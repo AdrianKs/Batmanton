@@ -49,7 +49,10 @@
 
         <div *ngSwitchCase="'chosen'">
             <ion-searchbar (ionInput)="getItemsChosen($event)"></ion-searchbar>
-            <ion-list>
+            <div *ngIf="playersOfTeam.length==0">
+                <p class="no-Players-p">Keine Spieler ausgewählt</p>
+            </div>
+            <ion-list *ngIf="playersOfTeam.length>0">
                 <div *ngFor="let item of playersOfTeam">
                     <ion-item>
 
@@ -65,7 +68,17 @@
 
 
 
+
                                     {{item.firstname}} {{item.lastname}} <br> Geburtstag: {{item.birthday}}
+
+                                    <div class="firstName-lastName">
+                                        {{item.lastname}}, {{item.firstname}}
+                                    </div>
+                                    <br/>
+                                    <div class="birthday-details">
+                                        Geburtstag: {{item.birthday | birthday}}
+                                    </div>
+
 
                                 </ion-col>
                                 <ion-col width-15>
@@ -125,9 +138,13 @@
 
                                             </ion-col>
                                             <ion-col width-70>
-
-                                                {{item.firstname}} {{item.lastname}} <br> Geburtstag: {{item.birthday}}
-
+                                                <div class="firstName-lastName">
+                                                    {{item.lastname}}, {{item.firstname}}
+                                                </div>
+                                                <br/>
+                                                <div class="birthday-details">
+                                                    Geburtstag: {{item.birthday | birthday}}
+                                                </div>
                                             </ion-col>
                                             <ion-col width-15>
                                                 <button ion-button icon-only color="secondary" (click)="addPlayer(item)">
@@ -137,6 +154,7 @@
                                             </ion-col>
                                         </ion-row>
                                     </ion-grid>
+
                                     <!--<div class="teamItem-left">
 
         </div>
@@ -169,6 +187,7 @@
                                     Geburtstag: {{item.birthday}}
                                 </div>
                             </div>-->
+
                                 </ion-item>
                             </div>
                         </div>
@@ -186,11 +205,17 @@
                                             </ion-col>
                                             <ion-col width-70>
 
-                                                {{item.firstname}} {{item.lastname}} <br> Geburtstag: {{item.birthday}}
+                                                <div class="firstName-lastName">
+                                                    {{item.lastname}}, {{item.firstname}}
+                                                </div>
+                                                <br/>
+                                                <div class="birthday-details">
+                                                    Geburtstag: {{item.birthday | birthday}}
+                                                </div>
 
                                             </ion-col>
                                             <ion-col width-15>
-                                                <button ion-button icon-only color="secondary" (click)="addPlayer(p)">
+                                                <button ion-button icon-only color="secondary" (click)="addPlayer(item)">
                                 <ion-icon name="add"></ion-icon>
                             </button>
 
@@ -202,6 +227,7 @@
                         </div>
                     </ion-list>
                 </div>
+
                 <!--<div *ngFor="let item of allPlayers">
 
                                     Vorname: {{item.firstname}} <br> Nachname: {{item.lastname}}
@@ -328,6 +354,7 @@
                 </div>
             </ion-item>
         </div>-->
+
 
 
             </ion-list>
