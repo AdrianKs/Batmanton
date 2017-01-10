@@ -29,6 +29,7 @@ export class TeamsComponent implements OnInit {
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities) {
     this.database = firebase.database();
 
+
   }
 
     //this.getAllTeamData();
@@ -39,6 +40,11 @@ export class TeamsComponent implements OnInit {
     var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
     console.log(test);
   }*/
+
+
+
+
+  }
 
 
 
@@ -54,6 +60,8 @@ export class TeamsComponent implements OnInit {
   getAllTeamData() {
     let playerPlaceholder = [];
 
+
+
     let counter = 0;
     for (let y in this.teams) {
       playerPlaceholder[counter] = this.teams[y].players;
@@ -61,6 +69,7 @@ export class TeamsComponent implements OnInit {
     }
     this.playerArray = playerPlaceholder;
     this.addPlayersToArray(this.playerArray);
+
 
       let counter = 0;
       for (let y in this.teams) {
@@ -107,6 +116,7 @@ export class TeamsComponent implements OnInit {
 
     //this.teams = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
 
+
   }
 
   addPlayersToArray(valueArray: any) {
@@ -118,6 +128,7 @@ export class TeamsComponent implements OnInit {
           idPlaceholder = valueArray[i][y];
           let player = snapshot.child("" + idPlaceholder).val();
 
+
           if ((player != null) && (player != undefined)) {
             this.teams[i].players[y] = player;
             this.teams[i].players[y].id = y;
@@ -126,19 +137,24 @@ export class TeamsComponent implements OnInit {
           if (player != null) {
             console.log("PLAYER: ");
             console.log(player);
+
+          if ((player != null) && (player != undefined)) {
+
             this.teams[i].players[y] = player;
 
 
 
             this.teams[i].players[y].id = y;
 
+
+
+            this.teams[i].players[y].uniqueId = idPlaceholder;
+
           } else {
             console.log("Spieler übersprungen, da null");
           }
         }
       }
-      console.log("TEAMS:");
-      console.log(this.teams);
     })
 
   }

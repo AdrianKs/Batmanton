@@ -85,6 +85,7 @@ export class ViewTeamComponent {
         this.navCtrl.push(EditPlayerComponent, {
             param: this.justPlayers,
             teamId: this.team.id
+
         })
     }
 
@@ -137,6 +138,7 @@ export class ViewTeamComponent {
     editPlayers(){
         this.navCtrl.push(EditPlayerComponent, {
             param: this.justPlayers
+
         })
     }
 

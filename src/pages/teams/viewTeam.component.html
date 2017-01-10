@@ -11,15 +11,13 @@
         <ion-title>Mannschaftsdetails</ion-title>
         <ion-buttons right>
             <button *ngIf="(!editMode)" ion-button (click)="editTeam()">Bearbeiten</button>
-<<<<<<< HEAD
-<<<<<<< HEAD
+
             <button ion-button *ngIf="(editMode)" [disabled]="!isChanged" (click)="changeRole($event, player)">
-=======
+
             <button ion-button [disabled]="!isChanged" (click)="changeRole($event, player)">
->>>>>>> Design, Bugfixes, EditTeam Design geändert
-=======
+
             <button ion-button *ngIf="(editMode)" [disabled]="!isChanged" (click)="changeRole($event, player)">
->>>>>>> Weitere Design Arbeiten, Remove Spieler Funktion
+
          Fertig
       </button>
         </ion-buttons>
@@ -140,9 +138,13 @@
             <div *ngFor="let p of justPlayers">
                 <div *ngIf="p.gender=='m'">
 
+
                     <ion-item >
 
                     <ion-item>
+
+
+                    <ion-item >
 
                         <ion-grid>
                             <ion-row>

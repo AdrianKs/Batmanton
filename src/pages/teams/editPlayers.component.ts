@@ -12,6 +12,10 @@ export class EditPlayerComponent implements OnInit {
 
     team: string = "";
 
+
+    teamId: string = "";
+
+
     teamId: string = "";
 
     spielerStatus: string = "chosen";
@@ -38,10 +42,12 @@ export class EditPlayerComponent implements OnInit {
         this.getPlayers();
         this.getTeams();
         this.checkIfUndefined();
+
     }
 
     constructor(public nav: NavController, public nParam: NavParams) {
         this.playersOfTeam = nParam.get("param");
+
     }
 
     initializePlayers() {
@@ -203,8 +209,10 @@ export class EditPlayerComponent implements OnInit {
             })
         }
 
+
     removePlayer(p: any){
         
+
 
     }
 
