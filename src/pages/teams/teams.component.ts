@@ -7,6 +7,7 @@ import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
+import {CreateTeamComponent} from './createNewTeam.component';
 
 
 @Component({
@@ -54,6 +55,10 @@ export class TeamsComponent implements OnInit {
 
   addTeam(ev, value) {
     //Team hinzufügen View aufrufen
+  }
+
+  pushToAddNewTeam(){
+    this.navCtrl.push(CreateTeamComponent);
   }
 
 
