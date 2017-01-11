@@ -46,12 +46,8 @@
 }
 
 .datetime-text:empty:not(:focus):before{
-    content: "Datum";
+    content: "Datum und Uhrzeit";
     color: #999;
 }
 
-.time-text:empty:not(:focus):before{
-    content: "Uhrzeit";
-    color: #999;
-}
 

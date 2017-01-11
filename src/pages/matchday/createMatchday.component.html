@@ -12,44 +12,38 @@
     <div class="playerDataContainer">
       <ion-item>
         <ion-label stacked>Gegner</ion-label>
-        <ion-input type="text" value="" placeholder="Gegner"></ion-input>
+        <ion-input [(ngModel)]="opponent" type="text" value="" placeholder="Gegner"></ion-input>
       </ion-item>
       <ion-item>
       <ion-label stacked>Mannschaft</ion-label>
       <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"
-                  placeholder="Mannschaft"
-                  [class.invalid]="(!teamChanged && submitAttempt)">
+                  placeholder="Mannschaft">
         <ion-option value=0>keine Mannschaft</ion-option>
         <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
       </ion-select>
       </ion-item>
       <ion-item>
         <ion-label stacked>Ort</ion-label>
-          <ion-select [(ngModel)]="location" placeholder="Heim/Auswärts">
-            <ion-option value="home" ng-checked>Heim</ion-option>
-            <ion-option value="away">Auswärts</ion-option>
+          <ion-select [(ngModel)]="home" placeholder="Heim/Auswärts">
+            <ion-option value=true>Heim</ion-option>
+            <ion-option value=false>Auswärts</ion-option>
           </ion-select> 
       </ion-item>
       <ion-item>
         <ion-label stacked>Adresse</ion-label>
-        <ion-input type="text" value="" placeholder="Straße und Hausnummer"></ion-input>
-        <ion-input type="text" value="" placeholder="PLZ, Ort"></ion-input>
+        <ion-input [(ngModel)]="address" type="street" value="" placeholder="Straße und Hausnummer"></ion-input>
+        <ion-input [(ngModel)]="zipcode" type="number" value="" placeholder="PLZ"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label stacked>Datum</ion-label>
-        <ion-datetime #birthday class="datetime-text" displayFormat="DD.MM.YYYY" pickerFormat="DD MM YYYY"
-                      (ionChange)="daySelectChanged()"
-                      [class.invalid]="(dayChanged || submitAttempt)"></ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Uhrzeit</ion-label>
-        <ion-datetime displayFormat="HH:mm" pickerFormat="HH mm" placeholder="Zeit"></ion-datetime>
+        <ion-label stacked>Datum & Uhrzeit</ion-label>
+        <ion-datetime [(ngModel)]="date" class="datetime-text" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
+                      (ionChange)="daySelectChanged()"></ion-datetime>
       </ion-item>
     </div>
   </div>
 </ion-content>
 <ion-footer>
-  <button ion-button block outline round color="secondary"> 
-    Weiter
+  <button ion-button block outline round color="secondary" (click)="createGame()"> 
+    Spiel erstellen
   </button>
 </ion-footer>
