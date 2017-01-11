@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
+import { ViewTeamComponent } from './viewTeam.component';
 import firebase from 'firebase';
 
 
@@ -14,7 +15,7 @@ export class EditPlayerComponent implements OnInit {
     teamId: string = "";
     spielerStatus: string = "chosen";
     allPlayers: any[];
-    allPlayersMod: any[];
+    allPlayersMod: any;
     allPlayersModSearch: any[];
     allPlayersSearch: any[];
     geschlecht: string = "maenner";
@@ -26,23 +27,87 @@ export class EditPlayerComponent implements OnInit {
     ageLimit: any = "";
 
     ngOnInit(): void {
+        //this.playersOfTeam = [];
+        this.allPlayers = [];
+        this.allPlayers = this.utilities.allPlayers;
+        this.allPlayersSearch = this.utilities.allPlayers;
+        this.teams = this.utilities.allTeams;
+        let counter = 0;
+        let playerFound = false;
+        /*for (let i in this.allPlayersMod) {
+            console.log("Runde: " + counter);
+            let player = this.allPlayersMod[i];
+            playerFound = false;
+            console.log(player);
+            let playerId = player.id;
+            let placeHolderArray = this.playersOfTeam;
+
+            let uniqueId = 0;
+            this.playersOfTeam = [];
+            
+            for (let i in placeHolderArray) {
+                uniqueId = placeHolderArray[i].uniqueId;
+                
+                if (uniqueId == playerId) {
+                    playerFound = true;
+                }
+            }
+            if (!playerFound) {
+                this.allPlayers.push(player);
+                this.allPlayersSearch.push(player);
+            } else {
+                
+            }
+            
+            counter++;
+           
+        }*/
+
     }
 
-    constructor(public nav: NavController, public nParam: NavParams, public utilities: Utilities) {
+    constructor(
+        public nav: NavController,
+        public nParam: NavParams,
+        public utilities: Utilities,
+        public alertCtrl: AlertController
+    ) {
         this.database = firebase.database();
         this.playersOfTeam = [];
         //NULL ABFRAGEN EINBAUEN
         this.playersOfTeamPlaceholder = nParam.get("param");
         this.teamId = nParam.get("teamId");
         this.ageLimit = nParam.get("maxAge");
-        this.getPlayers();
-        this.getTeams();
+        //this.getPlayers();
+        //this.getTeams();
         this.checkIfUndefined();
     }
 
     initializePlayers() {
         this.allPlayers = this.allPlayersSearch;
         this.playersOfTeam = this.playersOfTeamSearch;
+    }
+
+    checkLists(id: any, player: any) {
+
+        let placeHolderArray = this.playersOfTeam;
+        let uniqueId = 0;
+        this.playersOfTeam = [];
+        let playerFound = false;
+        for (let i in placeHolderArray) {
+            uniqueId = placeHolderArray[i].uniqueId;
+            /* console.log("")
+             console.log("ID: " + id + " und uniqueId: " + uniqueId);*/
+            if (uniqueId == id) {
+                playerFound = true;
+            }
+        }
+        if (!playerFound) {
+            return false;
+            /*this.allPlayers.push(player);
+            this.allPlayersSearch.push(player);*/
+        } else {
+            return true;
+        }
     }
 
     getPlayers() {
@@ -141,12 +206,23 @@ export class EditPlayerComponent implements OnInit {
     }
 
     removePlayer(p: any) {
+
+        let placeHolderArray = this.playersOfTeam;
+        let uniqueId = 0;
+        let deleteId = p.uniqueId;
+        this.playersOfTeam = [];
+        for (let i in placeHolderArray) {
+            uniqueId = placeHolderArray[i].uniqueId;
+            if (uniqueId != deleteId) {
+                this.playersOfTeam.push(placeHolderArray[i]);
+            }
+        }
         this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + p.id).remove();
-        this.getPlayersOfTeam();
+        //this.getPlayersOfTeam();
     }
 
     addPlayer(p: any) {
-        this.utilities.addPlayerToTeam(this.teamId, p.uniqueId);
+        this.utilities.addPlayerToTeam(this.teamId, p.id);
     }
 
     getPlayersOfTeam() {
@@ -197,6 +273,30 @@ export class EditPlayerComponent implements OnInit {
                 return (item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1);
             })
         }
+    }
+
+    presentConfirm(p: any) {
+        let alert = this.alertCtrl.create({
+            title: 'Spieler aus Mannschaft entfernen',
+            message: 'Wollen Sie den Spieler wirklich löschen?',
+            buttons: [
+                {
+                    text: 'Abbrechen',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Cancel clicked');
+                    }
+                },
+                {
+                    text: 'Löschen',
+                    handler: () => {
+                        this.removePlayer(p);
+                        //console.log('Buy clicked');
+                    }
+                }
+            ]
+        });
+        alert.present();
     }
 
 
