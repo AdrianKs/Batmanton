@@ -8,7 +8,7 @@
 
 <ion-content padding>
 
-    <ion-toolbar no-border-top>
+    <!--<ion-toolbar no-border-top>
         <ion-segment [(ngModel)]="spielerStatus">
             <ion-segment-button value="chosen">
                 Ausgewählt
@@ -17,6 +17,7 @@
                 Verfügbar
             </ion-segment-button>
         </ion-segment>
+
     </ion-toolbar>
     <div [ngSwitch]="spielerStatus">
         <div *ngSwitchCase="'chosen'">
@@ -49,6 +50,12 @@
 
         <div *ngSwitchCase="'chosen'">
             <ion-searchbar (ionInput)="getItemsChosen($event)"></ion-searchbar>
+
+    </ion-toolbar>-->
+   <!-- <div [ngSwitch]="spielerStatus">
+        <div *ngSwitchCase="'chosen'">-->
+            <!--<ion-searchbar (ionInput)="getItemsChosen($event)"></ion-searchbar>
+
             <div *ngIf="playersOfTeam.length==0">
                 <p class="no-Players-p">Keine Spieler ausgewählt</p>
             </div>
@@ -110,12 +117,10 @@
 
 
                 </div>
-            </ion-list>
-        </div>
-        <div *ngSwitchCase="'available'">
-            <ion-searchbar (ionInput)="getItemsAvailable($event)"></ion-searchbar>
-            <ion-list>
-                <ion-toolbar no-border-top>
+            </ion-list>-->
+        <!--</div>-->
+        <!--<div *ngSwitchCase="'available'">-->
+            <ion-toolbar no-border-top>
                     <ion-segment [(ngModel)]="geschlecht" color="secondary">
                         <ion-segment-button value="maenner">
                             Männer
@@ -125,6 +130,8 @@
                         </ion-segment-button>
                     </ion-segment>
                 </ion-toolbar>
+            <ion-searchbar (ionInput)="getItemsAvailable($event)"></ion-searchbar>
+            <ion-list>
                 <div [ngSwitch]="geschlecht">
                     <ion-list *ngSwitchCase="'maenner'">
                         <div *ngFor="let item of allPlayers">
@@ -358,6 +365,7 @@
 
 
             </ion-list>
+
         </div>
     </div>
 
@@ -370,5 +378,9 @@
         </div>
 
     </div>
+
+
+       <!-- </div>-->
+   <!-- </div>-->
 
 </ion-content>

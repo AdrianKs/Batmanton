@@ -22,13 +22,12 @@ export class TeamsComponent implements OnInit {
   playerArray: any[];
 
   ngOnInit(): void {
-    this.teams = this.utilities.allTeams;
-    this.teamsSearch = this.utilities.allTeams;
-    this.getAllTeamData();
+    
   }
 
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities) {
     this.database = firebase.database();
+
 
 
   }
@@ -45,12 +44,20 @@ export class TeamsComponent implements OnInit {
 
 
 
+
+    this.teams = this.utilities.allTeams;
+    this.teamsSearch = this.utilities.allTeams;
+    this.getAllTeamData();
+
   }
 
 
 
   viewTeam(ev, value) {
-    this.navCtrl.push(ViewTeamComponent, { team: value });
+    this.navCtrl.push(ViewTeamComponent, { 
+      team: value
+      //teamId: value.id
+    });
   }
 
   addTeam(ev, value) {

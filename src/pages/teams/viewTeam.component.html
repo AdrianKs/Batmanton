@@ -12,11 +12,15 @@
         <ion-buttons right>
             <button *ngIf="(!editMode)" ion-button (click)="editTeam()">Bearbeiten</button>
 
+
             <button ion-button *ngIf="(editMode)" [disabled]="!isChanged" (click)="changeRole($event, player)">
 
             <button ion-button [disabled]="!isChanged" (click)="changeRole($event, player)">
 
             <button ion-button *ngIf="(editMode)" [disabled]="!isChanged" (click)="changeRole($event, player)">
+
+
+            <button ion-button *ngIf="(editMode)" [disabled]="(!playerDeleted && !altersBezChanged && !altersKChanged && !nameChanged)||!formValid" (click)="updateTeamInfos()">
 
          Fertig
       </button>
@@ -36,6 +40,7 @@
         <div class="pictureContainer">
             <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
         </div>
+        <form class="center-form" [formGroup]="teamForm" novalidate>
         <div class="playerDataContainer">
             <ion-item *ngIf="(!editMode)">
                 <ion-label class="playerLabel">Teamname:</ion-label>
@@ -53,22 +58,24 @@
             </ion-item>
             <ion-item *ngIf="(editMode)">
                 <ion-label class="playerLabel">Teamname:</ion-label>
-                <ion-input class="playerValue" value="{{team.name}}"></ion-input>
+                <ion-input #teamName formControlName="teamName" class="playerValue" (input)="elementChanged(teamName)" value="{{team.name}}"></ion-input>
             </ion-item>
             <ion-item *ngIf="(editMode)">
                 <ion-label class="playerLabel">Alterklasse:</ion-label>
-                <ion-input *ngIf="team.ageLimit==0" class="playerValue" value="Erwachsen"></ion-input>
-                <ion-input *ngIf="team.ageLimit!=0" class="playerValue" value="U {{team.ageLimit}}"></ion-input>
+                <ion-input #altersK formControlName="altersK" *ngIf="team.ageLimit==0" class="playerValue" (input)="elementChanged(altersK)" value="Erwachsen"></ion-input>
+                <ion-input #altersK formControlName="altersK" *ngIf="team.ageLimit!=0" class="playerValue" (input)="elementChanged(altersK)" value="U {{team.ageLimit}}"></ion-input>
             </ion-item>
             <ion-item *ngIf="(editMode) && team.ageLimit!=team.type">
                 <ion-label class="playerLabel">Altersbezeichnung:</ion-label>
-                <ion-input *ngIf="team.type==1" class="playerValue" value="Mini"></ion-input>
-                <ion-input *ngIf="team.type==0" class="playerValue" value="Erwachsen"></ion-input>
+                <ion-input #altersBez formControlName="altersBez" *ngIf="team.type==1" class="playerValue" (input)="elementChanged(altersBez)" value="Mini"></ion-input>
+                <ion-input #altersBez formControlName="altersBez" *ngIf="team.type==0" class="playerValue" (input)="elementChanged(altersK)" value="Erwachsen"></ion-input>
             </ion-item>
         </div>
+        </form>
     </div>
     <ion-grid *ngIf="(editMode)">
         <ion-row>
+
 
                 <button class="editPlayerButton" ion-button block (click)="editPlayers()">Spieler bearbeiten</button>
 
@@ -125,6 +132,9 @@
 
             <button class="editPlayerButton" ion-button block (click)="editPlayers()">Spieler bearbeiten</button>
 
+
+            <button class="editPlayerButton" ion-button block (click)="editPlayers()" color="secondary">Spieler hinzufügen</button>
+
         </ion-row>
     </ion-grid>
     <ion-toolbar no-border-top>
@@ -147,6 +157,7 @@
 
 
 
+
                     <ion-item >
 
                     <ion-item>
@@ -156,6 +167,9 @@
 
 
                     <ion-item>
+
+
+                    <ion-item [(ngModel)]="p.lastname" ngDefaultControl>
 
                         <ion-grid>
                             <ion-row>
@@ -166,7 +180,7 @@
                                 </ion-col>
                                 <ion-col width-70>
 
-                                     <div class="firstName-lastName">
+                                    <div class="firstName-lastName">
                                         {{ p.lastname }}, {{p.firstname}} <br/>
                                     </div>
                                     <div class="birthday-details">
@@ -175,7 +189,7 @@
 
                                 </ion-col>
                                 <ion-col width-15>
-                                    <button ion-button icon-only color="danger" *ngIf="(editMode)" (click)="removePlayer(p)">
+                                    <button ion-button icon-only color="danger" *ngIf="(editMode)" (click)="presentConfirm(p)">
                                 <ion-icon name="remove"></ion-icon>
                             </button>
 
@@ -200,7 +214,7 @@
             </div>
             <div *ngFor="let p of justPlayers">
                 <div *ngIf="p.gender=='f'">
-                    <ion-item>
+                    <ion-item [(ngModel)]="p.lastname" ngDefaultControl>
                         <ion-grid>
                             <ion-row>
                                 <ion-col width-15>
@@ -216,12 +230,12 @@
                                         Geburtstag: {{p.birthday | birthday}}
                                     </div>
 
-                                   <!-- Vorname: {{p.firstname}} <br> Nachname: {{p.lastname}} <br> Geburtstag: {{p.birthday
+                                    <!-- Vorname: {{p.firstname}} <br> Nachname: {{p.lastname}} <br> Geburtstag: {{p.birthday
                                     | birthday}}-->
 
                                 </ion-col>
                                 <ion-col width-15>
-                                    <button ion-button icon-only color="danger" *ngIf="(editMode)" (click)="removePlayer(p)">
+                                    <button ion-button icon-only color="danger" *ngIf="(editMode)" (click)="presentConfirm(p)">
                                 <ion-icon name="remove"></ion-icon>
                             </button>
 
