@@ -45,3 +45,9 @@
     font-weight: bold;
 }
 
+.datetime-text:empty:not(:focus):before{
+    content: "Datum und Uhrzeit";
+    color: #999;
+}
+
+

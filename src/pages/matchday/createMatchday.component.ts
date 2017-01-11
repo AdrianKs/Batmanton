@@ -14,7 +14,13 @@ import {Utilities} from "../../app/utilities";
 })
 
 export class CreateMatchdayComponent implements OnInit {
-  team: string = '';
+  opponent: string;
+  team: any;
+  home: boolean;
+  location: any;
+  address: string;
+  zipcode: number;
+  date: Date;
   relevantTeams = this.Utilities.allTeams;
   teamChanged: boolean = false;
   dayChanged: boolean = false;
@@ -22,9 +28,9 @@ export class CreateMatchdayComponent implements OnInit {
   ngOnInit() {
 
   }
+
   
   constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities) {
-    
   }
 
   teamSelectChanged(input) {
@@ -34,5 +40,39 @@ export class CreateMatchdayComponent implements OnInit {
 
   daySelectChanged() {
     this.dayChanged = true;
+  }
+
+  createGame(){
+    console.log(this.opponent, this.team, this.home, this.address, this.zipcode, this.date);
+    if (this.home == true){
+      this.home = true;
+    } else {
+      this.home = false;
+    }
+
+
+
+    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
+      let matchesArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        matchesArray[counter] = snapshot.val()[i];
+        counter++;
+      }
+      console.log(counter);
+      firebase.database().ref('clubs/12/').update({
+        matches: matchesArray
+      });
+      firebase.database().ref('clubs/12/matches/'+counter).set({
+        opponent: this.opponent,
+        team: this.team,
+        home: this.home,
+        time: this.date
+      });
+      firebase.database().ref('clubs/12/matches/'+counter+'/location').set({
+        street: this.address,
+        zipcode: this.zipcode
+      });
+    });
   }
 }
