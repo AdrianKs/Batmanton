@@ -5,7 +5,9 @@ import { Component, OnInit } from '@angular/core';
 import { ViewTeamComponent } from './viewTeam.component';
 import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
+import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
+import {CreateTeamComponent} from './createNewTeam.component';
 
 
 @Component({
@@ -20,84 +22,59 @@ export class TeamsComponent implements OnInit {
   playerArray: any[];
 
   ngOnInit(): void {
-    this.getAllTeamData();
+    
   }
 
-  constructor(public navCtrl: NavController, public fbP: FirebaseProvider) {
+  constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities) {
     this.database = firebase.database();
+    this.teams = this.utilities.allTeams;
+    this.teamsSearch = this.utilities.allTeams;
+    console.log(this.teams);
     //this.getAllTeamData();
   }
 
 
-  testGetData() {
-    var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
-    console.log(test);
-  }
-
-
   viewTeam(ev, value) {
-    this.navCtrl.push(ViewTeamComponent, { team: value });
+    this.navCtrl.push(ViewTeamComponent, { 
+      teamId: value.id
+    });
   }
 
   addTeam(ev, value) {
     //Team hinzufügen View aufrufen
   }
 
+  pushToAddNewTeam(){
+    this.navCtrl.push(CreateTeamComponent);
+  }
+
 
   getAllTeamData() {
-    this.database.ref("/clubs/12/teams/").once('value', snapshot => {
-      console.log(snapshot.val());
-      let teamArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        teamArray[counter] = snapshot.val()[i];
-        teamArray[counter].id = i;
-        counter++;
-      }
-      this.teamsSearch = teamArray;
-      this.teams = teamArray;
-      let playerPlaceholder = [];
-      counter = 0;
-      for (let y in this.teams) {
-        playerPlaceholder[counter] = this.teams[y].players;
-        counter++;
-      }
-      console.log("PRINT BEFORE TEST");
-      this.playerArray = playerPlaceholder;
-      this.addPlayersToArray(this.playerArray);
-      /* console.log(playerPlaceholder);
-       counter = 0;
-       let playerIDs = [];
-       for (let j in playerPlaceholder){
-         let test = playerPlaceholder[j][counter];
-         console.log("ID: " + test);
-         playerIDs.push(test);
-         counter++;
-       }
-       console.log("PLAYER IDs");
-       console.log(playerIDs);*/
-    });
-
-
-    //this.teams = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
+    let playerPlaceholder = [];
+    let counter = 0;
+    for (let y in this.teams) {
+      playerPlaceholder[counter] = this.teams[y].players;
+      counter++;
+    }
+    this.playerArray = playerPlaceholder;
+    this.addPlayersToArray(this.playerArray);
   }
 
   addPlayersToArray(valueArray: any) {
     this.database.ref("/clubs/12/players/").once('value', snapshot => {
-      console.log("VALUE ARRAY");
-      console.log(valueArray);
-      let allPlayers = snapshot.val();
       let idPlaceholder = 0;
       let counter = 0;
       for (let i in valueArray) {
         for (let y in valueArray[i]) {
           idPlaceholder = valueArray[i][y];
           let player = snapshot.child("" + idPlaceholder).val();
-          console.log("PLAYER: ");
-          console.log(player);
-          this.teams[i].players[y] = player;
-          console.log("TEAMS:");
-          console.log(this.teams);
+          if ((player != null) && (player != undefined)) {
+            this.teams[i].players[y] = player;
+            this.teams[i].players[y].id = y;
+            this.teams[i].players[y].uniqueId = idPlaceholder;
+          } else {
+            console.log("Spieler übersprungen, da null");
+          }
         }
       }
     })
@@ -106,74 +83,6 @@ export class TeamsComponent implements OnInit {
 
   initializeTeams() {
     this.teams = this.teamsSearch;
-    /*this.teams = [
-      {
-        isAdult: true,
-        name: "J1",
-        type: "0",
-        players: {
-          15: {
-            name: 'Thomas Test',
-            geschlecht: 'm',
-            geburtstag: '01.01.1996'
-          },
-          16: {
-            name: 'Tina Turner',
-            geschlecht: 'w',
-            geburtstag: '02.02.1997'
-          },
-          17: {
-            name: 'Tim Turner',
-            geschlecht: 'm',
-            geburtstag: '02.02.1997'
-          }
-        }
-      },
-      {
-        isAdult: false,
-        name: "J2",
-        type: "0",
-        players: {
-          15: {
-            name: 'Jonas Friedrich',
-            geschlecht: 'm',
-            geburtstag: '01.01.1996'
-          },
-          16: {
-            name: 'Lisa Albert',
-            geschlecht: 'w',
-            geburtstag: '02.02.1997'
-          },
-          17: {
-            name: 'Stefan Knolle',
-            geschlecht: 'm',
-            geburtstag: '02.02.1997'
-          }
-        }
-      },
-      {
-        isAdult: true,
-        name: "J3",
-        type: "0",
-        players: {
-          15: {
-            name: 'Tim Turbo',
-            geschlecht: 'm',
-            geburtstag: '01.01.1996'
-          },
-          16: {
-            name: 'Christina Kralle',
-            geschlecht: 'w',
-            geburtstag: '02.02.1997'
-          },
-          17: {
-            name: 'ASAP Ferg',
-            geschlecht: 'm',
-            geburtstag: '02.02.1997'
-          }
-        }
-      }
-    ]*/
   }
 
   getItems(ev) {

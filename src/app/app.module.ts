@@ -20,6 +20,7 @@ import {ViewTeamComponent} from '../pages/teams/viewTeam.component';
 import {PopoverPage} from '../pages/teams/popover.component';
 import {EditTeamComponent} from '../pages/teams/editTeam.component';
 import {EditPlayerComponent} from '../pages/teams/editPlayers.component';
+import {CreateTeamComponent} from '../pages/teams/createNewTeam.component';
 import {Birthday} from './pipes/birthday';
 import {Gender} from './pipes/gender';
 import {Player} from './pipes/player';
@@ -48,6 +49,7 @@ import {MatchTime} from './pipes/matchTime';
     PopoverPage,
     EditTeamComponent,
     EditPlayerComponent,
+    CreateTeamComponent,
     //Pipes
     Birthday,
     Gender,
@@ -79,7 +81,8 @@ import {MatchTime} from './pipes/matchTime';
     ViewTeamComponent,
     PopoverPage,
     EditTeamComponent,
-    EditPlayerComponent
+    EditPlayerComponent,
+    CreateTeamComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })
