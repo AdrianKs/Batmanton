@@ -47,17 +47,9 @@ export class EditRoleComponent {
     changeRole(ev, player) {
         let successFlag = true;
 
-        firebase.database().ref('clubs/12/players/' + player.id).set({
-            birthday: player.birthday,
-            email: player.email,
-            firstname: player.firstname,
-            gender: player.gender,
+        firebase.database().ref('clubs/12/players/' + player.id).update({
             isTrainer: player.isTrainer,
-            isPlayer: player.isPlayer,
-            lastname: player.lastname,
-            pushid: player.pushid,
-            state: player.state,
-            team: player.team
+            isPlayer: player.isPlayer
         }).catch(function (error) {
             console.log(error);
             successFlag = false;

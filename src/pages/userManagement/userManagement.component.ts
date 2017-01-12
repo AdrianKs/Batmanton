@@ -32,20 +32,6 @@ export class UserManagementComponent implements OnInit {
     public utilities: Utilities) {
   }
 
-  /*getPlayer(): void {
-    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
-      let playerArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        playerArray[counter] = snapshot.val()[i];
-        playerArray[counter].id = i;
-        counter++;
-      }
-      this.dataPlayerSearch = playerArray;
-      this.dataPlayer = playerArray;
-    });
-  }*/
-
   initializeItems() {
     this.dataPlayer = this.dataPlayerSearch;
   }

@@ -2,12 +2,12 @@
  * Created by kochsiek on 15.12.2016.
  */
 import { Component } from '@angular/core';
-import {Camera} from 'ionic-native';
+import { Camera } from 'ionic-native';
 
 import { NavController, MenuController } from 'ionic-angular';
-import {MatchdayComponent} from "../matchday/matchday.component";
+import { MatchdayComponent } from "../matchday/matchday.component";
 import firebase from 'firebase';
-import {Utilities} from '../../app/utilities';
+import { Utilities } from '../../app/utilities';
 
 @Component({
   selector: 'page-selectProfilePicture',
@@ -60,9 +60,10 @@ export class SelectProfilePictureComponent {
 
 
   uploadPicture() {
-    firebase.storage().ref().child('profilePictures/' + this.utilities.user.uid + "/" + this.utilities.user.uid + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
+    firebase.storage().ref().child('profilePictures/' + this.utilities.user.uid + "/" + this.utilities.user.uid + ".jpg").putString(this.base64String, 'base64', { contentType: 'image/JPEG' })
       .then(callback => {
         console.log("Image upload success");
+        this.storeUrl(callback.downloadURL);
         this.goToStartPage();
       })
       .catch(function (error) {
@@ -71,8 +72,15 @@ export class SelectProfilePictureComponent {
       });
   }
 
-  goToStartPage(){
+  goToStartPage() {
     this.navCtrl.setRoot(MatchdayComponent);
     this.menuCtrl.enable(true, 'mainMenu');
   }
+
+  storeUrl(url: string) {
+    firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).update({
+        picUrl: url
+    });
+  }
+
 }
