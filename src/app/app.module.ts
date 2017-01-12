@@ -17,8 +17,8 @@ import {EditRoleComponent} from '../pages/editRole/editRole.component';
 import {TeamsComponent} from '../pages/teams/teams.component';
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
 import {ViewTeamComponent} from '../pages/teams/viewTeam.component';
-import {PopoverPage} from '../pages/teams/popover.component';
-import {EditTeamComponent} from '../pages/teams/editTeam.component';
+//import {PopoverPage} from '../pages/teams/popover.component'; VERALTET UND NICHT MEHR GEBRAUCHT
+//import {EditTeamComponent} from '../pages/teams/editTeam.component'; VERALTET UND NICHT MEHR GEBRAUCHT
 import {EditPlayerComponent} from '../pages/teams/editPlayers.component';
 import {CreateTeamComponent} from '../pages/teams/createNewTeam.component';
 import {Birthday} from './pipes/birthday';
@@ -46,8 +46,8 @@ import {MatchTime} from './pipes/matchTime';
     TeamsComponent,
     SelectProfilePictureComponent,
     ViewTeamComponent,
-    PopoverPage,
-    EditTeamComponent,
+    //PopoverPage,
+    //EditTeamComponent,
     EditPlayerComponent,
     CreateTeamComponent,
     //Pipes
@@ -79,8 +79,8 @@ import {MatchTime} from './pipes/matchTime';
     TeamsComponent,
     SelectProfilePictureComponent,
     ViewTeamComponent,
-    PopoverPage,
-    EditTeamComponent,
+    //PopoverPage,
+    //EditTeamComponent,
     EditPlayerComponent,
     CreateTeamComponent
   ],
