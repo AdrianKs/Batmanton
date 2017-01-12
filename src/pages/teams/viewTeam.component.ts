@@ -320,9 +320,11 @@ export class ViewTeamComponent implements OnInit {
         //this.getPlayersOfTeam();
     }
 
+
     deleteTeamFromPlayer(playerId: any, teamIdToBeDeleted: any){
          this.database.ref('clubs/12/players/' + playerId + '/teams/' + teamIdToBeDeleted).remove();
     }
+
 
     deleteTeam() {
         this.database.ref('clubs/12/teams/' + this.teamId).remove();

@@ -22,7 +22,7 @@ export class TeamsComponent implements OnInit {
   playerArray: any[];
 
   ngOnInit(): void {
-//this.database = firebase.database();
+
   }
 
   ionViewWillEnter(){
@@ -52,6 +52,12 @@ export class TeamsComponent implements OnInit {
       //this.teamsLoaded = true;
     });
   }
+
+
+
+  
+
+
 
   viewTeam(ev, value) {
     this.navCtrl.push(ViewTeamComponent, {
