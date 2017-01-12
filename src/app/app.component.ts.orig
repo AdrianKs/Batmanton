@@ -26,7 +26,10 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
+<<<<<<< f4ec1ff851ff4ba281ab06ec96f60bf6ba1e30e5
+=======
   
+>>>>>>> resolved conflicts
   aboutPage: any = {
     title: "About",
     component: AboutComponent

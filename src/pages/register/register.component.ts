@@ -2,11 +2,12 @@
  * Created by kochsiek on 08.12.2016.
  */
 import {Component, OnInit} from '@angular/core';
-import { NavController, LoadingController, AlertController } from 'ionic-angular';
+import {NavController, LoadingController, AlertController} from 'ionic-angular';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
-import { AuthData } from '../../providers/auth-data';
+import {AuthData} from '../../providers/auth-data';
 import firebase from 'firebase';
 import {SelectProfilePictureComponent} from "../selectProfilePicture/selectProfilePicture.component";
+import {Utilities} from "../../app/utilities";
 
 
 @Component({
@@ -14,18 +15,13 @@ import {SelectProfilePictureComponent} from "../selectProfilePicture/selectProfi
   templateUrl: 'register.component.html',
   providers: [AuthData]
 })
-export class RegisterComponent implements OnInit{
-
-  ngOnInit(): void {
-    this.getTeams();
-  }
-
-  teams: Array<any>;
+export class RegisterComponent {
 
   public signupForm;
   public passwordGroup;
   gender: string = '';
   team: string = '';
+  relevantTeams = this.utilities.allTeams;
   firstnameChanged: boolean = false;
   lastnameChanged: boolean = false;
   birthdayChanged: boolean = false;
@@ -41,8 +37,8 @@ export class RegisterComponent implements OnInit{
               public authData: AuthData,
               public formBuilder: FormBuilder,
               public loadingCtrl: LoadingController,
-              public alertCtrl: AlertController)
-  {
+              public alertCtrl: AlertController,
+              public utilities: Utilities) {
     this.signupForm = formBuilder.group({
       firstname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
       lastname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
@@ -67,38 +63,36 @@ export class RegisterComponent implements OnInit{
     return null;
   }
 
-  getTeams(): void {
-    firebase.database().ref('clubs/12/teams').once('value', snapshot => {
-      let teamArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        teamArray[counter] = snapshot.val()[i];
-        teamArray[counter].id = i;
-        counter++;
-      }
-      this.teams = teamArray;
-    })
-  }
-
   /**
    * This method checks if a input field was changed
    * @param input Input field to check
    */
-  elementChanged(input){
+  elementChanged(input) {
     let field = input.inputControl.name;
     this[field + "Changed"] = true;
+  }
+
+  birthdaySelectChanged() {
+    this.relevantTeams = this.utilities.getRelevantTeams(this.signupForm.value.birthday);
+    if(this.team != undefined && this.utilities.allTeamsVal[this.team] != undefined) {
+      if (this.team != "0" && this.utilities.allTeamsVal[this.team].ageLimit != 0) {
+        if (this.utilities.allTeamsVal[this.team].ageLimit < this.utilities.calculateAge(this.signupForm.value.birthday)) {
+          this.team = "0";
+        }
+      }
+    }
   }
 
   /**
    * This function is needed, since the select box can for some reason not be validated in formcontrol,
    * so ngModel had to be used, so a special validation is needed
    */
-  genderSelectChanged(input){
+  genderSelectChanged(input) {
     this.gender = input;
     this.genderChanged = true;
   }
 
-  teamSelectChanged(input){
+  teamSelectChanged(input) {
     this.team = input;
     this.teamChanged = true;
   }
@@ -106,10 +100,10 @@ export class RegisterComponent implements OnInit{
   /**
    * This function checks, if the input field starts with a capital letter
    */
-  startsWithACapital(c: FormControl){
+  startsWithACapital(c: FormControl) {
     let NAME_REGEXP = new RegExp("[A-Z]");
-    if(!NAME_REGEXP.test(c.value.charAt(0))){
-      return { "incorrectNameFormat": true}
+    if (!NAME_REGEXP.test(c.value.charAt(0))) {
+      return {"incorrectNameFormat": true}
     }
     return null;
   }
@@ -123,7 +117,7 @@ export class RegisterComponent implements OnInit{
     let EMAIL_REGEXP = /^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i;
 
     if (c.value != "" && (c.value.length <= 5 || !EMAIL_REGEXP.test(c.value))) {
-      return { "incorrectMailFormat": true };
+      return {"incorrectMailFormat": true};
     }
 
     return null;
@@ -135,10 +129,10 @@ export class RegisterComponent implements OnInit{
    * The field gender is not managed with the signupForm, because of an error that occured in the
    * combination of formcontrol with ion-select
    */
-  signupUser(){
+  signupUser() {
     this.submitAttempt = true;
 
-    if (!this.signupForm.valid){
+    if (!this.signupForm.valid) {
       console.log(this.signupForm.value);
       console.log("gender: " + this.gender);
       console.log("team: " + this.team);
@@ -152,6 +146,7 @@ export class RegisterComponent implements OnInit{
         this.gender,
         this.team
       ).then(() => {
+        this.utilities.addPlayerToTeam(this.team, this.utilities.user.uid);
         this.navCtrl.setRoot(SelectProfilePictureComponent);
       }, (error) => {
         this.loading.dismiss();

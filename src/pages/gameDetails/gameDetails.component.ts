@@ -1,12 +1,12 @@
 /**
  * Created by kochsiek on 08.12.2016.
  */
+//todo
+//SCSS
+//Mannschaftsbild vs Teambild
 import { Component } from '@angular/core';
-
 import { NavController, NavParams } from 'ionic-angular';
-
 import { MyGamesService } from '../../providers/myGames.service';
-
 import firebase from 'firebase';
 
 @Component({
@@ -15,11 +15,16 @@ import firebase from 'firebase';
   providers: [MyGamesService]
 })
 export class GameDetailsComponent {
+  playerStatus: string = 'accepted';
   gameItem: any;
 
   constructor(private navCtrl: NavController, private navP: NavParams, private MyGamesService: MyGamesService) {
     //Load data in array
     this.gameItem = navP.get('gameItem');
+  }
+
+  checkItem(item){
+    console.log(item);
   }
 }
 

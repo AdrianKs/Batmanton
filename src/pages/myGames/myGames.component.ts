@@ -1,9 +1,14 @@
+//todo
+//unterscheidung zwischen vergangende/bevorstehende ggf. Sortierung?
+//update nach klick
+//SCSS
+//Menüleiste für offene Games
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
 import { MyGamesService } from '../../providers/myGames.service';
-import { loggedInUser } from "../../app/globalVars";
 import firebase from 'firebase';
+import {Utilities} from '../../app/utilities';
 
 @Component({
   selector: 'page-myGames',
@@ -14,27 +19,19 @@ import firebase from 'firebase';
 export class MyGamesComponent implements OnInit {
 
   ngOnInit() {
-    this.getPlayer();
     this.getGames();
     this.getInvites();
   }
 
   gameStatus: string = "vergangende";
-  loggedInUserID: string = loggedInUser.uid;
-  player: any = "";
+  loggedInUserID: string = this.utilities.user.uid;
   dataGames: any;
   dataInvites: any;
   testRadioOpen: boolean;
   testRadioResult;
-  
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService) {
-    
-  }
 
-  getPlayer(): void {
-    firebase.database().ref('clubs/12/players/' + this.loggedInUserID).once('value', snapshot => {
-      this.player = snapshot.val();
-    })
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService, public utilities: Utilities) {
+
   }
 
   getGames(): void {
@@ -67,7 +64,7 @@ export class MyGamesComponent implements OnInit {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 
-  doAlert(inviteItem){
+  verifyAccept(inviteItem){
     firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
       excuse: "",
       match: inviteItem.match,
@@ -75,6 +72,7 @@ export class MyGamesComponent implements OnInit {
       sender: inviteItem.sender,
       state: 1
     });
+    this.utilities.pushToAccepted(inviteItem.match, this.loggedInUserID);
     let alert = this.alertCtrl.create({
       title: 'Zugesagt',
       message: 'Du wirst diesem Spieltag zugeteilt!',
@@ -126,6 +124,7 @@ export class MyGamesComponent implements OnInit {
         this.testRadioResult = data;
         if(this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private'){
           console.log('Radio data:', data);
+          this.utilities.pushToDeclined(inviteItem.match, this.loggedInUserID);
           firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
             excuse: data,
             match: inviteItem.match,
@@ -134,77 +133,44 @@ export class MyGamesComponent implements OnInit {
             state: 2
           });
         }
-        if(this.testRadioResult == 'injured'){
-          let prompt = this.alertCtrl.create({
-            title: 'Verletzt',
-            message: "Bitte näher ausführen:",
-            inputs: [
-              {
-                name: 'injured',
-                placeholder: 'Wie lange wirst du ausfallen?'
-              },
-            ],
-            buttons: [
-              {
-                text: 'Abbruch',
-                handler: data => {
-                  console.log('Cancel clicked');
+        if(this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous'){
+            let prompt = this.alertCtrl.create({
+              title: 'Verletzt/Sonstige',
+              message: "Bitte näher ausführen:",
+              inputs: [
+                {
+                  name: 'extra',
+                  placeholder: 'Wie lange wirst du ausfallen?'
+                },
+              ],
+              buttons: [
+                {
+                  text: 'Abbruch',
+                  handler: data => {
+                    console.log('Cancel clicked');
+                  }
+                },
+                {
+                  text: 'Absenden',
+                  handler: data => {
+                    console.log('Radio data:', this.testRadioResult + ': ' +data.extra);
+                    console.log('Send clicked');
+                    this.utilities.pushToDeclined(inviteItem.match, this.loggedInUserID);
+                    firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
+                      excuse: this.testRadioResult + ': ' +data.extra,
+                      match: inviteItem.match,
+                      recipient: inviteItem.recipient,
+                      sender: inviteItem.sender,
+                      state: 2
+                    });
+                  }
                 }
-              },
-              {
-                text: 'Absenden',
-                handler: data => {
-                  console.log('Radio data:', data);
-                  console.log('Send clicked');
-                  firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
-                    excuse: data,
-                    match: inviteItem.match,
-                    recipient: inviteItem.recipient,
-                    sender: inviteItem.sender,
-                    state: 2
-                  });
-                }
-              }
-            ]
-           });
+              ]
+            });
+            prompt.present();
           }
-          if(this.testRadioResult == 'miscellaneous'){
-          let prompt = this.alertCtrl.create({
-            title: 'Verletzt/Sonstige',
-            message: "Bitte kurz näher ausführen:",
-            inputs: [
-              {
-                name: 'miscellaneous',
-                placeholder: 'Warum wirst du ausfallen?'
-              },
-            ],
-            buttons: [
-              {
-                text: 'Abbruch',
-                handler: data => {
-                  console.log('Cancel clicked');
-                }
-              },
-              {
-                text: 'Absenden',
-                handler: data => {
-                  console.log('Radio data:', data);
-                  console.log('Send clicked');
-                  firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
-                    excuse: data,
-                    match: inviteItem.match,
-                    recipient: inviteItem.recipient,
-                    sender: inviteItem.sender,
-                    state: 2
-                  });
-                }
-              }
-            ]
-          });
-          prompt.present();
-        }
-      }
-    });
+       }
+     });
 
     alert.present().then(() => {
       this.testRadioOpen = true;
