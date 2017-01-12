@@ -26,7 +26,7 @@
 <ion-content padding>
     <div class="topContainer">
         <div class="pictureContainer">
-            <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
+            <img id="teamPic" (click)="changeTeamPicture()" />
         </div>
         <form class="center-form" [formGroup]="teamForm" novalidate>
         <div class="playerDataContainer">

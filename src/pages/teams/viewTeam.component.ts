@@ -2,13 +2,15 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component, OnInit, Injectable } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ActionSheetController } from 'ionic-angular';
 import { PopoverPage } from './popover.component';
 import { EditTeamComponent } from './editTeam.component';
 import { Utilities } from '../../app/utilities';
 import { EditPlayerComponent } from './editPlayers.component';
 import firebase from 'firebase';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { document } from "@angular/platform-browser/src/facade/browser";
+import {Camera} from 'ionic-native';
 
 
 @Component({
@@ -33,7 +35,7 @@ export class ViewTeamComponent implements OnInit {
     altersKChanged: boolean = false;
     altersBezChanged: boolean = false;
     formValid: boolean = false;
-
+    actionSheetOptions: any;
 
     /**
      * OLD VALUES
@@ -42,12 +44,14 @@ export class ViewTeamComponent implements OnInit {
     altersKOld: any;
     altersBezOld: string;
 
+    base64Image: string;
+    base64String: string;
 
 
 
 
     ngOnInit(): void {
-
+        this.getTeamPicture();
     }
 
 
@@ -57,7 +61,8 @@ export class ViewTeamComponent implements OnInit {
         private navP: NavParams,
         public alertCtrl: AlertController,
         public utils: Utilities,
-        public formBuilder: FormBuilder) {
+        public formBuilder: FormBuilder,
+        public actionSheetCtrl: ActionSheetController) {
 
 
         this.teamForm = formBuilder.group({
@@ -339,6 +344,144 @@ export class ViewTeamComponent implements OnInit {
 
 
 
+    }
+
+    getPicture() {
+        let options = {
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+            allowEdit: true,
+            quality: 100,
+            targetWidth: 500,
+            targetHeight: 500
+        };
+
+        this.callCamera(options);
+    }
+
+    callCamera(options) {
+    Camera.getPicture(options)
+      .then((imageData) => {
+        // imageData is a base64 encoded string
+        this.base64Image = "data:image/jpeg;base64," + imageData;
+        this.base64String = imageData;
+        this.uploadPicture();
+      }, (err) => {
+        console.log(err);
+      });
+  }
+
+  uploadPicture() {
+    // firebase.storage().ref().child('profilePictures/' + this.utilities.userDataID + "/" + this.utilities.userDataID + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
+    firebase.storage().ref().child('teamPictures/' + this.teamId +"_"+this.team.name+ "/" + this.teamId +"_"+this.team.name+ ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
+      .then(callback => {
+        document.getElementById("teamPic").src = this.base64Image;
+        // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
+        this.actionSheetOptions = {
+          title: 'Profilbild ändern',
+          buttons: [
+            {
+              text: 'Fotos',
+              icon: "images",
+              handler: () => this.getPicture()
+            },
+            {
+              text: 'Profilbild löschen',
+              role: 'destructive',
+              icon: "trash",
+              handler: () => this.deleteTeamPicture()
+            },
+            {
+              text: 'Abbrechen',
+              role: 'cancel'
+            }
+          ]
+        };
+      })
+      .catch(function (error) {
+        alert(error.message);
+        console.log(error);
+      });
+  }
+
+    changeTeamPicture() {
+        let actionSheet = this.actionSheetCtrl.create(this.actionSheetOptions);
+        if (this.editMode) {
+            actionSheet.present();
+        }
+    }
+
+    deleteTeamPicture() {
+        var that = this;
+    // firebase.storage().ref().child('profilePictures/test.jpg').delete().then(function() {
+    // firebase.storage().ref().child('profilePictures/' + this.utilities.userDataID + "/" + this.utilities.userDataID + '.jpg').delete().then(function () {
+    firebase.storage().ref().child('teamPictures/' + this.teamId+"_"+this.team.name + "/" + this.teamId +"_"+this.team.name+ '.jpg').delete().then(function () {
+      document.getElementById("teamPic").src = "assets/images/ic_account_circle_black_48dp_2x.png";
+
+      // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
+      that.actionSheetOptions = {
+        title: 'Profilbild ändern',
+        buttons: [
+          {
+            text: 'Fotos',
+            icon: "images",
+            handler: () => that.getPicture()
+          },
+          {
+            text: 'Abbrechen',
+            role: 'cancel'
+          }
+        ]
+      };
+    }).catch(function (error) {
+      alert(error.message);
+    });
+    }
+
+    getTeamPicture() {
+        var that = this;
+        // firebase.storage().ref().child("profilePictures/" + this.utilities.userDataID + "/" + this.utilities.userDataID + ".jpg").getDownloadURL().then(function (url) {
+        firebase.storage().ref().child("teamPictures/" + this.teamId+"_"+this.team.name + "/" + this.teamId +"_"+this.team.name+ ".jpg").getDownloadURL().then(function (url) {
+            document.getElementById("teamPic").src = url;
+            // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
+            that.actionSheetOptions = {
+                title: 'Teambild ändern',
+                buttons: [
+                    {
+                        text: 'Fotos',
+                        icon: "images",
+                        handler: () => that.getPicture()
+                    },
+                    {
+                        text: 'Profilbild löschen',
+                        role: 'destructive',
+                        icon: "trash",
+                        handler: () => that.deleteTeamPicture()
+                    },
+                    {
+                        text: 'Abbrechen',
+                        role: 'cancel'
+                    }
+                ]
+            };
+        }).catch(function (error) {
+            document.getElementById("teamPic").src = "assets/images/ic_account_circle_black_48dp_2x.png";
+            // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
+            that.actionSheetOptions = {
+                title: 'Profilbild ändern',
+                buttons: [
+                    {
+                        text: 'Fotos',
+                        icon: "images",
+                        handler: () => that.getPicture()
+                    },
+                    {
+                        text: 'Abbrechen',
+                        role: 'cancel'
+                    }
+                ]
+            };
+        });
     }
 
 
