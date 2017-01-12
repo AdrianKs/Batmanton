@@ -82,6 +82,10 @@ export class EditPlayerComponent implements OnInit {
         this.checkIfUndefined();
     }
 
+    backToEditMode(){
+        this.nav.pop();
+    }
+
     initializePlayers() {
         this.allPlayers = this.allPlayersSearch;
         this.playersOfTeam = this.playersOfTeamSearch;

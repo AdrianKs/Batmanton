@@ -1,5 +1,10 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar hideBackButton="true">
+        <ion-buttons left>
+            <button ion-button (click)="backToEditMode()">
+            Zurück
+        </button>
+        </ion-buttons>
         <ion-title>Spieler hinzufügen</ion-title>
     </ion-navbar>
 </ion-header>
@@ -86,7 +91,7 @@
                                         <ion-row>
                                             <ion-col width-15>
 
-                                                <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+                                                <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
 
                                             </ion-col>
                                             <ion-col width-70>
@@ -118,7 +123,7 @@
                                         <ion-row>
                                             <ion-col width-15>
 
-                                                <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+                                                <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
 
                                             </ion-col>
                                             <ion-col width-70>

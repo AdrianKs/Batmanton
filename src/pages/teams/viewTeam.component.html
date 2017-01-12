@@ -11,7 +11,7 @@
         <ion-title>Mannschaftsdetails</ion-title>
         <ion-buttons right>
             <button *ngIf="(!editMode)" ion-button (click)="editTeam()">Bearbeiten</button>
-            <button ion-button *ngIf="(editMode)" [disabled]="(!playerDeleted && !altersBezChanged && !altersKChanged && !nameChanged)||!formValid" (click)="updateTeamInfos()">
+            <button ion-button *ngIf="(editMode)" (click)="updateTeamInfos()">
          Fertig
       </button>
         </ion-buttons>
@@ -26,7 +26,7 @@
 <ion-content padding>
     <div class="topContainer">
         <div class="pictureContainer">
-            <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+            <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
         </div>
         <form class="center-form" [formGroup]="teamForm" novalidate>
         <div class="playerDataContainer">
@@ -46,17 +46,17 @@
             </ion-item>
             <ion-item *ngIf="(editMode)">
                 <ion-label class="playerLabel">Teamname:</ion-label>
-                <ion-input #teamName formControlName="teamName" class="playerValue" (input)="elementChanged(teamName)" value="{{team.name}}"></ion-input>
+                <ion-input #teamName formControlName="teamName" class="playerValue" value="{{team.name}}"></ion-input>
             </ion-item>
             <ion-item *ngIf="(editMode)">
-                <ion-label class="playerLabel">Alterklasse:</ion-label>
-                <ion-input #altersK formControlName="altersK" *ngIf="team.ageLimit==0" class="playerValue" (input)="elementChanged(altersK)" value="Erwachsen"></ion-input>
-                <ion-input #altersK formControlName="altersK" *ngIf="team.ageLimit!=0" class="playerValue" (input)="elementChanged(altersK)" value="U {{team.ageLimit}}"></ion-input>
+                <ion-label class="playerLabel">Maximales Alter:</ion-label>
+                <ion-input #altersK formControlName="altersK" class="playerValue"  type="number" value="{{team.ageLimit}}"></ion-input>
             </ion-item>
-            <ion-item *ngIf="(editMode) && team.ageLimit!=team.type">
+            <ion-item *ngIf="(editMode)">
                 <ion-label class="playerLabel">Altersbezeichnung:</ion-label>
-                <ion-input #altersBez formControlName="altersBez" *ngIf="team.type==1" class="playerValue" (input)="elementChanged(altersBez)" value="Mini"></ion-input>
-                <ion-input #altersBez formControlName="altersBez" *ngIf="team.type==0" class="playerValue" (input)="elementChanged(altersK)" value="Erwachsen"></ion-input>
+                <ion-input #altersBez formControlName="altersBez" *ngIf="team.type!=0 && team.type!=1" class="playerValue"></ion-input>
+                <ion-input #altersBez formControlName="altersBez" *ngIf="team.type==1" class="playerValue"  value="Mini"></ion-input>
+                <ion-input #altersBez formControlName="altersBez" *ngIf="team.type==0" class="playerValue"  value="Erwachsen"></ion-input>
             </ion-item>
         </div>
         </form>
@@ -91,7 +91,7 @@
                             <ion-row>
                                 <ion-col width-15>
 
-                                    <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+                                    <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
 
                                 </ion-col>
                                 <ion-col width-70>
@@ -135,7 +135,7 @@
                             <ion-row>
                                 <ion-col width-15>
 
-                                    <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+                                    <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
 
                                 </ion-col>
                                 <ion-col width-70>

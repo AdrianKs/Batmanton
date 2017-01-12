@@ -42,15 +42,15 @@ export class ViewTeamComponent implements OnInit {
     altersKOld: any;
     altersBezOld: string;
 
-  
-   
+
+
 
 
     ngOnInit(): void {
 
     }
 
-    
+
 
     constructor(
         public navCtrl: NavController,
@@ -99,6 +99,58 @@ export class ViewTeamComponent implements OnInit {
             /*this.justPlayersPlaceholder = snapshot.val();
             this.checkIfUndefined();*/
         })
+    }
+
+
+    updateTeamInfos() {
+        if (this.validate()) {
+            let teamName = this.teamForm.value.teamName;
+            let altersK = this.teamForm.value.altersK;
+            let altersBez = this.teamForm.value.altersBez;
+            if (altersBez == "Mini") {
+                altersBez = 1;
+            } else if (altersBez == "Erwachsen") {
+                altersBez = 0;
+            } else {
+                //besser erwachsen als mini
+                altersBez = 0;
+            }
+
+            //UPDATE Database
+            firebase.database().ref('clubs/12/teams/' + this.teamId).set({
+                ageLimit: altersK,
+                name: teamName,
+                type: altersBez
+            });
+
+            //UPDATE Array 
+            this.team.ageLimit = altersK;
+            this.team.name = teamName;
+            this.team.type = altersBez;
+
+            console.log(this.team);
+            //END Edit Mode
+            this.editMode = false;
+        }
+    }
+
+    validate() {
+
+        //TODO: Bekommt NULL-Werte???? => Fixen
+        let teamName = this.teamForm.value.teamName;
+        let altersK = this.teamForm.value.altersK;
+        let altersBez = this.teamForm.value.altersBez;
+        if ((teamName != "" && altersK != "" && altersBez != "") && (teamName != null && altersK != null && altersBez != null)) {
+            return true;
+        } else {
+            let alert = this.alertCtrl.create({
+                title: 'Fehlende Angaben',
+                subTitle: "Bitte tätigen Sie Eingabe für alle Felder!",
+                buttons: ['OK']
+            });
+            alert.present();
+            return false;
+        }
     }
 
     getPlayersOfTeamDb() {
@@ -174,7 +226,7 @@ export class ViewTeamComponent implements OnInit {
     }
 
 
-    
+
 
 
 
@@ -191,19 +243,10 @@ export class ViewTeamComponent implements OnInit {
 
             }
 
-            })
+        })
 
-            /*this.justPlayersPlaceholder = snapshot.val();
-            this.checkIfUndefined();*/
-        }
-
-
-
-
-
-
-    detectChange() {
-
+        /*this.justPlayersPlaceholder = snapshot.val();
+        this.checkIfUndefined();*/
     }
 
     getPlayersOfTeam() {
@@ -252,7 +295,7 @@ export class ViewTeamComponent implements OnInit {
             maxAge: this.team.ageLimit
         })
     }
-  
+
 
     toggleEditMode() {
         this.editMode = false;
@@ -263,6 +306,10 @@ export class ViewTeamComponent implements OnInit {
     }
 
     removePlayer(p: any) {
+
+
+        //TODO: Mannschaft aus clubs/12/players/ in Datenbank entfernen...wie?
+
         console.log(p);
         //this.justPlayers = []
         let placeHolderArray = this.justPlayers;
@@ -275,8 +322,9 @@ export class ViewTeamComponent implements OnInit {
                 this.justPlayers.push(placeHolderArray[i]);
             }
         }
-        
+
         this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + p.id).remove();
+        this.playerDeleted = true;
         //this.getPlayersOfTeamDb();
         //this.getPlayersOfTeam();
     }
@@ -299,11 +347,11 @@ export class ViewTeamComponent implements OnInit {
 
     }
 
- 
+
 
 
     deleteTeam() {
-        this.database.ref('clubs/12/teams/' + this.team.id).remove();
+        this.database.ref('clubs/12/teams/' + this.teamId).remove();
         this.navCtrl.popToRoot();
     }
 
@@ -353,10 +401,10 @@ export class ViewTeamComponent implements OnInit {
             });
             alert.present();
 
-           
-        } 
 
-        
+        }
+
+
 
 
     }
