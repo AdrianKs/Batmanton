@@ -47,16 +47,20 @@ export class TeamsComponent implements OnInit {
 
     this.teams = this.utilities.allTeams;
     this.teamsSearch = this.utilities.allTeams;
+<<<<<<< HEAD
     this.getAllTeamData();
 
+=======
+    console.log(this.teams);
+    //this.getAllTeamData();
+>>>>>>> View Team und Team Logik angepasst
   }
 
 
 
   viewTeam(ev, value) {
     this.navCtrl.push(ViewTeamComponent, { 
-      team: value
-      //teamId: value.id
+      teamId: value.id
     });
   }
 
