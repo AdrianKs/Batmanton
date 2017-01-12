@@ -226,50 +226,6 @@ export class ViewTeamComponent implements OnInit {
     }
 
 
-
-
-
-
-    getTeamDetails(teamId: any) {
-        this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
-            this.team = snapshot.val();
-            console.log(this.team);
-
-            if (this.team != undefined) {
-                this.justPlayersPlaceholder = this.team.players;
-                this.checkIfUndefined();
-            } else {
-                //FEHLER MELDUNG AUSGEBEN
-
-            }
-
-        })
-
-        /*this.justPlayersPlaceholder = snapshot.val();
-        this.checkIfUndefined();*/
-    }
-
-    getPlayersOfTeam() {
-        this.database.ref("/clubs/12/teams/" + this.teamId + "/players/").once('value', snapshot => {
-            this.justPlayersPlaceholder = snapshot.val();
-            this.checkIfUndefined();
-        })
-    }
-
-    elementChanged(input) {
-        let field = input.inputControl.name;
-        if (this[field + "Old"] != this["teamForm"]["value"][field]) {
-            this[field + "Changed"] = true;
-        } else {
-            this[field + "Changed"] = false;
-        }
-        if (this.teamForm.controls.teamName.valid && this.teamForm.controls.altersK.valid && this.teamForm.controls.altersBez.valid) {
-            this.formValid = true;
-        } else {
-            this.formValid = false;
-        }
-    }
-
     checkIfUndefined() {
 
         for (let i in this.justPlayersPlaceholder) {
@@ -278,9 +234,6 @@ export class ViewTeamComponent implements OnInit {
                 this.justPlayers.push(player);
             }
         }
-        /*console.log("JUST PLAYERS ARRAY:");
-        console.log(this.justPlayers);*/
-        //this.playerModel = this.justPlayers;
     }
 
     editTeam() {
@@ -328,27 +281,6 @@ export class ViewTeamComponent implements OnInit {
         //this.getPlayersOfTeamDb();
         //this.getPlayersOfTeam();
     }
-
-
-    public updateJustPlayerList(p: any) {
-        let placeHolderArray = this.justPlayers;
-        let uniqueId = 0;
-        let deleteId = p.uniqueId;
-        this.justPlayers = [];
-        for (let i in placeHolderArray) {
-            uniqueId = placeHolderArray[i].uniqueId;
-            if (uniqueId != deleteId) {
-                this.justPlayers.push(placeHolderArray[i]);
-
-            }
-            /*this.justPlayersPlaceholder = snapshot.val();
-            this.checkIfUndefined();*/
-        }
-
-    }
-
-
-
 
     deleteTeam() {
         this.database.ref('clubs/12/teams/' + this.teamId).remove();

@@ -69,6 +69,7 @@ export class CreateTeamComponent implements OnInit {
                 counter++;
             }
             teamArray.push(lokalTeam);
+            //Datenbank updaten
             firebase.database().ref('clubs/12/').update({
                 teams: teamArray
             });
