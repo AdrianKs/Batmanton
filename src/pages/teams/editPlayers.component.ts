@@ -12,13 +12,7 @@ import firebase from 'firebase';
 export class EditPlayerComponent implements OnInit {
 
     team: string = "";
-
-
     teamId: string = "";
-
-
-    teamId: string = "";
-
     spielerStatus: string = "chosen";
     allPlayers: any[];
     allPlayersMod: any;
@@ -47,7 +41,6 @@ export class EditPlayerComponent implements OnInit {
             console.log(player);
             let playerId = player.id;
             let placeHolderArray = this.playersOfTeam;
-
             let uniqueId = 0;
             this.playersOfTeam = [];
             
@@ -86,12 +79,6 @@ export class EditPlayerComponent implements OnInit {
         //this.getPlayers();
         //this.getTeams();
         this.checkIfUndefined();
-
-    }
-
-    constructor(public nav: NavController, public nParam: NavParams) {
-        this.playersOfTeam = nParam.get("param");
-
     }
 
     initializePlayers() {
@@ -217,7 +204,6 @@ export class EditPlayerComponent implements OnInit {
         }
     }
 
-
     removePlayer(p: any) {
 
         let placeHolderArray = this.playersOfTeam;
@@ -286,12 +272,6 @@ export class EditPlayerComponent implements OnInit {
                 return (item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1);
             })
         }
-
-
-    removePlayer(p: any){
-        
-
-
     }
 
     presentConfirm(p: any) {
@@ -320,4 +300,4 @@ export class EditPlayerComponent implements OnInit {
 
 
 
-}}
+}

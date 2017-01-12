@@ -27,33 +27,14 @@ export class TeamsComponent implements OnInit {
 
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities) {
     this.database = firebase.database();
-
-
-
-  }
-
-    //this.getAllTeamData();
-  }
-
-
-  /*testGetData() {
-    var test = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
-    console.log(test);
-  }*/
-
-
-
-
-
     this.teams = this.utilities.allTeams;
     this.teamsSearch = this.utilities.allTeams;
-<<<<<<< HEAD
     this.getAllTeamData();
 
-=======
+
     console.log(this.teams);
     //this.getAllTeamData();
->>>>>>> View Team und Team Logik angepasst
+
   }
 
 
@@ -87,51 +68,6 @@ export class TeamsComponent implements OnInit {
     this.addPlayersToArray(this.playerArray);
 
 
-      let counter = 0;
-      for (let y in this.teams) {
-        playerPlaceholder[counter] = this.teams[y].players;
-        counter++;
-      }
-      console.log("PRINT BEFORE TEST");
-      this.playerArray = playerPlaceholder;
-      this.addPlayersToArray(this.playerArray);
-
-    //this.database.ref("/clubs/12/teams/").once('value', snapshot => {
-      /*console.log(snapshot.val());
-      let teamArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        teamArray[counter] = snapshot.val()[i];
-        teamArray[counter].id = i;
-        counter++;
-      }
-      this.teamsSearch = teamArray;
-      this.teams = teamArray;
-      let playerPlaceholder = [];
-      counter = 0;
-      for (let y in this.teams) {
-        playerPlaceholder[counter] = this.teams[y].players;
-        counter++;
-      }
-      console.log("PRINT BEFORE TEST");
-      this.playerArray = playerPlaceholder;
-      this.addPlayersToArray(this.playerArray);*/
-      /* console.log(playerPlaceholder);
-       counter = 0;
-       let playerIDs = [];
-       for (let j in playerPlaceholder){
-         let test = playerPlaceholder[j][counter];
-         console.log("ID: " + test);
-         playerIDs.push(test);
-         counter++;
-       }
-       console.log("PLAYER IDs");
-       console.log(playerIDs);*/
-    //});
-
-
-    //this.teams = this.fbP.getItemsOfRefOn("/clubs/12/teams/");
-
 
   }
 
@@ -148,22 +84,6 @@ export class TeamsComponent implements OnInit {
           if ((player != null) && (player != undefined)) {
             this.teams[i].players[y] = player;
             this.teams[i].players[y].id = y;
-            this.teams[i].players[y].uniqueId = idPlaceholder;
-
-          if (player != null) {
-            console.log("PLAYER: ");
-            console.log(player);
-
-          if ((player != null) && (player != undefined)) {
-
-            this.teams[i].players[y] = player;
-
-
-
-            this.teams[i].players[y].id = y;
-
-
-
             this.teams[i].players[y].uniqueId = idPlaceholder;
 
           } else {

@@ -5,15 +5,8 @@ import { Component, OnInit, Injectable } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { PopoverPage } from './popover.component';
 import { EditTeamComponent } from './editTeam.component';
-
-
 import { Utilities } from '../../app/utilities';
 import { EditPlayerComponent } from './editPlayers.component';
-
-
-import { Utilities } from '../../app/utilities';
-import { EditPlayerComponent } from './editPlayers.component';
-
 import firebase from 'firebase';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 
@@ -23,6 +16,7 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 })
 export class ViewTeamComponent implements OnInit {
 
+    
     team: any = [];
     geschlecht: string = "maenner";
     playersOfTeam: any[];
@@ -32,9 +26,6 @@ export class ViewTeamComponent implements OnInit {
     justPlayersPlaceholder: any;
     database: any;
     editMode: boolean = false;
-
-
-
     isChanged: boolean = false;
     teamId: any;
     playerDeleted: boolean = false;
@@ -72,9 +63,7 @@ export class ViewTeamComponent implements OnInit {
         this.database = firebase.database();
 
 
-        this.team = navP.get("team");
-        console.log("TEAM IN VIEWTEAM VIEW");
-        console.log(this.team);
+        
 
 
 
@@ -188,17 +177,6 @@ export class ViewTeamComponent implements OnInit {
         this.team = [];
         this.justPlayersPlaceholder = [];
         this.justPlayers = [];
-        this.team = this.navP.get("team");
-
-        this.justPlayersPlaceholder = this.team.players;
-        this.checkIfUndefined();
-
-
-        this.justPlayers = this.team.players;
-        console.log("JUST PLAYERS ARRAY:");
-        console.log(this.justPlayers);
-
-
         this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
             this.team = snapshot.val();
             console.log(this.team);
@@ -274,15 +252,7 @@ export class ViewTeamComponent implements OnInit {
     editPlayers() {
         this.navCtrl.push(EditPlayerComponent, {
             param: this.justPlayers,
-
-
-            teamId: this.team.id
-
-
-            teamId: this.team.id,
-
             teamId: this.teamId,
-
             maxAge: this.team.ageLimit
 
         })
@@ -298,58 +268,6 @@ export class ViewTeamComponent implements OnInit {
 
     removePlayer(p: any) {
 
-        this.database.ref('clubs/12/teams/' + this.team.id + '/players/' + p.id).remove();
-        this.getPlayersOfTeam();
-
-        this.justPlayersPlaceholder = this.team.players;
-        this.checkIfUndefined();
-
-    }
-
-    getPlayersOfTeam() {
-        this.database.ref("/clubs/12/teams/" + this.team.id + "/players/").once('value', snapshot => {
-            this.justPlayersPlaceholder = snapshot.val();
-            this.checkIfUndefined();
-        })
-    }
-
-    checkIfUndefined() {
-        for (let i in this.justPlayersPlaceholder) {
-            let player = this.justPlayersPlaceholder[i];
-            if (player != undefined) {
-                this.justPlayers.push(player);
-            }
-        }
-        console.log("JUST PLAYERS ARRAY:");
-        console.log(this.justPlayers);
-    }
-
-    editTeam() {
-        this.editMode = true;
-
-        /*this.navCtrl.push(EditTeamComponent, {
-            value: this.team
-        })*/
-
-
-    }
-
-    editPlayers(){
-        this.navCtrl.push(EditPlayerComponent, {
-            param: this.justPlayers
-
-        })
-    }
-
-    toggleEditMode() {
-        this.editMode = false;
-    }
-
-    popToRoot() {
-        this.navCtrl.popToRoot();
-    }
-
-    removePlayer(p: any) {
         console.log(p);
         //this.justPlayers = []
         let placeHolderArray = this.justPlayers;
@@ -362,21 +280,14 @@ export class ViewTeamComponent implements OnInit {
                 this.justPlayers.push(placeHolderArray[i]);
             }
         }
-
-        this.database.ref('clubs/12/teams/' + this.team.id + '/players/' + p.id).remove();
-
-        this.getPlayersOfTeam();
-
-
-        this.playerDeleted = true;
-
         
         this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + p.id).remove();
         //this.getPlayersOfTeamDb();
-
         //this.getPlayersOfTeam();
 
     }
+
+   
 
 
     public updateJustPlayerList(p: any) {
