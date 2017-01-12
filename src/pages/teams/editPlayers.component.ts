@@ -41,6 +41,7 @@ export class EditPlayerComponent implements OnInit {
             console.log(player);
             let playerId = player.id;
             let placeHolderArray = this.playersOfTeam;
+
             let uniqueId = 0;
             this.playersOfTeam = [];
             
@@ -108,6 +109,11 @@ export class EditPlayerComponent implements OnInit {
             return true;
         }
     }
+
+
+    
+
+   
 
     getPlayers() {
         this.database.ref("/clubs/12/players/").once('value', snapshot => {

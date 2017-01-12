@@ -28,9 +28,18 @@
                         <ion-grid>
                             <ion-row>
                                 <ion-col width-15>
+
                                     <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
                                 </ion-col>
                                 <ion-col width-70>
+
+
+                                    <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
+
+                                </ion-col>
+                                <ion-col width-70>
+
+
                                     <div class="firstName-lastName">
                                         {{item.lastname}}, {{item.firstname}}
                                     </div>
@@ -38,11 +47,16 @@
                                     <div class="birthday-details">
                                         Geburtstag: {{item.birthday | birthday}}
                                     </div>
+
+
                                 </ion-col>
                                 <ion-col width-15>
                                     <button ion-button icon-only color="danger" (click)="removePlayer(item)">
                                 <ion-icon name="remove"></ion-icon>
                             </button>
+
+
+
                                 </ion-col>
                             </ion-row>
                         </ion-grid>

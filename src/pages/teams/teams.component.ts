@@ -29,12 +29,12 @@ export class TeamsComponent implements OnInit {
     this.database = firebase.database();
     this.teams = this.utilities.allTeams;
     this.teamsSearch = this.utilities.allTeams;
+
     this.getAllTeamData();
 
 
-    console.log(this.teams);
+   console.log(this.teams);
     //this.getAllTeamData();
-
   }
 
 
@@ -54,11 +54,13 @@ export class TeamsComponent implements OnInit {
   }
 
 
+
+
+
+
+
   getAllTeamData() {
     let playerPlaceholder = [];
-
-
-
     let counter = 0;
     for (let y in this.teams) {
       playerPlaceholder[counter] = this.teams[y].players;
@@ -66,8 +68,6 @@ export class TeamsComponent implements OnInit {
     }
     this.playerArray = playerPlaceholder;
     this.addPlayersToArray(this.playerArray);
-
-
 
   }
 
@@ -79,7 +79,6 @@ export class TeamsComponent implements OnInit {
         for (let y in valueArray[i]) {
           idPlaceholder = valueArray[i][y];
           let player = snapshot.child("" + idPlaceholder).val();
-
 
           if ((player != null) && (player != undefined)) {
             this.teams[i].players[y] = player;
