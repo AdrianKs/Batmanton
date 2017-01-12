@@ -110,6 +110,11 @@ export class EditPlayerComponent implements OnInit {
         }
     }
 
+
+    
+
+   
+
     getPlayers() {
         this.database.ref("/clubs/12/players/").once('value', snapshot => {
             let playerArray = [];

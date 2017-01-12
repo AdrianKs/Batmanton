@@ -16,6 +16,7 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 })
 export class ViewTeamComponent implements OnInit {
 
+
     team: any = [];
     geschlecht: string = "maenner";
     playersOfTeam: any[];
@@ -41,10 +42,15 @@ export class ViewTeamComponent implements OnInit {
     altersKOld: any;
     altersBezOld: string;
 
+  
+   
+
 
     ngOnInit(): void {
 
     }
+
+    
 
     constructor(
         public navCtrl: NavController,
@@ -53,6 +59,7 @@ export class ViewTeamComponent implements OnInit {
         public utils: Utilities,
         public formBuilder: FormBuilder) {
 
+
         this.teamForm = formBuilder.group({
             teamName: [],
             altersBez: [],
@@ -60,6 +67,7 @@ export class ViewTeamComponent implements OnInit {
         })
 
         this.database = firebase.database();
+
         this.teamId = this.navP.get("teamId");
         console.log(this.teamId);
         this.buildTeam();
@@ -111,6 +119,7 @@ export class ViewTeamComponent implements OnInit {
             this.checkIfUndefined();*/
         })
     }
+
 
     addPlayersToArray(valueArray: any) {
         this.database.ref("/clubs/12/players/").once('value', snapshot => {
@@ -164,38 +173,34 @@ export class ViewTeamComponent implements OnInit {
         })
     }
 
-    refreshArrays() {
-        this.team = [];
-        this.justPlayersPlaceholder = [];
-        this.justPlayers = [];
-        this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
-            this.team = snapshot.val();
-            console.log(this.team);
-            if (this.team != undefined) {
-                this.justPlayersPlaceholder = this.team.players;
-                this.checkIfUndefined();
-            } else {
-                //FEHLER MELDUNG AUSGEBEN
-            }
-            /*this.justPlayersPlaceholder = snapshot.val();
-            this.checkIfUndefined();*/
-        })
-    }
+
+    
+
+
 
     getTeamDetails(teamId: any) {
         this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
             this.team = snapshot.val();
             console.log(this.team);
+
             if (this.team != undefined) {
                 this.justPlayersPlaceholder = this.team.players;
                 this.checkIfUndefined();
             } else {
                 //FEHLER MELDUNG AUSGEBEN
+
             }
+
+            })
+
             /*this.justPlayersPlaceholder = snapshot.val();
             this.checkIfUndefined();*/
-        })
-    }
+        }
+
+
+
+
+
 
     detectChange() {
 
@@ -239,6 +244,7 @@ export class ViewTeamComponent implements OnInit {
         this.editMode = true;
     }
 
+
     editPlayers() {
         this.navCtrl.push(EditPlayerComponent, {
             param: this.justPlayers,
@@ -246,6 +252,7 @@ export class ViewTeamComponent implements OnInit {
             maxAge: this.team.ageLimit
         })
     }
+  
 
     toggleEditMode() {
         this.editMode = false;
@@ -284,9 +291,16 @@ export class ViewTeamComponent implements OnInit {
             uniqueId = placeHolderArray[i].uniqueId;
             if (uniqueId != deleteId) {
                 this.justPlayers.push(placeHolderArray[i]);
+
             }
+            /*this.justPlayersPlaceholder = snapshot.val();
+            this.checkIfUndefined();*/
         }
+
     }
+
+ 
+
 
     deleteTeam() {
         this.database.ref('clubs/12/teams/' + this.team.id).remove();
@@ -294,6 +308,7 @@ export class ViewTeamComponent implements OnInit {
     }
 
     presentConfirm(p: any, action: string) {
+
         if (action == "delP") {
             let alert = this.alertCtrl.create({
                 title: 'Spieler aus Mannschaft entfernen',
@@ -313,6 +328,7 @@ export class ViewTeamComponent implements OnInit {
                         }
                     }
                 ]
+
             });
             alert.present();
         } else if (action == "delT") {
@@ -336,7 +352,11 @@ export class ViewTeamComponent implements OnInit {
                 ]
             });
             alert.present();
-        }
+
+           
+        } 
+
+        
 
 
     }

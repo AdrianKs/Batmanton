@@ -29,9 +29,14 @@ export class TeamsComponent implements OnInit {
     this.database = firebase.database();
     this.teams = this.utilities.allTeams;
     this.teamsSearch = this.utilities.allTeams;
-    console.log(this.teams);
+
+    this.getAllTeamData();
+
+
+   console.log(this.teams);
     //this.getAllTeamData();
   }
+
 
 
   viewTeam(ev, value) {
@@ -49,6 +54,11 @@ export class TeamsComponent implements OnInit {
   }
 
 
+
+
+
+
+
   getAllTeamData() {
     let playerPlaceholder = [];
     let counter = 0;
@@ -58,6 +68,7 @@ export class TeamsComponent implements OnInit {
     }
     this.playerArray = playerPlaceholder;
     this.addPlayersToArray(this.playerArray);
+
   }
 
   addPlayersToArray(valueArray: any) {
@@ -68,10 +79,12 @@ export class TeamsComponent implements OnInit {
         for (let y in valueArray[i]) {
           idPlaceholder = valueArray[i][y];
           let player = snapshot.child("" + idPlaceholder).val();
+
           if ((player != null) && (player != undefined)) {
             this.teams[i].players[y] = player;
             this.teams[i].players[y].id = y;
             this.teams[i].players[y].uniqueId = idPlaceholder;
+
           } else {
             console.log("Spieler übersprungen, da null");
           }
