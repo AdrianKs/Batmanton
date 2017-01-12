@@ -1,32 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { EditRoleComponent } from '../editRole/editRole.component';
-import { UserManagementService } from '../../providers/userManagament.service';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
+import { File } from 'ionic-native';
+import { document } from "@angular/platform-browser/src/facade/browser";
 
 @Component({
   selector: 'page-userManagement',
   templateUrl: 'userManagement.component.html',
-  providers: [UserManagementService]
+  providers: []
 })
 export class UserManagementComponent implements OnInit {
 
   ngOnInit() {
+    this.dataPlayer = this.utilities.allPlayers;
+    this.dataPlayerSearch = this.utilities.allPlayers;
   }
 
   ionViewDidEnter() {
-    console.log(this.selectedPlayer);
   }
 
   geschlecht: string = "maenner";
-  dataPlayer: any;
+  dataPlayer: any[];
   dataPlayerSearch: any;
   selectedPlayer: any;
+  playerPictures: Array<any>;
 
-  constructor(private navCtrl: NavController, private userManagementService: UserManagementService, public utilities: Utilities) {
-    this.dataPlayer = this.utilities.allPlayers;
-    this.dataPlayerSearch = this.utilities.allPlayers;
+  constructor(private navCtrl: NavController,
+    private navParams: NavParams,
+    public utilities: Utilities) {
   }
 
   /*getPlayer(): void {
@@ -68,16 +71,9 @@ export class UserManagementComponent implements OnInit {
   }
 }
 
-
-//Firebase Login
-//manuel-entenmann@web.de
-//Test123
-
-//TODO Promise based Callbacks with Erro Handling
-//Link to check http://stackoverflow.com/questions/40869631/angular-2-w-typescript-firebase-api-returns-array-of-objects-in-service-but-und
-
-//Navigation back to List
-//Update List
+//TODO Liste sortieren nach Nachname
+//     suche nach Vorname
+//     Register Profile upload pic
 
 
 

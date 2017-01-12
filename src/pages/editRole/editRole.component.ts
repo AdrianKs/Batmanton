@@ -80,7 +80,7 @@ export class EditRoleComponent {
 
 
     navigateBackToList() {
-        this.navCtrl.popToRoot();
+        this.navCtrl.pop();
     }
 
     presentToast(customMessage: string) {
