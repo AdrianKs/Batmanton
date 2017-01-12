@@ -34,35 +34,6 @@ export class EditPlayerComponent implements OnInit {
         this.teams = this.utilities.allTeams;
         let counter = 0;
         let playerFound = false;
-        /*for (let i in this.allPlayersMod) {
-            console.log("Runde: " + counter);
-            let player = this.allPlayersMod[i];
-            playerFound = false;
-            console.log(player);
-            let playerId = player.id;
-            let placeHolderArray = this.playersOfTeam;
-
-            let uniqueId = 0;
-            this.playersOfTeam = [];
-            
-            for (let i in placeHolderArray) {
-                uniqueId = placeHolderArray[i].uniqueId;
-                
-                if (uniqueId == playerId) {
-                    playerFound = true;
-                }
-            }
-            if (!playerFound) {
-                this.allPlayers.push(player);
-                this.allPlayersSearch.push(player);
-            } else {
-                
-            }
-            
-            counter++;
-           
-        }*/
-
     }
 
     constructor(
@@ -143,30 +114,6 @@ export class EditPlayerComponent implements OnInit {
         return this.allPlayers;
     }
 
-    doubleCheckLists() {
-        let id1 = "";
-        let id2 = "";
-        let player;
-        let player2;
-        for (let i in this.playersOfTeam) {
-            for (let y in this.allPlayers) {
-                console.log("Geht rein");
-                player = this.playersOfTeam[i];
-                id1 = player.uniqueId;
-                console.log("ID1 " + id1);
-                player2 = this.allPlayers[y];
-                console.log("auch hier geht er rein");
-                id2 = player2.uniqueId;
-                if (id1 != id2) {
-                    //Aktueller Spieler ist nicht ausgewählt, also hinzufügen
-                    this.allPlayersMod.push(player2);
-                } else {
-                    //Spieler gefunden, aus Schleife raus
-                }
-            }
-        }
-    }
-
     teamSelectChanged(team: any) {
         //let val = ev.target.value;
         console.log("VALUE: " + team);
@@ -214,22 +161,6 @@ export class EditPlayerComponent implements OnInit {
         }
     }
 
-    removePlayer(p: any) {
-
-        let placeHolderArray = this.playersOfTeam;
-        let uniqueId = 0;
-        let deleteId = p.uniqueId;
-        this.playersOfTeam = [];
-        for (let i in placeHolderArray) {
-            uniqueId = placeHolderArray[i].uniqueId;
-            if (uniqueId != deleteId) {
-                this.playersOfTeam.push(placeHolderArray[i]);
-            }
-        }
-        this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + p.id).remove();
-        //this.getPlayersOfTeam();
-    }
-
     addPlayer(p: any) {
         this.utilities.addPlayerToTeam(this.teamId, p.id);
     }
@@ -249,9 +180,6 @@ export class EditPlayerComponent implements OnInit {
             }
         }
         this.playersOfTeamSearch = this.playersOfTeam;
-        //this.doubleCheckLists();
-        /*console.log("JUST PLAYERS ARRAY:");
-        console.log(this.playersOfTeam);*/
     }
 
     getItemsAvailable(ev) {
@@ -283,31 +211,6 @@ export class EditPlayerComponent implements OnInit {
             })
         }
     }
-
-    presentConfirm(p: any) {
-        let alert = this.alertCtrl.create({
-            title: 'Spieler aus Mannschaft entfernen',
-            message: 'Wollen Sie den Spieler wirklich löschen?',
-            buttons: [
-                {
-                    text: 'Abbrechen',
-                    role: 'cancel',
-                    handler: () => {
-                        console.log('Cancel clicked');
-                    }
-                },
-                {
-                    text: 'Löschen',
-                    handler: () => {
-                        this.removePlayer(p);
-                        //console.log('Buy clicked');
-                    }
-                }
-            ]
-        });
-        alert.present();
-    }
-
 
 
 }

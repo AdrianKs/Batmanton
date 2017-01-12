@@ -7,7 +7,7 @@ import { NavController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
-import {CreateTeamComponent} from './createNewTeam.component';
+import { CreateTeamComponent } from './createNewTeam.component';
 
 
 @Component({
@@ -22,76 +22,23 @@ export class TeamsComponent implements OnInit {
   playerArray: any[];
 
   ngOnInit(): void {
-    
+
   }
 
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities) {
     this.database = firebase.database();
     this.teams = this.utilities.allTeams;
     this.teamsSearch = this.utilities.allTeams;
-
-    this.getAllTeamData();
-
-
-   console.log(this.teams);
-    //this.getAllTeamData();
   }
 
-
-
   viewTeam(ev, value) {
-    this.navCtrl.push(ViewTeamComponent, { 
+    this.navCtrl.push(ViewTeamComponent, {
       teamId: value.id
     });
   }
 
-  addTeam(ev, value) {
-    //Team hinzufügen View aufrufen
-  }
-
-  pushToAddNewTeam(){
+  pushToAddNewTeam() {
     this.navCtrl.push(CreateTeamComponent);
-  }
-
-
-
-
-
-
-
-  getAllTeamData() {
-    let playerPlaceholder = [];
-    let counter = 0;
-    for (let y in this.teams) {
-      playerPlaceholder[counter] = this.teams[y].players;
-      counter++;
-    }
-    this.playerArray = playerPlaceholder;
-    this.addPlayersToArray(this.playerArray);
-
-  }
-
-  addPlayersToArray(valueArray: any) {
-    this.database.ref("/clubs/12/players/").once('value', snapshot => {
-      let idPlaceholder = 0;
-      let counter = 0;
-      for (let i in valueArray) {
-        for (let y in valueArray[i]) {
-          idPlaceholder = valueArray[i][y];
-          let player = snapshot.child("" + idPlaceholder).val();
-
-          if ((player != null) && (player != undefined)) {
-            this.teams[i].players[y] = player;
-            this.teams[i].players[y].id = y;
-            this.teams[i].players[y].uniqueId = idPlaceholder;
-
-          } else {
-            console.log("Spieler übersprungen, da null");
-          }
-        }
-      }
-    })
-
   }
 
   initializeTeams() {
