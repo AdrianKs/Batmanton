@@ -16,12 +16,12 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 })
 export class ViewTeamComponent implements OnInit {
 
-    team: any;
+    team: any = [];
     geschlecht: string = "maenner";
     playersOfTeam: any[];
     teamForm: any;
     playerModel: any;
-    justPlayers: any;
+    justPlayers: any = [];
     justPlayersPlaceholder: any;
     database: any;
     editMode: boolean = false;
@@ -60,12 +60,126 @@ export class ViewTeamComponent implements OnInit {
         })
 
         this.database = firebase.database();
-        this.team = [];
-        this.justPlayers = [];
-        this.team = this.navP.get("team");
-        this.justPlayersPlaceholder = this.team.players;
-        this.checkIfUndefined();
+        this.teamId = this.navP.get("teamId");
+        console.log(this.teamId);
+        this.buildTeam();
+        //this.team = this.getTeam();
+        //Test
+        //this.team = [];
+        //this.justPlayers = [];
+        //this.team = this.navP.get("team");
+        //this.justPlayersPlaceholder = this.team.players;
+        //this.refreshArrays();
+        //this.checkIfUndefined();
+    }
 
+    buildTeam() {
+        this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
+            this.team = snapshot.val();
+            console.log(this.team);
+            //this.team = snapshot.val();
+            if (this.team != null && this.team != undefined) {
+                this.getPlayersOfTeamDb();
+            }
+            /*console.log(this.team);
+            if (this.team != undefined) {
+                this.justPlayersPlaceholder = this.team.players;
+                this.checkIfUndefined();
+            } else {
+                //FEHLER MELDUNG AUSGEBEN
+            }*/
+            /*this.justPlayersPlaceholder = snapshot.val();
+            this.checkIfUndefined();*/
+        })
+    }
+
+    getPlayersOfTeamDb() {
+        this.database.ref("/clubs/12/teams/" + this.teamId + "/players/").once('value', snapshot => {
+            let playerIDs = snapshot.val();
+            if (playerIDs != null && playerIDs != undefined) {
+                this.addPlayersToArray(playerIDs);
+            }
+            //return playerIDs;
+            /*console.log(this.team);
+            if (this.team != undefined) {
+                this.justPlayersPlaceholder = this.team.players;
+                this.checkIfUndefined();
+            } else {
+                //FEHLER MELDUNG AUSGEBEN
+            }*/
+            /*this.justPlayersPlaceholder = snapshot.val();
+            this.checkIfUndefined();*/
+        })
+    }
+
+    addPlayersToArray(valueArray: any) {
+        this.database.ref("/clubs/12/players/").once('value', snapshot => {
+            this.justPlayers = [];
+            let idPlaceholder = 0;
+            let counter = 0;
+            for (let i in valueArray) {
+                idPlaceholder = valueArray[i];
+                let player = snapshot.child("" + idPlaceholder).val();
+                if ((player != null) && (player != undefined)) {
+                    this.justPlayers[i] = player;
+                    this.justPlayers[i].id = i;
+                    this.justPlayers[i].uniqueId = idPlaceholder;
+                    /*this.teams[i].players[y] = player;
+                    this.teams[i].players[y].id = y;
+                    this.teams[i].players[y].uniqueId = idPlaceholder;*/
+                }
+            }
+            console.log(this.justPlayers);
+            /*for (let i in valueArray) {
+              for (let y in valueArray[i]) {
+                idPlaceholder = valueArray[i][y];
+                let player = snapshot.child("" + idPlaceholder).val();
+                if ((player != null) && (player != undefined)) {
+                  this.teams[i].players[y] = player;
+                  this.teams[i].players[y].id = y;
+                  this.teams[i].players[y].uniqueId = idPlaceholder;
+                } else {
+                  console.log("Spieler übersprungen, da null");
+                }
+              }
+            }*/
+        })
+
+    }
+
+    getTeam() {
+        this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
+            let teamArray = snapshot.val();
+            //this.team = snapshot.val();
+            return teamArray;
+            /*console.log(this.team);
+            if (this.team != undefined) {
+                this.justPlayersPlaceholder = this.team.players;
+                this.checkIfUndefined();
+            } else {
+                //FEHLER MELDUNG AUSGEBEN
+            }*/
+            /*this.justPlayersPlaceholder = snapshot.val();
+            this.checkIfUndefined();*/
+        })
+    }
+
+    refreshArrays() {
+        this.team = [];
+        this.justPlayersPlaceholder = [];
+        this.justPlayers = [];
+        this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
+            this.team = snapshot.val();
+            console.log(this.team);
+            if (this.team != undefined) {
+                this.justPlayersPlaceholder = this.team.players;
+                this.checkIfUndefined();
+            } else {
+                //FEHLER MELDUNG AUSGEBEN
+            }
+            /*this.justPlayersPlaceholder = snapshot.val();
+            this.checkIfUndefined();*/
+        })
     }
 
     getTeamDetails(teamId: any) {
@@ -128,7 +242,7 @@ export class ViewTeamComponent implements OnInit {
     editPlayers() {
         this.navCtrl.push(EditPlayerComponent, {
             param: this.justPlayers,
-            teamId: this.team.id,
+            teamId: this.teamId,
             maxAge: this.team.ageLimit
         })
     }
@@ -142,6 +256,8 @@ export class ViewTeamComponent implements OnInit {
     }
 
     removePlayer(p: any) {
+        console.log(p);
+        //this.justPlayers = []
         let placeHolderArray = this.justPlayers;
         let uniqueId = 0;
         let deleteId = p.uniqueId;
@@ -152,8 +268,9 @@ export class ViewTeamComponent implements OnInit {
                 this.justPlayers.push(placeHolderArray[i]);
             }
         }
-        this.database.ref('clubs/12/teams/' + this.team.id + '/players/' + p.id).remove();
-        this.playerDeleted = true;
+        
+        this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + p.id).remove();
+        //this.getPlayersOfTeamDb();
         //this.getPlayersOfTeam();
     }
 
@@ -171,30 +288,59 @@ export class ViewTeamComponent implements OnInit {
         }
     }
 
-
-    presentConfirm(p: any) {
-        let alert = this.alertCtrl.create({
-            title: 'Spieler aus Mannschaft entfernen',
-            message: 'Wollen Sie den Spieler wirklich löschen?',
-            buttons: [
-                {
-                    text: 'Abbrechen',
-                    role: 'cancel',
-                    handler: () => {
-                        console.log('Cancel clicked');
-                    }
-                },
-                {
-                    text: 'Löschen',
-                    handler: () => {
-                        this.removePlayer(p);
-                        //console.log('Buy clicked');
-                    }
-                }
-            ]
-        });
-        alert.present();
+    deleteTeam() {
+        this.database.ref('clubs/12/teams/' + this.team.id).remove();
+        this.navCtrl.popToRoot();
     }
+
+    presentConfirm(p: any, action: string) {
+        if (action == "delP") {
+            let alert = this.alertCtrl.create({
+                title: 'Spieler aus Mannschaft entfernen',
+                message: 'Wollen Sie den Spieler wirklich löschen?',
+                buttons: [
+                    {
+                        text: 'Abbrechen',
+                        role: 'cancel',
+                        handler: () => {
+                            console.log('Cancel clicked');
+                        }
+                    },
+                    {
+                        text: 'Löschen',
+                        handler: () => {
+                            this.removePlayer(p);
+                        }
+                    }
+                ]
+            });
+            alert.present();
+        } else if (action == "delT") {
+            let alert = this.alertCtrl.create({
+                title: 'Mannschaft löschen',
+                message: 'Wollen Sie die Mannschaft wirklich löschen?',
+                buttons: [
+                    {
+                        text: 'Abbrechen',
+                        role: 'cancel',
+                        handler: () => {
+                            console.log('Cancel clicked');
+                        }
+                    },
+                    {
+                        text: 'Löschen',
+                        handler: () => {
+                            this.deleteTeam();
+                        }
+                    }
+                ]
+            });
+            alert.present();
+        }
+
+
+    }
+
 
 }
 

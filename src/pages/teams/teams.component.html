@@ -12,7 +12,7 @@
   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
     <div *ngFor="let item of teams">
-      <ion-item (click)="viewTeam($event, item)">
+      <ion-item (click)="viewTeam($event, item)" [(ngModel)]="item.name" ngDefaultControl>
         <div class="teamItem-left">
           <img src="../../assets/images/ic_account_circle_black_24dp_2x.png" />
         </div>

@@ -65,6 +65,9 @@
         <ion-row>
             <button class="editPlayerButton" ion-button block (click)="editPlayers()" color="secondary">Spieler hinzufügen</button>
         </ion-row>
+        <ion-row>
+             <button class="editPlayerButton" ion-button block (click)="presentConfirm(null, 'delT')" color="danger">Mannschaft löschen</button>           
+        </ion-row>
     </ion-grid>
     <ion-toolbar no-border-top>
         <ion-segment [(ngModel)]="geschlecht">
@@ -102,7 +105,7 @@
 
                                 </ion-col>
                                 <ion-col width-15>
-                                    <button ion-button icon-only color="danger" *ngIf="(editMode)" (click)="presentConfirm(p)">
+                                    <button ion-button icon-only color="danger" *ngIf="(editMode)" (click)="presentConfirm(p, 'delP')">
                                 <ion-icon name="remove"></ion-icon>
                             </button>
 
@@ -148,7 +151,7 @@
 
                                 </ion-col>
                                 <ion-col width-15>
-                                    <button ion-button icon-only color="danger" *ngIf="(editMode)" (click)="presentConfirm(p)">
+                                    <button ion-button icon-only color="danger" *ngIf="(editMode)" (click)="presentConfirm(p, 'delP')">
                                 <ion-icon name="remove"></ion-icon>
                             </button>
 

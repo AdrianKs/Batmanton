@@ -29,14 +29,14 @@ export class TeamsComponent implements OnInit {
     this.database = firebase.database();
     this.teams = this.utilities.allTeams;
     this.teamsSearch = this.utilities.allTeams;
-    this.getAllTeamData();
+    console.log(this.teams);
+    //this.getAllTeamData();
   }
 
 
   viewTeam(ev, value) {
     this.navCtrl.push(ViewTeamComponent, { 
-      team: value
-      //teamId: value.id
+      teamId: value.id
     });
   }
 
