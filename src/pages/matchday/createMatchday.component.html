@@ -12,11 +12,11 @@
     <div class="playerDataContainer">
       <ion-item>
         <ion-label stacked>Gegner</ion-label>
-        <ion-input [(ngModel)]="opponent" type="text" value="" placeholder="Gegner"></ion-input>
+        <ion-input [(ngModel)]="match.opponent" type="text" value="" placeholder="Gegner"></ion-input>
       </ion-item>
       <ion-item>
       <ion-label stacked>Mannschaft</ion-label>
-      <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"
+      <ion-select [(ngModel)]="match.team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"
                   placeholder="Mannschaft">
         <ion-option value=0>keine Mannschaft</ion-option>
         <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
@@ -24,19 +24,19 @@
       </ion-item>
       <ion-item>
         <ion-label stacked>Ort</ion-label>
-          <ion-select [(ngModel)]="home" placeholder="Heim/Auswärts">
+          <ion-select [(ngModel)]="match.home" placeholder="Heim/Auswärts">
             <ion-option value=true>Heim</ion-option>
             <ion-option value=false>Auswärts</ion-option>
           </ion-select> 
       </ion-item>
       <ion-item>
         <ion-label stacked>Adresse</ion-label>
-        <ion-input [(ngModel)]="address" type="street" value="" placeholder="Straße und Hausnummer"></ion-input>
-        <ion-input [(ngModel)]="zipcode" type="number" value="" placeholder="PLZ"></ion-input>
+        <ion-input [(ngModel)]="match.location.address" type="street" value="" placeholder="Straße und Hausnummer"></ion-input>
+        <ion-input [(ngModel)]="match.location.zipcode" type="number" value="" placeholder="PLZ"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label stacked>Datum & Uhrzeit</ion-label>
-        <ion-datetime [(ngModel)]="date" class="datetime-text" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
+        <ion-datetime [(ngModel)]="match.time" class="datetime-text" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
                       (ionChange)="daySelectChanged()"></ion-datetime>
       </ion-item>
     </div>

@@ -14,13 +14,13 @@ import {Utilities} from "../../app/utilities";
 })
 
 export class CreateMatchdayComponent implements OnInit {
+  match = {opponent: this.opponent, team: this.team, home: this.home, location: {address: this.address, zipcode: this.zipcode}, time: this.time};
   opponent: string;
   team: any;
   home: boolean;
-  location: any;
   address: string;
   zipcode: number;
-  date: String;
+  time: String;
   relevantTeams = this.Utilities.allTeams;
   teamChanged: boolean = false;
   dayChanged: boolean = false;
@@ -43,16 +43,14 @@ export class CreateMatchdayComponent implements OnInit {
   }
 
   createGame(){
-    console.log(this.opponent, this.team, this.home, this.address, this.zipcode, this.date);
-    if (this.home == true){
-      this.home = true;
+    if (this.match.home == true){
+      this.match.home = true;
     } else {
-      this.home = false;
+      this.match.home = false;
     }
-    this.date = this.date.substring(0, this.date.length - 1);
-    this.date = this.date.replace("T","-");
-    this.date = this.date.replace(/:/g,"-");
-    console.log(this.date);
+    this.match.time = this.match.time.substring(0, this.match.time.length - 1);
+    this.match.time = this.match.time.replace("T","-");
+    this.match.time = this.match.time.replace(/:/g,"-");
 
 
     firebase.database().ref('clubs/12/matches').once('value', snapshot => {
@@ -62,19 +60,9 @@ export class CreateMatchdayComponent implements OnInit {
         matchesArray[counter] = snapshot.val()[i];
         counter++;
       }
-      console.log(counter);
-      firebase.database().ref('clubs/12/').update({
-        matches: matchesArray
-      });
-      firebase.database().ref('clubs/12/matches/'+counter).set({
-        opponent: this.opponent,
-        team: this.team,
-        home: this.home,
-        time: this.date
-      });
-      firebase.database().ref('clubs/12/matches/'+counter+'/location').set({
-        street: this.address,
-        zipcode: this.zipcode
+      matchesArray.push(this.match);
+      firebase.database().ref('clubs/12').update({
+          matches: matchesArray
       });
     });
   }
