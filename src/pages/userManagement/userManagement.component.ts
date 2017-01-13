@@ -52,15 +52,16 @@ export class UserManagementComponent implements OnInit {
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
       this.dataPlayer = this.dataPlayer.filter((item) => {
-        return (item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (
+          (item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1) || (item.firstname.toLowerCase().indexOf(val.toLowerCase()) > -1)
+          );
       })
     }
   }
 }
 
-//TODO Liste sortieren nach Nachname
+//TODO List in Gruppen einteilen https://www.joshmorony.com/an-introduction-to-lists-in-ionic-2/
 //     suche nach Vorname
-//     Register Profile upload pic
 
 
 
