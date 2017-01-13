@@ -6,6 +6,7 @@ import firebase from 'firebase';
 import { File } from 'ionic-native';
 import { document } from "@angular/platform-browser/src/facade/browser";
 
+
 @Component({
   selector: 'page-userManagement',
   templateUrl: 'userManagement.component.html',
@@ -15,7 +16,7 @@ export class UserManagementComponent implements OnInit {
 
   ngOnInit() {
     this.dataPlayer = this.utilities.allPlayers;
-    this.dataPlayerSearch = this.utilities.allPlayers;
+    this.dataPlayerSearch = this.dataPlayer;
   }
 
   ionViewDidEnter() {

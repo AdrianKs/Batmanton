@@ -22,7 +22,7 @@
 
   <div [ngSwitch]="geschlecht">
     <ion-list *ngSwitchCase="'maenner'">
-      <div *ngFor="let item of dataPlayer; let i = index;">
+      <div *ngFor="let item of dataPlayer">
         <div *ngIf="item.gender == 'm'">
           <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
