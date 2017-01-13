@@ -20,7 +20,7 @@ export class CreateMatchdayComponent implements OnInit {
   location: any;
   address: string;
   zipcode: number;
-  date: Date;
+  date: String;
   relevantTeams = this.Utilities.allTeams;
   teamChanged: boolean = false;
   dayChanged: boolean = false;
@@ -49,7 +49,10 @@ export class CreateMatchdayComponent implements OnInit {
     } else {
       this.home = false;
     }
-
+    this.date = this.date.substring(0, this.date.length - 1);
+    this.date = this.date.replace("T","-");
+    this.date = this.date.replace(/:/g,"-");
+    console.log(this.date);
 
 
     firebase.database().ref('clubs/12/matches').once('value', snapshot => {
