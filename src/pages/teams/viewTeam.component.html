@@ -9,9 +9,9 @@
         </button>
         </ion-buttons>
         <ion-title>Mannschaftsdetails</ion-title>
-        <ion-buttons right>
+        <ion-buttons right *ngIf="(isAdmin)">
             <button *ngIf="(!editMode)" ion-button (click)="editTeam()">Bearbeiten</button>
-            <button ion-button *ngIf="(editMode)" (click)="updateTeamInfos()">
+            <button ion-button *ngIf="(editMode)" (click)="getFormData()">
          Fertig
       </button>
         </ion-buttons>
