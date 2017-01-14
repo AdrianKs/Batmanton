@@ -103,6 +103,18 @@ export class Utilities {
           players: playersArray
         });
       });
+      firebase.database().ref('clubs/12/players/' + userID+'/teams/').once('value', snapshot => {
+        let playerTeams = [];
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          playerTeams[counter] = snapshot.val()[i];
+          counter++;
+        }
+        playerTeams.push(teamID);
+        firebase.database().ref('clubs/12/players/' + userID+'/').update({
+          teams: playerTeams
+        });
+      });
     }
   }
 

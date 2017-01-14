@@ -86,7 +86,7 @@
                     <ion-list *ngSwitchCase="'maenner'">
                         <div *ngFor="let item of allPlayers">
                             <div *ngIf="item.gender=='m'">
-                                <ion-item>
+                                <ion-item *ngIf="!item.isAdded">
                                     <ion-grid>
                                         <ion-row>
                                             <ion-col width-15>
@@ -118,7 +118,7 @@
                     <ion-list *ngSwitchCase="'frauen'">
                         <div *ngFor="let item of allPlayers">
                             <div *ngIf="item.gender=='f'">
-                                <ion-item>
+                                <ion-item *ngIf="!item.isAdded">
                                     <ion-grid>
                                         <ion-row>
                                             <ion-col width-15>
