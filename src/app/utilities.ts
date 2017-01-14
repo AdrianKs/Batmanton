@@ -110,9 +110,13 @@ export class Utilities {
       });
       //Team ID zum Player hinzufügen
 
+
       /*firebase.database().ref('clubs/12/players/' + userID+'/teams/').once('value', snapshot => {
 
       firebase.database().ref('clubs/12/players/' + userID+'/teams/').once('value', snapshot => {
+
+
+      /*firebase.database().ref('clubs/12/players/' + userID+'/teams/').once('value', snapshot => {
 
         let playerTeams = [];
         let counter = 0;
