@@ -65,6 +65,10 @@ export class ViewTeamComponent implements OnInit {
 
 
     //TODO: Probieren ob ionViewLoaded() noch hilft um View zu refreshen
+    ionViewDidEnter(){
+        /*this.justPlayers = [];
+        this.buildTeam();*/
+    }
 
 
     constructor(
@@ -293,9 +297,28 @@ export class ViewTeamComponent implements OnInit {
         }
 
         this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + p.id).remove();
+        this.database.ref('clubs/12/players/' + p.id + '/teams/').once('value', snapshot => {
+            let teamsOfPlayers = snapshot.val();
+            let teamIdTemp;
+            let idToBeDeleted;
+            for (let i in teamsOfPlayers){
+                teamIdTemp = teamsOfPlayers[i];
+                if(teamIdTemp==this.teamId){
+                    idToBeDeleted = i;
+                }
+            }
+            if(idToBeDeleted!=undefined){
+            this.deleteTeamFromPlayer(p.id, idToBeDeleted);
+            }
+        })
+       
         this.playerDeleted = true;
         //this.getPlayersOfTeamDb();
         //this.getPlayersOfTeam();
+    }
+
+    deleteTeamFromPlayer(playerId: any, teamIdToBeDeleted: any){
+         this.database.ref('clubs/12/players/' + playerId + '/teams/' + teamIdToBeDeleted).remove();
     }
 
     deleteTeam() {
