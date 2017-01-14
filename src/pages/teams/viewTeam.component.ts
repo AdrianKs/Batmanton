@@ -297,7 +297,10 @@ export class ViewTeamComponent implements OnInit {
         }
 
         this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + p.id).remove();
-        this.database.ref('clubs/12/players/' + p.id + '/teams/').once('value', snapshot => {
+        this.database.ref('clubs/12/players/' + p.uniqueId + '/').update({
+            team: ''
+        });
+        /*this.database.ref('clubs/12/players/' + p.id + '/teams/').once('value', snapshot => {
             let teamsOfPlayers = snapshot.val();
             let teamIdTemp;
             let idToBeDeleted;
@@ -310,7 +313,7 @@ export class ViewTeamComponent implements OnInit {
             if(idToBeDeleted!=undefined){
             this.deleteTeamFromPlayer(p.id, idToBeDeleted);
             }
-        })
+        })*/
        
         this.playerDeleted = true;
         //this.getPlayersOfTeamDb();
