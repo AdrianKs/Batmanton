@@ -40,7 +40,7 @@
                 <ion-label *ngIf="team.ageLimit==0" class="playerValue">Erwachsen</ion-label>
                 <ion-label *ngIf="team.ageLimit!=0" class="playerValue">U {{team.ageLimit}}</ion-label>
             </ion-item>
-            <ion-item *ngIf="(!editMode) && team.ageLimit!=team.type">
+            <ion-item *ngIf="(!editMode)">
                 <ion-label class="playerLabel">Altersbezeichnung:</ion-label>
                 <ion-label *ngIf="team.type==1" class="playerValue">Mini</ion-label>
                 <ion-label *ngIf="team.type==0" class="playerValue">Erwachsen</ion-label>
