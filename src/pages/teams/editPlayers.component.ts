@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
 import { ViewTeamComponent } from './viewTeam.component';
 import firebase from 'firebase';
@@ -25,12 +25,14 @@ export class EditPlayerComponent implements OnInit {
     playersOfTeam: any;
     playersOfTeamSearch: any;
     ageLimit: any = "";
+    playerAdded: boolean = false;
 
     ngOnInit(): void {
         //this.playersOfTeam = [];
         this.allPlayers = [];
         this.allPlayers = this.utilities.allPlayers;
         this.allPlayersSearch = this.utilities.allPlayers;
+        this.addSwitchToPlayers();
         this.teams = this.utilities.allTeams;
         let counter = 0;
         let playerFound = false;
@@ -40,7 +42,8 @@ export class EditPlayerComponent implements OnInit {
         public nav: NavController,
         public nParam: NavParams,
         public utilities: Utilities,
-        public alertCtrl: AlertController
+        public alertCtrl: AlertController,
+        public toastCtrl: ToastController
     ) {
         this.database = firebase.database();
         this.playersOfTeam = [];
@@ -55,6 +58,25 @@ export class EditPlayerComponent implements OnInit {
 
     backToEditMode(){
         this.nav.pop();
+    }
+
+    addSwitchToPlayers(){
+        let player;
+        let playerOfTeam;
+        let teamsOfPlayer;
+        for (let i in this.allPlayers){
+            player = this.allPlayers[i];
+            teamsOfPlayer = player.teams;
+            player.isAdded = false;
+            if(teamsOfPlayer!=undefined){
+            for(let y in teamsOfPlayer){
+                if(this.teamId==teamsOfPlayer[y]){
+                    player.isAdded = true;
+                }
+            }
+            }
+        }
+        console.log(this.allPlayers);
     }
 
     initializePlayers() {
@@ -162,7 +184,9 @@ export class EditPlayerComponent implements OnInit {
     }
 
     addPlayer(p: any) {
+        p.isAdded = true;
         this.utilities.addPlayerToTeam(this.teamId, p.id);
+        this.presentToast("Spieler zum Team hinzugefügt");
     }
 
     getPlayersOfTeam() {
@@ -170,6 +194,15 @@ export class EditPlayerComponent implements OnInit {
             this.playersOfTeamPlaceholder = snapshot.val();
             this.checkIfUndefined();
         })
+    }
+
+    presentToast(customMessage: string) {
+        let toast = this.toastCtrl.create({
+            message: customMessage,
+            duration: 3000,
+            position: "top"
+        });
+        toast.present();
     }
 
     checkIfUndefined() {

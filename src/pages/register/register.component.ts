@@ -21,6 +21,7 @@ export class RegisterComponent {
   public passwordGroup;
   gender: string = '';
   team: string = '';
+  teams: any = [];
   relevantTeams = this.utilities.allTeams;
   firstnameChanged: boolean = false;
   lastnameChanged: boolean = false;
@@ -131,7 +132,7 @@ export class RegisterComponent {
    */
   signupUser() {
     this.submitAttempt = true;
-
+  
     if (!this.signupForm.valid) {
       console.log(this.signupForm.value);
       console.log("gender: " + this.gender);
