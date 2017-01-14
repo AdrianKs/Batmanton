@@ -26,7 +26,8 @@
 <ion-content padding>
     <div class="topContainer">
         <div class="pictureContainer">
-            <img id="teamPic" (click)="changeTeamPicture()" />
+            <img id="teamPic" src="{{team.teamPicUrl}}" class="team-image" (click)="changeTeamPicture()" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+            <!--<img id="teamPic" (click)="changeTeamPicture()" />-->
         </div>
         <form class="center-form" [formGroup]="teamForm" novalidate>
         <div class="playerDataContainer">
@@ -91,7 +92,7 @@
                             <ion-row>
                                 <ion-col width-15>
 
-                                    <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
+                                    <img id="profileImage" src="{{p.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
 
                                 </ion-col>
                                 <ion-col width-70>
@@ -135,7 +136,7 @@
                             <ion-row>
                                 <ion-col width-15>
 
-                                    <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
+                                    <img id="profileImage" src="{{p.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
 
                                 </ion-col>
                                 <ion-col width-70>
