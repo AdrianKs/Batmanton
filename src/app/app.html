@@ -4,7 +4,7 @@
       <div class="menuHeaderContent">
         <div>
           <div menuClose (click)="openPage(myProfilePage)">
-            <img src="assets/images/ic_account_circle_black_24dp_2x.png" class="menuHeaderPic" />
+            <img src="{{utilities.userData.picUrl}}" class="menuHeaderPic" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
             <div class="menuBtnHeader">
               <div class="mainPlayerContent">
                 {{utilities.userData.firstname}} {{utilities.userData.lastname}}

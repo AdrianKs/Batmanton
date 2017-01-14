@@ -37,6 +37,7 @@ export class AuthData {
           state: 0,
           isPlayer: true,
           isTrainer: false,
+          picUrl: "",
           pushid: ''
           });
         this.utilities.user = newUser;

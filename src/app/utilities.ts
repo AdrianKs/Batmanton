@@ -3,6 +3,7 @@
  */
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
+import * as _ from 'lodash';
 
 @Injectable()
 export class Utilities {
@@ -56,6 +57,7 @@ export class Utilities {
         counter++;
       }
       this.allPlayers = playerArray;
+      this.allPlayers = _.sortBy(this.allPlayers, "lastname");
     });
   }
 
