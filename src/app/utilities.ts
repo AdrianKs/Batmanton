@@ -102,9 +102,12 @@ export class Utilities {
         firebase.database().ref('clubs/12/teams/' + teamID + '/').update({
           players: playersArray
         });
+        firebase.database().ref('clubs/12/players/' + userID + '/').update({
+          team: teamID
+        });
       });
       //Team ID zum Player hinzufügen
-      firebase.database().ref('clubs/12/players/' + userID+'/teams/').once('value', snapshot => {
+      /*firebase.database().ref('clubs/12/players/' + userID+'/teams/').once('value', snapshot => {
         let playerTeams = [];
         let counter = 0;
         for (let i in snapshot.val()) {
@@ -115,7 +118,7 @@ export class Utilities {
         firebase.database().ref('clubs/12/players/' + userID+'/').update({
           teams: playerTeams
         });
-      });
+      });*/
     }
   }
 

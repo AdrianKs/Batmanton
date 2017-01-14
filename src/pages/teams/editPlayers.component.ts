@@ -29,10 +29,15 @@ export class EditPlayerComponent implements OnInit {
 
     ngOnInit(): void {
         //this.playersOfTeam = [];
+        this.database = firebase.database();
+    }
+
+    ionViewWillEnter() {
         this.allPlayers = [];
-        this.allPlayers = this.utilities.allPlayers;
-        this.allPlayersSearch = this.utilities.allPlayers;
-        this.addSwitchToPlayers();
+        this.setPlayers();
+        /*this.allPlayers = this.utilities.allPlayers;
+        this.allPlayersSearch = this.utilities.allPlayers;*/
+        //this.addSwitchToPlayers();
         this.teams = this.utilities.allTeams;
         let counter = 0;
         let playerFound = false;
@@ -45,7 +50,7 @@ export class EditPlayerComponent implements OnInit {
         public alertCtrl: AlertController,
         public toastCtrl: ToastController
     ) {
-        this.database = firebase.database();
+        
         this.playersOfTeam = [];
         //NULL ABFRAGEN EINBAUEN
         this.playersOfTeamPlaceholder = nParam.get("param");
@@ -53,27 +58,48 @@ export class EditPlayerComponent implements OnInit {
         this.ageLimit = nParam.get("maxAge");
         //this.getPlayers();
         //this.getTeams();
-        this.checkIfUndefined();
+        //this.checkIfUndefined();
     }
 
-    backToEditMode(){
+    backToEditMode() {
         this.nav.pop();
     }
 
-    addSwitchToPlayers(){
+    setPlayers() {
+    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
+      let playerArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        playerArray[counter] = snapshot.val()[i];
+        playerArray[counter].id = i;
+        counter++;
+      }
+      this.allPlayers = playerArray;
+      this.allPlayersSearch = playerArray;
+      this.addSwitchToPlayers();
+    });
+  }
+
+    addSwitchToPlayers() {
         let player;
         let playerOfTeam;
-        let teamsOfPlayer;
-        for (let i in this.allPlayers){
+        let teamOfPlayer;
+        for (let i in this.allPlayers) {
             player = this.allPlayers[i];
-            teamsOfPlayer = player.teams;
-            player.isAdded = false;
-            if(teamsOfPlayer!=undefined){
+            teamOfPlayer = player.team;
+            //console.log("Name: " + player.lastname + ", Team: " + teamOfPlayer);
+            //player.isAdded = false;
+            /*if(teamsOfPlayer!=undefined){
             for(let y in teamsOfPlayer){
                 if(this.teamId==teamsOfPlayer[y]){
                     player.isAdded = true;
                 }
             }
+            }*/
+            if (teamOfPlayer != "") {
+                player.isAdded = true;
+            } else {
+                player.isAdded = false;
             }
         }
         console.log(this.allPlayers);
@@ -108,9 +134,9 @@ export class EditPlayerComponent implements OnInit {
     }
 
 
-    
 
-   
+
+
 
     getPlayers() {
         this.database.ref("/clubs/12/players/").once('value', snapshot => {
