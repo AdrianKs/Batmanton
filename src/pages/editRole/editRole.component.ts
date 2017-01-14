@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, AlertController, ViewController } from 'ionic-angular';
+import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
 
 @Component({
@@ -13,25 +14,33 @@ export class EditRoleComponent {
     isSpielerOld: boolean;
     isChanged: boolean;
     isDeleted: boolean;
+    sameUser: boolean;
 
     constructor(private navCtrl: NavController,
-                private navParams: NavParams,
-                public toastCtrl: ToastController,
-                public alertCtrl: AlertController,
-                public viewCtrl: ViewController) {
+        private navParams: NavParams,
+        public toastCtrl: ToastController,
+        public alertCtrl: AlertController,
+        public viewCtrl: ViewController,
+        public utilities: Utilities) {
 
         this.player = navParams.get('player');
         this.isTrainerOld = this.player.isTrainer;
         this.isSpielerOld = this.player.isPlayer;
         this.isChanged = false;
         this.isDeleted = false;
+        this.sameUser = false;
+
+        if (this.player.id === this.utilities.user.uid) {
+            this.sameUser = true;
+        }
+
     }
 
 
     ionViewDidEnter() {
     }
 
-   changeValue(ev) {
+    changeValue(ev) {
         if (!(this.player.isPlayer == false && this.player.isTrainer == false)) {
             if (this.isSpielerOld != this.player.isPlayer || this.isTrainerOld != this.player.isTrainer) {
                 this.isChanged = true;
@@ -67,6 +76,7 @@ export class EditRoleComponent {
     deleteUser(player) {
         firebase.database().ref('clubs/12/players/' + player.id).remove();
         this.isDeleted = true;
+        this.utilities.setPlayers();
         this.navigateBackToList();
     }
 

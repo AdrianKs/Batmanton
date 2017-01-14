@@ -11,7 +11,7 @@ export class Teams {
   constructor(public utilities: Utilities){}
   transform(inputTeamID) {
     if(inputTeamID != undefined && this.utilities.allTeamsVal != undefined){
-      if(inputTeamID === "0"){
+      if(inputTeamID === "0" || inputTeamID === "" || inputTeamID === 0){
         return "keine Mannschaft"
       }else{
         return this.utilities.allTeamsVal[inputTeamID].name;
