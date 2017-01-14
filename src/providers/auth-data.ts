@@ -27,7 +27,6 @@ export class AuthData {
   signupUser(email: string, password: string, firstname: string, lastname: string, birthday: string, gender: string, team: string): any {
     return this.fireAuth.createUserWithEmailAndPassword(email, password)
       .then((newUser) => {
-        let teamId = team;
         this.userProfile.child(newUser.uid).set({
           email: email,
           firstname: firstname,
@@ -41,14 +40,7 @@ export class AuthData {
           pushid: ''
           });
         this.utilities.user = newUser;
-        this.addTeamsOfPlayerArray(team, newUser.uid);
       });
-  }
-
-  addTeamsOfPlayerArray(team: any, playerId: any){
-    let teams = [];
-    teams.push(team);
-    console.log(teams);
   }
 
   resetPassword(email: string): any {
