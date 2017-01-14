@@ -22,13 +22,35 @@ export class TeamsComponent implements OnInit {
   playerArray: any[];
 
   ngOnInit(): void {
-
+//this.database = firebase.database();
   }
 
+  ionViewWillEnter(){
+        console.log("Teams are alive");
+        /*this.teams = this.utilities.allTeams;
+        this.teamsSearch = this.utilities.allTeams;*/
+        this.setTeams();
+    }
+
   constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities) {
-    this.database = firebase.database();
-    this.teams = this.utilities.allTeams;
-    this.teamsSearch = this.utilities.allTeams;
+    
+    
+  }
+
+  setTeams() {
+    firebase.database().ref('clubs/12/teams').once('value', snapshot => {
+      let teamArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        teamArray[counter] = snapshot.val()[i];
+        teamArray[counter].id = i;
+        counter++;
+      }
+      //this.allTeamsVal = snapshot.val();
+      this.teams = teamArray;
+      this.teamsSearch = this.utilities.allTeams;
+      //this.teamsLoaded = true;
+    });
   }
 
   viewTeam(ev, value) {

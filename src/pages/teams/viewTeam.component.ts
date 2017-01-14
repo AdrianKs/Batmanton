@@ -36,6 +36,7 @@ export class ViewTeamComponent implements OnInit {
     altersBezChanged: boolean = false;
     formValid: boolean = false;
     actionSheetOptions: any;
+    teamPicUrl: any;
 
     /**
      * OLD VALUES
@@ -51,9 +52,19 @@ export class ViewTeamComponent implements OnInit {
 
 
     ngOnInit(): void {
-        this.getTeamPicture();
+        this.database = firebase.database();
+        this.teamId = this.navP.get("teamId");
+        this.initActionSheet();
+        //this.getTeamPicture();
     }
 
+    ionViewWillEnter(){
+        this.justPlayers = [];
+        this.buildTeam();
+    }
+
+
+    //TODO: Probieren ob ionViewLoaded() noch hilft um View zu refreshen
 
 
     constructor(
@@ -71,11 +82,11 @@ export class ViewTeamComponent implements OnInit {
             altersK: []
         })
 
-        this.database = firebase.database();
+        
 
-        this.teamId = this.navP.get("teamId");
-        console.log(this.teamId);
-        this.buildTeam();
+        //this.teamId = this.navP.get("teamId");
+        //console.log(this.teamId);
+        //this.buildTeam();
         //this.team = this.getTeam();
         //Test
         //this.team = [];
@@ -371,11 +382,24 @@ export class ViewTeamComponent implements OnInit {
       });
   }
 
+  makeid() {
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (var i = 0; i < 7; i++)
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+
   uploadPicture() {
+      let id = this.makeid();
+      this.teamPicUrl = id;
     // firebase.storage().ref().child('profilePictures/' + this.utilities.userDataID + "/" + this.utilities.userDataID + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
-    firebase.storage().ref().child('teamPictures/' + this.teamId +"_"+this.team.name+ "/" + this.teamId +"_"+this.team.name+ ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
+    firebase.storage().ref().child('teamPictures/' + id+ ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
       .then(callback => {
         document.getElementById("teamPic").src = this.base64Image;
+        this.storeUrl(callback.downloadURL);
         // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
         this.actionSheetOptions = {
           title: 'Profilbild ändern',
@@ -413,9 +437,10 @@ export class ViewTeamComponent implements OnInit {
 
     deleteTeamPicture() {
         var that = this;
+        this.teamPicUrl = this.team.teamPicId;
     // firebase.storage().ref().child('profilePictures/test.jpg').delete().then(function() {
     // firebase.storage().ref().child('profilePictures/' + this.utilities.userDataID + "/" + this.utilities.userDataID + '.jpg').delete().then(function () {
-    firebase.storage().ref().child('teamPictures/' + this.teamId+"_"+this.team.name + "/" + this.teamId +"_"+this.team.name+ '.jpg').delete().then(function () {
+    firebase.storage().ref().child('teamPictures/' + this.teamPicUrl+ '.jpg').delete().then(function () {
       document.getElementById("teamPic").src = "assets/images/ic_account_circle_black_48dp_2x.png";
 
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
@@ -436,6 +461,29 @@ export class ViewTeamComponent implements OnInit {
     }).catch(function (error) {
       alert(error.message);
     });
+    }
+
+    initActionSheet(){
+        this.actionSheetOptions = {
+                title: 'Teambild ändern',
+                buttons: [
+                    {
+                        text: 'Fotos',
+                        icon: "images",
+                        handler: () => this.getPicture()
+                    },
+                    {
+                        text: 'Profilbild löschen',
+                        role: 'destructive',
+                        icon: "trash",
+                        handler: () => this.deleteTeamPicture()
+                    },
+                    {
+                        text: 'Abbrechen',
+                        role: 'cancel'
+                    }
+                ]
+            };
     }
 
     getTeamPicture() {
@@ -483,6 +531,13 @@ export class ViewTeamComponent implements OnInit {
             };
         });
     }
+
+    storeUrl(url: string) {
+    firebase.database().ref('clubs/12/teams/' + this.teamId).update({
+        teamPicUrl: url,
+        teamPicId: this.teamPicUrl
+    });
+  }
 
 
 }
