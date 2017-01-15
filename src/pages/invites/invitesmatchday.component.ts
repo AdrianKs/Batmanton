@@ -48,10 +48,6 @@ export class InvitesMatchdayComponent {
     confirm.present();
   }
 
-  getProfilePictureURL(player) {
-    return "../../assets/images/ic_account_circle_black_48dp_2x.png";
-  }
-
   goToPage(value) {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
