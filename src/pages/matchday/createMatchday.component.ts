@@ -1,11 +1,11 @@
 //todo
-//Spiel erstellen-Screen erstellen
-//Datenbankveränderung integrieren
+//Formcontroll
 import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component'
 import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
-import {Utilities} from "../../app/utilities";
+import {Utilities} from '../../app/utilities';
 
 @Component({
   selector: 'page-createMatchday',
@@ -14,19 +14,19 @@ import {Utilities} from "../../app/utilities";
 })
 
 export class CreateMatchdayComponent implements OnInit {
-  match = {opponent: this.opponent, team: this.team, home: this.home, location: {address: this.address, zipcode: this.zipcode}, time: this.time};
+  match = {opponent: this.opponent, team: this.team, home: this.home, location: {street: this.street, zipcode: this.zipcode}, time: this.time, pendingPlayers: this.pendingPlayersArray};
   opponent: string;
   team: any;
   home: boolean;
-  address: string;
+  street: string;
   zipcode: number;
   time: String;
+  pendingPlayersArray = [];
   relevantTeams = this.Utilities.allTeams;
   teamChanged: boolean = false;
   dayChanged: boolean = false;
 
   ngOnInit() {
-
   }
 
   
@@ -48,22 +48,31 @@ export class CreateMatchdayComponent implements OnInit {
     } else {
       this.match.home = false;
     }
+
+
     this.match.time = this.match.time.substring(0, this.match.time.length - 1);
     this.match.time = this.match.time.replace("T","-");
     this.match.time = this.match.time.replace(/:/g,"-");
 
-
-    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-      let matchesArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        matchesArray[counter] = snapshot.val()[i];
-        counter++;
-      }
-      matchesArray.push(this.match);
-      firebase.database().ref('clubs/12').update({
-          matches: matchesArray
+    if (this.match.team == 0){
+      this.pendingPlayersArray[0] = "Keiner";
+      this.match.pendingPlayers = this.pendingPlayersArray;
+      firebase.database().ref('clubs/12/matches').once('value', snapshot => {
+        let matchesArray = [];
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          matchesArray[counter] = snapshot.val()[i];
+          counter++;
+        }
+        matchesArray.push(this.match);
+        firebase.database().ref('clubs/12').update({
+            matches: matchesArray
+        });
+        firebase.database().ref('clubs/12/matches/' + counter + '/pendingPlayers').remove();
       });
-    });
+      this.navCtrl.popToRoot();
+    } else {
+       this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, relevantTeamsItem: this.relevantTeams});
+    }
   }
 }
