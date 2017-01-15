@@ -4,6 +4,8 @@
 //todo
 //SCSS
 //Mannschaftsbild vs Teambild
+//profilbilder der einzelnen teammitglieder
+//edit game
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { MyGamesService } from '../../providers/myGames.service';

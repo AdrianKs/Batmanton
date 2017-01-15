@@ -3,6 +3,7 @@
 //update nach klick
 //SCSS
 //Menüleiste für offene Games
+//Inkosistenz bei match ID
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
