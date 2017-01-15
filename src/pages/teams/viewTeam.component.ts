@@ -11,6 +11,7 @@ import firebase from 'firebase';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { document } from "@angular/platform-browser/src/facade/browser";
 import { Camera } from 'ionic-native';
+import { EditRoleComponent } from '../editRole/editRole.component';
 
 
 @Component({
@@ -150,6 +151,12 @@ export class ViewTeamComponent implements OnInit {
             }*/
             /*this.justPlayersPlaceholder = snapshot.val();
             this.checkIfUndefined();*/
+        })
+    }
+
+    viewPlayer(p: any){
+        this.navCtrl.push(EditRoleComponent, {
+            player: p
         })
     }
 
