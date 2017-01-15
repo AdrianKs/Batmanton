@@ -7,6 +7,7 @@ import {InvitesMatchdayComponent} from '../pages/invites/invitesmatchday.compone
 import {LoginComponent} from '../pages/login/login.component';
 import {MatchdayComponent} from '../pages/matchday/matchday.component';
 import {CreateMatchdayComponent} from '../pages/matchday/createMatchday.component';
+import {AddTeamToMatchdayComponent} from '../pages/matchday/addTeamToMatchday.component';
 import {MyGamesComponent} from '../pages/myGames/myGames.component';
 import {GameDetailsComponent} from '../pages/gameDetails/gameDetails.component';
 import {ProfileComponent} from '../pages/profile/profile.component';
@@ -36,6 +37,7 @@ import {MatchTime} from './pipes/matchTime';
     LoginComponent,
     MatchdayComponent,
     CreateMatchdayComponent,
+    AddTeamToMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
     ProfileComponent,
@@ -69,6 +71,7 @@ import {MatchTime} from './pipes/matchTime';
     LoginComponent,
     MatchdayComponent,
     CreateMatchdayComponent,
+    AddTeamToMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
     ProfileComponent,
