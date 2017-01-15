@@ -9,7 +9,7 @@
 
 <ion-content padding>
   <!--<button ion-button (click)="testGetData()">Print Data</button>-->
-  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-searchbar showCancelButton="true" placeholder="Nach Namen suchen..." cancelButtonText="Abbrechen" (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
     <div *ngFor="let item of teams">
       <ion-item (click)="viewTeam($event, item)" [(ngModel)]="item.name" ngDefaultControl>
