@@ -2,9 +2,7 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
-
-import { NavController, NavParams } from 'ionic-angular';
-
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import {Utilities} from '../../app/utilities';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component'
 
@@ -21,21 +19,36 @@ export class InvitesMatchdayComponent {
   profilePictureURL: any;
 
 
-  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities) {
+  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities, public alertCtrl: AlertController) {
     //Load data in array
     this.matchday = navP.get('matchday');
     this.invites = navP.get('invites');
     this.players = navP.get('players');
   }
 
+  showConfirm() {
+    let confirm = this.alertCtrl.create({
+      title: 'Einladung erneut senden?',
+      message: 'Möchten Sie diese Einladung erneut senden?',
+      buttons: [
+        {
+          text: 'Nein',
+          handler: () => {
+            console.log('Nicht versendet');
+          }
+        },
+        {
+          text: 'Ja',
+          handler: () => {
+            console.log('versendet');
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
   getProfilePictureURL(player) {
-    /* var that = this;
-     firebase.storage().ref().child("profilePictures/" + loggedInUser.id + "/" + loggedInUser.id + ".jpg").getDownloadURL().then(function (url) {
-       that.profilePictureURL = url;
-     }).catch(function(error) {
-       that.profilePictureURL = "../../assets/images/ic_account_circle_black_48dp_2x.png";
-     });
-     return that.profilePictureURL;*/
     return "../../assets/images/ic_account_circle_black_48dp_2x.png";
   }
 
