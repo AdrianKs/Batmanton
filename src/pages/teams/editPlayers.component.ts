@@ -97,9 +97,7 @@ export class EditPlayerComponent implements OnInit {
                  player.isAdded = false;
              }
          }
-
          this.sortPlayerArray();
-
          //console.log(this.allPlayers);
         /*for (let i in this.groupedPlayers) {
             for (let y in this.groupedPlayers[i].players) {
