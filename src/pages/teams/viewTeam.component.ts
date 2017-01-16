@@ -272,16 +272,21 @@ export class ViewTeamComponent implements OnInit {
             let idPlaceholder = 0;
             let counter = 0;
             for (let i in valueArray) {
+                //ID als String
                 idPlaceholder = valueArray[i];
                 let player = snapshot.child("" + idPlaceholder).val();
                 if ((player != null) && (player != undefined)) {
-                    this.justPlayers[i] = player;
+                    this.justPlayers.push(player);
+                    this.justPlayers[counter].id =i;
+                    this.justPlayers[counter].uniqueId =idPlaceholder;
+                    /*this.justPlayers[i] = player;
                     this.justPlayers[i].id = i;
-                    this.justPlayers[i].uniqueId = idPlaceholder;
+                    this.justPlayers[i].uniqueId = idPlaceholder;*/
                     /*this.teams[i].players[y] = player;
                     this.teams[i].players[y].id = y;
                     this.teams[i].players[y].uniqueId = idPlaceholder;*/
                 }
+                counter++;
             }
             console.log(this.justPlayers);
             /*for (let i in valueArray) {
@@ -370,12 +375,19 @@ export class ViewTeamComponent implements OnInit {
         let uniqueId = 0;
         let deleteId = p.uniqueId;
         this.justPlayers = [];
+        let counter = 0;
         for (let i in placeHolderArray) {
-            uniqueId = placeHolderArray[i].uniqueId;
+            let player = placeHolderArray[i];
+            uniqueId = player.uniqueId;
+            //console.log(uniqueId);
             if (uniqueId != deleteId) {
-                this.justPlayers.push(placeHolderArray[i]);
+                this.justPlayers.push(player);
+                this.justPlayers[counter].id = i;
+                counter++;
             }
         }
+        console.log("Just Players in Delete Method");
+        console.log(this.justPlayers);
 
         this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + p.id).remove();
         this.database.ref('clubs/12/players/' + p.uniqueId + '/').update({

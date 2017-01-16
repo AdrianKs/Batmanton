@@ -97,6 +97,7 @@ export class EditPlayerComponent implements OnInit {
                  player.isAdded = false;
              }
          }
+         this.sortPlayerArray();
          //console.log(this.allPlayers);
         /*for (let i in this.groupedPlayers) {
             for (let y in this.groupedPlayers[i].players) {
@@ -233,6 +234,7 @@ export class EditPlayerComponent implements OnInit {
 
     addPlayer(p: any) {
         p.isAdded = true;
+        console.log(p.id);
         this.utilities.addPlayerToTeam(this.teamId, p.id);
 
         this.showOrHideDivider();
@@ -303,6 +305,11 @@ export class EditPlayerComponent implements OnInit {
         if (a.lastname > b.lastname)
             return 1;
         return 0;
+    }
+
+    sortPlayerArray(){
+        this.allPlayers = this.allPlayers.sort(this.compare);
+        console.log(this.allPlayers);
     }
 
     groupPlayers(players) {
