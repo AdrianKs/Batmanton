@@ -20,32 +20,18 @@
           <div *ngIf="item.sender == utilities.user.uid">
             <div *ngIf="player.id == item.recipient">
               <div *ngIf="item.state == '0'">
-                <ion-item>
-                  <ion-avatar item-left>
-                    <div *ngIf="player.picUrl != ''">
-                      <img src="{{player.picUrl}}">
-                    </div>
-                    <div *ngIf="player.picUrl == ''">
-                      <img src="../../assets/images/ic_account_circle_black_48dp_2x.png">
-                    </div>
-                  </ion-avatar>
+                <ion-item (click)="showMessage()">
+                      <img item-left src="{{player.picUrl}}" class="thumbnail-invite" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
                   <h2> {{player.firstname}} {{player.lastname}} </h2>
                   <h3>
                     <ion-badge color="primary" item-bottom> Keine Antwort</ion-badge>
-                    <!--<ion-icon name="ios-redo" (click)="showConfirm()" item-right></ion-icon>-->
+                   <!-- <ion-badge item-right><ion-icon name="ios-redo" (click)="showConfirm()" item-right></ion-icon></ion-badge>-->
                   </h3>
                 </ion-item>
               </div>
               <div *ngIf="item.state == '1'">
                 <ion-item>
-                  <ion-avatar item-left>
-                    <div *ngIf="player.picUrl != ''">
-                      <img src="{{player.picUrl}}">
-                    </div>
-                    <div *ngIf="player.picUrl == ''">
-                      <img src="../../assets/images/ic_account_circle_black_48dp_2x.png">
-                    </div>
-                  </ion-avatar>
+                      <img item-left src="{{player.picUrl}}" class="thumbnail-invite" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
                   <h2> {{player.firstname}} {{player.lastname}} </h2>
                   <h3>
                     <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
@@ -53,15 +39,8 @@
                 </ion-item>
               </div>
               <div *ngIf="item.state == '2'">
-                <ion-item>
-                  <ion-avatar item-left>
-                    <div *ngIf="player.picUrl != ''">
-                      <img src="{{player.picUrl}}">
-                    </div>
-                    <div *ngIf="player.picUrl == ''">
-                      <img src="../../assets/images/ic_account_circle_black_48dp_2x.png">
-                    </div>
-                  </ion-avatar>
+                <ion-item>          
+                      <img item-left src="{{player.picUrl}}" class="thumbnail-invite" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
                   <h2> {{player.firstname}} {{player.lastname}} </h2>
                   <h3>
                     <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>

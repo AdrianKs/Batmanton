@@ -2,8 +2,8 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
-import {Utilities} from '../../app/utilities';
+import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { Utilities } from '../../app/utilities';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component'
 
 import firebase from 'firebase';
@@ -19,11 +19,19 @@ export class InvitesMatchdayComponent {
   profilePictureURL: any;
 
 
-  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities, public alertCtrl: AlertController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities, public alertCtrl: AlertController, public toastCtrl: ToastController) {
     //Load data in array
     this.matchday = navP.get('matchday');
     this.invites = navP.get('invites');
     this.players = navP.get('players');
+  }
+
+  showMessage() {
+    let toast = this.toastCtrl.create({
+      message: 'Die Einladung wurde erneut versendet',
+      duration: 3000
+    });
+    toast.present();
   }
 
   showConfirm() {
