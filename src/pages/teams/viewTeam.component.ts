@@ -301,6 +301,14 @@ export class ViewTeamComponent implements OnInit {
 
     }
 
+    handleClick(action:any, p: any){
+        if(action="delete"){
+            this.presentConfirm(p, "delP");
+        }else if(action=="view"){
+            this.viewPlayer(p);
+        }
+    }
+
     getTeam() {
         this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
             let teamArray = snapshot.val();

@@ -87,7 +87,7 @@
             </div>
             <div *ngFor="let p of justPlayers">
                 <div *ngIf="p.gender=='m'">
-                    <ion-item [(ngModel)]="p.lastname" (click)="viewPlayer(p)" ngDefaultControl>
+                    <ion-item [(ngModel)]="p.lastname" ngDefaultControl>
                         <!--<ion-grid>-->
                             <!--<ion-row>-->
                                 <!--<ion-col width-15>
@@ -137,7 +137,7 @@
             </div>
             <div *ngFor="let p of justPlayers">
                 <div *ngIf="p.gender=='f'">
-                    <ion-item [(ngModel)]="p.lastname" (click)="viewPlayer(p)" ngDefaultControl>
+                    <ion-item [(ngModel)]="p.lastname" ngDefaultControl>
                         <!--<ion-grid>-->
                             <!--<ion-row>-->
                                 <!--<ion-col width-15>

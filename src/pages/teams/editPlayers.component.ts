@@ -97,6 +97,7 @@ export class EditPlayerComponent implements OnInit {
                  player.isAdded = false;
              }
          }
+         //console.log(this.allPlayers);
         /*for (let i in this.groupedPlayers) {
             for (let y in this.groupedPlayers[i].players) {
                 player = this.groupedPlayers[i].players[y];
@@ -175,7 +176,7 @@ export class EditPlayerComponent implements OnInit {
             }
             this.allPlayers = playerArray;
             this.allPlayersSearch = playerArray;
-            console.log(this.allPlayers);
+            //console.log(this.allPlayers);
         });
     }
 
@@ -344,6 +345,37 @@ export class EditPlayerComponent implements OnInit {
 
             
         })*/
+    }
+
+    presentConfirm(p: any) {
+
+        
+            let alert = this.alertCtrl.create({
+                title: 'Spieler zu Mannschaft hinzufügen',
+                message: 'Wollen Sie den Spieler zur Mannschaft hinzufügen?',
+                buttons: [
+                    {
+                        text: 'Abbrechen',
+                        role: 'cancel',
+                        handler: () => {
+                            console.log('Cancel clicked');
+                        }
+                    },
+                    {
+                        text: 'Hinzufügen',
+                        handler: () => {
+                            this.addPlayer(p);
+                        }
+                    }
+                ]
+
+            });
+            alert.present();
+        
+
+
+
+
     }
 
 
