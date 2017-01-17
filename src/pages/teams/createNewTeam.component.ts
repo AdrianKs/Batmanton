@@ -118,6 +118,10 @@ export class CreateTeamComponent implements OnInit {
         });
     }
 
+    altersBezChanged(input){
+        this.altersBez = input;
+    }
+
     getPicture() {
         let options = {
             destinationType: Camera.DestinationType.DATA_URL,

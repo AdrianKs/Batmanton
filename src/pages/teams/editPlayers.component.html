@@ -80,7 +80,7 @@
             </ion-segment-button>
         </ion-segment>
     </ion-toolbar>
-    <ion-searchbar (ionInput)="getItemsAvailable($event)"></ion-searchbar>
+    <ion-searchbar (ionInput)="getItemsAvailable($event)" placeholder="Suche"></ion-searchbar>
     <ion-list>
         <div [ngSwitch]="geschlecht">
             <ion-list *ngSwitchCase="'maenner'">
