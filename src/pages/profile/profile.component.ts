@@ -10,13 +10,12 @@
 // Passwort validate
 // Change Teams Kollisionsvermeidung (Trainer & Spieler ändern gleichzeitig Team des Spielers)
 // Don't skip select profile picture screen
-// Get Profile Picture from profile picture url and update it
-// Default profile picture setzen, auch bevor das richtige PB geladen wurde
 // Delete Account from Firebase?
+// Update Profile Picture in User Management and elsewhere after upload (/ changing picUrl)
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
-import {NavController, ActionSheetController} from 'ionic-angular';
+import {NavController, ActionSheetController, LoadingController} from 'ionic-angular';
 import firebase from 'firebase';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import {AuthData} from '../../providers/auth-data';
@@ -32,7 +31,7 @@ import {Utilities} from '../../app/utilities';
 export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
-    this.getProfilePicture();
+    this.setActionSheetOptions();
   }
 
   public profileForm;
@@ -41,6 +40,7 @@ export class ProfileComponent implements OnInit {
   formValid: boolean = true;
   relevantTeams: Array<any> = [];
   today: String = new Date().toISOString();
+  loading: any;
 
   /**
    *  Save values from form before entering edit view to check for changes
@@ -69,7 +69,7 @@ export class ProfileComponent implements OnInit {
   public base64String: string;
 
 
-  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, public authData: AuthData, public actionSheetCtrl: ActionSheetController, public utilities: Utilities) {
+  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, public authData: AuthData, public actionSheetCtrl: ActionSheetController, public utilities: Utilities, public loadingCtrl: LoadingController,) {
     this.profileForm = formBuilder.group({
       firstname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
       lastname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
@@ -80,33 +80,46 @@ export class ProfileComponent implements OnInit {
     })
   }
 
-  /**
-   * Gets the url to the profile picture. If no profile picture has been uploaded, the default picture is set to the src url
-   */
-  getProfilePicture() {
-    var that = this;
-    // firebase.storage().ref().child("profilePictures/" + this.utilities.userDataID + "/" + this.utilities.userDataID + ".jpg").getDownloadURL().then(function (url) {
-    firebase.storage().ref().child("profilePictures/" + this.utilities.user.uid + "/" + this.utilities.user.uid + ".jpg").getDownloadURL().then(function (url) {
-      document.getElementById("profileImage").src = url;
-      // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
-      that.actionSheetOptions = {
+  setActionSheetOptions() {
+    if (this.utilities.userData.picUrl === "" || this.utilities.userData.picUrl == undefined) {
+      this.actionSheetOptions = {
         title: 'Profilbild ändern',
         buttons: [
           {
             text: "Kamera",
             icon: "camera",
-            handler: () => that.takePicture()
+            handler: () => this.takePicture()
           },
           {
             text: 'Fotos',
             icon: "images",
-            handler: () => that.getPicture()
+            handler: () => this.getPicture()
+          },
+          {
+            text: 'Abbrechen',
+            role: 'cancel'
+          }
+        ]
+      };
+    } else {
+      this.actionSheetOptions = {
+        title: 'Profilbild ändern',
+        buttons: [
+          {
+            text: "Kamera",
+            icon: "camera",
+            handler: () => this.takePicture()
+          },
+          {
+            text: 'Fotos',
+            icon: "images",
+            handler: () => this.getPicture()
           },
           {
             text: 'Profilbild löschen',
             role: 'destructive',
             icon: "trash",
-            handler: () => that.deleteProfilePicture()
+            handler: () => this.deleteProfilePicture()
           },
           {
             text: 'Abbrechen',
@@ -114,29 +127,7 @@ export class ProfileComponent implements OnInit {
           }
         ]
       };
-    }).catch(function (error) {
-      document.getElementById("profileImage").src = "assets/images/ic_account_circle_black_48dp_2x.png";
-      // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
-      that.actionSheetOptions = {
-        title: 'Profilbild ändern',
-        buttons: [
-          {
-            text: "Kamera",
-            icon: "camera",
-            handler: () => that.takePicture()
-          },
-          {
-            text: 'Fotos',
-            icon: "images",
-            handler: () => that.getPicture()
-          },
-          {
-            text: 'Abbrechen',
-            role: 'cancel'
-          }
-        ]
-      };
-    });
+    }
   }
 
   editProfile() {
@@ -152,7 +143,6 @@ export class ProfileComponent implements OnInit {
 
   finishEditProfile() {
     if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.genderChanged || this.teamChanged) && this.formValid) {
-      // firebase.database().ref('clubs/12/players/' + this.utilities.userDataID).set({
       firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).set({
         birthday: this.utilities.userData.birthday,
         email: this.utilities.userData.email,
@@ -292,70 +282,39 @@ export class ProfileComponent implements OnInit {
   }
 
   uploadPicture() {
-    // firebase.storage().ref().child('profilePictures/' + this.utilities.userDataID + "/" + this.utilities.userDataID + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
-    firebase.storage().ref().child('profilePictures/' + this.utilities.user.uid + "/" + this.utilities.user.uid + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'})
-      .then(callback => {
-        document.getElementById("profileImage").src = this.base64Image;
-        // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
-        this.actionSheetOptions = {
-          title: 'Profilbild ändern',
-          buttons: [
-            {
-              text: "Kamera",
-              icon: "camera",
-              handler: () => this.takePicture()
-            },
-            {
-              text: 'Fotos',
-              icon: "images",
-              handler: () => this.getPicture()
-            },
-            {
-              text: 'Profilbild löschen',
-              role: 'destructive',
-              icon: "trash",
-              handler: () => this.deleteProfilePicture()
-            },
-            {
-              text: 'Abbrechen',
-              role: 'cancel'
-            }
-          ]
-        };
-      })
-      .catch(function (error) {
-        alert(error.message);
-        console.log(error);
+    var that = this;
+    var uploadTask = firebase.storage().ref().child('profilePictures/' + this.utilities.user.uid + "/" + this.utilities.user.uid + ".jpg").putString(this.base64String, 'base64', {contentType: 'image/JPEG'});
+
+    uploadTask.on('state_changed', function (snapshot) {
+      that.loading = that.loadingCtrl.create({
+        dismissOnPageChange: true,
       });
+      that.loading.present();
+
+    }, function (error) {
+      alert(error.message);
+    }, function () {
+      that.utilities.userData.picUrl = uploadTask.snapshot.downloadURL;
+      firebase.database().ref('clubs/12/players/' + that.utilities.user.uid).update({
+        picUrl: that.utilities.userData.picUrl
+      });
+
+      // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
+      that.setActionSheetOptions()
+    });
   }
 
   deleteProfilePicture() {
     var that = this;
-    // firebase.storage().ref().child('profilePictures/test.jpg').delete().then(function() {
-    // firebase.storage().ref().child('profilePictures/' + this.utilities.userDataID + "/" + this.utilities.userDataID + '.jpg').delete().then(function () {
     firebase.storage().ref().child('profilePictures/' + this.utilities.user.uid + "/" + this.utilities.user.uid + '.jpg').delete().then(function () {
-      document.getElementById("profileImage").src = "assets/images/ic_account_circle_black_48dp_2x.png";
+      // Change remote and local picUrl
+      that.utilities.userData.picUrl = "";
+      firebase.database().ref('clubs/12/players/' + that.utilities.user.uid).update({
+        picUrl: ""
+      });
 
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
-      that.actionSheetOptions = {
-        title: 'Profilbild ändern',
-        buttons: [
-          {
-            text: "Kamera",
-            icon: "camera",
-            handler: () => that.takePicture()
-          },
-          {
-            text: 'Fotos',
-            icon: "images",
-            handler: () => that.getPicture()
-          },
-          {
-            text: 'Abbrechen',
-            role: 'cancel'
-          }
-        ]
-      };
+      that.setActionSheetOptions()
     }).catch(function (error) {
       alert(error.message);
     });
