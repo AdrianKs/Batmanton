@@ -26,7 +26,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
-  
+
   aboutPage: any = {
     title: "About",
     component: AboutComponent
@@ -51,7 +51,9 @@ export class MyApp {
       if (!user) {
         this.rootPage = LoginComponent;
       } else {
-        this.rootPage = MatchdayComponent;
+        if(this.nav.getActive() == undefined){
+          this.rootPage = MatchdayComponent;
+        }
       }
     });
 
