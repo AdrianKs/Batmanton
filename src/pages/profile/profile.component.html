@@ -25,7 +25,8 @@
     <div class="picture-container">
       <!--<img class="profile-image picture-click" (click)="changeProfilePicture()"-->
            <!--src={{profilePictureUrl}}>-->
-      <img id="profileImage" class="profile-image picture-click" (click)="changeProfilePicture()">
+      <!--<img id="profileImage" class="profile-image picture-click" src="{{profilePictureUrl}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" (click)="changeProfilePicture()">-->
+      <img id="profileImage" class="profile-image picture-click" src="{{this.utilities.userData.picUrl}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" (click)="changeProfilePicture()">
     </div>
     <br/>
     <form class="center-form profile-inputs" [formGroup]="profileForm" novalidate>
@@ -35,9 +36,10 @@
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Vorname:</ion-label>
-        <ion-input class="profileValue" #firstname formControlName="firstname" [(ngModel)]="utilities.userData.firstname"
+        <ion-input class="profileValue" #firstname formControlName="firstname"
+                   [(ngModel)]="utilities.userData.firstname"
                    (input)="elementChanged(firstname)"
-                   [class.invalid]="!profileForm.controls.firstname.valid && firstnameChanged" ></ion-input>
+                   [class.invalid]="!profileForm.controls.firstname.valid && firstnameChanged"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!profileForm.controls.firstname.valid && firstnameChanged">
         <p>Bitte geben Sie Ihren Vorname ein.</p>
@@ -63,7 +65,8 @@
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">E-Mail:</ion-label>
-        <ion-input class="profileValue" #email formControlName="email" type="email" [(ngModel)]="utilities.userData.email"
+        <ion-input class="profileValue" #email formControlName="email" type="email"
+                   [(ngModel)]="utilities.userData.email"
                    (input)="elementChanged(email)"
                    [class.invalid]="!profileForm.controls.email.valid  && emailChanged"></ion-input>
       </ion-item>
@@ -77,7 +80,8 @@
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Geburtsdatum:</ion-label>
-        <ion-datetime class="profileValue" #birthday formControlName="birthday" displayFormat="DD.MM.YYYY" pickerFormat="DD MM YYYY"
+        <ion-datetime class="profileValue" #birthday formControlName="birthday" displayFormat="DD.MM.YYYY"
+                      pickerFormat="DD MM YYYY"
                       placeholder="Geburtsdatum" [(ngModel)]="utilities.userData.birthday"
                       (ionChange)="birthdaySelectChanged(utilities.userData.birthday)"
                       max="{{today}}" doneText="Ok" cancelText="Abbrechen"></ion-datetime>
@@ -89,7 +93,8 @@
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Geschlecht:</ion-label>
-        <ion-select class="profileValue" #gender formControlName="gender" placeholder="Geschlecht" [(ngModel)]="utilities.userData.gender"
+        <ion-select class="profileValue" #gender formControlName="gender" placeholder="Geschlecht"
+                    [(ngModel)]="utilities.userData.gender"
                     (ionChange)="genderSelectChanged(utilities.userData.gender)" doneText="Ok" cancelText="Abbrechen">
           <ion-option value="m">männlich</ion-option>
           <ion-option value="f">weiblich</ion-option>
@@ -102,7 +107,8 @@
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Mannschaft:</ion-label>
-        <ion-select class="profileValue" #team formControlName="team" placeholder="Mannschaft" [(ngModel)]="utilities.userData.team"
+        <ion-select class="profileValue" #team formControlName="team" placeholder="Mannschaft"
+                    [(ngModel)]="utilities.userData.team"
                     (ionChange)="teamSelectChanged(utilities.userData.team)" doneText="Ok" cancelText="Abbrechen">
           <ion-option value=0>keine Mannschaft</ion-option>
           <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
