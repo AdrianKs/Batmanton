@@ -19,8 +19,9 @@
         <div class="topContainer">
             <h4 class="teamHeadline">Bild hinzufügen</h4>
             <div class="pictureContainer">
-            <img id="teamPic" src="assets/images/ic_account_circle_black_48dp_2x.png" class="team-image" (click)="changeTeamPicture()"/>
-            <!--<img id="teamPic" (click)="changeTeamPicture()" />-->
+                <img id="teamPic" src="assets/images/ic_account_circle_black_48dp_2x.png" class="team-image" (click)="changeTeamPicture()"
+                />
+                <!--<img id="teamPic" (click)="changeTeamPicture()" />-->
             </div>
             <div class="playerDataContainer">
                 <h4 class="teamHeadline">Mannschaftsdetails</h4>
@@ -34,7 +35,12 @@
                 </ion-item>
                 <ion-item>
                     <ion-label class="playerLabel">Altersbezeichnung:</ion-label>
-                    <ion-input #altersBez formControlName="altersBez" class="playerValue"></ion-input>
+                    <ion-select formControlName="altersBez" placeholder="Auswählen...">
+                        <ion-option value=0>Erwachsen</ion-option>
+                        <ion-option>Mini</ion-option>
+                    </ion-select>
+
+                    <!--<ion-input #altersBez formControlName="altersBez" class="playerValue"></ion-input>-->
                 </ion-item>
             </div>
 

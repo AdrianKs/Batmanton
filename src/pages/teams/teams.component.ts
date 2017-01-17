@@ -3,7 +3,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ViewTeamComponent } from './viewTeam.component';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
@@ -20,21 +20,19 @@ export class TeamsComponent implements OnInit {
   teamsSearch: any[];
   database: any;
   playerArray: any[];
+  error: boolean = false;
 
   ngOnInit(): void {
-//this.database = firebase.database();
+
   }
 
-  ionViewWillEnter(){
-        console.log("Teams are alive");
-        /*this.teams = this.utilities.allTeams;
-        this.teamsSearch = this.utilities.allTeams;*/
-        this.setTeams();
-    }
+  ionViewWillEnter() {
+    this.setTeams();
+  }
 
-  constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities) {
-    
-    
+  constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities, public alertCtrl: AlertController) {
+
+
   }
 
   setTeams() {
@@ -46,18 +44,22 @@ export class TeamsComponent implements OnInit {
         teamArray[counter].id = i;
         counter++;
       }
-      //this.allTeamsVal = snapshot.val();
       this.teams = teamArray;
-      this.teamsSearch = this.utilities.allTeams;
+      this.teamsSearch = teamArray;
       //this.teamsLoaded = true;
+    }).catch(function (error) {
+      this.createAndShowErrorAlert(error);
     });
   }
 
-
-
-  
-
-
+  createAndShowErrorAlert(error){
+    let alert = this.alertCtrl.create({
+                title: 'Fehler beim Empfangen der Daten',
+                message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+                buttons: ['OK']
+            });
+            alert.present();
+  }
 
   viewTeam(ev, value) {
     this.navCtrl.push(ViewTeamComponent, {
