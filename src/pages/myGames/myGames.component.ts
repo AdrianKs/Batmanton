@@ -1,9 +1,8 @@
 //todo
 //unterscheidung zwischen vergangende/bevorstehende ggf. Sortierung?
-//update nach klick
-//SCSS
-//Menüleiste für offene Games
-//Inkosistenz bei match ID
+//benachrichtigungsnummer im menu
+//Inkonsistenz bei match ID (delete)
+//mannschaftsbild
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
@@ -30,6 +29,9 @@ export class MyGamesComponent implements OnInit {
   dataInvites: any;
   testRadioOpen: boolean;
   testRadioResult;
+  declined: boolean;
+  accepted: boolean;
+  pending: boolean;
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService, public utilities: Utilities) {
 
@@ -73,7 +75,8 @@ export class MyGamesComponent implements OnInit {
       sender: inviteItem.sender,
       state: 1
     });
-    this.utilities.pushToAccepted(inviteItem.match, this.loggedInUserID);
+    inviteItem.state = 1;
+    this.pendingToAccepted(inviteItem.match, this.loggedInUserID);
     let alert = this.alertCtrl.create({
       title: 'Zugesagt',
       message: 'Du wirst diesem Spieltag zugeteilt!',
@@ -82,7 +85,7 @@ export class MyGamesComponent implements OnInit {
     alert.present()
   }
 
-  doRadio(inviteItem) {
+  doRadio(inviteItem, value) {
     let alert = this.alertCtrl.create();
     alert.setTitle('Grund der Abwesenheit:');
 
@@ -125,7 +128,12 @@ export class MyGamesComponent implements OnInit {
         this.testRadioResult = data;
         if(this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private'){
           console.log('Radio data:', data);
-          this.utilities.pushToDeclined(inviteItem.match, this.loggedInUserID);
+          inviteItem.state = 2;
+          if (value == 0){
+            this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
+          } else {
+            this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+          }
           firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
             excuse: data,
             match: inviteItem.match,
@@ -155,8 +163,12 @@ export class MyGamesComponent implements OnInit {
                   text: 'Absenden',
                   handler: data => {
                     console.log('Radio data:', this.testRadioResult + ': ' +data.extra);
-                    console.log('Send clicked');
-                    this.utilities.pushToDeclined(inviteItem.match, this.loggedInUserID);
+                    inviteItem.state = 2;
+                    if (value == 0){
+                      this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
+                    } else {
+                      this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+                    }
                     firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
                       excuse: this.testRadioResult + ': ' +data.extra,
                       match: inviteItem.match,
@@ -177,4 +189,96 @@ export class MyGamesComponent implements OnInit {
       this.testRadioOpen = true;
     });
   }
+
+  pendingToAccepted(matchID, userID){
+    if (matchID != undefined && matchID != "0") {
+      firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
+        let userPosition;
+        for (var i = 0; i < snapshot.val().length; i++) {
+          if (snapshot.val()[i] != undefined) {
+            if (snapshot.val()[i] === userID) {
+              userPosition = i;
+              break;
+            }
+          }
+        }
+        if (userPosition != undefined) {
+          firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers/' + userPosition).remove();
+        }
+      });
+      firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
+        let playersArray = [];
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          playersArray[counter] = snapshot.val()[i];
+          counter++;
+        }
+        playersArray.push(userID);
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          acceptedPlayers: playersArray
+        });
+      });
+    }
+  }
+
+  pendingToDeclined(matchID, userID){
+    if (matchID != undefined && matchID != "0") {
+      firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
+        let userPosition;
+        for (var i = 0; i < snapshot.val().length; i++) {
+          if (snapshot.val()[i] != undefined) {
+            if (snapshot.val()[i] === userID) {
+              userPosition = i;
+              break;
+            }
+          }
+        }
+        if (userPosition != undefined) {
+          firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers/' + userPosition).remove();
+        }
+      });
+      firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
+        let playersArray = [];
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          playersArray[counter] = snapshot.val()[i];
+          counter++;
+        }
+        playersArray.push(userID);
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          declinedPlayers: playersArray
+        });
+      });
+    }
+  }
+
+  acceptedToDeclined(matchID, userID){
+      firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
+        let userPosition;
+        for (var i = 0; i < snapshot.val().length; i++) {
+          if (snapshot.val()[i] != undefined) {
+            if (snapshot.val()[i] === userID) {
+              userPosition = i;
+              break;
+            }
+          }
+        }
+        if (userPosition != undefined) {
+          firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers/' + userPosition).remove();
+        }
+      });
+      firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
+        let playersArray = [];
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          playersArray[counter] = snapshot.val()[i];
+          counter++;
+        }
+        playersArray.push(userID);
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          declinedPlayers: playersArray
+        });
+      });
+  }
+
 }

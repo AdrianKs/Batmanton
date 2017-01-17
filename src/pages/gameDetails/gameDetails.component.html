@@ -1,11 +1,23 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
+    <button ion-button menuToggle *ngIf="(!editMode)">
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Spieldetails</ion-title>
+    <ion-buttons left>
+      <button ion-button *ngIf="(editMode)" (click)="cancelEditProfile()">Abbrechen</button>
+    </ion-buttons>
+    <ion-title>Spieledetails</ion-title>
+    <ion-buttons right>
+      <button *ngIf="(!editMode)" ion-button (click)="editProfile()">Bearbeiten
+      </button>
+      <button
+        [disabled]="(!opponentChanged && !teamChanged && !homeChanged && !streetChanged && !zipcodeChanged && !timeChanged) || !formValid"
+        *ngIf="(editMode)" ion-button (click)="finishEditProfile()">Fertig
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
+
 
 <ion-content padding>
   <div class="topContainer">
@@ -13,29 +25,69 @@
       <img src="assets/images/ic_account_circle_black_48dp_2x.png" />
     </div>
     <div class="playerDataContainer">
-      <ion-item>
-        <ion-label class="playerLabel">Gegner:</ion-label>
-        <ion-label class="playerValue">{{ gameItem.opponent }}</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label class="playerLabel">Team:</ion-label>
-        <ion-label class="playerValue">{{ gameItem.team | teams}}</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label class="playerLabel">Ort:</ion-label>
-        <ion-label class="playerValue">
-          <div *ngIf="gameItem.home == true">Heim</div>
-          <div *ngIf="gameItem.home == false">Auswärts</div>
-        </ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label class="playerLabel">Adresse:</ion-label>
-        <ion-label class="playerValue">{{ gameItem.location.street }}<br>{{ gameItem.location.zipcode }}</ion-label>
-      </ion-item>
-      <ion-item>
-        <ion-label class="playerLabel">Wann:</ion-label>
-        <ion-label class="playerValue">{{ gameItem.time | matchTime}}</ion-label>
-      </ion-item>
+      <form class="center-form profile-inputs" [formGroup]="profileForm" novalidate>
+        <ion-item *ngIf="(!editMode)">
+          <ion-label class="playerLabel">Gegner:</ion-label>
+          <ion-label class="playerValue">{{ gameItem.opponent }}</ion-label>
+        </ion-item>
+        <ion-item *ngIf="(editMode)">
+          <ion-label color="primary" class="playerLabel">Gegner:</ion-label>
+          <ion-input #opponent formControlName="opponent" [(ngModel)]="gameItem.opponent"
+                    (input)="elementChanged(opponent)"
+                    [class.invalid]="!profileForm.controls.opponent.valid && opponentChanged"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="(!editMode)">
+          <ion-label class="playerLabel">Team:</ion-label>
+          <ion-label class="playerValue">{{ gameItem.team | teams}}</ion-label>
+        </ion-item>
+        <ion-item *ngIf="(editMode)">
+          <ion-label color="primary" class="playerLabel">Team:</ion-label>
+          <ion-select #team formControlName="team" placeholder="Mannschaft" [(ngModel)]="gameItem.team"
+                      (ionChange)="teamSelectChanged(gameItem.team)" doneText="Ok" cancelText="Abbrechen">
+            <ion-option value=0>keine Mannschaft</ion-option>
+            <ion-option *ngFor="let item of teamsArray" value="{{item.id}}">{{item.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="(!editMode)">
+          <ion-label class="playerLabel">Ort:</ion-label>
+          <ion-label class="playerValue">
+            <div *ngIf="gameItem.home == true">Heim</div>
+            <div *ngIf="gameItem.home == false">Auswärts</div>
+          </ion-label>
+        </ion-item>
+        <ion-item *ngIf="(editMode)">
+          <ion-label color="primary" class="playerLabel">Ort:</ion-label>
+          <ion-select #home formControlName="home" placeholder="Heim/Auswärts" [(ngModel)]="gameItem.home"
+                      (ionChange)="homeSelectChanged(gameItem.home)" doneText="Ok" cancelText="Abbrechen">
+            <ion-option value=true>Heim</ion-option>
+            <ion-option value=false>Auswärts</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item *ngIf="(!editMode)">
+          <ion-label class="playerLabel">Adresse:</ion-label>
+          <ion-label class="playerValue">{{ gameItem.location.street }}<br>{{ gameItem.location.zipcode }}</ion-label>
+        </ion-item>
+        <ion-item *ngIf="(editMode)">
+          <ion-label color="primary" class="playerLabel">Adresse:</ion-label>
+          <ion-input #street formControlName="street" [(ngModel)]="gameItem.location.street"
+                    (input)="elementChanged(opponent)"
+                    [class.invalid]="!profileForm.controls.street.valid && streetChanged"></ion-input><br>
+          <ion-input #zipcode formControlName="zipcode" [(ngModel)]="gameItem.location.zipcode"
+                    (input)="elementChanged(opponent)"
+                    [class.invalid]="!profileForm.controls.zipcode.valid && zipcodeChanged"></ion-input>
+        </ion-item>
+        <ion-item *ngIf="(!editMode)">
+          <ion-label class="playerLabel">Wann:</ion-label>
+          <ion-label class="playerValue">{{ gameItem.time | matchTime}}</ion-label>
+        </ion-item>
+        <ion-item *ngIf="(editMode)">
+          <ion-label color="primary" class="playerLabel">Wann:</ion-label>
+          <ion-datetime #time formControlName="time" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
+                        placeholder="Datum & Uhrzeit" [(ngModel)]="gameItem.date"
+                        (ionChange)="timeSelectChanged(gameItem.date)"
+                        doneText="Ok" cancelText="Abbrechen"></ion-datetime>
+        </ion-item>
+      </form>
       <ion-toolbar no-border-top>
         <ion-segment [(ngModel)]="playerStatus">
           <ion-segment-button value="accepted">
@@ -53,16 +105,73 @@
   </div>
   <div [ngSwitch]="playerStatus">
     <ion-list *ngSwitchCase="'accepted'">
-      <div *ngFor="let item of gameItem.acceptedPlayers">
-      <ion-item (click)="checkItem(item)">{{item | player}}</ion-item></div>
+      <div *ngFor="let relevantPlayer of gameItem.acceptedPlayers">
+        <div *ngFor="let player of playerArray">
+          <div *ngIf="relevantPlayer == player.id">
+            <ion-item (click)="checkItem(relevantPlayer)">
+              <div class="itemPlayer">
+                <div class="itemPlayerLeft">
+                  <img id="profileImage" src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+                </div>
+                <div class="itemPlayerRight">
+                  <div class="mainDetails">
+                    {{ player.lastname }}, {{player.firstname}} <br/>
+                  </div>
+                  <div class="secondaryDetails">
+                    {{player.team | teams}}
+                  </div>
+                </div>
+              </div>
+            </ion-item>
+          </div>
+        </div>
+      </div>
     </ion-list>
     <ion-list *ngSwitchCase="'pending'">
-      <div *ngFor="let item of gameItem.pendingPlayers">
-      <ion-item>{{item | player}}</ion-item></div>
+      <div *ngFor="let relevantPlayer of gameItem.pendingPlayers">
+        <div *ngFor="let player of playerArray">
+          <div *ngIf="relevantPlayer == player.id">
+            <ion-item (click)="checkItem(relevantPlayer)">
+              <div class="itemPlayer">
+                <div class="itemPlayerLeft">
+                  <img id="profileImage" src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+                </div>
+                <div class="itemPlayerRight">
+                  <div class="mainDetails">
+                    {{ player.lastname }}, {{player.firstname}} <br/>
+                  </div>
+                  <div class="secondaryDetails">
+                    {{player.team | teams}}
+                  </div>
+                </div>
+              </div>
+            </ion-item>
+          </div>
+        </div>
+      </div>
     </ion-list>
     <ion-list *ngSwitchCase="'declined'">
-      <div *ngFor="let item of gameItem.declinedPlayers">
-      <ion-item>{{item | player}}</ion-item></div>
+      <div *ngFor="let relevantPlayer of gameItem.declinedPlayers">
+        <div *ngFor="let player of playerArray">
+          <div *ngIf="relevantPlayer == player.id">
+            <ion-item (click)="checkItem(relevantPlayer)">
+              <div class="itemPlayer">
+                <div class="itemPlayerLeft">
+                  <img id="profileImage" src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+                </div>
+                <div class="itemPlayerRight">
+                  <div class="mainDetails">
+                    {{ player.lastname }}, {{player.firstname}} <br/>
+                  </div>
+                  <div class="secondaryDetails">
+                    {{player.team | teams}}
+                  </div>
+                </div>
+              </div>
+            </ion-item>
+          </div>
+        </div>
+      </div>
     </ion-list>
   </div>
 </ion-content>

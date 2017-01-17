@@ -2,16 +2,13 @@
  * Created by kochsiek on 08.12.2016.
  */
 //todo
-//Suchleiste
-//alert wenn zurückgegangen wird
-//disable Button
-//Invite objects
+//alert wenn zurückgegangen wird (optional)
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { MatchdayComponent } from './matchday.component';
 import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'page-addTeamToMatchday',
@@ -22,16 +19,19 @@ import { Utilities } from '../../app/utilities';
 export class AddTeamToMatchdayComponent implements OnInit{
   geschlecht: string = 'maenner';
   match: any;
+  invite: any;
   teamSelection: any;
   teamPosition: number;
   counter: number = 0;
+  matchesCounter: number;
   tempArray = [];
   allTeams: any;
   relevantTeams: any;
   allPlayers: any;
+  buttonDisabled: Array<boolean>;
 
   ngOnInit(){
-    this.allPlayers = this.Utilities.allPlayers;
+    this.allPlayers = this.setPlayers();
     this.teamSelection = this.match.team;
     let counter = 0;
     for (let i in this.allTeams) {
@@ -49,6 +49,21 @@ export class AddTeamToMatchdayComponent implements OnInit{
     this.allTeams = navP.get('relevantTeamsItem');
   }
 
+  setPlayers() {
+    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
+      let playerArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        playerArray[counter] = snapshot.val()[i];
+        playerArray[counter].id = i;
+        playerArray[counter].added = false;
+        counter++;
+      }
+      this.allPlayers = playerArray;
+      this.allPlayers = _.sortBy(this.allPlayers, "lastname");
+    });
+  }
+
   getRelevantTeams(ageLimit) {
     let relevantTeams: Array<any> = [];
     this.allTeams.forEach(function (team) {
@@ -59,26 +74,25 @@ export class AddTeamToMatchdayComponent implements OnInit{
     return relevantTeams;
   }
 
-  getItemsAvailable(ev) {
-      // set val to the value of the ev target
-      var val = ev.target.value;
-
-      // if the value is an empty string don't filter the items
-      if (val && val.trim() != '') {
-          this.allPlayers = this.allPlayers.filter((item) => {
-              return (item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1);
-          })
-      }
-  }
-
-  addPlayer(playerID, isClickedOnce){
-    console.log(playerID);
-      let counter = 0;
+  addPlayer(player){
+    let counter = 0;
     for (let i in this.tempArray) {
         counter++;
       }
-    this.tempArray[counter]= playerID;
+    this.tempArray[counter]= player.id;
+    player.added = true;
+    console.log(this.tempArray);
+  }
 
+  removePlayer(player){
+    let counter = 0;
+    for (let i in this.tempArray) {
+      if (this.tempArray[i] == player.id){
+        this.tempArray.splice(counter, 1);
+      }
+      counter ++;
+    }
+    player.added = false;
     console.log(this.tempArray);
   }
 
@@ -86,14 +100,30 @@ export class AddTeamToMatchdayComponent implements OnInit{
     this.match.pendingPlayers = this.tempArray;
     firebase.database().ref('clubs/12/matches').once('value', snapshot => {
       let matchesArray = [];
-      let counter = 0;
+      this.matchesCounter = 0;
       for (let i in snapshot.val()) {
-        matchesArray[counter] = snapshot.val()[i];
-        counter++;
+        matchesArray[this.matchesCounter] = snapshot.val()[i];
+        this.matchesCounter++;
       }
       matchesArray.push(this.match);
       firebase.database().ref('clubs/12').update({
           matches: matchesArray
+      });
+    });
+    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+      let invitesArray = [];
+      let invitesCounter = 0;
+      for (let i in snapshot.val()) {
+        invitesArray[invitesCounter] = snapshot.val()[i];
+        invitesCounter++;
+      }
+      let invitesCounterTwo = 0;
+      for (let i in this.match.pendingPlayers){
+        invitesArray.push({match: this.matchesCounter.toString(), recipient: this.match.pendingPlayers[invitesCounterTwo], sender: this.Utilities.user.uid, state: 0});
+        invitesCounterTwo++;
+      }
+      firebase.database().ref('clubs/12').update({
+          invites: invitesArray
       });
     });
     this.navCtrl.popToRoot();

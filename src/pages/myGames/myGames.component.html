@@ -57,7 +57,7 @@
                 <div *ngIf="gameItem.home == false"><p>Auswärts</p></div>
               </ion-item>
               <ion-item>
-                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem)" item-right>
+                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem, 1)" item-right>
                 <ion-icon name='close'></ion-icon>
                   Absagen
                 </button>
@@ -73,6 +73,7 @@
         <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 0">
           <div *ngFor="let gameItem of dataGames">
             <div *ngIf="inviteItem.match == gameItem.id">
+            
               <ion-item (click)="openDetails($event, gameItem)">
                 <ion-thumbnail item-left>
                   <img src="assets/img/TSV Heimaterde.png">
@@ -83,15 +84,16 @@
                 <div *ngIf="gameItem.home == false"><p>Auswärts</p></div>
               </ion-item>
               <ion-item>
-                <button ion-button color="secondary" icon-left (click)="verifyAccept(inviteItem, gameItem)" item-right>
+                <button ion-button color="secondary" icon-left (click)="verifyAccept(inviteItem)" item-right>
                 <ion-icon name='checkmark'></ion-icon>
                   Zusagen
                 </button>
-                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem)" item-right>
+                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem, 0)" item-right>
                 <ion-icon name='close'></ion-icon>
                   Absagen
                 </button>
               </ion-item>
+
             </div>
           </div>
         </div>
