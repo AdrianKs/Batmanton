@@ -3,8 +3,8 @@
  */
 //todo
 //Sort-Funktion
-//SCSS
-//Add Game-Funktion + Extra-Screen
+//aktualisieren drag up
+//mannschaftsbild
 import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';

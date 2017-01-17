@@ -24,11 +24,10 @@
           </ion-segment-button>
       </ion-segment>
   </ion-toolbar>
-  <!--<ion-searchbar (ionInput)="getItemsAvailable($event)"></ion-searchbar>-->
   <ion-list>
     <div [ngSwitch]="geschlecht">
       <ion-list *ngSwitchCase="'maenner'">
-        <div *ngFor="let item of allPlayers">
+        <div *ngFor="let item of allPlayers">   
           <div *ngIf="item.team==teamSelection">
             <div *ngIf="item.gender=='m'">
               <ion-item>
@@ -47,44 +46,53 @@
                       </div>
                     </ion-col>
                     <ion-col width-15>
-                      <button ion-button icon-only color="secondary" [class.disabled]="isClickedOnce" (click)="addPlayer(item.id, isClickedOnce)">
-                        <ion-icon name="add"></ion-icon>
-                      </button>
+                      <div *ngIf="item.added==false">
+                        <button ion-button icon-only color="secondary" (click)="addPlayer(item)">
+                          <ion-icon name="add"></ion-icon>
+                        </button>
+                      </div>
+                      <div *ngIf="item.added==true">
+                        <button ion-button icon-only color="danger" (click)="removePlayer(item)">
+                          <ion-icon name="close"></ion-icon>
+                        </button>
+                      </div>
                     </ion-col>
                   </ion-row>
                 </ion-grid>
               </ion-item>
             </div>
-          </div>
+          </div>      
         </div>
       </ion-list>
       <ion-list *ngSwitchCase="'frauen'">
         <div *ngFor="let item of allPlayers">
-          <div *ngIf="item.team==teamSelection">
-            <div *ngIf="item.gender=='f'">
-              <ion-item>
-                <ion-grid>
-                  <ion-row>
-                    <ion-col width-15>
-                      <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
-                    </ion-col>
-                    <ion-col width-70>
-                      <div class="firstName-lastName">
-                        {{item.lastname}}, {{item.firstname}}
-                      </div>
-                      <br/>
-                      <div class="birthday-details">
-                        Geburtstag: {{item.birthday | birthday}}
-                      </div>
-                    </ion-col>
-                    <ion-col width-15>
-                      <button ion-button icon-only color="secondary" (click)="addPlayer(item.id)">
-                        <ion-icon name="add"></ion-icon>
-                      </button>
-                    </ion-col>
-                  </ion-row>
-                </ion-grid>
-              </ion-item>
+          <div *ngIf="item.added==false">
+            <div *ngIf="item.team==teamSelection">
+              <div *ngIf="item.gender=='f'">
+                <ion-item>
+                  <ion-grid>
+                    <ion-row>
+                      <ion-col width-15>
+                        <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
+                      </ion-col>
+                      <ion-col width-70>
+                        <div class="firstName-lastName">
+                          {{item.lastname}}, {{item.firstname}}
+                        </div>
+                        <br/>
+                        <div class="birthday-details">
+                          Geburtstag: {{item.birthday | birthday}}
+                        </div>
+                      </ion-col>
+                      <ion-col width-15>
+                        <button ion-button icon-only color="secondary" (click)="addPlayer(item)">
+                          <ion-icon name="add"></ion-icon>
+                        </button>
+                      </ion-col>
+                    </ion-row>
+                  </ion-grid>
+                </ion-item>
+              </div>
             </div>
           </div>
         </div>
