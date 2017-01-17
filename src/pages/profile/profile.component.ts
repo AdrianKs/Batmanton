@@ -9,6 +9,10 @@
 // Enter App Screen
 // Passwort validate
 // Change Teams Kollisionsvermeidung (Trainer & Spieler ändern gleichzeitig Team des Spielers)
+// Don't skip select profile picture screen
+// Get Profile Picture from profile picture url and update it
+// Default profile picture setzen, auch bevor das richtige PB geladen wurde
+// Delete Account from Firebase?
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
