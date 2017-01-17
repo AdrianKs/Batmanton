@@ -78,6 +78,7 @@ export class SelectProfilePictureComponent {
   }
 
   storeUrl(url: string) {
+    this.utilities.userData.picUrl = url;
     firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).update({
         picUrl: url
     });
