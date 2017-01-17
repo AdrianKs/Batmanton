@@ -34,4 +34,12 @@ page-profile {
   .picture-click:active {
     opacity: 0.5;
   }
+
+  .profileLabel {
+    font-weight: bold;
+  }
+
+  .profileValue {
+    font-size: 14px;
+  }
 }
