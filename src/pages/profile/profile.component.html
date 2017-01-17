@@ -23,10 +23,8 @@
 <ion-content>
   <div>
     <div class="picture-container">
-      <!--<img class="profile-image picture-click" (click)="changeProfilePicture()"-->
-           <!--src={{profilePictureUrl}}>-->
-      <!--<img id="profileImage" class="profile-image picture-click" src="{{profilePictureUrl}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" (click)="changeProfilePicture()">-->
-      <img id="profileImage" class="profile-image picture-click" src="{{this.utilities.userData.picUrl}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" (click)="changeProfilePicture()">
+      <img id="profileImage" class="profile-image picture-click" src="{{this.utilities.userData.picUrl}}"
+           onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" (click)="changeProfilePicture()">
     </div>
     <br/>
     <form class="center-form profile-inputs" [formGroup]="profileForm" novalidate>
