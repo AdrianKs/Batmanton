@@ -6,9 +6,8 @@
 // Error Handling (global)
 // kleinere Fonts
 // Admin/ Spieler Rolle
-// Enter App Screen
+// Enter App Screen, Passwortabfrage
 // Passwort validate
-// Change Teams Kollisionsvermeidung (Trainer & Spieler ändern gleichzeitig Team des Spielers)
 // Don't skip select profile picture screen
 // Delete Account from Firebase?
 // Update Profile Picture in User Management and elsewhere after upload (/ changing picUrl)
@@ -20,7 +19,6 @@ import firebase from 'firebase';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import {AuthData} from '../../providers/auth-data';
 import {Camera} from 'ionic-native';
-import {document} from "@angular/platform-browser/src/facade/browser";
 import {Utilities} from '../../app/utilities';
 
 @Component({
