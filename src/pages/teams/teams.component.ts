@@ -3,11 +3,11 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ViewTeamComponent } from './viewTeam.component';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
-import {CreateTeamComponent} from './createNewTeam.component';
+import { CreateTeamComponent } from './createNewTeam.component';
 
 
 @Component({
@@ -20,78 +20,55 @@ export class TeamsComponent implements OnInit {
   teamsSearch: any[];
   database: any;
   playerArray: any[];
+  error: boolean = false;
 
   ngOnInit(): void {
-    
+
   }
 
-  constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities) {
-    this.database = firebase.database();
-    this.teams = this.utilities.allTeams;
-    this.teamsSearch = this.utilities.allTeams;
-
-    this.getAllTeamData();
-
-
-   console.log(this.teams);
-    //this.getAllTeamData();
+  ionViewWillEnter() {
+    this.setTeams();
   }
 
+  constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities, public alertCtrl: AlertController) {
 
+
+  }
+
+  setTeams() {
+    firebase.database().ref('clubs/12/teams').once('value', snapshot => {
+      let teamArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        teamArray[counter] = snapshot.val()[i];
+        teamArray[counter].id = i;
+        counter++;
+      }
+      this.teams = teamArray;
+      this.teamsSearch = teamArray;
+      //this.teamsLoaded = true;
+    }).catch(function (error) {
+      this.createAndShowErrorAlert(error);
+    });
+  }
+
+  createAndShowErrorAlert(error){
+    let alert = this.alertCtrl.create({
+                title: 'Fehler beim Empfangen der Daten',
+                message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+                buttons: ['OK']
+            });
+            alert.present();
+  }
 
   viewTeam(ev, value) {
-    this.navCtrl.push(ViewTeamComponent, { 
+    this.navCtrl.push(ViewTeamComponent, {
       teamId: value.id
     });
   }
 
-  addTeam(ev, value) {
-    //Team hinzufügen View aufrufen
-  }
-
-  pushToAddNewTeam(){
+  pushToAddNewTeam() {
     this.navCtrl.push(CreateTeamComponent);
-  }
-
-
-
-
-
-
-
-  getAllTeamData() {
-    let playerPlaceholder = [];
-    let counter = 0;
-    for (let y in this.teams) {
-      playerPlaceholder[counter] = this.teams[y].players;
-      counter++;
-    }
-    this.playerArray = playerPlaceholder;
-    this.addPlayersToArray(this.playerArray);
-
-  }
-
-  addPlayersToArray(valueArray: any) {
-    this.database.ref("/clubs/12/players/").once('value', snapshot => {
-      let idPlaceholder = 0;
-      let counter = 0;
-      for (let i in valueArray) {
-        for (let y in valueArray[i]) {
-          idPlaceholder = valueArray[i][y];
-          let player = snapshot.child("" + idPlaceholder).val();
-
-          if ((player != null) && (player != undefined)) {
-            this.teams[i].players[y] = player;
-            this.teams[i].players[y].id = y;
-            this.teams[i].players[y].uniqueId = idPlaceholder;
-
-          } else {
-            console.log("Spieler übersprungen, da null");
-          }
-        }
-      }
-    })
-
   }
 
   initializeTeams() {
