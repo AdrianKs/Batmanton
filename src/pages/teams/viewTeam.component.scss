@@ -61,3 +61,35 @@
     float: right;
     padding: 8px;
 }
+
+.thumbnail-matchday-top-left {
+    width: 55px;
+    height: 55px;
+    border-top-left-radius: 100%;
+    padding: 0;
+    margin-bottom: 0.5px;
+    margin-right: 0.5px;
+}
+
+.thumbnail-matchday-top-right {
+    width: 55px;
+    height: 55px;
+    border-top-right-radius: 100%;
+    padding: 0;
+    margin-bottom: 0.5px;
+}
+
+.thumbnail-matchday-bottom-right {
+    width: 55px;
+    height: 55px;
+    border-bottom-right-radius: 100%;
+    padding: 0;
+    margin-left: 0.5px;
+}
+
+.thumbnail-matchday-bottom-left {
+    width: 55px;
+    height: 55px;
+    border-bottom-left-radius: 100%;
+    padding: 0;
+}

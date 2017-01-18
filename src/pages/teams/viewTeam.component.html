@@ -25,10 +25,23 @@
 
 <ion-content padding>
     <div class="topContainer">
-        <div class="pictureContainer">
+        <div class="list pictureContainer">
+             
+            <div class="row">
+              <div class="col">
+                <img class="thumbnail-matchday-top-left" src="{{getFirstFourPicUrls()[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                <img class="thumbnail-matchday-top-right" src="{{getFirstFourPicUrls()[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+              </div>
+              <div class="col">
+                <img class="thumbnail-matchday-bottom-left" src="{{getFirstFourPicUrls()[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                <img class="thumbnail-matchday-bottom-right" src="{{getFirstFourPicUrls()[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+              </div>
+            </div>
+          </div>
+        <!--<div class="pictureContainer">
             <img id="teamPic" src="{{team.teamPicUrl}}" class="team-image" (click)="changeTeamPicture()" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
-            <!--<img id="teamPic" (click)="changeTeamPicture()" />-->
-        </div>
+            <!<img id="teamPic" (click)="changeTeamPicture()" />-->
+       <!-- </div>-->
         <form class="center-form" [formGroup]="teamForm" novalidate>
         <div class="playerDataContainer">
             <ion-item *ngIf="(!editMode)">
