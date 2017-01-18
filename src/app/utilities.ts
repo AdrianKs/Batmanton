@@ -12,8 +12,10 @@ export class Utilities {
   userData: any = "";
   allTeams: Array<any>;
   allTeamsVal: Array<any>;
+  allInvites: Array<any>;
   teamsLoaded: boolean = false;
   userLoaded: boolean = false;
+  invitesLoaded: boolean = false;
   allPlayers: Array<any>;
 
   constructor() {
@@ -61,6 +63,21 @@ export class Utilities {
     });
   }
 
+  setInvites() {
+    this.invitesLoaded = false;
+    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+      let inviteArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        inviteArray[counter] = snapshot.val()[i];
+        inviteArray[counter].id = i;
+        counter++;
+      }
+      this.allInvites = inviteArray;
+      this.invitesLoaded = true;
+    })
+  }
+
   calculateAge(birthdayString) {
     let birthdayDate = new Date(birthdayString);
 
@@ -78,6 +95,22 @@ export class Utilities {
       age--;
     }
     return age;
+  }
+
+  getFirstFourPicUrls(match) {
+    let urlArray = [];
+    let counter = 0;
+    for (let i of this.allInvites) {
+      if (i.match == match.id && i.sender == this.user.uid && counter < 4) {
+        for (let j of this.allInvites) {
+          if (i.recipient == j.id) {
+            urlArray[counter] = j.picUrl;
+            counter++;
+          }
+        }
+      }
+    }
+    return urlArray;
   }
 
   getRelevantTeams(birthdayString) {
@@ -143,7 +176,7 @@ export class Utilities {
     }
   }
 
-  pushToAccepted(matchID, userID){
+  pushToAccepted(matchID, userID) {
     if (matchID != undefined && matchID != "0") {
       firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
         let userPosition;
@@ -188,7 +221,7 @@ export class Utilities {
     }
   }
 
-  pushToDeclined(matchID, userID){
+  pushToDeclined(matchID, userID) {
     if (matchID != undefined && matchID != "0") {
       firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
         let userPosition;
@@ -232,5 +265,5 @@ export class Utilities {
       });
     }
   }
-  
+
 }
