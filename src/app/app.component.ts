@@ -75,6 +75,18 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
+
+      // Enable to debug issues.
+      // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+
+      var notificationOpenedCallback = function(jsonData) {
+        console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+      };
+
+      window["plugins"].OneSignal
+        .startInit("c72ec221-4425-4844-83fe-288ffd22a55a", "917483863301")
+        .handleNotificationOpened(notificationOpenedCallback)
+        .endInit();
     });
   }
 

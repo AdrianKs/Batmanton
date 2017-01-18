@@ -24,7 +24,7 @@ export class AuthData {
     return this.fireAuth.signInWithEmailAndPassword(email, password);
   }
 
-  signupUser(email: string, password: string, firstname: string, lastname: string, birthday: string, gender: string, team: string): any {
+  signupUser(email: string, password: string, firstname: string, lastname: string, birthday: string, gender: string, team: string, pushid: string): any {
     return this.fireAuth.createUserWithEmailAndPassword(email, password)
       .then((newUser) => {
         this.userProfile.child(newUser.uid).set({
@@ -38,8 +38,11 @@ export class AuthData {
           isPlayer: true,
           isTrainer: false,
           picUrl: "",
-          pushid: ''
+          pushid: {}
           });
+          firebase.database().ref('clubs/12/players/' + newUser.uid + '/pushid/' + pushid).set(
+            true
+          );
         this.utilities.user = newUser;
       });
   }
@@ -56,8 +59,24 @@ export class AuthData {
     });
   }
 
+  changePushid(userid: string): any {
+    window["plugins"].OneSignal.getIds(ids => {
+      console.log('getIds: ' + JSON.stringify(ids));
+      alert("userId = " + ids.userId + ", pushToken = " + ids.pushToken);
+      return firebase.database().ref('clubs/12/players/' + userid + '/pushid/' + ids.userId).set(
+        true
+      );
+    });
+
+  }
+
   logoutUser(): any {
-    return this.fireAuth.signOut();
+    window["plugins"].OneSignal.getIds(ids => {
+      console.log('getIds: ' + JSON.stringify(ids));
+      firebase.database().ref('clubs/12/players/' + this.utilities.user.uid + '/pushid').child(ids.userId).remove().then(() => {
+          return this.fireAuth.signOut();
+      })
+    })
   }
 
 }
