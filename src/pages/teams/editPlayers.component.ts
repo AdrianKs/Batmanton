@@ -237,7 +237,7 @@ export class EditPlayerComponent implements OnInit {
         console.log(p.id);
         this.utilities.addPlayerToTeam(this.teamId, p.id);
 
-        this.showOrHideDivider();
+        //this.showOrHideDivider();
         this.presentToast("Spieler zum Team hinzugefügt");
     }
 
