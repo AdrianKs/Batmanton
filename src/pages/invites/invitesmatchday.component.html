@@ -5,7 +5,7 @@
     </button>
     <ion-title>Einladungen Spieltag {{matchday.id}}</ion-title>
     <ion-buttons right>
-      <button ion-button (click)="goToPage()">
+      <button ion-button (click)="goToPage(matchday)">
         <ion-icon name="information-circle" clear item-right></ion-icon>
       </button>
     </ion-buttons>
@@ -13,60 +13,45 @@
 </ion-header>
 
 <ion-content padding>
-  <div *ngFor="let item of invites">
-    <div *ngIf="item.match == matchday.id">
-      <!--<ion-item>-->
-      <div *ngFor="let player of players">
-        <div *ngIf="item.sender == utilities.user.uid">
-          <div *ngIf="player.id == item.recipient">
-            <div *ngIf="item.state == '0'">
-              <ion-card>
-                <ion-item>
-                  <ion-avatar item-left>
-                    <img src="{{getProfilePictureURL(player)}}">
-                  </ion-avatar>
-                  <h2>{{player.firstname}} {{player.lastname}}</h2>
-                  <ion-badge color="primary" item-bottom> Keine Antwort</ion-badge>
-                  <br>
+  <ion-list>
+    <div *ngFor="let item of invites">
+      <div *ngIf="item.match == matchday.id">
+        <div *ngFor="let player of players">
+          <div *ngIf="item.sender == utilities.user.uid">
+            <div *ngIf="player.id == item.recipient">
+              <div *ngIf="item.state == '0'">
+                <ion-item (click)="showMessage()">
+                      <img item-left src="{{player.picUrl}}" class="thumbnail-invite" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                  <h2> {{player.firstname}} {{player.lastname}} </h2>
+                  <h3>
+                    <ion-badge color="primary" item-bottom> Keine Antwort</ion-badge>
+                   <!-- <ion-badge item-right><ion-icon name="ios-redo" (click)="showConfirm()" item-right></ion-icon></ion-badge>-->
+                  </h3>
                 </ion-item>
-                <ion-card-content>
+              </div>
+              <div *ngIf="item.state == '1'">
+                <ion-item>
+                      <img item-left src="{{player.picUrl}}" class="thumbnail-invite" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                  <h2> {{player.firstname}} {{player.lastname}} </h2>
+                  <h3>
+                    <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
+                  </h3>
+                </ion-item>
+              </div>
+              <div *ngIf="item.state == '2'">
+                <ion-item>          
+                      <img item-left src="{{player.picUrl}}" class="thumbnail-invite" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                  <h2> {{player.firstname}} {{player.lastname}} </h2>
+                  <h3>
+                    <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>
+                  </h3>
                   <p>{{item.excuse}}</p>
-                </ion-card-content>
-              </ion-card>
-            </div>
-            <div *ngIf="item.state == '1'">
-              <ion-card>
-                <ion-item>
-                  <ion-avatar item-left>
-                    <img src="{{getProfilePictureURL(player)}}">
-                  </ion-avatar>
-                  <h2>{{player.firstname}} {{player.lastname}}</h2>
-                  <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
-                  <br>
                 </ion-item>
-                <ion-card-content>
-                </ion-card-content>
-              </ion-card>
-            </div>
-            <div *ngIf="item.state == '2'">
-              <ion-card>
-                <ion-item>
-                  <ion-avatar item-left>
-                    <img src="{{getProfilePictureURL(player)}}">
-                  </ion-avatar>
-                  <h2>{{player.firstname}} {{player.lastname}}</h2>
-                  <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>
-                  <br>
-                </ion-item>
-                <ion-card-content>
-                  <p align="center"> {{item.excuse}} </p>
-                </ion-card-content>
-              </ion-card>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <!--</ion-item>-->
     </div>
-  </div>
+  </ion-list>
 </ion-content>

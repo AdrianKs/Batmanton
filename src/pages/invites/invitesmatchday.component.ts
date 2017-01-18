@@ -2,20 +2,13 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
-
-import { NavController, NavParams } from 'ionic-angular';
-
-import { InvitesService } from '../../providers/invitesService';
-
-import { AboutComponent } from '../about/about.component'
-import {Utilities} from '../../app/utilities';
-
-import firebase from 'firebase';
+import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { Utilities } from '../../app/utilities';
+import { GameDetailsComponent } from '../gameDetails/gameDetails.component'
 
 @Component({
   selector: 'page-invitesmatchday',
-  templateUrl: 'invitesmatchday.component.html',
-  providers: [InvitesService]
+  templateUrl: 'invitesmatchday.component.html'
 })
 export class InvitesMatchdayComponent {
   matchday: any;
@@ -23,25 +16,47 @@ export class InvitesMatchdayComponent {
   players: any;
   profilePictureURL: any;
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private invitesService: InvitesService, public utilities: Utilities) {
+
+  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities, public alertCtrl: AlertController, public toastCtrl: ToastController) {
     //Load data in array
     this.matchday = navP.get('matchday');
     this.invites = navP.get('invites');
     this.players = navP.get('players');
   }
 
-  getProfilePictureURL(player) {
-    /* var that = this;
-     firebase.storage().ref().child("profilePictures/" + loggedInUser.id + "/" + loggedInUser.id + ".jpg").getDownloadURL().then(function (url) {
-       that.profilePictureURL = url;
-     }).catch(function(error) {
-       that.profilePictureURL = "../../assets/images/ic_account_circle_black_48dp_2x.png";
-     });
-     return that.profilePictureURL;*/
-    return "../../assets/images/ic_account_circle_black_48dp_2x.png";
+  showMessage() {
+    let toast = this.toastCtrl.create({
+      message: 'Die Einladung wurde erneut versendet',
+      position: 'top',
+      duration: 3000,
+      
+    });
+    toast.present();
   }
 
-  goToPage() {
-    this.navCtrl.push(AboutComponent);
+  showConfirm() {
+    let confirm = this.alertCtrl.create({
+      title: 'Einladung erneut senden?',
+      message: 'Möchten Sie diese Einladung erneut senden?',
+      buttons: [
+        {
+          text: 'Nein',
+          handler: () => {
+            console.log('Nicht versendet');
+          }
+        },
+        {
+          text: 'Ja',
+          handler: () => {
+            console.log('versendet');
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  goToPage(value) {
+    this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 }
