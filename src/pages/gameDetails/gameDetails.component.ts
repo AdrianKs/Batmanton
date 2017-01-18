@@ -72,7 +72,11 @@ export class GameDetailsComponent implements OnInit{
 
   finishEditProfile() {
     if ((this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged) && this.formValid) {
-      // firebase.database().ref('clubs/12/players/' + this.utilities.userDataID).set({
+      if (this.gameItem.home == true){
+        this.gameItem.home = true;
+      } else {
+        this.gameItem.home = false;
+      }
       firebase.database().ref('clubs/12/matches/' + this.gameItem.id).set({
         opponent: this.gameItem.opponent,
         team: this.gameItem.team,
@@ -144,6 +148,7 @@ export class GameDetailsComponent implements OnInit{
     this.streetChanged = false;
     this.zipcodeChanged = false;
     this.timeChanged = false;
+    this.editMode = false;
   }
 
   checkItem(item){
@@ -156,6 +161,10 @@ export class GameDetailsComponent implements OnInit{
       return {"incorrectNameFormat": true}
     }
     return null;
+  }
+
+  goBack(){
+    this.navCtrl.popToRoot();
   }
 }
 
