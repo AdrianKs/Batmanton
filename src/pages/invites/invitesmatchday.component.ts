@@ -48,7 +48,7 @@ export class InvitesMatchdayComponent {
         {
           text: 'Ja',
           handler: () => {
-            console.log('versendet');
+            this.showMessage();
           }
         }
       ]

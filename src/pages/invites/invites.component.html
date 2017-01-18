@@ -14,13 +14,13 @@
         <ion-item (click)="goToPage($event, matchday, dataInvite, dataPlayers, profilePictureURL)">
            <div item-left class="list">
             <div class="row">
-              <div class="col" style="padding: 0;">
-                <img class="thumbnail-matchday-top-left" src="https://firebasestorage.googleapis.com/v0/b/batmanton-f8643.appspot.com/o/profilePictures%2F1194apRgR2dAZUvEgRFeKKNcD1H2%2F1194apRgR2dAZUvEgRFeKKNcD1H2.jpg?alt=media&token=5ec2038b-caa9-4874-864e-a8b09557fb2b"/>
-                <img class="thumbnail-matchday-top-right" src="https://firebasestorage.googleapis.com/v0/b/batmanton-f8643.appspot.com/o/profilePictures%2FIkqIc1Ou62a1aYGbq19Ua0mMFqc2%2FIkqIc1Ou62a1aYGbq19Ua0mMFqc2.jpg?alt=media&token=d02b1d58-fb68-417c-89e5-92af68e688fe" />
+              <div class="col">
+                <img class="thumbnail-matchday-top-left" src="{{getFirstFourPicUrls(matchday)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                <img class="thumbnail-matchday-top-right" src="{{getFirstFourPicUrls(matchday)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
               </div>
-              <div class="col" style="padding: 0;">
-                <img class="thumbnail-matchday-bottom-left" src="https://firebasestorage.googleapis.com/v0/b/batmanton-f8643.appspot.com/o/profilePictures%2F1194apRgR2dAZUvEgRFeKKNcD1H2%2F1194apRgR2dAZUvEgRFeKKNcD1H2.jpg?alt=media&token=5ec2038b-caa9-4874-864e-a8b09557fb2b" />
-                <img class="thumbnail-matchday-bottom-right" src="https://firebasestorage.googleapis.com/v0/b/batmanton-f8643.appspot.com/o/profilePictures%2FIkqIc1Ou62a1aYGbq19Ua0mMFqc2%2FIkqIc1Ou62a1aYGbq19Ua0mMFqc2.jpg?alt=media&token=d02b1d58-fb68-417c-89e5-92af68e688fe" />
+              <div class="col">
+                <img class="thumbnail-matchday-bottom-left" src="{{getFirstFourPicUrls(matchday)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                <img class="thumbnail-matchday-bottom-right" src="{{getFirstFourPicUrls(matchday)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
               </div>
             </div>
           </div>
