@@ -19,44 +19,15 @@ import { Utilities } from '../../app/utilities';
 export class InvitesComponent implements OnInit {
   login: any;
   dataMatchday: any;
-  dataInvite: any;
-  dataPlayers: any;
 
   ngOnInit() {
-    this.getPlayers();
-    this.getInvite();
+    this.utilities.setInvites();
     this.getMatchday();
   }
 
   constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities) {
     //Load data in arrays
 
-  }
-
-  getInvite(): void {
-    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-      let inviteArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        inviteArray[counter] = snapshot.val()[i];
-        inviteArray[counter].id = i;
-        counter++;
-      }
-      this.dataInvite = inviteArray;
-    })
-  }
-
-  getPlayers(): void {
-    firebase.database().ref('clubs/12/players').once('value', snapshot => {
-      let playersArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        playersArray[counter] = snapshot.val()[i];
-        playersArray[counter].id = i;
-        counter++;
-      }
-      this.dataPlayers = playersArray;
-    })
   }
 
   getMatchday(): void {
@@ -75,9 +46,9 @@ export class InvitesComponent implements OnInit {
   getFirstFourPicUrls(match) {
     let urlArray = [];
     let counter = 0;
-    for (let i of this.dataInvite) {
+    for (let i of this.utilities.allInvites) {
       if (i.match == match.id && i.sender == this.utilities.user.uid && counter < 4){
-          for(let j of this.dataPlayers){
+          for(let j of this.utilities.allPlayers){
             if(i.recipient == j.id){
               urlArray[counter] = j.picUrl;
               counter ++;
@@ -92,7 +63,7 @@ export class InvitesComponent implements OnInit {
     let accepted = 0;
     let declined = 0;
     let pending = 0;
-    for (let i of this.dataInvite) {
+    for (let i of this.utilities.allInvites) {
       if (i.match == match.id && i.sender == this.utilities.user.uid) {
         if (i.state == 0) {
           pending = pending + 1;
