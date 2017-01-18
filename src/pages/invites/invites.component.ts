@@ -20,9 +20,12 @@ export class InvitesComponent implements OnInit {
   login: any;
   dataMatchday: any;
 
-  ngOnInit() {
-    this.utilities.setInvites();
+  ionViewWillEnter() {
     this.getMatchday();
+  }
+  
+  ngOnInit() {
+
   }
 
   constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities) {
