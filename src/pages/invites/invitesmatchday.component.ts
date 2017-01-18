@@ -6,8 +6,6 @@ import { NavController, NavParams, AlertController, ToastController } from 'ioni
 import { Utilities } from '../../app/utilities';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component'
 
-import firebase from 'firebase';
-
 @Component({
   selector: 'page-invitesmatchday',
   templateUrl: 'invitesmatchday.component.html'
@@ -29,7 +27,9 @@ export class InvitesMatchdayComponent {
   showMessage() {
     let toast = this.toastCtrl.create({
       message: 'Die Einladung wurde erneut versendet',
-      duration: 3000
+      position: 'top',
+      duration: 3000,
+      
     });
     toast.present();
   }
