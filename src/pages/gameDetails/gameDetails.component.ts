@@ -94,6 +94,7 @@ export class GameDetailsComponent implements OnInit{
     this.streetChanged = false;
     this.zipcodeChanged = false;
     this.timeChanged = false;
+    this.editMode = false;
   }
 
   elementChanged(input) {

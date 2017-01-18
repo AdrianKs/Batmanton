@@ -43,6 +43,7 @@
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">Team:</ion-label>
           <ion-select #team formControlName="team" placeholder="Mannschaft" [(ngModel)]="gameItem.team"
+                      placeholder="{{gameItem.team | teams}}"
                       (ionChange)="teamSelectChanged(gameItem.team)" doneText="Ok" cancelText="Abbrechen">
             <ion-option value=0>keine Mannschaft</ion-option>
             <ion-option *ngFor="let item of teamsArray" value="{{item.id}}">{{item.name}}</ion-option>
@@ -68,12 +69,15 @@
           <ion-label class="playerValue">{{ gameItem.location.street }}<br>{{ gameItem.location.zipcode }}</ion-label>
         </ion-item>
         <ion-item *ngIf="(editMode)">
-          <ion-label color="primary" class="playerLabel">Adresse:</ion-label>
+          <ion-label color="primary" class="playerLabel">Straße, Hausnr.:</ion-label>
           <ion-input #street formControlName="street" [(ngModel)]="gameItem.location.street"
-                    (input)="elementChanged(opponent)"
+                    (input)="elementChanged(street)"
                     [class.invalid]="!profileForm.controls.street.valid && streetChanged"></ion-input><br>
+        </ion-item>
+        <ion-item *ngIf="(editMode)">
+          <ion-label color="primary" class="playerLabel">PLZ:</ion-label>
           <ion-input #zipcode formControlName="zipcode" [(ngModel)]="gameItem.location.zipcode"
-                    (input)="elementChanged(opponent)"
+                    (input)="elementChanged(zipcode)"
                     [class.invalid]="!profileForm.controls.zipcode.valid && zipcodeChanged"></ion-input>
         </ion-item>
         <ion-item *ngIf="(!editMode)">
@@ -83,7 +87,7 @@
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">Wann:</ion-label>
           <ion-datetime #time formControlName="time" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
-                        placeholder="Datum & Uhrzeit" [(ngModel)]="gameItem.date"
+                        [(ngModel)]="gameItem.date"
                         (ionChange)="timeSelectChanged(gameItem.date)"
                         doneText="Ok" cancelText="Abbrechen"></ion-datetime>
         </ion-item>
