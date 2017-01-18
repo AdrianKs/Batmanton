@@ -1,11 +1,10 @@
 /**
  * Created by kochsiek on 08.12.2016.
  */
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, LoadingController, AlertController} from 'ionic-angular';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import {AuthData} from '../../providers/auth-data';
-import firebase from 'firebase';
 import {SelectProfilePictureComponent} from "../selectProfilePicture/selectProfilePicture.component";
 import {Utilities} from "../../app/utilities";
 
@@ -143,30 +142,37 @@ export class RegisterComponent {
       console.log("gender: " + this.gender);
       console.log("team: " + this.team);
     } else {
-      this.authData.signupUser(
-        this.signupForm.value.email,
-        this.passwordGroup.value.password,
-        this.signupForm.value.firstname,
-        this.signupForm.value.lastname,
-        this.signupForm.value.birthday,
-        this.gender,
-        this.team
-      ).then(() => {
-        this.utilities.addPlayerToTeam(this.team, this.utilities.user.uid);
-        this.navCtrl.setRoot(SelectProfilePictureComponent);
-      }, (error) => {
-        this.loading.dismiss();
-        let alert = this.alertCtrl.create({
-          message: error.message,
-          buttons: [
-            {
-              text: "Ok",
-              role: 'cancel'
-            }
-          ]
+      window["plugins"].OneSignal.getIds(ids => {
+        console.log('getIds: ' + JSON.stringify(ids));
+        alert("userId = " + ids.userId + ", pushToken = " + ids.pushToken);
+        this.authData.signupUser(
+          this.signupForm.value.email,
+          this.passwordGroup.value.password,
+          this.signupForm.value.firstname,
+          this.signupForm.value.lastname,
+          this.signupForm.value.birthday,
+          this.gender,
+          this.team,
+          ids.userId
+        ).then(() => {
+          this.utilities.addPlayerToTeam(this.team, this.utilities.user.uid);
+          this.navCtrl.setRoot(SelectProfilePictureComponent);
+        }, (error) => {
+          this.loading.dismiss();
+          let alert = this.alertCtrl.create({
+            message: error.message,
+            buttons: [
+              {
+                text: "Ok",
+                role: 'cancel'
+              }
+            ]
+          });
+          alert.present();
         });
-        alert.present();
       });
+
+      window["plugins"].OneSignal.sendTag("teams", this.team);
 
       this.loading = this.loadingCtrl.create({
         dismissOnPageChange: true,
