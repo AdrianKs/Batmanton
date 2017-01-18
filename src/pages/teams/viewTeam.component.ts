@@ -733,5 +733,20 @@ export class ViewTeamComponent implements OnInit {
         });
     }
 
+    getFirstFourPicUrls() {
+        let urlArray = [];
+        let counter = 0;
+        for (let i in this.allPlayers) {
+            let player = this.allPlayers[i];
+            if (counter < 4) {
+                if (this.teamId == player.team) {
+                    urlArray[counter] = player.picUrl;
+                    counter++;
+                }
+            }
+        }
+        return urlArray;
+    }
+
 
 }

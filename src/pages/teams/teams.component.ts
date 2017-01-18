@@ -21,12 +21,14 @@ export class TeamsComponent implements OnInit {
   database: any;
   playerArray: any[];
   error: boolean = false;
+  allPlayers: any;
 
   ngOnInit(): void {
 
   }
 
   ionViewWillEnter() {
+    this.allPlayers = this.utilities.allPlayers;
     this.setTeams();
   }
 
@@ -85,4 +87,20 @@ export class TeamsComponent implements OnInit {
       })
     }
   }
+
+  getFirstFourPicUrls(team) {
+        let teamId = team.id;
+        let urlArray = [];
+        let counter = 0;
+        for (let i in this.allPlayers) {
+            let player = this.allPlayers[i];
+              if (counter < 4) {
+                if (teamId == player.team) {
+                    urlArray[counter] = player.picUrl;
+                    counter++;
+                }
+            }
+        }
+        return urlArray;
+    }
 }
