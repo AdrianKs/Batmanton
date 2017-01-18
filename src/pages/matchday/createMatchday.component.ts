@@ -48,7 +48,10 @@ export class CreateMatchdayComponent implements OnInit {
     } else {
       this.match.home = false;
     }
-
+    this.time = this.time.substring(0, this.time.length - 1);
+    this.time = this.time.replace("T","-");
+    this.time = this.time.replace(/:/g,"-");
+    console.log(this.time);
 
     this.match.time = this.match.time.substring(0, this.match.time.length - 1);
     this.match.time = this.match.time.replace("T","-");
