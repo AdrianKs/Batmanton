@@ -12,15 +12,17 @@ export class Utilities {
   userData: any = "";
   allTeams: Array<any>;
   allTeamsVal: Array<any>;
-  allInvites: Array<any>;
   teamsLoaded: boolean = false;
   userLoaded: boolean = false;
+  allInvites: Array<any>;
   invitesLoaded: boolean = false;
   allPlayers: Array<any>;
 
   constructor() {
     this.fireAuth = firebase.auth();
+    this.setInvites();
     this.setPlayers();
+    
   }
 
   /**
@@ -95,22 +97,6 @@ export class Utilities {
       age--;
     }
     return age;
-  }
-
-  getFirstFourPicUrls(match) {
-    let urlArray = [];
-    let counter = 0;
-    for (let i of this.allInvites) {
-      if (i.match == match.id && i.sender == this.user.uid && counter < 4) {
-        for (let j of this.allInvites) {
-          if (i.recipient == j.id) {
-            urlArray[counter] = j.picUrl;
-            counter++;
-          }
-        }
-      }
-    }
-    return urlArray;
   }
 
   getRelevantTeams(birthdayString) {
