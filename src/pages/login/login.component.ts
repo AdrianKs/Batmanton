@@ -49,6 +49,7 @@ export class LoginComponent {
       console.log(this.loginForm.value);
     } else {
       this.authData.loginUser(this.loginForm.value.email, this.loginForm.value.password).then( authData => {
+        this.authData.changePushid(authData.uid);
         this.navCtrl.setRoot(MatchdayComponent);
         this.menuCtrl.enable(true, 'mainMenu');
       }, error => {
