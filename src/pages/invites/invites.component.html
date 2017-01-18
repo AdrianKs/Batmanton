@@ -13,6 +13,7 @@
       <div *ngIf="countStates(matchday)[1] > 0 || countStates(matchday)[1] > 0 || countStates(matchday)[2] > 0">
         <ion-item (click)="goToPage($event, matchday, utilities.allInvites, utilities.allPlayers, profilePictureURL)">
            <div item-left class="list">
+             
             <div class="row">
               <div class="col">
                 <img class="thumbnail-matchday-top-left" src="{{getFirstFourPicUrls(matchday)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
