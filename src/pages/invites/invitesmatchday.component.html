@@ -20,7 +20,7 @@
           <div *ngIf="item.sender == utilities.user.uid">
             <div *ngIf="player.id == item.recipient">
               <div *ngIf="item.state == '0'">
-                <ion-item (click)="showMessage()">
+                <ion-item (click)="showConfirm()">
                       <img item-left src="{{player.picUrl}}" class="thumbnail-invite" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
                   <h2> {{player.firstname}} {{player.lastname}} </h2>
                   <h3>

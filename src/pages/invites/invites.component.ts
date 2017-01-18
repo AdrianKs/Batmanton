@@ -8,7 +8,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { InvitesMatchdayComponent } from "../invites/invitesmatchday.component";
 
 import firebase from 'firebase';
-import {Utilities} from '../../app/utilities';
+import { Utilities } from '../../app/utilities';
 
 @Component({
   selector: 'page-invites',
@@ -23,9 +23,9 @@ export class InvitesComponent implements OnInit {
   dataPlayers: any;
 
   ngOnInit() {
+    this.getPlayers();
     this.getInvite();
     this.getMatchday();
-    this.getPlayers();
   }
 
   constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities) {
@@ -70,6 +70,22 @@ export class InvitesComponent implements OnInit {
       }
       this.dataMatchday = matchdayArray;
     })
+  }
+
+  getFirstFourPicUrls(match) {
+    let urlArray = [];
+    let counter = 0;
+    for (let i of this.dataInvite) {
+      if (i.match == match.id && i.sender == this.utilities.user.uid && counter < 4){
+          for(let j of this.dataPlayers){
+            if(i.recipient == j.id){
+              urlArray[counter] = j.picUrl;
+              counter ++;
+            }
+          }
+      }
+    }
+    return urlArray;
   }
 
   countStates(match) {
