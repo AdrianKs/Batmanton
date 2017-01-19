@@ -46,7 +46,7 @@
                       placeholder="{{gameItem.team | teams}}"
                       (ionChange)="teamSelectChanged(gameItem.team)" doneText="Ok" cancelText="Abbrechen">
             <ion-option value=0>keine Mannschaft</ion-option>
-            <ion-option *ngFor="let item of teamsArray" value="{{item.id}}">{{item.name}}</ion-option>
+            <ion-option *ngFor="let item of teamArray" value="{{item.id}}">{{item.name}}</ion-option>
           </ion-select>
         </ion-item>
         <ion-item *ngIf="(!editMode)">
@@ -65,8 +65,12 @@
           </ion-select>
         </ion-item>
         <ion-item *ngIf="(!editMode)">
-          <ion-label class="playerLabel">Adresse:</ion-label>
-          <ion-label class="playerValue">{{ gameItem.location.street }}<br>{{ gameItem.location.zipcode }}</ion-label>
+          <ion-label class="playerLabel">Straße, Hausnr.:</ion-label>
+          <ion-label class="playerValue">{{ gameItem.location.street }}</ion-label>
+        </ion-item>
+        <ion-item *ngIf="(!editMode)">
+          <ion-label class="playerLabel">PLZ:</ion-label>
+          <ion-label class="playerValue">{{ gameItem.location.zipcode }}</ion-label>
         </ion-item>
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">Straße, Hausnr.:</ion-label>
@@ -179,3 +183,8 @@
     </ion-list>
   </div>
 </ion-content>
+<ion-footer>
+  <button ion-button outline round color="secondary" *ngIf="(!editMode)" (click)="addPlayers()"> 
+    <ion-icon name="add"></ion-icon> Spieler hinzufügen
+  </button>
+</ion-footer>

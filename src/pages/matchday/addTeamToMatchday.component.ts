@@ -25,12 +25,20 @@ export class AddTeamToMatchdayComponent implements OnInit{
   counter: number = 0;
   matchesCounter: number;
   tempArray = [];
+  alreadyPending: number;
   allTeams: any;
   relevantTeams: any;
   allPlayers: any;
   buttonDisabled: Array<boolean>;
 
   ngOnInit(){
+    this.alreadyPending = 0;
+    if (this.match.pendingPlayers){
+      for (let i in this.match.pendingPlayers){
+        this.tempArray[i]=this.match.pendingPlayers[i];
+        this.alreadyPending++;
+      }
+    }
     this.allPlayers = this.setPlayers();
     this.teamSelection = this.match.team;
     let counter = 0;
@@ -57,6 +65,28 @@ export class AddTeamToMatchdayComponent implements OnInit{
         playerArray[counter] = snapshot.val()[i];
         playerArray[counter].id = i;
         playerArray[counter].added = false;
+        playerArray[counter].included = false;
+        if (this.match.acceptedPlayers){
+          for (let i in this.match.acceptedPlayers){
+            if (this.match.acceptedPlayers[i] == playerArray[counter].id){
+              playerArray[counter].included = true;
+            }
+          }
+        }
+        if (this.match.pendingPlayers){
+          for (let i in this.match.pendingPlayers){
+            if (this.match.pendingPlayers[i] == playerArray[counter].id){
+              playerArray[counter].included = true;
+            }
+          }
+        }
+        if (this.match.declinedPlayers){
+          for (let i in this.match.declinedPlayers){
+            if (this.match.declinedPlayers[i] == playerArray[counter].id){
+              playerArray[counter].included = true;
+            }
+          }
+        }
         counter++;
       }
       this.allPlayers = playerArray;
@@ -82,6 +112,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
     this.tempArray[counter]= player.id;
     player.added = true;
     console.log(this.tempArray);
+    console.log(this.match.id);
   }
 
   removePlayer(player){
@@ -96,20 +127,28 @@ export class AddTeamToMatchdayComponent implements OnInit{
     console.log(this.tempArray);
   }
 
-  createGame(){
+  createGame(boolean){
     this.match.pendingPlayers = this.tempArray;
-    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-      let matchesArray = [];
-      this.matchesCounter = 0;
-      for (let i in snapshot.val()) {
-        matchesArray[this.matchesCounter] = snapshot.val()[i];
-        this.matchesCounter++;
-      }
-      matchesArray.push(this.match);
-      firebase.database().ref('clubs/12').update({
-          matches: matchesArray
+
+    if (this.match.id){
+      firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
+        pendingPlayers: this.match.pendingPlayers
       });
-    });
+      this.matchesCounter = this.match.id;
+    } else {
+      firebase.database().ref('clubs/12/matches').once('value', snapshot => {
+        let matchesArray = [];
+        this.matchesCounter = 0;
+        for (let i in snapshot.val()) {
+          matchesArray[this.matchesCounter] = snapshot.val()[i];
+          this.matchesCounter++;
+        }
+        matchesArray.push(this.match);
+        firebase.database().ref('clubs/12').update({
+            matches: matchesArray
+        });
+      });
+    }
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       let invitesArray = [];
       let invitesCounter = 0;
@@ -117,16 +156,28 @@ export class AddTeamToMatchdayComponent implements OnInit{
         invitesArray[invitesCounter] = snapshot.val()[i];
         invitesCounter++;
       }
-      let invitesCounterTwo = 0;
-      for (let i in this.match.pendingPlayers){
-        invitesArray.push({match: this.matchesCounter.toString(), recipient: this.match.pendingPlayers[invitesCounterTwo], sender: this.Utilities.user.uid, state: 0});
-        invitesCounterTwo++;
+      console.log(this.alreadyPending);
+      console.log(this.match.pendingPlayers.length);
+      console.log(this.match.pendingPlayers[1]);
+      for (var i = this.alreadyPending; i < this.match.pendingPlayers.length; i++){
+        invitesArray.push({match: this.matchesCounter.toString(), recipient: this.match.pendingPlayers[this.alreadyPending], sender: this.Utilities.user.uid, state: 0});
+        this.alreadyPending++;
       }
       firebase.database().ref('clubs/12').update({
           invites: invitesArray
       });
     });
-    this.navCtrl.popToRoot();
+    this.navCtrl.pop();
+  }
+
+  goBack(){
+    if(this.match.pendingPlayers){
+      this.tempArray = this.match.pendingPlayers;
+      console.log(this.match.pendingPlayers);
+    } else {
+      this.tempArray = [];
+    }
+    this.navCtrl.pop();
   }
 }
 

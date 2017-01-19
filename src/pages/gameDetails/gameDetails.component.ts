@@ -5,11 +5,13 @@
 //Spiel/Mannschaftsbild
 //edit game
 //Delete game
-//back button
+//Loading specific data error
+//4 men 2 women for isNotMini
 //Add/remove player
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { MyGamesService } from '../../providers/myGames.service';
+import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component'
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
@@ -83,6 +85,21 @@ export class GameDetailsComponent implements OnInit{
         home: this.gameItem.home,
         time: this.gameItem.time
       });
+      if(this.gameItem.acceptedPlayers){
+        firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
+          acceptedPlayers: this.gameItem.acceptedPlayers
+        });   
+      }
+      if(this.gameItem.pendingPlayers){
+        firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
+          pendingPlayers: this.gameItem.pendingPlayers
+        });   
+      }
+      if(this.gameItem.declinedPlayers){
+        firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
+          declinedPlayers: this.gameItem.declinedPlayers
+        });   
+      }
       firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/location').set({
         street: this.gameItem.location.street,
         zipcode: this.gameItem.location.zipcode
@@ -167,5 +184,10 @@ export class GameDetailsComponent implements OnInit{
   goBack(){
     this.navCtrl.popToRoot();
   }
+
+  addPlayers(){
+    this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.gameItem, relevantTeamsItem: this.teamArray});
+  }
+  
 }
 
