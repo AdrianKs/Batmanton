@@ -3,11 +3,10 @@
  */
 //todo
 //Spiel/Mannschaftsbild
-//edit game
 //Delete game
-//Loading specific data error
+//data missing bug
 //4 men 2 women for isNotMini
-//Add/remove player
+//Add/remove player (add resolved // remove?)
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { MyGamesService } from '../../providers/myGames.service';

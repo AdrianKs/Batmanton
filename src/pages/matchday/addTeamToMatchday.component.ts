@@ -1,10 +1,8 @@
 /**
  * Created by kochsiek on 08.12.2016.
  */
-//todo
-//alert wenn zurückgegangen wird (optional)
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
@@ -52,7 +50,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
     this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit);
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private MatchdayService: MatchdayService, private Utilities: Utilities) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private MatchdayService: MatchdayService, private Utilities: Utilities, private alertCtrl: AlertController) {
     this.match = navP.get('matchItem');
     this.allTeams = navP.get('relevantTeamsItem');
   }
@@ -171,13 +169,29 @@ export class AddTeamToMatchdayComponent implements OnInit{
   }
 
   goBack(){
-    if(this.match.pendingPlayers){
-      this.tempArray = this.match.pendingPlayers;
-      console.log(this.match.pendingPlayers);
-    } else {
-      this.tempArray = [];
-    }
-    this.navCtrl.pop();
+    let confirm = this.alertCtrl.create({
+      title: 'Warnung',
+      message: 'Beim Verlassen des Fensters gehen alle Veränderungen verloren. Fortfahren?',
+      buttons: [
+        {
+          text: 'Nein',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Ja',
+          handler: () => {
+            if(this.match.pendingPlayers){
+              this.tempArray = this.match.pendingPlayers;
+            } else {
+              this.tempArray = [];
+            }
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    confirm.present()
   }
 }
 

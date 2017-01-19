@@ -1,7 +1,7 @@
 //todo
 //Formcontroll
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component'
 import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
@@ -30,7 +30,7 @@ export class CreateMatchdayComponent implements OnInit {
   }
 
   
-  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities) {
+  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities, private alertCtrl: AlertController) {
   }
 
   teamSelectChanged(input) {
@@ -73,5 +73,26 @@ export class CreateMatchdayComponent implements OnInit {
     } else {
        this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, relevantTeamsItem: this.relevantTeams});
     }
+  }
+
+  goBack(){
+    let confirm = this.alertCtrl.create({
+      title: 'Warnung',
+      message: 'Beim Verlassen des Fensters gehen alle Veränderungen verloren. Fortfahren?',
+      buttons: [
+        {
+          text: 'Nein',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Ja',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }
+      ]
+    });
+    confirm.present()
   }
 }
