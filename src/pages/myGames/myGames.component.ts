@@ -1,5 +1,5 @@
 //todo
-//benachrichtigungsnummer im menu
+//Notification (bzw. in Menüleiste)
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";

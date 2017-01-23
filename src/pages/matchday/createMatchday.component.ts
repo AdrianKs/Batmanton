@@ -1,5 +1,5 @@
 //todo
-//Formcontroll
+//Formcontroll ggf. überarbeiten...
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component'
@@ -21,7 +21,7 @@ export class CreateMatchdayComponent implements OnInit {
   team: any;
   home: any;
   street: string;
-  zipcode: number;
+  zipcode: string;
   time: String;
   pendingPlayersArray = [];
   relevantTeams = this.Utilities.allTeams;
@@ -101,7 +101,7 @@ export class CreateMatchdayComponent implements OnInit {
         this.match.location.street = "";
       }
       if (this.zipcodeChanged == false){
-        this.match.location.zipcode = 0;
+        this.match.location.zipcode = "";
       }
       if (this.timeChanged == false){
         this.match.time = "0";
@@ -127,13 +127,6 @@ export class CreateMatchdayComponent implements OnInit {
       } else {
         this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, relevantTeamsItem: this.relevantTeams});
       }
-      this.opponentChanged = false;
-      this.teamChanged = false;
-      this.homeChanged = false;
-      this.streetChanged = false;
-      this.zipcodeChanged = false;
-      this.timeChanged = false;
-      console.log("false wurde noch ausgeführt.");
     } else {
       let error = this.alertCtrl.create({
         title: 'Warnung',

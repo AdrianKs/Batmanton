@@ -42,7 +42,7 @@
                   </div>
                 </div>
                 <div *ngIf="gameItem.time == 0"><p>TBA</p></div>
-                <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | time }}</p></div>
+                <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | matchTime }}</p></div>
                 {{ gameItem.opponent }}
                 <div *ngIf="gameItem.home == true"><p>Heim</p></div>
                 <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
@@ -75,7 +75,7 @@
                   </div>
                 </div>
                 <div *ngIf="gameItem.time == 0"><p>TBA</p></div>
-                <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | time }}</p></div>
+                <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | matchTime }}</p></div>
                 {{ gameItem.opponent }}
                 <div *ngIf="gameItem.home == true"><p>Heim</p></div>
                 <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
@@ -113,7 +113,7 @@
                   </div>
                 </div>
                 <div *ngIf="gameItem.time == 0"><p>TBA</p></div>
-                <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | time }}</p></div>
+                <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | matchTime }}</p></div>
                 {{ gameItem.opponent }}
                 <div *ngIf="gameItem.home == true"><p>Heim</p></div>
                 <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>

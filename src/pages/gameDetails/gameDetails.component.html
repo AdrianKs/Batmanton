@@ -41,7 +41,7 @@
         </ion-item>
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">Gegner:</ion-label>
-          <ion-input #opponent formControlName="opponent" [(ngModel)]="gameItem.opponent"
+          <ion-input class="playerValue" #opponent formControlName="opponent" [(ngModel)]="gameItem.opponent"
                     (input)="elementChanged(opponent)"
                     [class.invalid]="!profileForm.controls.opponent.valid && opponentChanged"></ion-input>
         </ion-item>
@@ -51,7 +51,7 @@
         </ion-item>
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">Team:</ion-label>
-          <ion-select #team formControlName="team" placeholder="Mannschaft" [(ngModel)]="gameItem.team"
+          <ion-select class="playerValue" #team formControlName="team" placeholder="Mannschaft" [(ngModel)]="gameItem.team"
                       placeholder="{{gameItem.team | teams}}"
                       (ionChange)="teamSelectChanged(gameItem.team)" doneText="Ok" cancelText="Abbrechen">
             <ion-option value=0>keine Mannschaft</ion-option>
@@ -68,7 +68,7 @@
         </ion-item>
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">Ort:</ion-label>
-          <ion-select #home formControlName="home" placeholder="Heim/Auswärts" [(ngModel)]="gameItem.home"
+          <ion-select class="playerValue" #home formControlName="home" placeholder="Heim/Auswärts" [(ngModel)]="gameItem.home"
                       (ionChange)="homeSelectChanged(gameItem.home)" doneText="Ok" cancelText="Abbrechen">
             <ion-option value=true>Heim</ion-option>
             <ion-option value=false>Auswärts</ion-option>
@@ -90,13 +90,13 @@
         </ion-item>
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">Straße, Hausnr.:</ion-label>
-          <ion-input #street formControlName="street" [(ngModel)]="gameItem.location.street"
+          <ion-input class="playerValue" #street formControlName="street" [(ngModel)]="gameItem.location.street"
                     (input)="elementChanged(street)"
                     [class.invalid]="!profileForm.controls.street.valid && streetChanged"></ion-input><br>
         </ion-item>
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">PLZ:</ion-label>
-          <ion-input #zipcode formControlName="zipcode" [(ngModel)]="gameItem.location.zipcode"
+          <ion-input class="playerValue" #zipcode formControlName="zipcode" [(ngModel)]="gameItem.location.zipcode"
                     (input)="zipcodeSelectChanged(zipcode)"
                     [class.invalid]="!profileForm.controls.zipcode.valid && zipcodeChanged"></ion-input>
         </ion-item>
@@ -104,12 +104,12 @@
           <ion-label class="playerLabel">Wann:</ion-label>
           <ion-label class="playerValue">
             <div *ngIf="gameItem.location.zipcode == '0'"><p>Datum & Uhrzeit</p></div>
-            <div *ngIf="gameItem.location.zipcode != '0'">{{ gameItem.time | time }}</div>
+            <div *ngIf="gameItem.location.zipcode != '0'">{{ gameItem.time | matchTime }}</div>
           </ion-label>
         </ion-item>
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">Wann:</ion-label>
-          <ion-datetime #time formControlName="time" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
+          <ion-datetime class="playerValue" #time formControlName="time" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
                         [(ngModel)]="gameItem.time"
                         (ionChange)="timeSelectChanged(gameItem.date)"
                         doneText="Ok" cancelText="Abbrechen"></ion-datetime>
@@ -203,7 +203,9 @@
   </div>
 </ion-content>
 <ion-footer>
-  <button ion-button outline round color="secondary" *ngIf="(!editMode)" (click)="addPlayers()"> 
-    <ion-icon name="add"></ion-icon> Spieler hinzufügen
-  </button>
+  <div class="pictureContainer">
+    <button ion-button outline round color="secondary" *ngIf="(!editMode)" (click)="addPlayers()"> 
+      Spieler hinzufügen
+    </button>
+  </div>
 </ion-footer>

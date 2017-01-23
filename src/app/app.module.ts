@@ -27,7 +27,6 @@ import {Gender} from './pipes/gender';
 import {Player} from './pipes/player';
 import {Teams} from './pipes/teams';
 import {MatchTime} from './pipes/matchTime';
-import {Time} from './pipes/time';
 
 @NgModule({
   declarations: [
@@ -58,8 +57,7 @@ import {Time} from './pipes/time';
     Gender,
     Player,
     Teams,
-    MatchTime,
-    Time
+    MatchTime
   ],
   imports: [
     IonicModule.forRoot(MyApp)

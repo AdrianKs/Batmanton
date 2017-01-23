@@ -1,8 +1,3 @@
-/**
- * Created by kochsiek on 08.12.2016.
- */
-//todo
-//mannschaftsbild (check)
 import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';

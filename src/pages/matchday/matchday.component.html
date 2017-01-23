@@ -23,7 +23,7 @@
         </div>
       </div>
       <div *ngIf="item.time == 0"><p>TBA</p></div>
-      <div *ngIf="item.time != 0"><p>{{ item.time | time }}</p></div>
+      <div *ngIf="item.time != 0"><p>{{ item.time | matchTime }}</p></div>
       {{ item.opponent }}
       <div *ngIf="item.home == true"><p>Heim</p></div>
       <div *ngIf="item.home == false && item.home != 'unknown'"><p>Auswärts</p></div>

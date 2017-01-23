@@ -1,6 +1,3 @@
-/**
- * Created by kochsiek on 08.12.2016.
- */
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { MatchdayService } from '../../providers/matchday.service';

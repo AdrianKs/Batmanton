@@ -1,13 +1,12 @@
-/**
- * Created by kochsiek on 08.12.2016.
- */
 //todo
 //Spiel/Mannschaftsbild größer
-//Delete game
-//4 men 2 women for isNotMini
-//Add/remove player (add resolved // remove?)
+//Profil der anderen Spieler anklicken
+//Remove Player
+//4 men 2 women for isNotMini (Logik allgemein)
+//Delete game (Lösung über matchID)
+
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { MyGamesService } from '../../providers/myGames.service';
 import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component'
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
@@ -47,7 +46,7 @@ export class GameDetailsComponent implements OnInit{
     this.teamArray = this.Utilities.allTeams;
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private MyGamesService: MyGamesService, private Utilities: Utilities, public formBuilder: FormBuilder) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private MyGamesService: MyGamesService, private Utilities: Utilities, public formBuilder: FormBuilder, private alertCtrl: AlertController) {
     //Load data in array
     this.gameItem = navP.get('gameItem');
     this.profileForm = formBuilder.group({
@@ -215,7 +214,16 @@ export class GameDetailsComponent implements OnInit{
   }
 
   addPlayers(){
-    this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.gameItem, relevantTeamsItem: this.teamArray});
+    if (this.gameItem.team == "0"){
+      let error = this.alertCtrl.create({
+        title: 'Achtung!',
+        message: 'Bitte Mannschaft auswählen, damit Spieler hinzugefügt werden können.',
+        buttons: ['Okay']
+      });
+      error.present();
+    } else {
+      this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.gameItem, relevantTeamsItem: this.teamArray});
+    }
   }
   
 }
