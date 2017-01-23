@@ -22,7 +22,16 @@
 <ion-content padding>
   <div class="topContainer">
     <div class="pictureContainer">
-      <img src="assets/images/ic_account_circle_black_48dp_2x.png" />
+      <div class="row">
+        <div class="col">
+          <img class="thumbnail-matchday-top-left" src="{{getFirstFourPicUrls(gameItem)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+          <img class="thumbnail-matchday-top-right" src="{{getFirstFourPicUrls(gameItem)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+        </div>
+        <div class="col">
+          <img class="thumbnail-matchday-bottom-left" src="{{getFirstFourPicUrls(gameItem)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+          <img class="thumbnail-matchday-bottom-right" src="{{getFirstFourPicUrls(gameItem)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+        </div>
+      </div>
     </div>
     <div class="playerDataContainer">
       <form class="center-form profile-inputs" [formGroup]="profileForm" novalidate>
@@ -53,7 +62,8 @@
           <ion-label class="playerLabel">Ort:</ion-label>
           <ion-label class="playerValue">
             <div *ngIf="gameItem.home == true">Heim</div>
-            <div *ngIf="gameItem.home == false">Auswärts</div>
+            <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'">Auswärts</div>
+            <div *ngIf="gameItem.home == 'unknown'"><p>Heim/Auswärts</p></div>
           </ion-label>
         </ion-item>
         <ion-item *ngIf="(editMode)">
@@ -66,11 +76,17 @@
         </ion-item>
         <ion-item *ngIf="(!editMode)">
           <ion-label class="playerLabel">Straße, Hausnr.:</ion-label>
-          <ion-label class="playerValue">{{ gameItem.location.street }}</ion-label>
+          <ion-label class="playerValue">
+            <div *ngIf="gameItem.location.street == ''"><p>Straße, Hausnr.</p></div>
+            <div *ngIf="gameItem.location.street != ''">{{ gameItem.location.street }}</div>
+          </ion-label>
         </ion-item>
         <ion-item *ngIf="(!editMode)">
           <ion-label class="playerLabel">PLZ:</ion-label>
-          <ion-label class="playerValue">{{ gameItem.location.zipcode }}</ion-label>
+          <ion-label class="playerValue">
+            <div *ngIf="gameItem.location.zipcode == 0"><p>PLZ</p></div>
+            <div *ngIf="gameItem.location.zipcode != 0">{{ gameItem.location.zipcode }}</div>
+          </ion-label>
         </ion-item>
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">Straße, Hausnr.:</ion-label>
@@ -81,17 +97,20 @@
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">PLZ:</ion-label>
           <ion-input #zipcode formControlName="zipcode" [(ngModel)]="gameItem.location.zipcode"
-                    (input)="elementChanged(zipcode)"
+                    (input)="zipcodeSelectChanged(zipcode)"
                     [class.invalid]="!profileForm.controls.zipcode.valid && zipcodeChanged"></ion-input>
         </ion-item>
         <ion-item *ngIf="(!editMode)">
           <ion-label class="playerLabel">Wann:</ion-label>
-          <ion-label class="playerValue">{{ gameItem.time | matchTime}}</ion-label>
+          <ion-label class="playerValue">
+            <div *ngIf="gameItem.location.zipcode == '0'"><p>Datum & Uhrzeit</p></div>
+            <div *ngIf="gameItem.location.zipcode != '0'">{{ gameItem.time | time }}</div>
+          </ion-label>
         </ion-item>
         <ion-item *ngIf="(editMode)">
           <ion-label color="primary" class="playerLabel">Wann:</ion-label>
           <ion-datetime #time formControlName="time" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
-                        [(ngModel)]="gameItem.date"
+                        [(ngModel)]="gameItem.time"
                         (ionChange)="timeSelectChanged(gameItem.date)"
                         doneText="Ok" cancelText="Abbrechen"></ion-datetime>
         </ion-item>

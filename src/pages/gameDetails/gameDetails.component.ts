@@ -2,9 +2,8 @@
  * Created by kochsiek on 08.12.2016.
  */
 //todo
-//Spiel/Mannschaftsbild
+//Spiel/Mannschaftsbild größer
 //Delete game
-//data missing bug
 //4 men 2 women for isNotMini
 //Add/remove player (add resolved // remove?)
 import { Component, OnInit } from '@angular/core';
@@ -61,6 +60,22 @@ export class GameDetailsComponent implements OnInit{
     })
   }
 
+  getFirstFourPicUrls(match) {
+    let urlArray = [];
+    let counter = 0;
+    for (let i of this.Utilities.allInvites) {
+      if (i.match == match.id && i.sender == this.Utilities.user.uid && counter < 4){
+          for(let j of this.Utilities.allPlayers){
+            if(i.recipient == j.id){
+              urlArray[counter] = j.picUrl;
+              counter ++;
+            }
+          }
+      }
+    }
+    return urlArray;
+  }
+
   editProfile() {
     this.opponentOld = this.gameItem.opponent;
     this.teamOld = this.gameItem.team;
@@ -73,10 +88,17 @@ export class GameDetailsComponent implements OnInit{
 
   finishEditProfile() {
     if ((this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged) && this.formValid) {
-      if (this.gameItem.home == true){
-        this.gameItem.home = true;
-      } else {
-        this.gameItem.home = false;
+      if (this.gameItem.home){
+          if (this.gameItem.home == true){
+          this.gameItem.home = true;
+        } else {
+          this.gameItem.home = false;
+        }
+      }
+      if (this.timeChanged){
+        /*this.gameItem.time = this.gameItem.time.substring(0, this.gameItem.time.length - 1);
+        this.gameItem.time = this.gameItem.time.replace("T","-");
+        this.gameItem.time = this.gameItem.time.replace(/:/g,"-");*/
       }
       firebase.database().ref('clubs/12/matches/' + this.gameItem.id).set({
         opponent: this.gameItem.opponent,
@@ -143,13 +165,21 @@ export class GameDetailsComponent implements OnInit{
     }
   }
 
-  timeSelectChanged(input) {
-      if (this.timeOld != input) {
-        this.timeChanged = true;
-      } else {
-        this.timeChanged = false;
-      }
+  zipcodeSelectChanged(input){
+    if (this.zipcodeOld != input) {
+      this.zipcodeChanged = true;
+    } else {
+      this.zipcodeChanged = false;
     }
+  }
+
+  timeSelectChanged(input) {
+    if (this.timeOld != input) {
+      this.timeChanged = true;
+    } else {
+      this.timeChanged = false;
+    }
+  }
 
   cancelEditProfile() {
     this.gameItem.opponent = this.opponentOld;

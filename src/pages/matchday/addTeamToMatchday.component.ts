@@ -125,7 +125,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
     console.log(this.tempArray);
   }
 
-  createGame(boolean){
+  createGame(){
     this.match.pendingPlayers = this.tempArray;
 
     if (this.match.id){
@@ -165,7 +165,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
           invites: invitesArray
       });
     });
-    this.navCtrl.pop();
+    this.navCtrl.popToRoot();
   }
 
   goBack(){

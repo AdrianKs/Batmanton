@@ -1,14 +1,12 @@
 //todo
-//unterscheidung zwischen vergangende/bevorstehende ggf. Sortierung?
 //benachrichtigungsnummer im menu
-//Inkonsistenz bei match ID (delete)
-//mannschaftsbild
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
 import { MyGamesService } from '../../providers/myGames.service';
 import firebase from 'firebase';
-import {Utilities} from '../../app/utilities';
+import { Utilities } from '../../app/utilities';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'page-myGames',
@@ -21,10 +19,20 @@ export class MyGamesComponent implements OnInit {
   ngOnInit() {
     this.getGames();
     this.getInvites();
+    console.log(this.today);
+    if (this.today == "2017-01-23T17:12:27.881Z"){
+      console.log("is the same")
+    }
+    if (this.today > "2017-01-24T17:12:27.881Z"){
+      console.log("is bigger")
+    }
+    if (this.today < "2017-01-24T17:12:27Z"){
+      console.log("is smaller")
+    }
   }
 
-  gameStatus: string = "vergangende";
-  loggedInUserID: string = this.utilities.user.uid;
+  gameStatus: string = "vergangene";
+  loggedInUserID: string = this.Utilities.user.uid;
   dataGames: any;
   dataInvites: any;
   testRadioOpen: boolean;
@@ -32,8 +40,9 @@ export class MyGamesComponent implements OnInit {
   declined: boolean;
   accepted: boolean;
   pending: boolean;
+  today: String = new Date().toISOString();
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService, public utilities: Utilities) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService, private Utilities: Utilities) {
 
   }
 
@@ -47,6 +56,7 @@ export class MyGamesComponent implements OnInit {
           counter++;
         }
         this.dataGames = gamesArray;
+        this.dataGames = _.sortBy(this.dataGames, "time").reverse();
       })
     }
 
@@ -61,6 +71,22 @@ export class MyGamesComponent implements OnInit {
       }
       this.dataInvites = inviteArray;
     })
+  }
+
+   getFirstFourPicUrls(match) {
+    let urlArray = [];
+    let counter = 0;
+    for (let i of this.Utilities.allInvites) {
+      if (i.match == match.id && i.sender == this.Utilities.user.uid && counter < 4){
+          for(let j of this.Utilities.allPlayers){
+            if(i.recipient == j.id){
+              urlArray[counter] = j.picUrl;
+              counter ++;
+            }
+          }
+      }
+    }
+    return urlArray;
   }
 
   openDetails(ev, value) {
@@ -189,6 +215,16 @@ export class MyGamesComponent implements OnInit {
       this.testRadioOpen = true;
     });
   }
+
+   doRefresh(refresher) {
+      console.log('Refreshed');
+      this.getGames();
+      this.getInvites();
+      setTimeout(() => {
+        console.log('New Data loaded.');
+        refresher.complete();
+      }, 1000);
+    }
 
   pendingToAccepted(matchID, userID){
     if (matchID != undefined && matchID != "0") {
