@@ -24,10 +24,12 @@
 
   <ion-content>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
-        <ion-icon name="{{p.icon}}" md="md-{{p.icon}}" class="menuIcons"></ion-icon>
-        {{p.title}}
-      </button>
+      <div *ngFor="let p of pages">
+        <button *ngIf="p.visible == true || utilities.userData.isTrainer" menuClose ion-item (click)="openPage(p)">
+          <ion-icon name="{{p.icon}}" md="md-{{p.icon}}" class="menuIcons"></ion-icon>
+          {{p.title}}
+        </button>
+      </div>
       <div class="menuBottom">
         <button menuClose ion-item (click)="openPage(aboutPage)" class="menuBtnAbout">
             <ion-icon name="information-circle" md="md-information-circle" class="menuIcons"></ion-icon>

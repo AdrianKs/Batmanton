@@ -65,6 +65,9 @@ export class EditRoleComponent {
         });
 
         if (successFlag) {
+            if (this.sameUser) {
+                this.utilities.setUserData();
+            }
             this.presentToast("Rolle wurde erfolgreich bearbeitet");
             this.navigateBackToList();
         } else {

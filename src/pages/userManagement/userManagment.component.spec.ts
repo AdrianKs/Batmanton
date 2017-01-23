@@ -1,3 +1,4 @@
+import {} from 'jasmine';
 import {UserManagementComponent} from './userManagement.component';
 import { NavController, NavParams } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
