@@ -34,7 +34,7 @@ export class InvitesMatchdayComponent {
     toast.present();
   }
 
-  showConfirm() {
+  showConfirm(player) {
     let confirm = this.alertCtrl.create({
       title: 'Einladung erneut senden?',
       message: 'Möchten Sie diese Einladung erneut senden?',
@@ -47,6 +47,9 @@ export class InvitesMatchdayComponent {
         {
           text: 'Ja',
           handler: () => {
+            let pushIds: Array<any>;
+            pushIds[0] = player.pushid;
+            //this.utilities.sendPushNotification(pushIds, "Sie haben einen neue Einladung.");
             this.showMessage();
           }
         }
