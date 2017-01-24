@@ -160,6 +160,7 @@ export class Utilities {
       });
     }
   }
+
   sendPushNotification(pushIds: Array<any>, content: String) {
     var notificationObj = { contents: {en: content},
       include_player_ids: pushIds};
