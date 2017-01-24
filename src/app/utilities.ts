@@ -161,4 +161,18 @@ export class Utilities {
       });
     }
   }
+
+  sendPushNotification(pushIds: Array<any>, content: String) {
+    var notificationObj = { contents: {en: content},
+      include_player_ids: pushIds};
+    window["plugins"].OneSignal.postNotification(notificationObj,
+      function(successResponse) {
+        console.log("Notification Post Success:", successResponse);
+      },
+      function (failedResponse) {
+        console.log("Notification Post Failed: ", failedResponse);
+        alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
+      }
+    )
+  }
 }
