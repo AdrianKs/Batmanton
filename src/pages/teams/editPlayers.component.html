@@ -1,11 +1,19 @@
 <ion-header>
     <ion-navbar hideBackButton="true">
         <ion-buttons left>
-            <button ion-button (click)="backToEditMode()">
+            <button ion-button *ngIf="toRoot=='no'" (click)="backToEditMode()">
             Zurück
+        </button>
+            <button ion-button *ngIf="toRoot=='yes'">
+            Abbrechen
         </button>
         </ion-buttons>
         <ion-title>Spieler hinzufügen</ion-title>
+        <ion-buttons right>
+            <button ion-button *ngIf="toRoot=='yes'" (click)="nav.popToRoot()">
+                Fertig
+            </button>
+        </ion-buttons>
     </ion-navbar>
 </ion-header>
 

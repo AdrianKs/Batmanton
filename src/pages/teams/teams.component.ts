@@ -3,7 +3,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ViewTeamComponent } from './viewTeam.component';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
@@ -21,7 +21,8 @@ export class TeamsComponent implements OnInit {
   database: any;
   playerArray: any[];
   error: boolean = false;
-  allPlayers: any;
+  loading:any;
+  allPlayers:any;
 
   ngOnInit(): void {
 
@@ -32,12 +33,13 @@ export class TeamsComponent implements OnInit {
     this.setTeams();
   }
 
-  constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public fbP: FirebaseProvider, public utilities: Utilities, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
 
 
   }
 
   setTeams() {
+    this.createAndShowLoading();
     firebase.database().ref('clubs/12/teams').once('value', snapshot => {
       let teamArray = [];
       let counter = 0;
@@ -49,6 +51,8 @@ export class TeamsComponent implements OnInit {
       this.teams = teamArray;
       this.teamsSearch = teamArray;
       //this.teamsLoaded = true;
+    }).then((data)=>{
+      this.loading.dismiss().catch((error)=>console.log("error caught"));
     }).catch(function (error) {
       this.createAndShowErrorAlert(error);
     });
@@ -61,6 +65,14 @@ export class TeamsComponent implements OnInit {
                 buttons: ['OK']
             });
             alert.present();
+  }
+
+  createAndShowLoading(){
+    this.loading = this.loadingCtrl.create({
+      spinner:'ios',
+      content:'Lade Daten'
+    })
+    this.loading.present();
   }
 
   viewTeam(ev, value) {
