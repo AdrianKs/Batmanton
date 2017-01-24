@@ -62,3 +62,4 @@ export class InvitesMatchdayComponent {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 }
+
