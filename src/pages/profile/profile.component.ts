@@ -2,15 +2,9 @@
  * Created by kochsiek on 08.12.2016.
  */
 // todo:
-// Einstellungsscreen (Benachrichtigungen, Verein ändern, PW ändern, E-Mail ändern)
-// Error Handling (global)
-// kleinere Fonts
-// Admin/ Spieler Rolle
-// Enter App Screen, Passwortabfrage
-// Passwort validate
-// Don't skip select profile picture screen
-// Delete Account from Firebase?
-// Update Profile Picture in User Management and elsewhere after upload (/ changing picUrl)
+// Enter App Screen
+// Change Passwort
+// Delete Profile
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
@@ -30,6 +24,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.setActionSheetOptions();
+    this.utilities.setUserData();
   }
 
   public profileForm;
