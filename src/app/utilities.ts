@@ -22,7 +22,7 @@ export class Utilities {
     this.fireAuth = firebase.auth();
     this.setInvites();
     this.setPlayers();
-    
+
   }
 
   /**
@@ -162,4 +162,3 @@ export class Utilities {
     }
   }
 }
-
