@@ -21,6 +21,7 @@ export class InvitesComponent implements OnInit {
   dataMatchday: any;
 
   ionViewWillEnter() {
+    this.utilities.setInvites();
     this.getMatchday();
   }
   
