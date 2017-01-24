@@ -49,7 +49,7 @@ export class InvitesMatchdayComponent {
           handler: () => {
             let pushIds: Array<any>;
             pushIds[0] = player.pushid;
-            //this.utilities.sendPushNotification(pushIds, "Sie haben einen neue Einladung.");
+            this.utilities.sendPushNotification(pushIds, "Sie haben einen neue Einladung.");
             this.showMessage();
           }
         }
