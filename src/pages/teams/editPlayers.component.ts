@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-
-import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, ViewController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
-import { ViewTeamComponent } from './viewTeam.component';
 import firebase from 'firebase';
 
 
 @Component({
-    templateUrl: 'editPlayers.component.html'
+    templateUrl: 'editPlayers.component.html',
+    providers: [Utilities]
 })
 export class EditPlayerComponent implements OnInit {
 
@@ -28,6 +27,7 @@ export class EditPlayerComponent implements OnInit {
     playerAdded: boolean = false;
     groupedPlayers: any = [];
     allPlayersG;
+    toRoot: any;
 
     ngOnInit(): void {
         //this.playersOfTeam = [];
@@ -50,7 +50,8 @@ export class EditPlayerComponent implements OnInit {
         public nParam: NavParams,
         public utilities: Utilities,
         public alertCtrl: AlertController,
-        public toastCtrl: ToastController
+        public toastCtrl: ToastController,
+        public viewCtrl: ViewController
     ) {
 
         this.playersOfTeam = [];
@@ -58,14 +59,18 @@ export class EditPlayerComponent implements OnInit {
         this.playersOfTeamPlaceholder = nParam.get("param");
         this.teamId = nParam.get("teamId");
         this.ageLimit = nParam.get("maxAge");
+        this.toRoot = nParam.get("toRoot");
         //this.getPlayers();
         //this.getTeams();
         //this.checkIfUndefined();
     }
 
     backToEditMode() {
+
         this.nav.pop();
     }
+
+
 
     setPlayers() {
         firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
@@ -79,7 +84,7 @@ export class EditPlayerComponent implements OnInit {
             this.allPlayers = playerArray;
             //this.groupPlayers(this.allPlayers);
             this.allPlayersSearch = playerArray;
-            this.addSwitchToPlayers();
+            this.getRelevantPlayers();
         });
     }
 
@@ -88,17 +93,17 @@ export class EditPlayerComponent implements OnInit {
         let playerOfTeam;
         let teamOfPlayer;
         let anyPlayerAvailable = false;
-         for (let i in this.allPlayers) {
-             player = this.allPlayers[i];
-             teamOfPlayer = player.team;
-             if (teamOfPlayer != "") {
-                 player.isAdded = true;
-             } else {
-                 player.isAdded = false;
-             }
-         }
-         this.sortPlayerArray();
-         //console.log(this.allPlayers);
+        for (let i in this.allPlayers) {
+            player = this.allPlayers[i];
+            teamOfPlayer = player.team;
+            if (teamOfPlayer != "0") {
+                player.isAdded = true;
+            } else {
+                player.isAdded = false;
+            }
+        }
+        this.sortPlayerArray();
+        //console.log(this.allPlayers);
         /*for (let i in this.groupedPlayers) {
             for (let y in this.groupedPlayers[i].players) {
                 player = this.groupedPlayers[i].players[y];
@@ -117,13 +122,13 @@ export class EditPlayerComponent implements OnInit {
     showOrHideDivider() {
         let anyPlayerAvailable;
         let player;
-        for (let i in this.groupedPlayers){
+        for (let i in this.groupedPlayers) {
             anyPlayerAvailable = false;
             for (let y in this.groupedPlayers[i].players) {
-               player = this.groupedPlayers[i].players[y];
-               if(player.isAdded!=true){
-                   this.groupedPlayers[i].add = true;
-               }
+                player = this.groupedPlayers[i].players[y];
+                if (player.isAdded != true) {
+                    this.groupedPlayers[i].add = true;
+                }
             }
         }
     }
@@ -236,7 +241,7 @@ export class EditPlayerComponent implements OnInit {
         p.isAdded = true;
         console.log(p.id);
         this.utilities.addPlayerToTeam(this.teamId, p.id);
-
+        this.utilities.setTeams();
         //this.showOrHideDivider();
         this.presentToast("Spieler zum Team hinzugefügt");
     }
@@ -267,6 +272,43 @@ export class EditPlayerComponent implements OnInit {
         this.playersOfTeamSearch = this.playersOfTeam;
     }
 
+    getRelevantPlayers() {
+        let relevantPlayers = [];
+        for (let i in this.allPlayers) {
+            let age = this.calculateAge(this.allPlayers[i].birthday);
+            //console.log("Name: " + this.allPlayers[i].lastname + ", Alter: " + age);
+            if (this.ageLimit != 0) {
+                if (this.ageLimit >= age) {
+                    relevantPlayers.push(this.allPlayers[i]);
+                }
+            }else{
+                relevantPlayers.push(this.allPlayers[i]);
+            }
+        }
+        this.allPlayers = relevantPlayers;
+        this.addSwitchToPlayers();
+    }
+
+    calculateAge(birthdayString) {
+        let birthdayDate = new Date(birthdayString);
+
+        let todayDate = new Date();
+        let todayYear = todayDate.getFullYear();
+        let todayMonth = todayDate.getMonth()+1;
+        let todayDay = todayDate.getDate();
+        let age = todayYear - birthdayDate.getFullYear();
+
+        if (todayMonth < birthdayDate.getMonth()) {
+            age--;
+        }
+
+        if (birthdayDate.getMonth() == todayMonth && todayDay < birthdayDate.getDate()) {
+            age--;
+        }
+        return age;
+    }
+
+
     getItemsAvailable(ev) {
         // Reset items back to all of the items
         this.initializePlayers();
@@ -277,9 +319,9 @@ export class EditPlayerComponent implements OnInit {
         // if the value is an empty string don't filter the items
         if (val && val.trim() != '') {
             this.allPlayers = this.allPlayers.filter((item) => {
-                return (item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1 
-                || (item.firstname.toLowerCase().indexOf(val.toLowerCase()) > -1)
-                || (item.email.toLowerCase().indexOf(val.toLowerCase()) > -1));
+                return (item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1
+                    || (item.firstname.toLowerCase().indexOf(val.toLowerCase()) > -1)
+                    || (item.email.toLowerCase().indexOf(val.toLowerCase()) > -1));
             })
         }
     }
@@ -307,7 +349,7 @@ export class EditPlayerComponent implements OnInit {
         return 0;
     }
 
-    sortPlayerArray(){
+    sortPlayerArray() {
         this.allPlayers = this.allPlayers.sort(this.compare);
         console.log(this.allPlayers);
     }
@@ -355,29 +397,29 @@ export class EditPlayerComponent implements OnInit {
 
     presentConfirm(p: any) {
 
-        
-            let alert = this.alertCtrl.create({
-                title: 'Spieler zu Mannschaft hinzufügen',
-                message: 'Wollen Sie den Spieler zur Mannschaft hinzufügen?',
-                buttons: [
-                    {
-                        text: 'Abbrechen',
-                        role: 'cancel',
-                        handler: () => {
-                            console.log('Cancel clicked');
-                        }
-                    },
-                    {
-                        text: 'Hinzufügen',
-                        handler: () => {
-                            this.addPlayer(p);
-                        }
-                    }
-                ]
 
-            });
-            alert.present();
-        
+        let alert = this.alertCtrl.create({
+            title: 'Spieler zu Mannschaft hinzufügen',
+            message: 'Wollen Sie den Spieler zur Mannschaft hinzufügen?',
+            buttons: [
+                {
+                    text: 'Abbrechen',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Cancel clicked');
+                    }
+                },
+                {
+                    text: 'Hinzufügen',
+                    handler: () => {
+                        this.addPlayer(p);
+                    }
+                }
+            ]
+
+        });
+        alert.present();
+
 
 
 
