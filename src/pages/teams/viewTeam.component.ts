@@ -44,6 +44,8 @@ export class ViewTeamComponent implements OnInit {
     currentUser: any;
     currentUserID: any;
     isAdmin: boolean;
+    allPlayers: any;
+    teamHasPlayers: boolean = true;
     /**
      * OLD VALUES
      */
@@ -61,9 +63,9 @@ export class ViewTeamComponent implements OnInit {
      * Diese Methode wird beim erstmaligen Initialisieren der Komponente aufgerufen.
      */
     ngOnInit(): void {
-        
+
         this.database = firebase.database();
-        this.teamId = this.navP.get("teamId");
+
         this.initActionSheet();
         //this.getTeamPicture();
     }
@@ -84,8 +86,11 @@ export class ViewTeamComponent implements OnInit {
      */
     ionViewWillEnter() {
         this.isTrainer();
-        this.justPlayers = [];
+        this.teamId = this.navP.get("teamId");
+        //this.justPlayers = [];
         this.buildTeam();
+        this.checkIfTeamsHasPlayers();
+        this.allPlayers = this.utils.allPlayers;
     }
 
 
@@ -126,6 +131,16 @@ export class ViewTeamComponent implements OnInit {
         //this.checkIfUndefined();
     }
 
+    checkIfTeamsHasPlayers() {
+        this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
+            let array = snapshot.val();
+            let playerArray = array.players;
+            if (playerArray == undefined) {
+                this.teamHasPlayers = false;
+            }
+        })
+    }
+
     buildTeam() {
         this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
             this.team = snapshot.val();
@@ -140,7 +155,7 @@ export class ViewTeamComponent implements OnInit {
             console.log(this.team);
             //this.team = snapshot.val();
             if (this.team != null && this.team != undefined) {
-                this.getPlayersOfTeamDb();
+                //this.getPlayersOfTeamDb();
             }
             /*console.log(this.team);
             if (this.team != undefined) {
@@ -154,7 +169,7 @@ export class ViewTeamComponent implements OnInit {
         })
     }
 
-    viewPlayer(p: any){
+    viewPlayer(p: any) {
         this.navCtrl.push(EditRoleComponent, {
             player: p
         })
@@ -247,11 +262,33 @@ export class ViewTeamComponent implements OnInit {
     }
 
     getPlayersOfTeamDb() {
+        /*for (let i in this.allPlayers) {
+            this.allPlayers[i].idOfTeam
+        }*/
         this.database.ref("/clubs/12/teams/" + this.teamId + "/players/").once('value', snapshot => {
             let playerIDs = snapshot.val();
-            if (playerIDs != null && playerIDs != undefined) {
-                this.addPlayersToArray(playerIDs);
+            let player = playerIDs;
+            console.log(player);
+            let counter = 0;
+            let done = false;
+            for (let i in this.allPlayers) {
+                counter = 0;
+                done = false;
+                while (!done) {
+                    if (counter != player.length - 1) {
+                        if (i == player[counter]) {
+                            this.allPlayers[i].idOfTeam = counter;
+                        }
+                        counter++;
+                    } else {
+                        done = true;
+                    }
+                }
             }
+            console.log(this.allPlayers);
+            /*if (playerIDs != null && playerIDs != undefined) {
+                this.addPlayersToArray(playerIDs);
+            }*/
             //return playerIDs;
             /*console.log(this.team);
             if (this.team != undefined) {
@@ -277,8 +314,8 @@ export class ViewTeamComponent implements OnInit {
                 let player = snapshot.child("" + idPlaceholder).val();
                 if ((player != null) && (player != undefined)) {
                     this.justPlayers.push(player);
-                    this.justPlayers[counter].id =i;
-                    this.justPlayers[counter].uniqueId =idPlaceholder;
+                    this.justPlayers[counter].id = i;
+                    this.justPlayers[counter].uniqueId = idPlaceholder;
                     /*this.justPlayers[i] = player;
                     this.justPlayers[i].id = i;
                     this.justPlayers[i].uniqueId = idPlaceholder;*/
@@ -306,10 +343,10 @@ export class ViewTeamComponent implements OnInit {
 
     }
 
-    handleClick(action:any, p: any){
-        if(action="delete"){
+    handleClick(action: any, p: any) {
+        if (action = "delete") {
             this.presentConfirm(p, "delP");
-        }else if(action=="view"){
+        } else if (action == "view") {
             this.viewPlayer(p);
         }
     }
@@ -366,10 +403,10 @@ export class ViewTeamComponent implements OnInit {
 
     removePlayer(p: any) {
 
-
+        console.log(p.id);
         //TODO: Mannschaft aus clubs/12/players/ in Datenbank entfernen...wie?
 
-        console.log(p);
+        /*console.log(p);
         //this.justPlayers = []
         let placeHolderArray = this.justPlayers;
         let uniqueId = 0;
@@ -387,12 +424,30 @@ export class ViewTeamComponent implements OnInit {
             }
         }
         console.log("Just Players in Delete Method");
-        console.log(this.justPlayers);
-
-        this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + p.id).remove();
-        this.database.ref('clubs/12/players/' + p.uniqueId + '/').update({
-            team: ''
+        console.log(this.justPlayers);*/
+        let playerId = p.id;
+        let deleteId = "";
+        this.database.ref('/clubs/12/teams/' + this.teamId + '/players/').once('value', snapshot => {
+            let justPlayersOfTeam = snapshot.val();
+            for (let i in justPlayersOfTeam) {
+                let ID = justPlayersOfTeam[i];
+                if (p.id == ID) {
+                    deleteId = i;
+                }
+            }
+            console.log("DELETE ID: " + deleteId);
+            if (deleteId != "") {
+                this.doDelete(p.id, deleteId);
+            } else {
+                //USER MITTEILEN DASS SPIELER NICHT MITGLIED DES TEAMS IST
+            }
         });
+
+
+        //this.doDelete(p.id, deleteId);
+
+        /*this.allPlayers = [];
+        this.allPlayers = this.utils.allPlayers;*/
         /*this.database.ref('clubs/12/players/' + p.id + '/teams/').once('value', snapshot => {
             let teamsOfPlayers = snapshot.val();
             let teamIdTemp;
@@ -411,6 +466,26 @@ export class ViewTeamComponent implements OnInit {
         this.playerDeleted = true;
         //this.getPlayersOfTeamDb();
         //this.getPlayersOfTeam();
+    }
+
+    doDelete(stringID, intID) {
+        this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + intID).remove();
+        this.database.ref('clubs/12/players/' + stringID + '/').update({
+            team: ''
+        });
+        this.refreshArray(stringID);
+
+    }
+
+    refreshArray(ID) {
+        for (let i in this.allPlayers) {
+            console.log("I: " + i);
+            console.log("ID: " + ID);
+            if (this.allPlayers[i].id == ID) {
+                this.allPlayers[i].team = "";
+            }
+        }
+        console.log(this.allPlayers);
     }
 
     deleteTeamFromPlayer(playerId: any, teamIdToBeDeleted: any) {

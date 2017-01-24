@@ -82,12 +82,12 @@
     </ion-toolbar>
     <div [ngSwitch]="geschlecht">
         <ion-list *ngSwitchCase="'maenner'">
-            <div *ngIf="justPlayers.length==0">
+            <div *ngIf="!teamHasPlayers">
                 <p class="no-Players-p">Keine Spieler vorhanden</p>
             </div>
-            <div *ngFor="let p of justPlayers">
+            <div *ngFor="let p of allPlayers">
                 <div *ngIf="p.gender=='m'">
-                    <ion-item [(ngModel)]="p.lastname" ngDefaultControl>
+                    <ion-item *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
                         <!--<ion-grid>-->
                             <!--<ion-row>-->
                                 <!--<ion-col width-15>
@@ -131,12 +131,12 @@
             </div>
         </ion-list>
         <ion-list *ngSwitchCase="'frauen'">
-            <div *ngIf="justPlayers.length==0">
+            <div *ngIf="!teamHasPlayers">
                 <p class="no-Players-p">Keine Spieler vorhanden</p>
             </div>
-            <div *ngFor="let p of justPlayers">
+            <div *ngFor="let p of allPlayers">
                 <div *ngIf="p.gender=='f'">
-                    <ion-item [(ngModel)]="p.lastname" ngDefaultControl>
+                    <ion-item *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
                         <!--<ion-grid>-->
                             <!--<ion-row>-->
                                 <!--<ion-col width-15>
