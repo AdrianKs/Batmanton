@@ -1,0 +1,50 @@
+<ion-header>
+    <ion-navbar hideBackButton="true">
+        <ion-buttons left>
+            <button ion-button (click)="popToRoot()">
+            Zurück
+        </button>
+        </ion-buttons>
+        <ion-title>Mannschaft hinzufügen</ion-title>
+        <!--<ion-buttons right>
+            <button ion-button (click)="proceedProcess()">
+         Weiter
+      </button>
+        </ion-buttons>-->
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <form class="center-form" [formGroup]="addTeamForm" (submit)="proceedProcess()" novalidate>
+        <div class="topContainer">
+            <h4 class="teamHeadline">Bild hinzufügen</h4>
+            <div class="pictureContainer">
+                <img id="teamPic" src="assets/images/ic_account_circle_black_48dp_2x.png" class="team-image" (click)="changeTeamPicture()"
+                />
+                <!--<img id="teamPic" (click)="changeTeamPicture()" />-->
+            </div>
+            <div class="playerDataContainer">
+                <h4 class="teamHeadline">Mannschaftsdetails</h4>
+                <ion-item>
+                    <ion-label class="playerLabel">Teamname:</ion-label>
+                    <ion-input #TeamName formControlName="TeamName" class="playerValue"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label class="playerLabel">Maximales Alter:</ion-label>
+                    <ion-input #maxAlt class="playerValue" formControlName="maxAlt" type="number"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label class="playerLabel">Altersbezeichnung:</ion-label>
+                    <ion-select formControlName="altersBez" placeholder="Auswählen...">
+                        <ion-option value=0>Erwachsen</ion-option>
+                        <ion-option>Mini</ion-option>
+                    </ion-select>
+
+                    <!--<ion-input #altersBez formControlName="altersBez" class="playerValue"></ion-input>-->
+                </ion-item>
+            </div>
+
+        </div>
+        <button class="submitButtonAdd" ion-button type="submit" color="secondary">Hinzufügen</button>
+    </form>
+</ion-content>

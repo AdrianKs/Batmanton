@@ -8,27 +8,47 @@
 </ion-header>
 
 <ion-content padding>
-  <div *ngFor="let matchday of dataMatchday">
-    <div *ngIf="countStates(matchday)[1] > 0 || countStates(matchday)[1] > 0 || countStates(matchday)[2] > 0">
-      <ion-item (click)="goToPage($event, matchday, dataInvite, dataPlayers, profilePictureURL)">
-        <p>{{matchday.time | matchTime}}</p>
-        <h2><b>Spieltag {{matchday.id}}</b></h2>
-        <div *ngFor="let team of dataTeams">
-          <div *ngIf="team.id == matchday.team">
-            <p>{{team.name}} gg. {{matchday.opponent}}</p>
+  <ion-list>
+    <div *ngFor="let matchday of dataMatchday">
+      <div *ngIf="countStates(matchday)[0] > 0 || countStates(matchday)[1] > 0 || countStates(matchday)[2] > 0" >
+        <ion-item (click)="goToPage($event, matchday, utilities.allInvites, utilities.allPlayers, profilePictureURL)">
+           <div item-left class="list">
+             
+            <div class="row">
+              <div class="col">
+                <img class="thumbnail-matchday-top-left" src="{{getFirstFourPicUrls(matchday)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                <img class="thumbnail-matchday-top-right" src="{{getFirstFourPicUrls(matchday)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+              </div>
+              <div class="col">
+                <img class="thumbnail-matchday-bottom-left" src="{{getFirstFourPicUrls(matchday)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                <img class="thumbnail-matchday-bottom-right" src="{{getFirstFourPicUrls(matchday)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+              </div>
+            </div>
           </div>
-        </div>
-        <p>{{matchday.location.street}} (PLZ: {{matchday.location.zipcode}})</p>
-        <br>
-        <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
-        <ion-badge color="secondary" item-bottom>
-          <ion-icon name="thumbs-up"></ion-icon> {{countStates(matchday)[1]}} </ion-badge>
-        <ion-badge color="danger" item-bottom>
-          <ion-icon name="thumbs-down"></ion-icon> {{countStates(matchday)[2]}} </ion-badge>
-        <ion-badge item-bottom>
-          <ion-icon name="mail"></ion-icon> {{countStates(matchday)[0]}} </ion-badge>
-        <!--besseres Icon finden-->
-      </ion-item>
+
+          <!--<img src="{{player.picUrl}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">-->
+          <!--<img src="assets/images/ic_account_circle_black_48dp_2x.png">-->
+
+          <p>{{matchday.time | matchTime}}</p>
+          <h2><b>Spieltag {{matchday.id}}</b></h2>
+          <div *ngFor="let team of utilities.allTeams">
+            <div *ngIf="team.id == matchday.team">
+              <p>{{matchday.opponent}}</p>
+            </div>
+          </div>
+          <br>
+          <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
+          <ion-badge color="secondary" item-bottom>
+            <ion-icon name="thumbs-up"></ion-icon> {{countStates(matchday)[1]}} </ion-badge>
+          <ion-badge color="danger" item-bottom>
+            <ion-icon name="thumbs-down"></ion-icon> {{countStates(matchday)[2]}} </ion-badge>
+          <ion-badge item-bottom>
+            <ion-icon name="mail"></ion-icon> {{countStates(matchday)[0]}} </ion-badge>
+        </ion-item>
+      </div>
     </div>
-  </div>
+  </ion-list>
+   <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content>

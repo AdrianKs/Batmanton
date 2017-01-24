@@ -1,16 +1,20 @@
 .teamItem-left{
-    width: 15%;
+    width: 20%;
     float: left;
 }
 
 
-
+.teamImage {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+}
 
 
 
 .teamItem-right{   
 
-    width: 85%;
+    width: 80%;
     color: lightslategray;
     float: right;
     padding: 8px;

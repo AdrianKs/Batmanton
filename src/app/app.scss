@@ -32,6 +32,92 @@ ion-label {
   margin-left: 5px;
 }
 
-ion-input {
-  padding: 5px;
+.menuHeader {
+  background-color: #cccccc;
+  height: 15%;
+}
+
+.menuHeaderContent{
+  width: 100%;
+  height: 100%;
+}
+
+.menuToolbar{
+  height: 100%;
+}
+
+.menuBottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.menuBtnAbout .item-inner {
+  border-top: 1px solid #cccccc;
+}
+
+.menuIcons {
+  margin-right: 10px;
+}
+
+.menuBtnLogout {
+  position: absolute;
+  right: 0px;
+  bottom: 2px;
+}
+
+.menuHeaderPic {
+  position: absolute;
+  top: 5px;
+  left: 15px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.menuBtnHeader {
+  position: absolute;
+  bottom: 10px;
+  left: 15px;
+}
+
+.mainPlayerContent {
+  font-size: 12px;
+}
+
+.secPlayerContent {
+  font-size: 10px;
+  color: lightslategray;
+}
+
+.thumbnail-matchday-top-left {
+    width: 30px;
+    height: 30px;
+    border-top-left-radius: 100%;
+    padding: 0;
+    margin-bottom: -4px;
+    margin-right: -4px;
+}
+
+.thumbnail-matchday-top-right {
+    width: 30px;
+    height: 30px;
+    border-top-right-radius: 100%;
+    padding: 0;
+    margin-bottom: -4px;
+}
+
+.thumbnail-matchday-bottom-right {
+    width: 30px;
+    height: 30px;
+    border-bottom-right-radius: 100%;
+    padding: 0;
+    margin-left: -4px;
+}
+
+.thumbnail-matchday-bottom-left {
+    width: 30px;
+    height: 30px;
+    border-bottom-left-radius: 100%;
+    padding: 0;
 }

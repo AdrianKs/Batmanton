@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, AlertController, ViewController } from 'ionic-angular';
+import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
 
 @Component({
@@ -12,16 +13,31 @@ export class EditRoleComponent {
     isTrainerOld: boolean;
     isSpielerOld: boolean;
     isChanged: boolean;
+    isDeleted: boolean;
+    sameUser: boolean;
 
     constructor(private navCtrl: NavController,
         private navParams: NavParams,
         public toastCtrl: ToastController,
         public alertCtrl: AlertController,
-        public viewCtrl: ViewController) {
+        public viewCtrl: ViewController,
+        public utilities: Utilities) {
+
         this.player = navParams.get('player');
         this.isTrainerOld = this.player.isTrainer;
         this.isSpielerOld = this.player.isPlayer;
         this.isChanged = false;
+        this.isDeleted = false;
+        this.sameUser = false;
+
+        if (this.player.id === this.utilities.user.uid) {
+            this.sameUser = true;
+        }
+
+    }
+
+
+    ionViewDidEnter() {
     }
 
     changeValue(ev) {
@@ -40,17 +56,9 @@ export class EditRoleComponent {
     changeRole(ev, player) {
         let successFlag = true;
 
-        firebase.database().ref('club/12/players/' + player.id).set({
-            birthday: player.birthday,
-            email: player.email,
-            firstname: player.firstname,
-            gender: player.gender,
+        firebase.database().ref('clubs/12/players/' + player.id).update({
             isTrainer: player.isTrainer,
-            isPlayer: player.isPlayer,
-            lastname: player.lastname,
-            pushid: player.pushid,
-            state: player.state,
-            team: player.team
+            isPlayer: player.isPlayer
         }).catch(function (error) {
             console.log(error);
             successFlag = false;
@@ -58,6 +66,7 @@ export class EditRoleComponent {
 
         if (successFlag) {
             this.presentToast("Rolle wurde erfolgreich bearbeitet");
+            this.navigateBackToList();
         } else {
             this.presentToast("Error. Bitte versuchen Sie es erneut!");
         }
@@ -66,12 +75,14 @@ export class EditRoleComponent {
 
     deleteUser(player) {
         firebase.database().ref('clubs/12/players/' + player.id).remove();
+        this.isDeleted = true;
+        this.utilities.setPlayers();
         this.navigateBackToList();
     }
 
 
     navigateBackToList() {
-        this.navCtrl.pop(this);
+        this.navCtrl.pop();
     }
 
     presentToast(customMessage: string) {
@@ -105,3 +116,5 @@ export class EditRoleComponent {
         confirm.present();
     }
 }
+
+//TODO delete and update list without db connection

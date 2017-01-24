@@ -5,24 +5,50 @@
     </button>
     <ion-title center>Meine Spiele</ion-title>
   </ion-navbar>
+  <ion-toolbar no-border-bottom>
+    <ion-segment [(ngModel)]="gameStatus">
+      <ion-segment-button value="vergangene">
+        Vergangene
+      </ion-segment-button>
+      <ion-segment-button value="bevorstehende">
+        Bevorstehende
+      </ion-segment-button>
+      <ion-segment-button value="offene">
+        Offene
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
   <div [ngSwitch]="gameStatus">
-    <ion-list *ngSwitchCase="'vergangende'">
-      <div *ngFor="let inviteItem of dataInvites">
-        <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
-          <div *ngFor="let gameItem of dataGames">
+    <ion-list *ngSwitchCase="'vergangene'">
+      <div *ngFor="let gameItem of dataGames">
+        <div *ngFor="let inviteItem of dataInvites">
+          <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
             <div *ngIf="inviteItem.match == gameItem.id">
+              <div *ngIf="gameItem.time < today">
               <ion-item (click)="openDetails($event, gameItem)">
-                <ion-thumbnail item-left>
-                  <img src="assets/img/TSV Heimaterde.png">
-                </ion-thumbnail>
-                <p>{{ gameItem.id }}</p>
-                <p>{{ gameItem.time }}</p>
-                <p>{{ gameItem.opponent }}</p>
-                <p>{{ gameItem.home }}</p>
+                <div item-left class="list">
+                  <div class="row">
+                    <div class="col">
+                      <img class="thumbnail-matchday-top-left" src="{{getFirstFourPicUrls(gameItem)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                      <img class="thumbnail-matchday-top-right" src="{{getFirstFourPicUrls(gameItem)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                    </div>
+                    <div class="col">
+                      <img class="thumbnail-matchday-bottom-left" src="{{getFirstFourPicUrls(gameItem)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                      <img class="thumbnail-matchday-bottom-right" src="{{getFirstFourPicUrls(gameItem)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="gameItem.time == 0"><p>TBA</p></div>
+                <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | matchTime }}</p></div>
+                {{ gameItem.opponent }}
+                <div *ngIf="gameItem.home == true"><p>Heim</p></div>
+                <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
+                <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
               </ion-item>
+              </div>
             </div>
           </div>
         </div>
@@ -30,23 +56,38 @@
     </ion-list>
 
     <ion-list *ngSwitchCase="'bevorstehende'">
-      <div *ngFor="let inviteItem of dataInvites">
-        <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
-          <div *ngFor="let gameItem of dataGames">
+      <div *ngFor="let gameItem of dataGames">
+        <div *ngFor="let inviteItem of dataInvites">
+          <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
             <div *ngIf="inviteItem.match == gameItem.id">
+              <div *ngIf="gameItem.time > today">
+              <ion-item (click)="openDetails($event, gameItem)">
+                <div item-left class="list">
+                  <div class="row">
+                    <div class="col">
+                      <img class="thumbnail-matchday-top-left" src="{{getFirstFourPicUrls(gameItem)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                      <img class="thumbnail-matchday-top-right" src="{{getFirstFourPicUrls(gameItem)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                    </div>
+                    <div class="col">
+                      <img class="thumbnail-matchday-bottom-left" src="{{getFirstFourPicUrls(gameItem)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                      <img class="thumbnail-matchday-bottom-right" src="{{getFirstFourPicUrls(gameItem)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="gameItem.time == 0"><p>TBA</p></div>
+                <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | matchTime }}</p></div>
+                {{ gameItem.opponent }}
+                <div *ngIf="gameItem.home == true"><p>Heim</p></div>
+                <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
+                <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
+              </ion-item>
               <ion-item>
-                <ion-thumbnail item-left>
-                  <img src="assets/img/TSV Heimaterde.png">
-                </ion-thumbnail>
-                <p>{{ gameItem.id }}</p>
-                <p>{{ gameItem.time }}</p>
-                <p>{{ gameItem.opponent }}</p>
-                <p>{{ gameItem.home }}</p>
-                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem)">
+                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem, 1)" item-right>
                 <ion-icon name='close'></ion-icon>
                   Absagen
                 </button>
               </ion-item>
+              </div>
             </div>
           </div>
         </div>
@@ -54,23 +95,36 @@
     </ion-list>
 
     <ion-list *ngSwitchCase="'offene'">
-      <div *ngFor="let inviteItem of dataInvites">
-        <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 0">
-          <div *ngFor="let gameItem of dataGames">
+      <div *ngFor="let gameItem of dataGames">
+        <div *ngFor="let inviteItem of dataInvites">
+          <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 0">
             <div *ngIf="inviteItem.match == gameItem.id">
+              <ion-item (click)="openDetails($event, gameItem)">
+                <div item-left class="list">
+                  <div class="row">
+                    <div class="col">
+                      <img class="thumbnail-matchday-top-left" src="{{getFirstFourPicUrls(gameItem)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                      <img class="thumbnail-matchday-top-right" src="{{getFirstFourPicUrls(gameItem)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                    </div>
+                    <div class="col">
+                      <img class="thumbnail-matchday-bottom-left" src="{{getFirstFourPicUrls(gameItem)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                      <img class="thumbnail-matchday-bottom-right" src="{{getFirstFourPicUrls(gameItem)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="gameItem.time == 0"><p>TBA</p></div>
+                <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | matchTime }}</p></div>
+                {{ gameItem.opponent }}
+                <div *ngIf="gameItem.home == true"><p>Heim</p></div>
+                <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
+                <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
+              </ion-item>
               <ion-item>
-                <ion-thumbnail item-left>
-                  <img src="assets/img/TSV Heimaterde.png">
-                </ion-thumbnail>
-                <p>{{ gameItem.id }}</p>
-                <p>{{ gameItem.time }}</p>
-                <p>{{ gameItem.opponent }}</p>
-                <p>{{ gameItem.home }}</p>
-                <button ion-button color="secondary" icon-left (click)="doAlert(inviteItem)">
+                <button ion-button color="secondary" icon-left (click)="verifyAccept(inviteItem)" item-right>
                 <ion-icon name='checkmark'></ion-icon>
                   Zusagen
                 </button>
-                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem)">
+                <button ion-button color="danger" icon-left (click)="doRadio(inviteItem, 0)" item-right>
                 <ion-icon name='close'></ion-icon>
                   Absagen
                 </button>
@@ -81,19 +135,7 @@
       </div>
     </ion-list>
   </div>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content>
-<ion-footer>
-  <ion-toolbar no-border-bottom>
-    <ion-segment [(ngModel)]="gameStatus">
-      <ion-segment-button value="vergangende">
-        Vergangende
-      </ion-segment-button>
-      <ion-segment-button value="bevorstehende">
-        Bevorstehende
-      </ion-segment-button>
-      <ion-segment-button value="offene">
-        Offene
-      </ion-segment-button>
-    </ion-segment>
-  </ion-toolbar>
-</ion-footer>

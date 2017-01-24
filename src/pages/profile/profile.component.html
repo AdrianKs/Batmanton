@@ -8,7 +8,7 @@
     </ion-buttons>
     <ion-title>Mein Profil</ion-title>
     <ion-buttons right>
-      <button *ngIf="(!editMode && dataLoaded)" ion-button (click)="editProfile()">Bearbeiten
+      <button *ngIf="(!editMode && utilities.userLoaded)" ion-button (click)="editProfile()">Bearbeiten
         <!--<ion-icon name="create"></ion-icon>-->
       </button>
       <button
@@ -23,18 +23,19 @@
 <ion-content>
   <div>
     <div class="picture-container">
-      <img class="profile-image picture-click" (click)="changeProfilePicture()"
-           src={{profilePictureUrl}}>
+      <img id="profileImage" class="profile-image picture-click" src="{{this.utilities.userData.picUrl}}"
+           onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" (click)="changeProfilePicture()">
     </div>
     <br/>
     <form class="center-form profile-inputs" [formGroup]="profileForm" novalidate>
       <ion-item *ngIf="(!editMode)">
-        <ion-label>Vorname:</ion-label>
-        <ion-label>{{player.firstname}}</ion-label>
+        <ion-label class="profileLabel">Vorname:</ion-label>
+        <ion-label class="profileValue">{{utilities.userData.firstname}}</ion-label>
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Vorname:</ion-label>
-        <ion-input #firstname formControlName="firstname" [(ngModel)]="player.firstname"
+        <ion-input class="profileValue" #firstname formControlName="firstname"
+                   [(ngModel)]="utilities.userData.firstname"
                    (input)="elementChanged(firstname)"
                    [class.invalid]="!profileForm.controls.firstname.valid && firstnameChanged"></ion-input>
       </ion-item>
@@ -43,12 +44,12 @@
       </ion-item>
 
       <ion-item *ngIf="(!editMode)">
-        <ion-label>Nachname:</ion-label>
-        <ion-label>{{player.lastname}}</ion-label>
+        <ion-label class="profileLabel">Nachname:</ion-label>
+        <ion-label class="profileValue">{{utilities.userData.lastname}}</ion-label>
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Nachname:</ion-label>
-        <ion-input #lastname formControlName="lastname" [(ngModel)]="player.lastname"
+        <ion-input class="profileValue" #lastname formControlName="lastname" [(ngModel)]="utilities.userData.lastname"
                    (input)="elementChanged(lastname)"
                    [class.invalid]="!profileForm.controls.lastname.valid && lastnameChanged"></ion-input>
       </ion-item>
@@ -57,12 +58,13 @@
       </ion-item>
 
       <ion-item *ngIf="(!editMode)">
-        <ion-label>E-Mail:</ion-label>
-        <ion-label>{{player.email}}</ion-label>
+        <ion-label class="profileLabel">E-Mail:</ion-label>
+        <ion-label class="profileValue">{{utilities.userData.email}}</ion-label>
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">E-Mail:</ion-label>
-        <ion-input #email formControlName="email" type="email" [(ngModel)]="player.email"
+        <ion-input class="profileValue" #email formControlName="email" type="email"
+                   [(ngModel)]="utilities.userData.email"
                    (input)="elementChanged(email)"
                    [class.invalid]="!profileForm.controls.email.valid  && emailChanged"></ion-input>
       </ion-item>
@@ -71,40 +73,43 @@
       </ion-item>
 
       <ion-item *ngIf="(!editMode)">
-        <ion-label>Geburtsdatum:</ion-label>
-        <ion-label>{{player.birthday | birthday}}</ion-label>
+        <ion-label class="profileLabel">Geburtsdatum:</ion-label>
+        <ion-label class="profileValue">{{utilities.userData.birthday | birthday}}</ion-label>
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Geburtsdatum:</ion-label>
-        <ion-datetime #birthday formControlName="birthday" displayFormat="DD.MM.YYYY" pickerFormat="DD MM YYYY"
-                      placeholder="Geburtsdatum" [(ngModel)]="player.birthday"
-                      (ionChange)="birthdaySelectChanged(player.birthday)"
+        <ion-datetime class="profileValue" #birthday formControlName="birthday" displayFormat="DD.MM.YYYY"
+                      pickerFormat="DD MM YYYY"
+                      placeholder="Geburtsdatum" [(ngModel)]="utilities.userData.birthday"
+                      (ionChange)="birthdaySelectChanged(utilities.userData.birthday)"
                       max="{{today}}" doneText="Ok" cancelText="Abbrechen"></ion-datetime>
       </ion-item>
 
       <ion-item *ngIf="(!editMode)">
-        <ion-label>Geschlecht:</ion-label>
-        <ion-label>{{player.gender | gender}}</ion-label>
+        <ion-label class="profileLabel">Geschlecht:</ion-label>
+        <ion-label class="profileValue">{{utilities.userData.gender | gender}}</ion-label>
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Geschlecht:</ion-label>
-        <ion-select #gender formControlName="gender" placeholder="Geschlecht" [(ngModel)]="player.gender"
-                      (ionChange)="genderSelectChanged(player.gender)" doneText="Ok" cancelText="Abbrechen">
+        <ion-select class="profileValue" #gender formControlName="gender" placeholder="Geschlecht"
+                    [(ngModel)]="utilities.userData.gender"
+                    (ionChange)="genderSelectChanged(utilities.userData.gender)" doneText="Ok" cancelText="Abbrechen">
           <ion-option value="m">männlich</ion-option>
-          <ion-option value="w">weiblich</ion-option>
+          <ion-option value="f">weiblich</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item *ngIf="(!editMode)">
-        <ion-label>Mannschaft:</ion-label>
-        <ion-label>{{player.team | teams}}</ion-label>
+        <ion-label class="profileLabel">Mannschaft:</ion-label>
+        <ion-label class="profileValue">{{utilities.userData.team | teams}}</ion-label>
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Mannschaft:</ion-label>
-        <ion-select #team formControlName="team" placeholder="Mannschaft" [(ngModel)]="player.team"
-                    (ionChange)="teamSelectChanged(player.team)" doneText="Ok" cancelText="Abbrechen">
+        <ion-select class="profileValue" #team formControlName="team" placeholder="Mannschaft"
+                    [(ngModel)]="utilities.userData.team"
+                    (ionChange)="teamSelectChanged(utilities.userData.team)" doneText="Ok" cancelText="Abbrechen">
           <ion-option value=0>keine Mannschaft</ion-option>
-          <ion-option *ngFor="let item of teams" value="{{item.id}}">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
         </ion-select>
       </ion-item>
     </form>

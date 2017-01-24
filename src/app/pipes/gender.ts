@@ -11,7 +11,7 @@ export class Gender {
   transform(gender) {
     if (gender === "m"){
       return "männlich"
-    }else if (gender === "w"){
+    }else if (gender === "f"){
       return "weiblich"
     }
   }

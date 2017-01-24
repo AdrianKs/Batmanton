@@ -1,43 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { EditRoleComponent } from '../editRole/editRole.component';
-import { UserManagementService } from '../../providers/userManagament.service';
+import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
+import { File } from 'ionic-native';
+import { document } from "@angular/platform-browser/src/facade/browser";
+
 
 @Component({
   selector: 'page-userManagement',
   templateUrl: 'userManagement.component.html',
-  providers: [UserManagementService]
+  providers: []
 })
 export class UserManagementComponent implements OnInit {
 
   ngOnInit() {
+    //this.groupPlayers(this.dataPlayer);
   }
 
   ionViewDidEnter() {
-    this.getPlayer();
+    this.dataPlayer = this.utilities.allPlayers;
+    this.dataPlayerSearch = this.dataPlayer;
   }
 
   geschlecht: string = "maenner";
-  dataPlayer: any;
+  dataPlayer: any[];
   dataPlayerSearch: any;
+  selectedPlayer: any;
+  // groupedPlayers: any[];
 
-  constructor(private navCtrl: NavController, private userManagementService: UserManagementService) {
-    //Load data in array
-  }
-
-  getPlayer(): void {
-    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
-      let playerArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        playerArray[counter] = snapshot.val()[i];
-        playerArray[counter].id = i;
-        counter++;
-      }
-      this.dataPlayerSearch = playerArray;
-      this.dataPlayer = playerArray;
-    });
+  constructor(private navCtrl: NavController,
+    private navParams: NavParams,
+    public utilities: Utilities) {
   }
 
   initializeItems() {
@@ -45,8 +39,33 @@ export class UserManagementComponent implements OnInit {
   }
 
   openEditor(ev, value) {
+    this.selectedPlayer = value;
     this.navCtrl.push(EditRoleComponent, { player: value });
   }
+
+  /* groupPlayers(player: any[]) {
+     this.groupedPlayers = [];
+     let currentLetter = false;
+     let currentPlayers = [];
+ 
+     this.dataPlayer.forEach((value, index) => {
+       if (value.lastname.charAt(0) != currentLetter) {
+ 
+         currentLetter = value.lastname.charAt(0);
+ 
+         let newGroup = {
+           letter: currentLetter,
+           players: []
+         };
+ 
+         currentPlayers = newGroup.players;
+         this.groupedPlayers.push(newGroup);
+ 
+       }
+       currentPlayers.push(value);
+ 
+     });
+   }*/
 
   getItems(ev) {
     // Reset items back to all of the items
@@ -58,22 +77,13 @@ export class UserManagementComponent implements OnInit {
     // if the value is an empty string don't filter the items
     if (val && val.trim() != '') {
       this.dataPlayer = this.dataPlayer.filter((item) => {
-        return (item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return ((item.lastname.toLowerCase().indexOf(val.toLowerCase()) > -1) || (item.firstname.toLowerCase().indexOf(val.toLowerCase()) > -1));
       })
     }
   }
 }
 
-
-//Firebase Login
-//manuel-entenmann@web.de
-//Test123
-
-//TODO Promise based Callbacks with Erro Handling
-//Link to check http://stackoverflow.com/questions/40869631/angular-2-w-typescript-firebase-api-returns-array-of-objects-in-service-but-und
-
-//Navigation back to List
-//Update List
+//TODO List in Gruppen einteilen https://www.joshmorony.com/an-introduction-to-lists-in-ionic-2/
 
 
 

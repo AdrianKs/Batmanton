@@ -9,15 +9,6 @@
 
 <ion-content padding>
   <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
-
-  <!--<div class="selectContainer">
-    <select class="selectTeam">
-    <div *ngFor="let itemTeam of testDataTeams">
-        <option value="itemTeam.name">{{itemTeam.name}}</option>
-    </div>
-  </select>
-  </div>-->
-
   <ion-toolbar no-border-top>
     <ion-segment [(ngModel)]="geschlecht">
       <ion-segment-button value="maenner">
@@ -31,19 +22,19 @@
 
   <div [ngSwitch]="geschlecht">
     <ion-list *ngSwitchCase="'maenner'">
-      <div *ngFor="let item of dataPlayer">
+      <div *ngFor="let item of dataPlayer; let i = index;">
         <div *ngIf="item.gender == 'm'">
           <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
-                <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
+                <img id="profileImage" src="{{item.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
                   {{ item.lastname }}, {{item.firstname}} <br/>
                 </div>
                 <div class="secondaryDetails">
-                  Mannschaft: {{item.team}}, Geb.: {{item.birthday | birthday}}
+                  Mannschaft: {{item.team | teams}}, Geb.: {{item.birthday | birthday}}
                 </div>
               </div>
             </div>
@@ -52,19 +43,19 @@
       </div>
     </ion-list>
     <ion-list *ngSwitchCase="'frauen'">
-      <div *ngFor="let item of dataPlayer">
+      <div *ngFor="let item of dataPlayer; let i = index;">
         <div *ngIf="item.gender == 'f'">
           <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
-                <img src="assets/images/ic_account_circle_black_24dp_2x.png" />
+                <img src="{{item.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
                   {{ item.lastname }}, {{item.firstname}} <br/>
                 </div>
                 <div class="secondaryDetails">
-                  Mannschaft: {{item.team}}, Geb.: {{item.birthday | birthday}}
+                  Mannschaft: {{item.team | teams}}, Geb.: {{item.birthday | birthday}}
                 </div>
               </div>
             </div>

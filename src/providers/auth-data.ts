@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import firebase from 'firebase';
-import {setUser} from "../app/globalVars";
+// import {setUserID} from "../app/globalVars";
 //import myGlobals from '../app/globalVars';
+import {Utilities} from '../app/utilities';
 /*
   Generated class for the AuthData provider.
 
@@ -14,7 +15,7 @@ export class AuthData {
   public fireAuth: any;
   public userProfile: any;
 
-  constructor() {
+  constructor(public utilities: Utilities) {
     this.fireAuth = firebase.auth();
     this.userProfile = firebase.database().ref('clubs/12/players');
   }
@@ -36,9 +37,10 @@ export class AuthData {
           state: 0,
           isPlayer: true,
           isTrainer: false,
+          picUrl: "",
           pushid: ''
           });
-        setUser(newUser);
+        this.utilities.user = newUser;
       });
   }
 
