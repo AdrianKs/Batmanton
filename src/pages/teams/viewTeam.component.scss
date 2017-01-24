@@ -67,8 +67,8 @@
     height: 55px;
     border-top-left-radius: 100%;
     padding: 0;
-    margin-bottom: 0.5px;
-    margin-right: 0.5px;
+    margin-bottom: 0px;
+    margin-right: 0px;
 }
 
 .thumbnail-matchday-top-right {
@@ -76,7 +76,7 @@
     height: 55px;
     border-top-right-radius: 100%;
     padding: 0;
-    margin-bottom: 0.5px;
+    margin-bottom: 0px;
 }
 
 .thumbnail-matchday-bottom-right {
@@ -84,7 +84,7 @@
     height: 55px;
     border-bottom-right-radius: 100%;
     padding: 0;
-    margin-left: 0.5px;
+    margin-left: 0px;
 }
 
 .thumbnail-matchday-bottom-left {
@@ -100,5 +100,9 @@
   }
 
   .data-label{
+      text-align: right;
+  }
+
+  .team-inputs input{
       text-align: right;
   }

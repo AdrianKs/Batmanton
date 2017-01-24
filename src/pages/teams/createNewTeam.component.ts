@@ -21,6 +21,7 @@ import { Camera } from 'ionic-native';
 export class CreateTeamComponent implements OnInit {
 
     altersklasse: number = -1;
+    teamArt: any;
     database: any;
     addTeamForm: any;
     teamName: any;
@@ -60,7 +61,7 @@ export class CreateTeamComponent implements OnInit {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-        for (var i = 0; i < 7; i++)
+        for (var i = 0; i < 26; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
 
         return text;
@@ -88,9 +89,10 @@ export class CreateTeamComponent implements OnInit {
     }
 
     proceedProcess() {
+        this.newTeamId = this.makeid();
         this.teamName = this.addTeamForm.value.TeamName;
         this.maxAlt = this.altersklasse;
-        if (this.altersklasse <= 15 && this.altersklasse != 0) {
+       /* if (this.altersklasse <= 15 && this.altersklasse != 0) {
             this.altersBez = "Schüler";
         } else if (this.altersklasse <= 19 && this.altersklasse > 15) {
             this.altersBez = "Jugend";
@@ -98,7 +100,6 @@ export class CreateTeamComponent implements OnInit {
             this.altersBez = "Erwachsen";
         }
         //this.altersBez = this.addTeamForm.value.altersBez;
-        console.log(this.teamName + ", " + this.maxAlt + ", " + this.altersBez);
         if (this.altersBez == "Schüler") {
             this.altersBez = 1;
         } else if (this.altersBez == "Jugend") {
@@ -106,7 +107,19 @@ export class CreateTeamComponent implements OnInit {
         } else {
             this.altersBez = 2;
         }
-        this.database.ref('clubs/12/teams/').once('value', snapshot => {
+        let lokalTeam = {
+                ageLimit: this.maxAlt,
+                name: this.teamName,
+                type: this.teamArt
+            }*/
+        this.database.ref('clubs/12/teams/').child(this.newTeamId).set({
+            ageLimit: this.maxAlt,
+            name: this.teamName,
+            type: this.teamArt
+        }).then(data => {
+            this.showSuccessAlert();
+        })
+        /*this.database.ref('clubs/12/teams/').once('value', snapshot => {
             let lokalTeam = {
                 ageLimit: this.maxAlt,
                 name: this.teamName,
@@ -131,7 +144,7 @@ export class CreateTeamComponent implements OnInit {
 
         }).then((data) => {
             this.showSuccessAlert();
-        });
+        });*/
     }
 
     showSuccessAlert() {
@@ -163,7 +176,8 @@ export class CreateTeamComponent implements OnInit {
     addPlayers() {
         this.navCtrl.push(EditPlayerComponent, {
             toRoot: 'yes',
-            teamId: this.newTeamId
+            teamId: this.newTeamId,
+            maxAge: this.maxAlt
         });
     }
 
