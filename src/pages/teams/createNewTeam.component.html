@@ -27,7 +27,7 @@
                     <ion-list-header>Altersinformationen</ion-list-header>
                     <ion-item>
                     <ion-label>Maximales Alter:</ion-label>
-                    <ion-select [(ngModel)]="altersklasse" placeholder="Auswählen..." [ngModelOptions]="{standalone: true}" (ionInput)="selectAltersklasse(altersklasse)">
+                    <ion-select [(ngModel)]="altersklasse" placeholder="Auswählen" [ngModelOptions]="{standalone: true}" (ionInput)="selectAltersklasse(altersklasse)">
                         <ion-option value="9">U 09</ion-option>
                         <ion-option value="11">U 11</ion-option>
                         <ion-option value="13">U 13</ion-option>
@@ -39,14 +39,18 @@
                     <!--<ion-input #maxAlt class="playerValue" formControlName="maxAlt" type="number"></ion-input>-->
                 </ion-item>
                 <ion-item>
-                    <ion-label class="create-label-n">Altersbezeichnung:</ion-label>
-                    <ion-label *ngIf="altersklasse ==9" class="data-label">Schüler</ion-label>
+                    <ion-label>Art:</ion-label>
+                    <ion-select [(ngModel)]="teamArt" placeholder="Auswählen" [ngModelOptions]="{standalone: true}">
+                        <ion-option value="Normal">Normal</ion-option>
+                        <ion-option value="Mini">Mini</ion-option>
+                    </ion-select>
+                    <!--<ion-label *ngIf="altersklasse ==9" class="data-label">Schüler</ion-label>
                     <ion-label *ngIf="altersklasse ==11" class="data-label">Schüler</ion-label>
                     <ion-label *ngIf="altersklasse ==13" class="data-label">Schüler</ion-label>
                     <ion-label *ngIf="altersklasse ==15" class="data-label">Schüler</ion-label>
                     <ion-label *ngIf="altersklasse ==17" class="data-label">Jugend</ion-label>
                     <ion-label *ngIf="altersklasse ==19" class="data-label">Jugend</ion-label>
-                    <ion-label *ngIf="altersklasse==0" class="data-label">Erwachsen</ion-label>
+                    <ion-label *ngIf="altersklasse==0" class="data-label">Erwachsen</ion-label>-->
                     <!--<ion-select formControlName="altersBez" placeholder="Auswählen...">
                         <ion-option value=0>Erwachsen</ion-option>
                         <ion-option>Mini</ion-option>

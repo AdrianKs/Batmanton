@@ -2,7 +2,7 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component, OnInit, Injectable } from '@angular/core';
-import { NavController, NavParams, AlertController, ActionSheetController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ActionSheetController, LoadingController, ModalController } from 'ionic-angular';
 import { PopoverPage } from './popover.component';
 import { EditTeamComponent } from './editTeam.component';
 import { Utilities } from '../../app/utilities';
@@ -47,6 +47,7 @@ export class ViewTeamComponent implements OnInit {
     allPlayers: any;
     teamHasPlayers: boolean = true;
     originalPlayers: any;
+    originalMatches:any;
     /**
      * OLD VALUES
      */
@@ -58,7 +59,9 @@ export class ViewTeamComponent implements OnInit {
     base64String: string;
 
     altersklasse: number;
+    teamArt:any;
     loading: any;
+
 
 
 
@@ -96,7 +99,8 @@ export class ViewTeamComponent implements OnInit {
         public utils: Utilities,
         public formBuilder: FormBuilder,
         public actionSheetCtrl: ActionSheetController,
-        public loadingCtrl: LoadingController) {
+        public loadingCtrl: LoadingController,
+        public modalCtrl: ModalController) {
 
 
         this.teamForm = formBuilder.group({
@@ -134,14 +138,15 @@ export class ViewTeamComponent implements OnInit {
             this.teamNameOld = this.team.name;
             this.altersKOld = this.team.ageLimit;
             this.altersklasse = this.team.ageLimit;
-            this.altersBezOld = this.team.type;
+            this.teamArt = this.team.type;
+            /*this.altersBezOld = this.team.type;
             if (this.altersBezOld == 1) {
                 this.altersBezOld = "Schüler";
             } else if (this.altersBezOld == 0) {
                 this.altersBezOld = "Jugend";
             } else {
                 this.altersBezOld = "Erwachsen";
-            }
+            }*/
         }).then((data) => {
             if (this.team != null && this.team != undefined) {
                 this.refreshPlayers();
@@ -187,13 +192,13 @@ export class ViewTeamComponent implements OnInit {
             firebase.database().ref('clubs/12/teams/' + this.teamId).update({
                 ageLimit: this.altersK,
                 name: this.teamName,
-                type: this.altersBez
+                type: this.teamArt
             });
 
             //UPDATE Array 
             this.team.ageLimit = this.altersK;
             this.team.name = this.teamName;
-            this.team.type = this.altersBez;
+            this.team.type = this.teamArt;
 
             console.log(this.team);
 
@@ -228,13 +233,13 @@ export class ViewTeamComponent implements OnInit {
             this.altersBezChanged = true;
         }
 
-        if (this.altersklasse <= 15 && this.altersklasse != 0) {
+      /*  if (this.altersklasse <= 15 && this.altersklasse != 0) {
             this.altersBez = 1;
         } else if (this.altersklasse <= 19 && this.altersklasse > 15) {
             this.altersBez = 0;
         } else {
             this.altersBez = 2;
-        }
+        }*/
 
         if ((!this.altersKChanged) && (!this.altersBezChanged) && (!this.teamNameChanged)) {
             //Keine Änderung
@@ -253,7 +258,7 @@ export class ViewTeamComponent implements OnInit {
     editPlayers() {
         this.navCtrl.push(EditPlayerComponent, {
             toRoot: 'no',
-            param: this.justPlayers,
+            //param: this.justPlayers,
             teamId: this.teamId,
             maxAge: this.team.ageLimit
         })
@@ -294,7 +299,7 @@ export class ViewTeamComponent implements OnInit {
     doDelete(stringID, intID) {
         this.database.ref('clubs/12/teams/' + this.teamId + '/players/' + intID).remove();
         this.database.ref('clubs/12/players/' + stringID + '/').update({
-            team: ''
+            team: '0'
         });
         this.refreshArray(stringID);
 
@@ -317,16 +322,35 @@ export class ViewTeamComponent implements OnInit {
             for (let i in this.originalPlayers) {
                 player = this.originalPlayers[i];
                 if (player.team == this.teamId) {
-                    player.team = '';
+                    player.team = '0';
                 }
             }
             console.log(this.originalPlayers);
             this.database.ref('clubs/12/').update({
                 players: this.originalPlayers
             }).then((data) => {
-                this.navCtrl.popToRoot();
+                this.deleteTeamFromMatches();
             });
         });
+    }
+
+    deleteTeamFromMatches(){
+        this.database.ref('clubs/12/matches').once('value', snapshot => {
+            this.originalMatches = snapshot.val();
+        }).then((data)=>{
+            let match;
+            for(let i in this.originalMatches){
+                match = this.originalMatches[i];
+                if(match.team == this.teamId){
+                    match.team = '0';
+                }
+            }
+            this.database.ref('clubs/12/').update({
+                matches: this.originalMatches
+            }).then(data => {
+                this.navCtrl.popToRoot();
+            })
+        })
     }
 
     deleteTeam() {

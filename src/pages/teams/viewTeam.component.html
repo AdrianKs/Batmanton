@@ -35,7 +35,7 @@
 </div>
 </div>
 
-<form class="center-form" [formGroup]="teamForm" novalidate>
+<form class="center-form team-inputs" [formGroup]="teamForm" novalidate>
     <div class="playerDataContainer">
         <ion-list>
             <ion-list-header>Mannschaftsdetails</ion-list-header>
@@ -50,13 +50,14 @@
             </ion-item>
             <ion-item *ngIf="(!editMode)">
                 <ion-label class="playerLabel">Altersbezeichnung:</ion-label>
-                <ion-label *ngIf="team.type==1" class="playerValue">Schüler</ion-label>
+                <ion-label class="playerValue">{{teamArt}}</ion-label>
+                <!--<ion-label *ngIf="team.type==1" class="playerValue">Schüler</ion-label>
                 <ion-label *ngIf="team.type==0" class="playerValue">Jugend</ion-label>
-                <ion-label *ngIf="team.type==2" class="playerValue">Erwachsen</ion-label>
+                <ion-label *ngIf="team.type==2" class="playerValue">Erwachsen</ion-label>-->
             </ion-item>
             <ion-item *ngIf="(editMode)">
                 <ion-label class="playerLabel">Teamname:</ion-label>
-                <ion-input #teamName formControlName="teamName" value="{{team.name}}"></ion-input>
+                <ion-input #teamName formControlName="teamName" class="data-input" value="{{team.name}}"></ion-input>
             </ion-item>
             <ion-item *ngIf="(editMode)">
                 <ion-label class="playerLabel">Altersklasse:</ion-label>
@@ -71,14 +72,18 @@
                 </ion-select>
             </ion-item>
             <ion-item *ngIf="(editMode)">
-                <ion-label class="create-label">Altersbezeichnung:</ion-label>
-                <ion-label *ngIf="altersklasse ==9" class="data-label">Schüler</ion-label>
+                <ion-label class="playerLabel">Art:</ion-label>
+                <ion-select [(ngModel)]="teamArt" [ngModelOptions]="{standalone: true}">
+                    <ion-option value="Normal">Normal</ion-option>
+                    <ion-option value="Mini">Mini</ion-option>
+                </ion-select>
+                <!--<ion-label *ngIf="altersklasse ==9" class="data-label">Schüler</ion-label>
                 <ion-label *ngIf="altersklasse ==11" class="data-label">Schüler</ion-label>
                 <ion-label *ngIf="altersklasse ==13" class="data-label">Schüler</ion-label>
                 <ion-label *ngIf="altersklasse ==15" class="data-label">Schüler</ion-label>
                 <ion-label *ngIf="altersklasse ==17" class="data-label">Jugend</ion-label>
                 <ion-label *ngIf="altersklasse ==19" class="data-label">Jugend</ion-label>
-                <ion-label *ngIf="altersklasse==0" class="data-label">Erwachsen</ion-label>
+                <ion-label *ngIf="altersklasse==0" class="data-label">Erwachsen</ion-label>-->
             </ion-item>
            
         </ion-list>
@@ -87,10 +92,10 @@
 </div>
 <ion-grid *ngIf="(editMode)">
     <ion-row>
-        <button class="editPlayerButton" ion-button block (click)="editPlayers()" color="secondary">Spieler hinzufügen</button>
+        <button class="editPlayerButton" ion-button block outline round (click)="editPlayers()" color="secondary">Spieler hinzufügen</button>
     </ion-row>
     <ion-row>
-        <button class="editPlayerButton" ion-button block (click)="presentConfirm(null, 'delT')" color="danger">Mannschaft löschen</button>
+        <button class="editPlayerButton" ion-button block outline round (click)="presentConfirm(null, 'delT')" color="danger">Mannschaft löschen</button>
     </ion-row>
 </ion-grid>
 <ion-toolbar no-border-top>

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, ViewController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
 
 
 @Component({
-    templateUrl: 'editPlayers.component.html'
+    templateUrl: 'editPlayers.component.html',
+    providers: [Utilities]
 })
 export class EditPlayerComponent implements OnInit {
 
@@ -49,7 +50,8 @@ export class EditPlayerComponent implements OnInit {
         public nParam: NavParams,
         public utilities: Utilities,
         public alertCtrl: AlertController,
-        public toastCtrl: ToastController
+        public toastCtrl: ToastController,
+        public viewCtrl: ViewController
     ) {
 
         this.playersOfTeam = [];
@@ -82,7 +84,7 @@ export class EditPlayerComponent implements OnInit {
             this.allPlayers = playerArray;
             //this.groupPlayers(this.allPlayers);
             this.allPlayersSearch = playerArray;
-            this.addSwitchToPlayers();
+            this.getRelevantPlayers();
         });
     }
 
@@ -94,7 +96,7 @@ export class EditPlayerComponent implements OnInit {
         for (let i in this.allPlayers) {
             player = this.allPlayers[i];
             teamOfPlayer = player.team;
-            if (teamOfPlayer != "") {
+            if (teamOfPlayer != "0") {
                 player.isAdded = true;
             } else {
                 player.isAdded = false;
@@ -269,6 +271,43 @@ export class EditPlayerComponent implements OnInit {
         }
         this.playersOfTeamSearch = this.playersOfTeam;
     }
+
+    getRelevantPlayers() {
+        let relevantPlayers = [];
+        for (let i in this.allPlayers) {
+            let age = this.calculateAge(this.allPlayers[i].birthday);
+            //console.log("Name: " + this.allPlayers[i].lastname + ", Alter: " + age);
+            if (this.ageLimit != 0) {
+                if (this.ageLimit >= age) {
+                    relevantPlayers.push(this.allPlayers[i]);
+                }
+            }else{
+                relevantPlayers.push(this.allPlayers[i]);
+            }
+        }
+        this.allPlayers = relevantPlayers;
+        this.addSwitchToPlayers();
+    }
+
+    calculateAge(birthdayString) {
+        let birthdayDate = new Date(birthdayString);
+
+        let todayDate = new Date();
+        let todayYear = todayDate.getFullYear();
+        let todayMonth = todayDate.getMonth()+1;
+        let todayDay = todayDate.getDate();
+        let age = todayYear - birthdayDate.getFullYear();
+
+        if (todayMonth < birthdayDate.getMonth()) {
+            age--;
+        }
+
+        if (birthdayDate.getMonth() == todayMonth && todayDay < birthdayDate.getDate()) {
+            age--;
+        }
+        return age;
+    }
+
 
     getItemsAvailable(ev) {
         // Reset items back to all of the items
