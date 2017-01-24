@@ -48,6 +48,7 @@ export class MyApp {
   
       if (user != undefined) {
         utilities.setUserData();
+        utilities.setPlayers();
       }
       if (!user) {
         this.rootPage = LoginComponent;

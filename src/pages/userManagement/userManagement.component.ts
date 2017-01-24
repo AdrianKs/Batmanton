@@ -3,7 +3,6 @@ import { NavController, NavParams } from 'ionic-angular';
 import { EditRoleComponent } from '../editRole/editRole.component';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
-import { File } from 'ionic-native';
 import { document } from "@angular/platform-browser/src/facade/browser";
 
 
@@ -43,30 +42,6 @@ export class UserManagementComponent implements OnInit {
     this.navCtrl.push(EditRoleComponent, { player: value });
   }
 
-  /* groupPlayers(player: any[]) {
-     this.groupedPlayers = [];
-     let currentLetter = false;
-     let currentPlayers = [];
- 
-     this.dataPlayer.forEach((value, index) => {
-       if (value.lastname.charAt(0) != currentLetter) {
- 
-         currentLetter = value.lastname.charAt(0);
- 
-         let newGroup = {
-           letter: currentLetter,
-           players: []
-         };
- 
-         currentPlayers = newGroup.players;
-         this.groupedPlayers.push(newGroup);
- 
-       }
-       currentPlayers.push(value);
- 
-     });
-   }*/
-
   getItems(ev) {
     // Reset items back to all of the items
     this.initializeItems();
@@ -81,9 +56,20 @@ export class UserManagementComponent implements OnInit {
       })
     }
   }
+
+  doRefresh(ref) {
+    this.utilities.setPlayers();
+    this.dataPlayer = this.utilities.allPlayers;
+    this.dataPlayerSearch = this.dataPlayer;
+    setTimeout(() => {
+      ref.complete();
+    }, 1000);
+  }
+
 }
 
 //TODO List in Gruppen einteilen https://www.joshmorony.com/an-introduction-to-lists-in-ionic-2/
+//TODO Load list after registration
 
 
 
