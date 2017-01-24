@@ -10,7 +10,7 @@
 <ion-content padding>
   <ion-list>
     <div *ngFor="let matchday of dataMatchday">
-      <div *ngIf="countStates(matchday)[1] > 0 || countStates(matchday)[1] > 0 || countStates(matchday)[2] > 0">
+      <div *ngIf="countStates(matchday)[0] > 0 || countStates(matchday)[1] > 0 || countStates(matchday)[2] > 0" >
         <ion-item (click)="goToPage($event, matchday, utilities.allInvites, utilities.allPlayers, profilePictureURL)">
            <div item-left class="list">
              
