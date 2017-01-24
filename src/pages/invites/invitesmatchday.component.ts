@@ -42,7 +42,6 @@ export class InvitesMatchdayComponent {
         {
           text: 'Nein',
           handler: () => {
-            console.log('Nicht versendet');
           }
         },
         {
