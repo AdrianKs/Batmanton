@@ -85,4 +85,16 @@ export class InvitesComponent implements OnInit {
   goToPage(ev, value, invites, players, picture) {
     this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players });
   }
+
+   doRefresh(refresher) {
+    console.log('Refreshed');
+    this.utilities.setTeams();
+    this.getMatchday();
+    this.utilities.setInvites();
+    this.utilities.setPlayers();
+    setTimeout(() => {
+      console.log('New Data loaded.');
+      refresher.complete();
+    }, 1000);
+  }
 }
