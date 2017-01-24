@@ -10,19 +10,33 @@
 <ion-content padding>
   <div *ngFor="let item of dataGames">
     <ion-item (click)="openDetails($event, item)">
-      <ion-thumbnail item-left>
-        <img src="assets/img/TSV Heimaterde.png">
-      </ion-thumbnail>
-      <p>{{ item.time | matchTime }}</p>
-      <p>{{ item.opponent }}</p>
+      <div item-left class="list">
+        <div class="row">
+          <div class="col">
+            <img class="thumbnail-matchday-top-left" src="{{getFirstFourPicUrls(item)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+            <img class="thumbnail-matchday-top-right" src="{{getFirstFourPicUrls(item)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+          </div>
+          <div class="col">
+            <img class="thumbnail-matchday-bottom-left" src="{{getFirstFourPicUrls(item)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+            <img class="thumbnail-matchday-bottom-right" src="{{getFirstFourPicUrls(item)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="item.time == 0"><p>TBA</p></div>
+      <div *ngIf="item.time != 0"><p>{{ item.time | matchTime }}</p></div>
+      {{ item.opponent }}
       <div *ngIf="item.home == true"><p>Heim</p></div>
-      <div *ngIf="item.home == false"><p>Auswärts</p></div>
+      <div *ngIf="item.home == false && item.home != 'unknown'"><p>Auswärts</p></div>
+      <div *ngIf="item.home == 'unknown'"><p>TBA</p></div>
     </ion-item>
   </div>
   <ion-fab right bottom>
-    <button ion-fab icon-only color="danger" (click)="createGame()">
+    <button ion-fab icon-only color="secondary" (click)="createGame()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content>
 

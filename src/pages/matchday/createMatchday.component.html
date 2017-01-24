@@ -1,8 +1,10 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button ion-button clear (click)="goBack()">
+        Zurück
+      </button>
+    </ion-buttons>
     <ion-title center>Erstelle Spiel</ion-title>
   </ion-navbar>
 </ion-header>
@@ -10,40 +12,60 @@
 <ion-content padding>
   <div class="topContainer">
     <div class="playerDataContainer">
-      <ion-item>
-        <ion-label stacked>Gegner</ion-label>
-        <ion-input [(ngModel)]="opponent" type="text" value="" placeholder="Gegner"></ion-input>
-      </ion-item>
-      <ion-item>
-      <ion-label stacked>Mannschaft</ion-label>
-      <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"
-                  placeholder="Mannschaft">
-        <ion-option value=0>keine Mannschaft</ion-option>
-        <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
-      </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Ort</ion-label>
-          <ion-select [(ngModel)]="home" placeholder="Heim/Auswärts">
-            <ion-option value=true>Heim</ion-option>
-            <ion-option value=false>Auswärts</ion-option>
-          </ion-select> 
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Adresse</ion-label>
-        <ion-input [(ngModel)]="address" type="street" value="" placeholder="Straße und Hausnummer"></ion-input>
-        <ion-input [(ngModel)]="zipcode" type="number" value="" placeholder="PLZ"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label stacked>Datum & Uhrzeit</ion-label>
-        <ion-datetime [(ngModel)]="date" class="datetime-text" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
-                      (ionChange)="daySelectChanged()"></ion-datetime>
-      </ion-item>
+        <form class="center-form" [formGroup]="createMatchdayForm" novalidate>
+        <ion-item>
+          <ion-label stacked>Gegner</ion-label>
+          <ion-input #opponent formControlName="opponent" [(ngModel)]="match.opponent"
+                    (input)="elementChanged(opponent)" placeholder="Gegner"
+                    [class.invalid]="!createMatchdayForm.controls.opponent.valid && opponentChanged"></ion-input>
+        </ion-item>
+        <ion-item>
+        <ion-label stacked>Mannschaft</ion-label>
+        <ion-select #team formControlName="team" placeholder="Mannschaft" [(ngModel)]="match.team"
+                      placeholder="Mannschaft"
+                      (ionChange)="teamSelectChanged()" doneText="Ok" cancelText="Abbrechen">
+          <ion-option value=0>keine Mannschaft</ion-option>
+          <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
+        </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Ort</ion-label>
+            <ion-select #home formControlName="home" placeholder="Heim/Auswärts" [(ngModel)]="match.home"
+                      (ionChange)="homeSelectChanged()" doneText="Ok" cancelText="Abbrechen">
+              <ion-option value=true>Heim</ion-option>
+              <ion-option value=false>Auswärts</ion-option>
+            </ion-select> 
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Adresse</ion-label>
+          <ion-input #street formControlName="street" [(ngModel)]="match.location.street"
+                    (input)="elementChanged(street)" placeholder="Straße und Hausnummer"
+                    [class.invalid]="!createMatchdayForm.controls.street.valid && streetChanged"></ion-input><br>
+          <ion-input #zipcode formControlName="zipcode" [(ngModel)]="match.location.zipcode"
+                    (input)="zipcodeSelectChanged()" placeholder="PLZ"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Datum & Uhrzeit</ion-label>
+          <ion-datetime #time formControlName="time" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
+                        [(ngModel)]="match.time"
+                        (ionChange)="timeSelectChanged()"
+                        doneText="Ok" cancelText="Abbrechen"></ion-datetime>
+        </ion-item>
+      </form>
     </div>
   </div>
 </ion-content>
 <ion-footer>
-  <button ion-button block outline round color="secondary" (click)="createGame()"> 
-    Spiel erstellen
-  </button>
+  <div class="pictureContainer">
+    <div *ngIf="match.team != 0">
+    <button ion-button outline round color="secondary" (click)="createGame()"> 
+      Spieler hinzufügen
+    </button>
+    </div>
+    <div *ngIf="match.team == 0">
+    <button ion-button outline round color="secondary" (click)="createGame()"> 
+      Spiel erstellen
+    </button>
+    </div>
+  </div>
 </ion-footer>
