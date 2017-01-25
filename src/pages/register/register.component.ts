@@ -23,6 +23,8 @@ export class RegisterComponent {
   team: string = '';
   teams: any = [];
   relevantTeams = this.utilities.allTeams;
+  firstnameWithCapital: boolean = false;
+  lastnameWithCapital: boolean = false;
   firstnameChanged: boolean = false;
   lastnameChanged: boolean = false;
   birthdayChanged: boolean = false;
@@ -56,9 +58,8 @@ export class RegisterComponent {
   matchPassword(group) {
     let password = group.controls.password;
     let confirm = group.controls.passwordConfirm;
-
+    console.log(group);
     if (!(password.value === confirm.value)) {
-      console.log("sollte nicht gleich sein");
       return {"incorrectConfirm": true};
     }
     return null;
@@ -71,6 +72,7 @@ export class RegisterComponent {
   elementChanged(input) {
     let field = input.inputControl.name;
     this[field + "Changed"] = true;
+    console.log(this.signupForm.controls);
   }
 
   birthdaySelectChanged() {
@@ -106,6 +108,9 @@ export class RegisterComponent {
     if (!NAME_REGEXP.test(c.value.charAt(0))) {
       return {"incorrectNameFormat": true}
     }
+    console.log("in starts With a Capital");
+    console.log(c);
+    let field = "firstname";
     return null;
   }
 
@@ -132,7 +137,7 @@ export class RegisterComponent {
    */
   signupUser() {
     this.submitAttempt = true;
-  
+
     if (!this.signupForm.valid) {
       console.log(this.signupForm.value);
       console.log("gender: " + this.gender);
