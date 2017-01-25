@@ -68,8 +68,7 @@ export class UserManagementComponent implements OnInit {
 
 }
 
-//TODO List in Gruppen einteilen https://www.joshmorony.com/an-introduction-to-lists-in-ionic-2/
-//TODO Load list after registration
+
 
 
 
