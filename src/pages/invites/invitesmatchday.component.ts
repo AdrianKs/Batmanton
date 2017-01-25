@@ -47,8 +47,18 @@ export class InvitesMatchdayComponent {
         {
           text: 'Ja',
           handler: () => {
-            let pushIds: Array<any>;
-            pushIds[0] = player.pushid;
+            let pushIds = [];
+            console.log(player);
+            console.log("under console log");
+            let counter = 0;
+            for (let i in player.pushid) {
+              console.log(i);
+              pushIds[counter] = i;
+              counter++;
+            }
+
+            console.log(pushIds);
+
             this.utilities.sendPushNotification(pushIds, "Sie haben einen neue Einladung.");
             this.showMessage();
           }
