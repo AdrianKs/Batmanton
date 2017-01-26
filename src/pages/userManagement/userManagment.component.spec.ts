@@ -16,13 +16,13 @@ let de: DebugElement;
 let el: HTMLElement;
 
 describe("UserManagementComponentTest", () => {
-    
+
     beforeEach(async(() => {
         TestBed.configureTestingModule({
             declarations: [UserManagementComponent, Teams, Birthday],
             imports: [IonicModule],
             providers: [NavController, App, Config, Form, Keyboard, MenuController, Platform, GestureController,
-                {provide: Utilities, useClass: UtilitiesMock },
+                { provide: Utilities, useClass: UtilitiesMock },
                 { provide: NavParams, useClass: NavParamsMock }]
         }).compileComponents();
     }));
@@ -30,11 +30,20 @@ describe("UserManagementComponentTest", () => {
     beforeEach(() => {
         fixture = TestBed.createComponent(UserManagementComponent);
         component = fixture.componentInstance;
+        component.ionViewDidEnter();
     });
 
     it('is created', () => {
         expect(fixture).toBeTruthy();
         expect(component).toBeTruthy();
+    });
+
+    it('fill list for Player', () => {
+        expect(component.dataPlayer).toBeDefined();
+    });
+
+    it('fill list for search-function', () => {
+        expect(component.dataPlayerSearch).toBeDefined();
     });
 
     afterEach(() => {
