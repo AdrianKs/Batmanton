@@ -31,10 +31,11 @@
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
-                  {{ item.lastname }}, {{item.firstname}} <br/>
+                  {{ item.lastname }}, {{item.firstname}} 
                 </div>
                 <div class="secondaryDetails">
-                  Mannschaft: {{item.team | teams}}, Geb.: {{item.birthday | birthday}}
+                  {{item.team | teams}} <br/>
+                  {{item.birthday | birthday}}
                 </div>
               </div>
             </div>
@@ -52,10 +53,11 @@
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
-                  {{ item.lastname }}, {{item.firstname}} <br/>
+                  {{ item.lastname }}, {{item.firstname}} 
                 </div>
                 <div class="secondaryDetails">
-                  Mannschaft: {{item.team | teams}}, Geb.: {{item.birthday | birthday}}
+                  {{item.team | teams}} <br/>
+                  {{item.birthday | birthday}}
                 </div>
               </div>
             </div>
@@ -64,5 +66,7 @@
       </div>
     </ion-list>
   </div>
-
+ <ion-refresher (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content>

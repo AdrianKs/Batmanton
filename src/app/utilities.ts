@@ -21,8 +21,7 @@ export class Utilities {
   constructor() {
     this.fireAuth = firebase.auth();
     this.setInvites();
-    this.setPlayers();
-    
+   // this.setPlayers();
   }
 
   /**

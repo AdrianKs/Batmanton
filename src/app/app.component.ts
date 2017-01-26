@@ -37,7 +37,7 @@ export class MyApp {
     component: ProfileComponent
   }
 
-  pages: Array<{ title: string, component: any, icon: string }>;
+  pages: Array<{ title: string, component: any, icon: string, visible: boolean }>;
 
   constructor(public platform: Platform, public authData: AuthData, public utilities: Utilities) {
 
@@ -45,8 +45,10 @@ export class MyApp {
 
     firebase.auth().onAuthStateChanged((user) => {
       utilities.user = user;
+  
       if (user != undefined) {
         utilities.setUserData();
+        utilities.setPlayers();
       }
       if (!user) {
         this.rootPage = LoginComponent;
@@ -58,14 +60,14 @@ export class MyApp {
     });
 
     utilities.setTeams();
-
+    
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Spieltage', component: MatchdayComponent, icon: "clipboard" },
-      { title: 'Einladungen', component: InvitesComponent, icon: "mail" },
-      { title: 'Mannschaften', component: TeamsComponent, icon: "people" },
-      { title: 'Meine Spiele', component: MyGamesComponent, icon: "ribbon" },
-      { title: 'Benutzerverwaltung', component: UserManagementComponent, icon: "settings" }
+      { title: 'Spieltage', component: MatchdayComponent, icon: "clipboard", visible: true },
+      { title: 'Einladungen', component: InvitesComponent, icon: "mail", visible: false},
+      { title: 'Mannschaften', component: TeamsComponent, icon: "people", visible: true },
+      { title: 'Meine Spiele', component: MyGamesComponent, icon: "ribbon", visible: true },
+      { title: 'Benutzerverwaltung', component: UserManagementComponent, icon: "settings", visible: false}
     ];
   }
 

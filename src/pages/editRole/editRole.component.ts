@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController, AlertController, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
 
@@ -20,7 +20,6 @@ export class EditRoleComponent {
         private navParams: NavParams,
         public toastCtrl: ToastController,
         public alertCtrl: AlertController,
-        public viewCtrl: ViewController,
         public utilities: Utilities) {
 
         this.player = navParams.get('player');
@@ -65,6 +64,9 @@ export class EditRoleComponent {
         });
 
         if (successFlag) {
+            if (this.sameUser) {
+                this.utilities.setUserData();
+            }
             this.presentToast("Rolle wurde erfolgreich bearbeitet");
             this.navigateBackToList();
         } else {
