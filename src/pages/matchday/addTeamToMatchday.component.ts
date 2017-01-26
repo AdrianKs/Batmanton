@@ -1,3 +1,8 @@
+//todo
+//profilbilder
+//button fertig
+//keine Mannschaft
+//removePlayer
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { MatchdayService } from '../../providers/matchday.service';
