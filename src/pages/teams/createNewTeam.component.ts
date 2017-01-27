@@ -53,7 +53,7 @@ export class CreateTeamComponent implements OnInit {
         this.database = firebase.database();
     }
 
-    selectAlterklasse(value) {
+    selectAltersklasse(value) {
         this.altersklasse = value;
     }
 
