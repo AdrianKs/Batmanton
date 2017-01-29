@@ -1,7 +1,8 @@
 //todo
 //Notification (bzw. in Menüleiste)
+//Keine Spiele vorhanden
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController, NavParams } from 'ionic-angular';
+import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
 import { MyGamesService } from '../../providers/myGames.service';
 import firebase from 'firebase';
@@ -17,19 +18,13 @@ import * as _ from 'lodash';
 export class MyGamesComponent implements OnInit {
 
   ngOnInit() {
-    this.getGames();
-    this.getInvites();
-    console.log(this.today);
-    if (this.today == "2017-01-23T17:12:27.881Z"){
-      console.log("is the same")
-    }
-    if (this.today > "2017-01-24T17:12:27.881Z"){
-      console.log("is bigger")
-    }
-    if (this.today < "2017-01-24T17:12:27Z"){
-      console.log("is smaller")
-    }
+
   }
+
+  ionViewWillEnter() {
+    this.loadData(true, null);
+  }
+
 
   gameStatus: string = "vergangene";
   loggedInUserID: string = this.Utilities.user.uid;
@@ -40,27 +35,39 @@ export class MyGamesComponent implements OnInit {
   declined: boolean;
   accepted: boolean;
   pending: boolean;
+  loading: any;
   today: String = new Date().toISOString();
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService, private Utilities: Utilities) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService, private Utilities: Utilities, private loadingCtrl: LoadingController) {
 
   }
 
-  getGames(): void {
-      firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-        let gamesArray = [];
-        let counter = 0;
-        for (let i in snapshot.val()) {
-          gamesArray[counter] = snapshot.val()[i];
-          gamesArray[counter].id = i;
-          counter++;
-        }
-        this.dataGames = gamesArray;
-        this.dataGames = _.sortBy(this.dataGames, "time").reverse();
-      })
+  loadData(showLoading: boolean, event): void {
+    if (showLoading) {
+      this.createAndShowLoading();
     }
-
-  getInvites(): void {
+    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
+      let gamesArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        gamesArray[counter] = snapshot.val()[i];
+        gamesArray[counter].id = i;
+        counter++;
+      }
+      this.dataGames = gamesArray;
+      this.dataGames = _.sortBy(this.dataGames, "time").reverse();
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       let inviteArray = [];
       let counter = 0;
@@ -70,7 +77,36 @@ export class MyGamesComponent implements OnInit {
         counter++;
       }
       this.dataInvites = inviteArray;
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+  }
+
+
+  createAndShowErrorAlert(error) {
+      let alert = this.alertCtrl.create({
+        title: 'Fehler beim Empfangen der Daten',
+        message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+
+  createAndShowLoading() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
     })
+    this.loading.present();
   }
 
    getFirstFourPicUrls(match) {
@@ -217,13 +253,7 @@ export class MyGamesComponent implements OnInit {
   }
 
    doRefresh(refresher) {
-      console.log('Refreshed');
-      this.getGames();
-      this.getInvites();
-      setTimeout(() => {
-        console.log('New Data loaded.');
-        refresher.complete();
-      }, 1000);
+      this.loadData(false, refresher);
     }
 
   pendingToAccepted(matchID, userID){
