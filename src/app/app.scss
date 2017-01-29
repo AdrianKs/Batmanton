@@ -53,27 +53,33 @@ ion-label {
 }
 
 .menuBtnAbout .item-inner {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid $yellow-shade;
 }
 
 .menuIcons {
   margin-right: 10px;
+  color: $yellow-shade;
 }
 
 .menuBtnLogout {
   position: absolute;
   right: 0px;
   bottom: 2px;
+  margin-right: 6px;
+  color: $orange-shade;
 }
 
 .menuHeaderPic {
   position: absolute;
-  top: 5px;
+  top: 8px;
   left: 15px;
-  width: 48px;
-  height: 48px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
+  background: $yellow-shade;
+  padding: 3px;
 }
+
 
 .menuBtnHeader {
   position: absolute;
@@ -82,42 +88,78 @@ ion-label {
 }
 
 .mainPlayerContent {
-  font-size: 12px;
+  font-size: 15px;
+  color: white !important;
 }
 
 .secPlayerContent {
-  font-size: 10px;
-  color: lightslategray;
+  font-size: 11px;
+  color: #999999;
 }
 
-.thumbnail-matchday-top-left {
+.thumbnail-pictures{
+  background-color: $yellow-shade;
+  border-radius: 50%;
+  padding: 3px;
+}
+
+.thumbnail-top-left {
     width: 30px;
     height: 30px;
     border-top-left-radius: 100%;
     padding: 0;
     margin-bottom: -4px;
     margin-right: -4px;
+    background-color: black;
 }
 
-.thumbnail-matchday-top-right {
+.thumbnail-top-right {
     width: 30px;
     height: 30px;
     border-top-right-radius: 100%;
     padding: 0;
     margin-bottom: -4px;
+    background-color: black;
 }
 
-.thumbnail-matchday-bottom-right {
+.thumbnail-bottom-right {
     width: 30px;
     height: 30px;
     border-bottom-right-radius: 100%;
     padding: 0;
     margin-left: -4px;
+    background-color: black;
 }
 
-.thumbnail-matchday-bottom-left {
+.thumbnail-bottom-left {
     width: 30px;
     height: 30px;
     border-bottom-left-radius: 100%;
     padding: 0;
+    background-color: black;
+}
+
+.bottom-thumbnail-row{
+  height: 30px;
+}
+
+.profileImage {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  background-color: $yellow-shade;
+  padding: 2px;
+}
+
+.mainDetails {
+  color: white;
+}
+
+.fab{
+  background-color: $orange-shade !important;
+}
+
+.picture-border{
+  background-color: $yellow-shade;
+  padding: 3px;
 }

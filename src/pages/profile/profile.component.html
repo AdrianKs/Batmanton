@@ -9,12 +9,10 @@
     <ion-title>Mein Profil</ion-title>
     <ion-buttons right>
       <button *ngIf="(!editMode && utilities.userLoaded)" ion-button (click)="editProfile()">Bearbeiten
-        <!--<ion-icon name="create"></ion-icon>-->
       </button>
       <button
         [disabled]="(!firstnameChanged && !lastnameChanged && !emailChanged && !birthdayChanged && !genderChanged && !teamChanged) || !formValid"
         *ngIf="(editMode)" ion-button (click)="finishEditProfile()">Fertig
-        <!--<ion-icon name="checkmark" class="checkmarkIcon"></ion-icon>-->
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -23,8 +21,8 @@
 <ion-content>
   <div>
     <div class="picture-container">
-      <img id="profileImage" class="profile-image picture-click" src="{{this.utilities.userData.picUrl}}"
-           onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" (click)="changeProfilePicture()">
+      <img id="profileImage" class="profile-image picture-click picture-border" src="{{this.utilities.userData.picUrl}}"
+           onError="this.src='assets/images/user-shape-256.png'" (click)="changeProfilePicture()">
     </div>
     <br/>
     <form class="center-form profile-inputs" [formGroup]="profileForm" novalidate>
