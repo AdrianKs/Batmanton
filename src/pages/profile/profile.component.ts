@@ -5,6 +5,7 @@
 // Enter App Screen
 // Change Passwort
 // Delete Profile
+// remove duplicate profilePicture ID in ViewTeams
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";

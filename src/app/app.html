@@ -4,7 +4,9 @@
       <div class="menuHeaderContent">
         <div>
           <div menuClose (click)="openPage(myProfilePage)">
-            <img src="{{utilities.userData.picUrl}}" class="menuHeaderPic" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+            <div>
+              <img src="{{utilities.userData.picUrl}}" class="menuHeaderPic" onError="this.src='assets/images/user-shape-64.png'"/>
+            </div>
             <div class="menuBtnHeader">
               <div class="mainPlayerContent">
                 {{utilities.userData.firstname}} {{utilities.userData.lastname}}
@@ -16,7 +18,7 @@
           </div>
         </div>
         <button ion-button (click)="logout()" class="menuBtnLogout" clear icon-only>
-          <ion-icon name="log-out" class="menuIcons"></ion-icon>
+          <ion-icon name="log-out"></ion-icon>
         </button>
       </div>
     </ion-toolbar>
