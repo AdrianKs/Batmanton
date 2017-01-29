@@ -24,14 +24,12 @@ export class AddTeamToMatchdayComponent implements OnInit{
   pendingArray = [];
   declinedArray = [];
   deletedArray = [];
-  alreadyPending: number;
   allTeams: any;
   relevantTeams: any;
   allPlayers: any;
   buttonDisabled: Array<boolean>;
 
   ngOnInit(){
-    this.alreadyPending = 0;
     if (this.match.acceptedPlayers){
       for (let i in this.match.acceptedPlayers){
         this.acceptedArray[i]=this.match.acceptedPlayers[i];
@@ -40,7 +38,6 @@ export class AddTeamToMatchdayComponent implements OnInit{
     if (this.match.pendingPlayers){
       for (let i in this.match.pendingPlayers){
         this.pendingArray[i]=this.match.pendingPlayers[i];
-        this.alreadyPending++;
       }
     }
     if (this.match.declinedPlayers){
@@ -120,10 +117,14 @@ export class AddTeamToMatchdayComponent implements OnInit{
       counter++;
     }
     this.pendingArray[counter]= player.id;
+    for (let i in this.deletedArray){
+      if (this.deletedArray[i] == player.id){
+        this.deletedArray[i] = null;
+      }
+    }
     player.pending = true;
-    console.log('pending: ' + this.pendingArray);
+    console.log('pending:');
     console.log(this.pendingArray);
-    console.log(this.match.id);
   }
 
   removePlayer(player){
@@ -132,12 +133,15 @@ export class AddTeamToMatchdayComponent implements OnInit{
       for (let i in this.pendingArray) {
         if (this.pendingArray[i] == player.id){
           this.pendingArray.splice(counter, 1);
+          this.deletedArray.push(player.id);
         }
         counter ++;
       }
       player.pending = false;
-      console.log('pending: ' + this.pendingArray);
+      console.log('pending: ');
+      console.log(this.pendingArray);
     }
+    counter = 0;
     if(player.accepted == true){
       for (let i in this.acceptedArray) {
         if (this.acceptedArray[i] == player.id){
@@ -147,9 +151,12 @@ export class AddTeamToMatchdayComponent implements OnInit{
         counter ++;
       }
       player.accepted = false;
-      console.log('accepted: ' + this.acceptedArray);
-      console.log('deleted: ' + this.deletedArray);
+      console.log('accepted: ');
+      console.log(this.acceptedArray);
+      console.log('deleted: ');
+      console.log(this.deletedArray);
     }
+    counter = 0;
     if(player.declined == true){
       for (let i in this.declinedArray) {
         if (this.declinedArray[i] == player.id){
@@ -158,7 +165,8 @@ export class AddTeamToMatchdayComponent implements OnInit{
         counter ++;
       }
       player.declined = false;
-      console.log('declined: ' + this.declinedArray);
+      console.log('declined: ');
+      console.log(this.declinedArray);
     }
   }
 
@@ -178,7 +186,8 @@ export class AddTeamToMatchdayComponent implements OnInit{
       pendingPlayers: this.pendingArray,
       acceptedPlayers: this.acceptedArray,
       declinedPlayers: this.declinedArray
-    })
+    });
+
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       for (let i in snapshot.val()) {
         for (let j in this.deletedArray){
@@ -187,20 +196,33 @@ export class AddTeamToMatchdayComponent implements OnInit{
             console.log(i);
             firebase.database().ref('clubs/12/invites/' + i).remove();
           }
-        }      
+        }
       }      
     });
-    console.log(this.alreadyPending);
 
-    for (var i = this.alreadyPending; i < this.pendingArray.length; i++){
-      let id = this.makeid();
-      firebase.database().ref('clubs/12/invites/').child(id).set({
-        match: this.match.id.toString(),
-        recipient: this.pendingArray[this.alreadyPending],
-        sender: this.Utilities.user.uid,
-        state: 0
-      })
-      this.alreadyPending++;
+
+    for (let k in this.pendingArray){
+      let inviteExists = false;
+      firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+        for (let i in snapshot.val()) {
+          if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.pendingArray[k]){
+            console.log("inviteExists now true");
+              firebase.database().ref('clubs/12/invites/' + i).update({
+                state: 0
+              });
+            inviteExists = true;
+          }     
+        }
+        if (inviteExists == false){
+          let id = this.makeid();
+          firebase.database().ref('clubs/12/invites/').child(id).set({
+            match: this.match.id.toString(),
+            recipient: this.pendingArray[k],
+            sender: this.Utilities.user.uid,
+            state: 0
+          });
+        }
+      });
     }
     this.navCtrl.popToRoot();
   }

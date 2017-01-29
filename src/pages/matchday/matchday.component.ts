@@ -22,10 +22,12 @@ export class MatchdayComponent implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.dataInvites = this.Utilities.allInvites;
     this.loadData(true, null);
   }
 
   dataGames: any;
+  dataInvites: any;
   loading: any;
   
   constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
@@ -80,7 +82,7 @@ export class MatchdayComponent implements OnInit {
   getFirstFourPicUrls(match) {
     let urlArray = [];
     let counter = 0;
-    for (let i of this.Utilities.allInvites) {
+    for (let i of this.dataInvites) {
       if (i.match == match.id && i.sender == this.Utilities.user.uid && counter < 4){
           for(let j of this.Utilities.allPlayers){
             if(i.recipient == j.id){

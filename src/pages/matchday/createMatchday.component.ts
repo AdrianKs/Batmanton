@@ -158,24 +158,27 @@ export class CreateMatchdayComponent implements OnInit {
   }
 
   goBack(){
-    let confirm = this.alertCtrl.create({
-      title: 'Warnung',
-      message: 'Beim Verlassen des Fensters gehen alle Veränderungen verloren. Fortfahren?',
-      buttons: [
-        {
-          text: 'Nein',
-          handler: () => {
+    if (this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcode || this.time) {
+      let confirm = this.alertCtrl.create({
+        title: 'Warnung',
+        message: 'Beim Verlassen des Fensters gehen alle Veränderungen verloren. Fortfahren?',
+        buttons: [
+          {
+            text: 'Nein',
+            handler: () => {
+            }
+          },
+          {
+            text: 'Ja',
+            handler: () => {
+              this.navCtrl.pop();
+            }
           }
-        },
-        {
-          text: 'Ja',
-          handler: () => {
-            this.navCtrl.pop();
-          }
-        }
-      ]
-    });
-    confirm.present();
+        ]
+      });
+      confirm.present();
+    } else {
+      this.navCtrl.pop();
+    }
   }
-
 }

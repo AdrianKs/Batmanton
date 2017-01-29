@@ -131,7 +131,6 @@ export class MyGamesComponent implements OnInit {
 
   verifyAccept(inviteItem){
     firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
-      excuse: "",
       match: inviteItem.match,
       recipient: inviteItem.recipient,
       sender: inviteItem.sender,
@@ -259,18 +258,26 @@ export class MyGamesComponent implements OnInit {
   pendingToAccepted(matchID, userID){
     if (matchID != undefined && matchID != "0") {
       firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
+        let playerArray = [];
+        let counter = 0;
         let userPosition;
         for (var i = 0; i < snapshot.val().length; i++) {
+          playerArray[counter] = snapshot.val()[i];
           if (snapshot.val()[i] != undefined) {
             if (snapshot.val()[i] === userID) {
               userPosition = i;
-              break;
+              playerArray[counter] = null;
+              counter--;
             }
+          counter++;
           }
         }
         if (userPosition != undefined) {
           firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers/' + userPosition).remove();
         }
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          pendingPlayers: playerArray
+        });
       });
       firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
         let playersArray = [];
@@ -290,18 +297,26 @@ export class MyGamesComponent implements OnInit {
   pendingToDeclined(matchID, userID){
     if (matchID != undefined && matchID != "0") {
       firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
+        let playerArray = [];
+        let counter = 0;
         let userPosition;
         for (var i = 0; i < snapshot.val().length; i++) {
+          playerArray[counter] = snapshot.val()[i];
           if (snapshot.val()[i] != undefined) {
             if (snapshot.val()[i] === userID) {
               userPosition = i;
-              break;
+              playerArray[counter] = null;
+              counter--;
             }
+          counter++;
           }
         }
         if (userPosition != undefined) {
           firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers/' + userPosition).remove();
         }
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          pendingPlayers: playerArray
+        });
       });
       firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
         let playersArray = [];
@@ -320,18 +335,26 @@ export class MyGamesComponent implements OnInit {
 
   acceptedToDeclined(matchID, userID){
       firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
+        let playerArray = [];
+        let counter = 0;
         let userPosition;
         for (var i = 0; i < snapshot.val().length; i++) {
+          playerArray[counter] = snapshot.val()[i];
           if (snapshot.val()[i] != undefined) {
             if (snapshot.val()[i] === userID) {
               userPosition = i;
-              break;
+              playerArray[counter] = null;
+              counter--;
             }
+          counter++;
           }
         }
         if (userPosition != undefined) {
           firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers/' + userPosition).remove();
         }
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          acceptedPlayers: playerArray
+        });
       });
       firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
         let playersArray = [];
