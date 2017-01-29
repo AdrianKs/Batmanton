@@ -11,7 +11,7 @@
       <button *ngIf="(!editMode)" ion-button (click)="editProfile()">Bearbeiten
       </button>
       <button
-        [disabled]="(!opponentChanged && !teamChanged && !homeChanged && !streetChanged && !zipcodeChanged && !timeChanged) || !formValid"
+        [disabled]="(!opponentChanged && !teamChanged && !homeChanged && !streetChanged && !zipcodeChanged && !timeChanged)"
         *ngIf="(editMode)" ion-button (click)="finishEditProfile()">Fertig
       </button>
     </ion-buttons>
@@ -24,97 +24,92 @@
     <div class="pictureContainer">
       <div class="row">
         <div class="col">
-          <img class="thumbnail-matchday-top-left" src="{{getFirstFourPicUrls(gameItem)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-          <img class="thumbnail-matchday-top-right" src="{{getFirstFourPicUrls(gameItem)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+          <img class="thumbnail-matchday-top-left-l" src="{{getFirstFourPicUrls(gameItem)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+          <img class="thumbnail-matchday-top-right-l" src="{{getFirstFourPicUrls(gameItem)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
         </div>
         <div class="col">
-          <img class="thumbnail-matchday-bottom-left" src="{{getFirstFourPicUrls(gameItem)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-          <img class="thumbnail-matchday-bottom-right" src="{{getFirstFourPicUrls(gameItem)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+          <img class="thumbnail-matchday-bottom-left-l" src="{{getFirstFourPicUrls(gameItem)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+          <img class="thumbnail-matchday-bottom-right-l" src="{{getFirstFourPicUrls(gameItem)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
         </div>
       </div>
     </div>
     <div class="playerDataContainer">
-      <form class="center-form profile-inputs" [formGroup]="profileForm" novalidate>
-        <ion-item *ngIf="(!editMode)">
-          <ion-label class="playerLabel">Gegner:</ion-label>
-          <ion-label class="playerValue">{{ gameItem.opponent }}</ion-label>
-        </ion-item>
-        <ion-item *ngIf="(editMode)">
-          <ion-label color="primary" class="playerLabel">Gegner:</ion-label>
-          <ion-input class="playerValue" #opponent formControlName="opponent" [(ngModel)]="gameItem.opponent"
-                    (input)="elementChanged(opponent)"
-                    [class.invalid]="!profileForm.controls.opponent.valid && opponentChanged"></ion-input>
-        </ion-item>
-        <ion-item *ngIf="(!editMode)">
-          <ion-label class="playerLabel">Team:</ion-label>
-          <ion-label class="playerValue">{{ gameItem.team | teams}}</ion-label>
-        </ion-item>
-        <ion-item *ngIf="(editMode)">
-          <ion-label color="primary" class="playerLabel">Team:</ion-label>
-          <ion-select class="playerValue" #team formControlName="team" placeholder="Mannschaft" [(ngModel)]="gameItem.team"
-                      placeholder="{{gameItem.team | teams}}"
-                      (ionChange)="teamSelectChanged(gameItem.team)" doneText="Ok" cancelText="Abbrechen">
-            <ion-option value=0>keine Mannschaft</ion-option>
-            <ion-option *ngFor="let item of teamArray" value="{{item.id}}">{{item.name}}</ion-option>
-          </ion-select>
-        </ion-item>
-        <ion-item *ngIf="(!editMode)">
-          <ion-label class="playerLabel">Ort:</ion-label>
-          <ion-label class="playerValue">
-            <div *ngIf="gameItem.home == true">Heim</div>
-            <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'">Auswärts</div>
-            <div *ngIf="gameItem.home == 'unknown'"><p>Heim/Auswärts</p></div>
-          </ion-label>
-        </ion-item>
-        <ion-item *ngIf="(editMode)">
-          <ion-label color="primary" class="playerLabel">Ort:</ion-label>
-          <ion-select class="playerValue" #home formControlName="home" placeholder="Heim/Auswärts" [(ngModel)]="gameItem.home"
-                      (ionChange)="homeSelectChanged(gameItem.home)" doneText="Ok" cancelText="Abbrechen">
-            <ion-option value=true>Heim</ion-option>
-            <ion-option value=false>Auswärts</ion-option>
-          </ion-select>
-        </ion-item>
-        <ion-item *ngIf="(!editMode)">
-          <ion-label class="playerLabel">Straße, Hausnr.:</ion-label>
-          <ion-label class="playerValue">
-            <div *ngIf="gameItem.location.street == ''"><p>Straße, Hausnr.</p></div>
-            <div *ngIf="gameItem.location.street != ''">{{ gameItem.location.street }}</div>
-          </ion-label>
-        </ion-item>
-        <ion-item *ngIf="(!editMode)">
-          <ion-label class="playerLabel">PLZ:</ion-label>
-          <ion-label class="playerValue">
-            <div *ngIf="gameItem.location.zipcode == 0"><p>PLZ</p></div>
-            <div *ngIf="gameItem.location.zipcode != 0">{{ gameItem.location.zipcode }}</div>
-          </ion-label>
-        </ion-item>
-        <ion-item *ngIf="(editMode)">
-          <ion-label color="primary" class="playerLabel">Straße, Hausnr.:</ion-label>
-          <ion-input class="playerValue" #street formControlName="street" [(ngModel)]="gameItem.location.street"
-                    (input)="elementChanged(street)"
-                    [class.invalid]="!profileForm.controls.street.valid && streetChanged"></ion-input><br>
-        </ion-item>
-        <ion-item *ngIf="(editMode)">
-          <ion-label color="primary" class="playerLabel">PLZ:</ion-label>
-          <ion-input class="playerValue" #zipcode formControlName="zipcode" [(ngModel)]="gameItem.location.zipcode"
-                    (input)="zipcodeSelectChanged(zipcode)"
-                    [class.invalid]="!profileForm.controls.zipcode.valid && zipcodeChanged"></ion-input>
-        </ion-item>
-        <ion-item *ngIf="(!editMode)">
-          <ion-label class="playerLabel">Wann:</ion-label>
-          <ion-label class="playerValue">
-            <div *ngIf="gameItem.location.zipcode == '0'"><p>Datum & Uhrzeit</p></div>
-            <div *ngIf="gameItem.location.zipcode != '0'">{{ gameItem.time | matchTime }}</div>
-          </ion-label>
-        </ion-item>
-        <ion-item *ngIf="(editMode)">
-          <ion-label color="primary" class="playerLabel">Wann:</ion-label>
-          <ion-datetime class="playerValue" #time formControlName="time" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
-                        [(ngModel)]="gameItem.time"
-                        (ionChange)="timeSelectChanged(gameItem.date)"
-                        doneText="Ok" cancelText="Abbrechen"></ion-datetime>
-        </ion-item>
-      </form>
+      <ion-item *ngIf="(!editMode)">
+        <ion-label class="playerLabel">Gegner:</ion-label>
+        <ion-label class="playerValue">{{ gameItem.opponent }}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="(editMode)">
+        <ion-label color="primary" class="playerLabel">Gegner:</ion-label>
+        <ion-input class="playerValue" #opponent [(ngModel)]="gameItem.opponent"
+                  (input)="opponentEnteredChanged(opponent)"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="(!editMode)">
+        <ion-label class="playerLabel">Team:</ion-label>
+        <ion-label class="playerValue">{{ gameItem.team | teams}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="(editMode)">
+        <ion-label color="primary" class="playerLabel">Team:</ion-label>
+        <ion-select class="playerValue" #team placeholder="Mannschaft" [(ngModel)]="gameItem.team"
+                    placeholder="{{gameItem.team | teams}}"
+                    (ionChange)="teamSelectChanged(gameItem.team)" doneText="Ok" cancelText="Abbrechen">
+          <ion-option value=0>keine Mannschaft</ion-option>
+          <ion-option *ngFor="let item of teamArray" value="{{item.id}}">{{item.name}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="(!editMode)">
+        <ion-label class="playerLabel">Ort:</ion-label>
+        <ion-label class="playerValue">
+          <div *ngIf="gameItem.home == true">Heim</div>
+          <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'">Auswärts</div>
+          <div *ngIf="gameItem.home == 'unknown'"><p>Heim/Auswärts</p></div>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="(editMode)">
+        <ion-label color="primary" class="playerLabel">Ort:</ion-label>
+        <ion-select class="playerValue" #home placeholder="Heim/Auswärts" [(ngModel)]="gameItem.home"
+                    (ionChange)="homeSelectChanged(gameItem.home)" doneText="Ok" cancelText="Abbrechen">
+          <ion-option value=true>Heim</ion-option>
+          <ion-option value=false>Auswärts</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="(!editMode)">
+        <ion-label class="playerLabel">Adresse:</ion-label>
+        <ion-label class="playerValue">
+          <div *ngIf="gameItem.location.street == ''"><p>Straße, Hausnr.</p></div>
+          <div *ngIf="gameItem.location.street != ''">{{ gameItem.location.street }}</div>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="(!editMode)">
+        <ion-label class="playerLabel">PLZ:</ion-label>
+        <ion-label class="playerValue">
+          <div *ngIf="gameItem.location.zipcode == ''"><p>PLZ</p></div>
+          <div *ngIf="gameItem.location.zipcode != ''">{{ gameItem.location.zipcode }}</div>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="(editMode)">
+        <ion-label color="primary" class="playerLabel">Adresse:</ion-label>
+        <ion-input class="playerValue" #street [(ngModel)]="gameItem.location.street"
+                  (input)="streetEnteredChanged(street)"></ion-input><br>
+      </ion-item>
+      <ion-item *ngIf="(editMode)">
+        <ion-label color="primary" class="playerLabel">PLZ:</ion-label>
+        <ion-input class="playerValue" #zipcode [(ngModel)]="gameItem.location.zipcode"
+                  (input)="zipcodeSelectChanged(zipcode)"></ion-input>
+      </ion-item>
+      <ion-item *ngIf="(!editMode)">
+        <ion-label class="playerLabel">Wann:</ion-label>
+        <ion-label class="playerValue">
+          <div *ngIf="gameItem.time == '0'"><p>Datum & Uhrzeit</p></div>
+          <div *ngIf="gameItem.time != '0'">{{ gameItem.time | matchTime }}</div>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="(editMode)">
+        <ion-label color="primary" class="playerLabel">Wann:</ion-label>
+        <ion-datetime class="playerValue" #time displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
+                      [(ngModel)]="gameItem.time"
+                      (ionChange)="timeSelectChanged(gameItem.date)"
+                      doneText="Ok" cancelText="Abbrechen"></ion-datetime>
+      </ion-item>
       <ion-toolbar no-border-top>
         <ion-segment [(ngModel)]="playerStatus">
           <ion-segment-button value="accepted">
@@ -135,7 +130,7 @@
       <div *ngFor="let relevantPlayer of gameItem.acceptedPlayers">
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
-            <ion-item (click)="checkItem(relevantPlayer)">
+            <ion-item (click)="openProfile(player)">
               <div class="itemPlayer">
                 <div class="itemPlayerLeft">
                   <img id="profileImage" src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
@@ -158,7 +153,7 @@
       <div *ngFor="let relevantPlayer of gameItem.pendingPlayers">
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
-            <ion-item (click)="checkItem(relevantPlayer)">
+            <ion-item (click)="openProfile(player)">
               <div class="itemPlayer">
                 <div class="itemPlayerLeft">
                   <img id="profileImage" src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
@@ -181,7 +176,7 @@
       <div *ngFor="let relevantPlayer of gameItem.declinedPlayers">
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
-            <ion-item (click)="checkItem(relevantPlayer)">
+            <ion-item (click)="openProfile(player)">
               <div class="itemPlayer">
                 <div class="itemPlayerLeft">
                   <img id="profileImage" src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
@@ -201,11 +196,12 @@
       </div>
     </ion-list>
   </div>
-</ion-content>
-<ion-footer>
   <div class="pictureContainer">
-    <button ion-button outline round color="secondary" *ngIf="(!editMode)" (click)="addPlayers()"> 
-      Spieler hinzufügen
+    <button ion-button outline round color="secondary" *ngIf="(editMode)" (click)="addPlayers()"> 
+      Spieler bearbeiten
+    </button>
+    <button ion-button outline round color="danger" *ngIf="(editMode)" (click)="deleteGame()"> 
+      Spiel löschen
     </button>
   </div>
-</ion-footer>
+</ion-content>

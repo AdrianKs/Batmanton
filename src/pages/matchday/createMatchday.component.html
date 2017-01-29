@@ -40,7 +40,10 @@
           <ion-label stacked>Adresse</ion-label>
           <ion-input #street formControlName="street" [(ngModel)]="match.location.street"
                     (input)="elementChanged(street)" placeholder="Straße und Hausnummer"
-                    [class.invalid]="!createMatchdayForm.controls.street.valid && streetChanged"></ion-input><br>
+                    [class.invalid]="!createMatchdayForm.controls.street.valid && streetChanged"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>PLZ</ion-label>
           <ion-input #zipcode formControlName="zipcode" [(ngModel)]="match.location.zipcode"
                     (input)="zipcodeSelectChanged()" placeholder="PLZ"></ion-input>
         </ion-item>
@@ -57,15 +60,8 @@
 </ion-content>
 <ion-footer>
   <div class="pictureContainer">
-    <div *ngIf="match.team != 0">
-    <button ion-button outline round color="secondary" (click)="createGame()"> 
-      Spieler hinzufügen
-    </button>
-    </div>
-    <div *ngIf="match.team == 0">
     <button ion-button outline round color="secondary" (click)="createGame()"> 
       Spiel erstellen
     </button>
-    </div>
   </div>
 </ion-footer>

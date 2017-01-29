@@ -1,15 +1,10 @@
 //todo
-//Spiel/Mannschaftsbild größer
-//Profil der anderen Spieler anklicken
-//Remove Player
 //4 men 2 women for isNotMini (Logik allgemein)
-//Delete game (Lösung über matchID)
-
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController} from 'ionic-angular';
 import { MyGamesService } from '../../providers/myGames.service';
-import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component'
-import {FormBuilder, Validators, FormControl} from '@angular/forms';
+import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component';
+import { PlayerComponent } from './player.component';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
 
@@ -19,13 +14,13 @@ import {Utilities} from '../../app/utilities';
   providers: [MyGamesService]
 })
 export class GameDetailsComponent implements OnInit{
-  public profileForm;
+
   editMode: boolean = false;
   playerStatus: string = 'accepted';
+  loading: any;
   gameItem: any;
   playerArray: any;
   teamArray: any;
-  formValid: boolean = true;
 
   opponentOld: string;
   teamOld: string;
@@ -46,17 +41,9 @@ export class GameDetailsComponent implements OnInit{
     this.teamArray = this.Utilities.allTeams;
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private MyGamesService: MyGamesService, private Utilities: Utilities, public formBuilder: FormBuilder, private alertCtrl: AlertController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private MyGamesService: MyGamesService, private Utilities: Utilities,  private alertCtrl: AlertController) {
     //Load data in array
     this.gameItem = navP.get('gameItem');
-    this.profileForm = formBuilder.group({
-      opponent: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
-      team: [],
-      home: [],
-      street: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
-      zipcode: [],
-      time: []
-    })
   }
 
   getFirstFourPicUrls(match) {
@@ -86,18 +73,13 @@ export class GameDetailsComponent implements OnInit{
   }
 
   finishEditProfile() {
-    if ((this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged) && this.formValid) {
+    if (this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged) {
       if (this.gameItem.home){
           if (this.gameItem.home == true){
           this.gameItem.home = true;
         } else {
           this.gameItem.home = false;
         }
-      }
-      if (this.timeChanged){
-        /*this.gameItem.time = this.gameItem.time.substring(0, this.gameItem.time.length - 1);
-        this.gameItem.time = this.gameItem.time.replace("T","-");
-        this.gameItem.time = this.gameItem.time.replace(/:/g,"-");*/
       }
       firebase.database().ref('clubs/12/matches/' + this.gameItem.id).set({
         opponent: this.gameItem.opponent,
@@ -134,17 +116,19 @@ export class GameDetailsComponent implements OnInit{
     this.editMode = false;
   }
 
-  elementChanged(input) {
-    let field = input.inputControl.name;
-    if (this[field + "Old"] != this["profileForm"]["value"][field]) {
-      this[field + "Changed"] = true;
+  opponentEnteredChanged(input) {
+    if (this.opponentOld != input) {
+      this.opponentChanged = true;
     } else {
-      this[field + "Changed"] = false;
+      this.opponentChanged = false;
     }
-    if (this.profileForm.controls.opponent.valid && this.profileForm.controls.street.valid && this.profileForm.controls.zipcode.valid) {
-      this.formValid = true;
+  }
+
+  streetEnteredChanged(input) {
+    if (this.streetOld != input) {
+      this.streetChanged = true;
     } else {
-      this.formValid = false;
+      this.streetChanged = false;
     }
   }
 
@@ -162,6 +146,7 @@ export class GameDetailsComponent implements OnInit{
     } else {
       this.homeChanged = false;
     }
+    console.log(this.homeChanged);
   }
 
   zipcodeSelectChanged(input){
@@ -197,16 +182,9 @@ export class GameDetailsComponent implements OnInit{
     this.editMode = false;
   }
 
-  checkItem(item){
+  openProfile(item){
     console.log(item);
-  }
-
-  startsWithACapital(c: FormControl) {
-    let NAME_REGEXP = new RegExp("[A-Z]");
-    if (!NAME_REGEXP.test(c.value.charAt(0))) {
-      return {"incorrectNameFormat": true}
-    }
-    return null;
+    this.navCtrl.push(PlayerComponent, { player: item});
   }
 
   goBack(){
@@ -224,6 +202,35 @@ export class GameDetailsComponent implements OnInit{
     } else {
       this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.gameItem, relevantTeamsItem: this.teamArray});
     }
+  }
+
+  deleteGame(){
+    let confirm = this.alertCtrl.create({
+      title: 'Warnung',
+      message: 'Daten können nach Löschvorgang nicht wiederhergestellt werden. Fortfahren?',
+      buttons: [
+        {
+          text: 'Nein',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Ja',
+          handler: () => {
+            firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+              for (let i in snapshot.val()) {
+                if (snapshot.val()[i].match == this.gameItem.id){
+                  firebase.database().ref('clubs/12/invites/' + i).remove();
+                }     
+              }      
+            });
+            firebase.database().ref('clubs/12/matches/' + this.gameItem.id).remove();
+            this.navCtrl.popToRoot();
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
   
 }

@@ -1,5 +1,7 @@
+//todo
+//keine spiele vorhanden
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';
 import { CreateMatchdayComponent } from './createMatchday.component';
 import { MatchdayService } from '../../providers/matchday.service';
@@ -16,16 +18,24 @@ import * as _ from 'lodash';
 export class MatchdayComponent implements OnInit {
 
   ngOnInit() {
-    this.getGames();
+
+  }
+
+  ionViewWillEnter() {
+    this.loadData(true, null);
   }
 
   dataGames: any;
+  loading: any;
   
-  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities) {
+  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     
   }
 
-  getGames(): void {
+  loadData(showLoading: boolean, event): void {
+    if (showLoading) {
+      this.createAndShowLoading();
+    }
     firebase.database().ref('clubs/12/matches').once('value', snapshot => {
       let gamesArray = [];
       let counter = 0;
@@ -36,7 +46,35 @@ export class MatchdayComponent implements OnInit {
       }
       this.dataGames = gamesArray;
       this.dataGames = _.sortBy(this.dataGames, "time").reverse();
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+  }
+
+  createAndShowErrorAlert(error) {
+      let alert = this.alertCtrl.create({
+        title: 'Fehler beim Empfangen der Daten',
+        message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+
+  createAndShowLoading() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
     })
+    this.loading.present();
   }
 
   getFirstFourPicUrls(match) {
@@ -60,12 +98,7 @@ export class MatchdayComponent implements OnInit {
   }
 
   doRefresh(refresher) {
-    console.log('Refreshed');
-    this.getGames();
-    setTimeout(() => {
-      console.log('New Data loaded.');
-      refresher.complete();
-    }, 1000);
+    this.loadData(false, refresher);
   }
 
 

@@ -27,7 +27,7 @@
         <div *ngFor="let inviteItem of dataInvites">
           <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
             <div *ngIf="inviteItem.match == gameItem.id">
-              <div *ngIf="gameItem.time < today">
+              <div *ngIf="gameItem.time < today && gameItem.time != '0'">
               <ion-item (click)="openDetails($event, gameItem)">
                 <div item-left class="list">
                   <div class="row">
@@ -60,7 +60,7 @@
         <div *ngFor="let inviteItem of dataInvites">
           <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
             <div *ngIf="inviteItem.match == gameItem.id">
-              <div *ngIf="gameItem.time > today">
+              <div *ngIf="gameItem.time > today || gameItem.time == '0'">
               <ion-item (click)="openDetails($event, gameItem)">
                 <div item-left class="list">
                   <div class="row">
@@ -74,8 +74,8 @@
                     </div>
                   </div>
                 </div>
-                <div *ngIf="gameItem.time == 0"><p>TBA</p></div>
-                <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | matchTime }}</p></div>
+                <div *ngIf="gameItem.time == '0'"><p>TBA</p></div>
+                <div *ngIf="gameItem.time != '0'"><p>{{ gameItem.time | matchTime }}</p></div>
                 {{ gameItem.opponent }}
                 <div *ngIf="gameItem.home == true"><p>Heim</p></div>
                 <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>

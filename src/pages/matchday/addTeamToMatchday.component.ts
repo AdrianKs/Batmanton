@@ -1,8 +1,4 @@
 //todo
-//profilbilder
-//button fertig
-//keine Mannschaft
-//removePlayer
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { MatchdayService } from '../../providers/matchday.service';
@@ -24,7 +20,10 @@ export class AddTeamToMatchdayComponent implements OnInit{
   teamPosition: number;
   counter: number = 0;
   matchesCounter: number;
-  tempArray = [];
+  acceptedArray = [];
+  pendingArray = [];
+  declinedArray = [];
+  deletedArray = [];
   alreadyPending: number;
   allTeams: any;
   relevantTeams: any;
@@ -33,10 +32,20 @@ export class AddTeamToMatchdayComponent implements OnInit{
 
   ngOnInit(){
     this.alreadyPending = 0;
+    if (this.match.acceptedPlayers){
+      for (let i in this.match.acceptedPlayers){
+        this.acceptedArray[i]=this.match.acceptedPlayers[i];
+      }
+    }
     if (this.match.pendingPlayers){
       for (let i in this.match.pendingPlayers){
-        this.tempArray[i]=this.match.pendingPlayers[i];
+        this.pendingArray[i]=this.match.pendingPlayers[i];
         this.alreadyPending++;
+      }
+    }
+    if (this.match.declinedPlayers){
+      for (let i in this.match.declinedPlayers){
+        this.declinedArray[i]=this.match.declinedPlayers[i];
       }
     }
     this.allPlayers = this.setPlayers();
@@ -64,26 +73,27 @@ export class AddTeamToMatchdayComponent implements OnInit{
       for (let i in snapshot.val()) {
         playerArray[counter] = snapshot.val()[i];
         playerArray[counter].id = i;
-        playerArray[counter].added = false;
-        playerArray[counter].included = false;
+        playerArray[counter].accepted = false;
+        playerArray[counter].pending = false;
+        playerArray[counter].declined = false;
         if (this.match.acceptedPlayers){
           for (let i in this.match.acceptedPlayers){
             if (this.match.acceptedPlayers[i] == playerArray[counter].id){
-              playerArray[counter].included = true;
+              playerArray[counter].accepted = true;
             }
           }
         }
         if (this.match.pendingPlayers){
           for (let i in this.match.pendingPlayers){
             if (this.match.pendingPlayers[i] == playerArray[counter].id){
-              playerArray[counter].included = true;
+              playerArray[counter].pending = true;
             }
           }
         }
         if (this.match.declinedPlayers){
           for (let i in this.match.declinedPlayers){
             if (this.match.declinedPlayers[i] == playerArray[counter].id){
-              playerArray[counter].included = true;
+              playerArray[counter].declined = true;
             }
           }
         }
@@ -106,67 +116,92 @@ export class AddTeamToMatchdayComponent implements OnInit{
 
   addPlayer(player){
     let counter = 0;
-    for (let i in this.tempArray) {
-        counter++;
-      }
-    this.tempArray[counter]= player.id;
-    player.added = true;
-    console.log(this.tempArray);
+    for (let i in this.pendingArray) {
+      counter++;
+    }
+    this.pendingArray[counter]= player.id;
+    player.pending = true;
+    console.log('pending: ' + this.pendingArray);
+    console.log(this.pendingArray);
     console.log(this.match.id);
   }
 
   removePlayer(player){
     let counter = 0;
-    for (let i in this.tempArray) {
-      if (this.tempArray[i] == player.id){
-        this.tempArray.splice(counter, 1);
+    if(player.pending == true){
+      for (let i in this.pendingArray) {
+        if (this.pendingArray[i] == player.id){
+          this.pendingArray.splice(counter, 1);
+        }
+        counter ++;
       }
-      counter ++;
+      player.pending = false;
+      console.log('pending: ' + this.pendingArray);
     }
-    player.added = false;
-    console.log(this.tempArray);
+    if(player.accepted == true){
+      for (let i in this.acceptedArray) {
+        if (this.acceptedArray[i] == player.id){
+          this.acceptedArray.splice(counter, 1);
+          this.deletedArray.push(player.id);
+        }
+        counter ++;
+      }
+      player.accepted = false;
+      console.log('accepted: ' + this.acceptedArray);
+      console.log('deleted: ' + this.deletedArray);
+    }
+    if(player.declined == true){
+      for (let i in this.declinedArray) {
+        if (this.declinedArray[i] == player.id){
+          this.declinedArray.splice(counter, 1);
+        }
+        counter ++;
+      }
+      player.declined = false;
+      console.log('declined: ' + this.declinedArray);
+    }
   }
 
-  createGame(){
-    this.match.pendingPlayers = this.tempArray;
+  makeid() {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    if (this.match.id){
-      firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
-        pendingPlayers: this.match.pendingPlayers
-      });
-      this.matchesCounter = this.match.id;
-    } else {
-      firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-        let matchesArray = [];
-        this.matchesCounter = 0;
-        for (let i in snapshot.val()) {
-          matchesArray[this.matchesCounter] = snapshot.val()[i];
-          this.matchesCounter++;
-        }
-        matchesArray.push(this.match);
-        firebase.database().ref('clubs/12').update({
-            matches: matchesArray
-        });
-      });
-    }
+      for (var i = 0; i < 26; i++)
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      return text;
+  }
+
+  confirmPlayer(){
+
+    firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
+      pendingPlayers: this.pendingArray,
+      acceptedPlayers: this.acceptedArray,
+      declinedPlayers: this.declinedArray
+    })
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-      let invitesArray = [];
-      let invitesCounter = 0;
       for (let i in snapshot.val()) {
-        invitesArray[invitesCounter] = snapshot.val()[i];
-        invitesCounter++;
-      }
-      console.log(this.alreadyPending);
-      console.log(this.match.pendingPlayers.length);
-      console.log(this.match.pendingPlayers[1]);
-      for (var i = this.alreadyPending; i < this.match.pendingPlayers.length; i++){
-        invitesArray.push({match: this.matchesCounter.toString(), recipient: this.match.pendingPlayers[this.alreadyPending], sender: this.Utilities.user.uid, state: 0});
-        this.alreadyPending++;
-      }
-      firebase.database().ref('clubs/12').update({
-          invites: invitesArray
-      });
+        for (let j in this.deletedArray){
+          if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.deletedArray[j]){
+            console.log("gefunden");
+            console.log(i);
+            firebase.database().ref('clubs/12/invites/' + i).remove();
+          }
+        }      
+      }      
     });
+    console.log(this.alreadyPending);
+
+    for (var i = this.alreadyPending; i < this.pendingArray.length; i++){
+      let id = this.makeid();
+      firebase.database().ref('clubs/12/invites/').child(id).set({
+        match: this.match.id.toString(),
+        recipient: this.pendingArray[this.alreadyPending],
+        sender: this.Utilities.user.uid,
+        state: 0
+      })
+      this.alreadyPending++;
+    }
     this.navCtrl.popToRoot();
   }
 
@@ -184,16 +219,16 @@ export class AddTeamToMatchdayComponent implements OnInit{
           text: 'Ja',
           handler: () => {
             if(this.match.pendingPlayers){
-              this.tempArray = this.match.pendingPlayers;
+              this.pendingArray = this.match.pendingPlayers;
             } else {
-              this.tempArray = [];
+              this.pendingArray = [];
             }
             this.navCtrl.pop();
           }
         }
       ]
     });
-    confirm.present()
+    confirm.present();
   }
 }
 
