@@ -15,6 +15,29 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+@media (max-width: 320px) {
+  /* CSS that should be displayed if width is equal to or less than 800px goes here */
+  .menuHeaderPic {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+}
+
+@media (min-width: 321px){
+  .menuHeaderPic {
+    position: absolute;
+    top: 5px;
+    left: 15px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+}
+
 
 form {
   margin-bottom: 32px;
@@ -64,15 +87,6 @@ ion-label {
   position: absolute;
   right: 0px;
   bottom: 2px;
-}
-
-.menuHeaderPic {
-  position: absolute;
-  top: 5px;
-  left: 15px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
 }
 
 .menuBtnHeader {
