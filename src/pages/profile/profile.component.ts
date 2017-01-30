@@ -5,15 +5,19 @@
 // Enter App Screen
 // Change Passwort
 // Delete Profile
-// remove duplicate profilePicture ID in ViewTeams
-// checkItem(item)? in GameDetails
-// Zu einem Spieltag hinzugefügte Spieler können nicht mehr entfernt werden
-// Frauen kann man beim Hinzufügen zu einem Spiel nicht wieder direkt entfernen
 // Fix infinite loading indicator iPhone
 // handle error wenn keine internetverbindung besteht
 // Einheitliches Erscheinungsbild für matchday & team beim hinzufügen von spielern
 // Bug: Alter der Mannschaft wird nach Bearbeitung resettet, wenn man Spieler hinzufügen will
 // Cookie login
+// AddTeamsToMatchday: Unterschied zwischen "Fertig" und "Zurück" Button? Warum wird man bei "Fertig" wieder in die Übersicht geleitet?
+// Spieldetails: "Kein Spieler" Label hinzufügen
+// register style
+// invites style
+// myGames style
+// gameDetails-->player style
+// ViewTeam: "Fertig" Button ausgrauen, wenn keine Changes gemacht wurden
+// gameDetails: Remove player directly from list
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
