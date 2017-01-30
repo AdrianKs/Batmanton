@@ -25,13 +25,13 @@
       <div *ngFor="let item of dataPlayer; let i = index;">
         <div *ngIf="item.gender == 'm'">
           <ion-item (click)="openEditor($event, item)">
-            <div class="itemPlayer">
+            <div>
               <div class="itemPlayerLeft">
-                <img id="profileImage" src="{{item.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+                <img id="profileImage" src="{{item.picUrl}}" class="profileImage" onError="this.src='assets/images/user-shape-64.png'" />
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
-                  {{ item.lastname }}, {{item.firstname}} 
+                  {{ item.lastname }}, {{item.firstname}}
                 </div>
                 <div class="secondaryDetails">
                   {{item.team | teams}} <br/>
@@ -49,11 +49,11 @@
           <ion-item (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
-                <img src="{{item.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+                <img src="{{item.picUrl}}" class="profileImage" onError="this.src='assets/images/user-shape-64.png'" />
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
-                  {{ item.lastname }}, {{item.firstname}} 
+                  {{ item.lastname }}, {{item.firstname}}
                 </div>
                 <div class="secondaryDetails">
                   {{item.team | teams}} <br/>

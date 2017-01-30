@@ -15,22 +15,22 @@
          Fertig
       </button>
         </ion-buttons>
-        
+
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
     <div class="topContainer">
-        <div class="list pictureContainer">
+        <div class="pictureContainer inline">
 
-            <div class="row">
-                <div class="col">
-                    <img class="thumbnail-matchday-top-left-v" src="{{getFirstFourPicUrls()[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-<img class="thumbnail-matchday-top-right-v" src="{{getFirstFourPicUrls()[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+            <div class="thumbnail-pictures-big">
+                <div>
+                    <img class="thumbnail-top-left-big" src="{{getFirstFourPicUrls()[0]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+<img class="thumbnail-top-right-big" src="{{getFirstFourPicUrls()[1]}}" onError="this.src='assets/images/user-shape-64.png'"/>
 </div>
-<div class="col">
-    <img class="thumbnail-matchday-bottom-left-v" src="{{getFirstFourPicUrls()[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-<img class="thumbnail-matchday-bottom-right-v" src="{{getFirstFourPicUrls()[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+<div class="bottom-thumbnail-row-big">
+    <img class="thumbnail-bottom-left-big" src="{{getFirstFourPicUrls()[2]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+<img class="thumbnail-bottom-right-big" src="{{getFirstFourPicUrls()[3]}}" onError="this.src='assets/images/user-shape-64.png'"/>
 </div>
 </div>
 </div>
@@ -85,7 +85,7 @@
                 <ion-label *ngIf="altersklasse ==19" class="data-label">Jugend</ion-label>
                 <ion-label *ngIf="altersklasse==0" class="data-label">Erwachsen</ion-label>-->
             </ion-item>
-           
+
         </ion-list>
     </div>
 </form>

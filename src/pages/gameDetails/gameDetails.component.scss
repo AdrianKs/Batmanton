@@ -1,147 +1,69 @@
-page-gameDetails{
-    .gameDetails-inputs input{
-        text-align: right;
-    }
+page-gameDetails {
+  [padding], [padding] .scroll-content {
+    padding: 0px;
+  }
 
-    .thumbnail-matchday-top-left-l {
-        width: 55px;
-        height: 55px;
-        border-top-left-radius: 100%;
-        padding: 0;
-        margin-bottom: 0px;
-        margin-right: 0px;
-    }
-
-    .thumbnail-matchday-top-right-l {
-        width: 55px;
-        height: 55px;
-        border-top-right-radius: 100%;
-        padding: 0;
-        margin-bottom: 0px;
-    }
-
-    .thumbnail-matchday-bottom-right-l {
-        width: 55px;
-        height: 55px;
-        border-bottom-right-radius: 100%;
-        padding: 0;
-        margin-left: 0px;
-    }
-
-    .thumbnail-matchday-bottom-left-l {
-        width: 55px;
-        height: 55px;
-        border-bottom-left-radius: 100%;
-        padding: 0;
-    }
-}
-.selectContainer{
-   width: 100%;
-   padding: 8px;
-}
-
-.selectTeam {
-   border: none;
-   width: 100%;
-   height: 42px;
-   box-shadow: 0 2px 2px rgba(0, 0, 0, 0.19), 0 1px 1px rgba(0, 0, 0, 0.23)
-}
-
-.itemPlayerLeft {
-    width: 15%;
-    float: left;
-}
-
-.itemPlayerRight{
-    width: 85%;
-    color: lightslategrey;
-    float: right;
+  .selectContainer {
+    width: 100%;
     padding: 8px;
-}
+  }
 
-.secondaryDetails{
+  .selectTeam {
+    border: none;
+    width: 100%;
+    height: 42px;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.19), 0 1px 1px rgba(0, 0, 0, 0.23)
+  }
+
+  .secondaryDetails {
     font-size: 14px;
-}
+  }
 
-.pictureContainer{
-    text-align: center;
-    margin-top: 20px;
-}
-
-
-.bottomContainer{
-    margin-top: 30px;
-    text-align: center;
-}
-
-.labelRoleContainer{
+  .labelRoleContainer {
     text-align: center;
     border-top: 1px solid black;
     border-bottom: 1px solid black;
     background: #cccccc;
     font-weight: bold;
     font-size: 18px;
-}
+  }
 
-.label.label-md.myLabel{
+  .label.label-md.myLabel {
     margin: 8px 3px 8px 0px;
-}
+  }
 
-.changeRoleContainer{
+  .changeRoleContainer {
     text-align: center;
     padding: 8px;
     margin-top: 30px;
-}
+  }
 
-.myChk{
+  .myChk {
     margin-right: 10px;
     margin-left: 10px;
-}
+  }
 
-.saveButtonContainer{
+  .saveButtonContainer {
     margin-top: 30px;
-}
+  }
 
-.playerValue {
+  .playerValue {
     font-size: 14px;
-}
+  }
 
-.playerLabel {
+  .playerLabel {
     font-weight: bold;
-}
+  }
 
-.profile-inputs input {
+  .profile-inputs input {
     text-align: right;
   }
 
-.thumbnail-matchday-top-left {
-    width: 30px;
-    height: 30px;
-    border-top-left-radius: 100%;
-    padding: 0;
-    margin-bottom: -5px;
-    margin-right: -4px;
-}
+  .align-center{
+    text-align: center;
+  }
 
-.thumbnail-matchday-top-right {
-    width: 30px;
-    height: 30px;
-    border-top-right-radius: 100%;
-    padding: 0;
-    margin-bottom: -5px;
-}
-
-.thumbnail-matchday-bottom-right {
-    width: 30px;
-    height: 30px;
-    border-bottom-right-radius: 100%;
-    padding: 0;
-    margin-left: -4px;
-}
-
-.thumbnail-matchday-bottom-left {
-    width: 30px;
-    height: 30px;
-    border-bottom-left-radius: 100%;
-    padding: 0;
+  .inline{
+    display: inline-block;
+  }
 }

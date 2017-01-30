@@ -21,15 +21,17 @@
 
 <ion-content padding>
   <div class="topContainer">
-    <div class="pictureContainer">
-      <div class="row">
-        <div class="col">
-          <img class="thumbnail-matchday-top-left-l" src="{{getFirstFourPicUrls(gameItem)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-          <img class="thumbnail-matchday-top-right-l" src="{{getFirstFourPicUrls(gameItem)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-        </div>
-        <div class="col">
-          <img class="thumbnail-matchday-bottom-left-l" src="{{getFirstFourPicUrls(gameItem)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-          <img class="thumbnail-matchday-bottom-right-l" src="{{getFirstFourPicUrls(gameItem)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+    <div class="align-center">
+      <div class="pictureContainer inline">
+        <div class="thumbnail-pictures-big">
+          <div>
+            <img class="thumbnail-top-left-big" src="{{getFirstFourPicUrls(gameItem)[0]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+            <img class="thumbnail-top-right-big" src="{{getFirstFourPicUrls(gameItem)[1]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+          </div>
+          <div class="bottom-thumbnail-row-big">
+            <img class="thumbnail-bottom-left-big" src="{{getFirstFourPicUrls(gameItem)[2]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+            <img class="thumbnail-bottom-right-big" src="{{getFirstFourPicUrls(gameItem)[3]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+          </div>
         </div>
       </div>
     </div>
@@ -131,16 +133,17 @@
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
             <ion-item (click)="openProfile(player)">
-              <div class="itemPlayer">
+              <div>
                 <div class="itemPlayerLeft">
-                  <img id="profileImage" src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+                  <img src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/user-shape-64.png'" />
                 </div>
                 <div class="itemPlayerRight">
                   <div class="mainDetails">
-                    {{ player.lastname }}, {{player.firstname}} <br/>
+                    {{ player.lastname }}, {{player.firstname}}
                   </div>
                   <div class="secondaryDetails">
-                    {{player.team | teams}}
+                    {{player.team | teams}} <br/>
+                    {{player.birthday | birthday}}
                   </div>
                 </div>
               </div>
@@ -154,16 +157,17 @@
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
             <ion-item (click)="openProfile(player)">
-              <div class="itemPlayer">
+              <div>
                 <div class="itemPlayerLeft">
-                  <img id="profileImage" src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+                  <img src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/user-shape-64.png'" />
                 </div>
                 <div class="itemPlayerRight">
                   <div class="mainDetails">
-                    {{ player.lastname }}, {{player.firstname}} <br/>
+                    {{ player.lastname }}, {{player.firstname}}
                   </div>
                   <div class="secondaryDetails">
-                    {{player.team | teams}}
+                    {{player.team | teams}} <br/>
+                    {{player.birthday | birthday}}
                   </div>
                 </div>
               </div>
@@ -177,16 +181,16 @@
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
             <ion-item (click)="openProfile(player)">
-              <div class="itemPlayer">
                 <div class="itemPlayerLeft">
-                  <img id="profileImage" src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+                  <img src="{{player.picUrl}}" class="profileImage" onError="this.src='assets/images/user-shape-64.png'" />
                 </div>
                 <div class="itemPlayerRight">
                   <div class="mainDetails">
-                    {{ player.lastname }}, {{player.firstname}} <br/>
+                    {{ player.lastname }}, {{player.firstname}}
                   </div>
                   <div class="secondaryDetails">
-                    {{player.team | teams}}
+                    {{player.team | teams}} <br/>
+                    {{player.birthday | birthday}}
                   </div>
                 </div>
               </div>
@@ -196,16 +200,18 @@
       </div>
     </ion-list>
   </div>
-</ion-content>
-<ion-footer *ngIf="(editMode)">
-  <ion-item>
-    <div class="pictureContainer">
-      <button ion-button outline round color="secondary" (click)="addPlayers()"> 
+
+  <div *ngIf="(!editMode)" class="bottomContainer">
+    <div class="saveButtonContainer">
+      <button ion-button outline round color="secondary" icon-left (click)="addPlayers()">
+        <ion-icon name="add"></ion-icon>
         Spieler bearbeiten
       </button>
-      <button ion-button outline round color="danger" (click)="deleteGame()"> 
+      <button ion-button outline round color="danger" icon-left (click)="deleteGame()">
+        <ion-icon name="close"></ion-icon>
         Spiel löschen
       </button>
     </div>
-  </ion-item>
-</ion-footer>
+  </div>
+
+</ion-content>
