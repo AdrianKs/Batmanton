@@ -1,22 +1,23 @@
 //todo
-//Formcontroll ggf. überarbeiten...
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component'
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'page-createMatchday',
   templateUrl: 'createMatchday.component.html',
-  providers: [MatchdayService]
 })
 
 export class CreateMatchdayComponent implements OnInit {
   public createMatchdayForm;
-  match = {opponent: this.opponent, team: this.team, home: this.home, location: {street: this.street, zipcode: this.zipcode}, time: this.time, pendingPlayers: this.pendingPlayersArray};
+  templateChecked: boolean;
+  dataTemplates: any;
+  match = {id: this.id, opponent: this.opponent, team: this.team, home: this.home, location: {street: this.street, zipcode: this.zipcode}, time: this.time, pendingPlayers: this.pendingPlayersArray};
+  id: any;
   opponent: string;
   team: any;
   home: any;
@@ -41,10 +42,12 @@ export class CreateMatchdayComponent implements OnInit {
     this.streetChanged = false;
     this.zipcodeChanged = false;
     this.timeChanged = false;
+    this.templateChecked = false;
+    this.getTemplates();
   }
 
   
-  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder) {
+  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder) {
     this.createMatchdayForm = formBuilder.group({
       opponent: [],
       team: [],
@@ -53,6 +56,20 @@ export class CreateMatchdayComponent implements OnInit {
       zipcode: [],
       time: []
     })
+  }
+
+  getTemplates(){
+    firebase.database().ref('clubs/12/templates').once('value', snapshot => {
+      let templateArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        templateArray[counter] = snapshot.val()[i];
+        templateArray[counter].id = i;
+        counter++;
+      }
+      this.dataTemplates = templateArray;
+      this.dataTemplates = _.sortBy(this.dataTemplates, "opponent");
+    });
   }
 
   elementChanged(input) {
@@ -85,8 +102,27 @@ export class CreateMatchdayComponent implements OnInit {
     this.timeChanged = true;
   }
 
+  makeid() {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for (var i = 0; i < 26; i++)
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      return text;
+  }
+
   createGame(){
     if (this.opponentChanged && this.teamChanged && this.formValid){
+      if (this.templateChecked == true){
+        let id = this.makeid();
+        firebase.database().ref('clubs/12/templates/').child(id).set({
+          opponent: this.match.opponent,
+          street: this.match.location.street,
+          zipcode: this.match.location.zipcode
+        })
+      }
+
       if (this.homeChanged == false){
         this.match.home = "unknown";
       } else {
@@ -96,7 +132,6 @@ export class CreateMatchdayComponent implements OnInit {
           this.match.home = false;
         }
       }
-
       if (this.streetChanged == false){
         this.match.location.street = "";
       }
@@ -106,31 +141,41 @@ export class CreateMatchdayComponent implements OnInit {
       if (this.timeChanged == false){
         this.match.time = "0";
       }
-
-      if (this.match.team == 0){
-        this.pendingPlayersArray[0] = "Keiner";
-        this.match.pendingPlayers = this.pendingPlayersArray;
-        firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-          let matchesArray = [];
-          let counter = 0;
-          for (let i in snapshot.val()) {
-            matchesArray[counter] = snapshot.val()[i];
-            counter++;
-          }
-          matchesArray.push(this.match);
-          firebase.database().ref('clubs/12').update({
-              matches: matchesArray
-          });
-          firebase.database().ref('clubs/12/matches/' + counter + '/pendingPlayers').remove();
-        });
-        this.navCtrl.popToRoot();
-      } else {
-        this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, relevantTeamsItem: this.relevantTeams});
-      }
+      
+      this.match.id = this.makeid();
+      firebase.database().ref('clubs/12/matches/').child(this.match.id).set({
+        opponent: this.match.opponent,
+        team: this.match.team,
+        home: this.match.home,
+        time: this.match.time
+      })
+      firebase.database().ref('clubs/12/matches/' + this.match.id + '/location').set({
+        street: this.match.location.street,
+        zipcode: this.match.location.zipcode
+      })
+      let alert = this.alertCtrl.create({
+          message: 'Das Spiel wurde erfolgreich angelegt! Möchten Sie dem Spiel direkt Spieler zuweisen?',
+          title: 'Mannschaft angelegt',
+          buttons: [
+              {
+                  text: 'Später',
+                  handler: () => {
+                      this.navCtrl.popToRoot();
+                  }
+              },
+              {
+                  text: 'Spieler hinzufügen',
+                  handler: () => {
+                      this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, relevantTeamsItem: this.relevantTeams});
+                  }
+              }
+          ]
+      });
+      alert.present();
     } else {
       let error = this.alertCtrl.create({
         title: 'Warnung',
-        message: 'Bitte mindestens das Gegner- sowie Teamfeld ausfüllen.',
+        message: 'Bitte mindestens das Gegner- sowie Mannschaftsfeld ausfüllen.',
         buttons: ['Okay']
       });
       error.present();
@@ -138,24 +183,65 @@ export class CreateMatchdayComponent implements OnInit {
   }
 
   goBack(){
-    let confirm = this.alertCtrl.create({
-      title: 'Warnung',
-      message: 'Beim Verlassen des Fensters gehen alle Veränderungen verloren. Fortfahren?',
-      buttons: [
-        {
-          text: 'Nein',
-          handler: () => {
+    if (this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcode || this.time) {
+      let confirm = this.alertCtrl.create({
+        title: 'Warnung',
+        message: 'Beim Verlassen des Fensters gehen alle Veränderungen verloren. Fortfahren?',
+        buttons: [
+          {
+            text: 'Nein',
+            handler: () => {
+            }
+          },
+          {
+            text: 'Ja',
+            handler: () => {
+              this.navCtrl.pop();
+            }
           }
-        },
-        {
-          text: 'Ja',
-          handler: () => {
-            this.navCtrl.pop();
-          }
+        ]
+      });
+      confirm.present();
+    } else {
+      this.navCtrl.pop();
+    }
+  }
+
+  showTemplates(){
+    let alert = this.alertCtrl.create();
+    let dataAvailable = false;
+    alert.setTitle('Vorlage auswählen');
+
+    for (let i in this.dataTemplates){
+      alert.addInput({
+        type: 'radio',
+        label: this.dataTemplates[i].opponent + ": " + this.dataTemplates[i].street + ", " + this.dataTemplates[i].zipcode,
+        value: this.dataTemplates[i].id,
+        checked: false
+      });
+      dataAvailable = true;
+    }
+    
+
+    alert.addButton('Abbruch');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        if (data == null){
+
+        } else {
+          this.updateTemplate(data);
         }
-      ]
+      }
     });
-    confirm.present();
+    alert.present();
+  }
+
+  updateTemplate(opponentID){
+    firebase.database().ref('clubs/12/templates/'+opponentID).once('value', snapshot => {
+      this.match.location.street = snapshot.val().street;
+      this.match.location.zipcode = snapshot.val().zipcode;
+    });
   }
 
 }

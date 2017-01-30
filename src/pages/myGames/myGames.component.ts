@@ -1,9 +1,9 @@
 //todo
 //Notification (bzw. in Menüleiste)
+//Keine Spiele vorhanden
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController, NavParams } from 'ionic-angular';
+import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
-import { MyGamesService } from '../../providers/myGames.service';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -11,25 +11,18 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-myGames',
   templateUrl: 'myGames.component.html',
-  providers: [MyGamesService]
 })
 
 export class MyGamesComponent implements OnInit {
 
   ngOnInit() {
-    this.getGames();
-    this.getInvites();
-    console.log(this.today);
-    if (this.today == "2017-01-23T17:12:27.881Z"){
-      console.log("is the same")
-    }
-    if (this.today > "2017-01-24T17:12:27.881Z"){
-      console.log("is bigger")
-    }
-    if (this.today < "2017-01-24T17:12:27Z"){
-      console.log("is smaller")
-    }
+
   }
+
+  ionViewWillEnter() {
+    this.loadData(true, null);
+  }
+
 
   gameStatus: string = "vergangene";
   loggedInUserID: string = this.Utilities.user.uid;
@@ -40,27 +33,39 @@ export class MyGamesComponent implements OnInit {
   declined: boolean;
   accepted: boolean;
   pending: boolean;
+  loading: any;
   today: String = new Date().toISOString();
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService, private Utilities: Utilities) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private Utilities: Utilities, private loadingCtrl: LoadingController) {
 
   }
 
-  getGames(): void {
-      firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-        let gamesArray = [];
-        let counter = 0;
-        for (let i in snapshot.val()) {
-          gamesArray[counter] = snapshot.val()[i];
-          gamesArray[counter].id = i;
-          counter++;
-        }
-        this.dataGames = gamesArray;
-        this.dataGames = _.sortBy(this.dataGames, "time").reverse();
-      })
+  loadData(showLoading: boolean, event): void {
+    if (showLoading) {
+      this.createAndShowLoading();
     }
-
-  getInvites(): void {
+    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
+      let gamesArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        gamesArray[counter] = snapshot.val()[i];
+        gamesArray[counter].id = i;
+        counter++;
+      }
+      this.dataGames = gamesArray;
+      this.dataGames = _.sortBy(this.dataGames, "time").reverse();
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       let inviteArray = [];
       let counter = 0;
@@ -70,7 +75,36 @@ export class MyGamesComponent implements OnInit {
         counter++;
       }
       this.dataInvites = inviteArray;
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+  }
+
+
+  createAndShowErrorAlert(error) {
+      let alert = this.alertCtrl.create({
+        title: 'Fehler beim Empfangen der Daten',
+        message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+
+  createAndShowLoading() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
     })
+    this.loading.present();
   }
 
    getFirstFourPicUrls(match) {
@@ -94,11 +128,7 @@ export class MyGamesComponent implements OnInit {
   }
 
   verifyAccept(inviteItem){
-    firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
-      excuse: "",
-      match: inviteItem.match,
-      recipient: inviteItem.recipient,
-      sender: inviteItem.sender,
+    firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
       state: 1
     });
     inviteItem.state = 1;
@@ -160,11 +190,7 @@ export class MyGamesComponent implements OnInit {
           } else {
             this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
           }
-          firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
-            excuse: data,
-            match: inviteItem.match,
-            recipient: inviteItem.recipient,
-            sender: inviteItem.sender,
+          firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
             state: 2
           });
         }
@@ -195,11 +221,8 @@ export class MyGamesComponent implements OnInit {
                     } else {
                       this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
                     }
-                    firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
+                    firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
                       excuse: this.testRadioResult + ': ' +data.extra,
-                      match: inviteItem.match,
-                      recipient: inviteItem.recipient,
-                      sender: inviteItem.sender,
                       state: 2
                     });
                   }
@@ -217,30 +240,32 @@ export class MyGamesComponent implements OnInit {
   }
 
    doRefresh(refresher) {
-      console.log('Refreshed');
-      this.getGames();
-      this.getInvites();
-      setTimeout(() => {
-        console.log('New Data loaded.');
-        refresher.complete();
-      }, 1000);
+      this.loadData(false, refresher);
     }
 
   pendingToAccepted(matchID, userID){
     if (matchID != undefined && matchID != "0") {
       firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
+        let playerArray = [];
+        let counter = 0;
         let userPosition;
         for (var i = 0; i < snapshot.val().length; i++) {
+          playerArray[counter] = snapshot.val()[i];
           if (snapshot.val()[i] != undefined) {
             if (snapshot.val()[i] === userID) {
               userPosition = i;
-              break;
+              playerArray[counter] = null;
+              counter--;
             }
+          counter++;
           }
         }
         if (userPosition != undefined) {
           firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers/' + userPosition).remove();
         }
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          pendingPlayers: playerArray
+        });
       });
       firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
         let playersArray = [];
@@ -260,18 +285,26 @@ export class MyGamesComponent implements OnInit {
   pendingToDeclined(matchID, userID){
     if (matchID != undefined && matchID != "0") {
       firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
+        let playerArray = [];
+        let counter = 0;
         let userPosition;
         for (var i = 0; i < snapshot.val().length; i++) {
+          playerArray[counter] = snapshot.val()[i];
           if (snapshot.val()[i] != undefined) {
             if (snapshot.val()[i] === userID) {
               userPosition = i;
-              break;
+              playerArray[counter] = null;
+              counter--;
             }
+          counter++;
           }
         }
         if (userPosition != undefined) {
           firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers/' + userPosition).remove();
         }
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          pendingPlayers: playerArray
+        });
       });
       firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
         let playersArray = [];
@@ -290,18 +323,26 @@ export class MyGamesComponent implements OnInit {
 
   acceptedToDeclined(matchID, userID){
       firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
+        let playerArray = [];
+        let counter = 0;
         let userPosition;
         for (var i = 0; i < snapshot.val().length; i++) {
+          playerArray[counter] = snapshot.val()[i];
           if (snapshot.val()[i] != undefined) {
             if (snapshot.val()[i] === userID) {
               userPosition = i;
-              break;
+              playerArray[counter] = null;
+              counter--;
             }
+          counter++;
           }
         }
         if (userPosition != undefined) {
           firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers/' + userPosition).remove();
         }
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          acceptedPlayers: playerArray
+        });
       });
       firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
         let playersArray = [];

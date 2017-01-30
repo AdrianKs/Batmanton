@@ -10,6 +10,7 @@ import {CreateMatchdayComponent} from '../pages/matchday/createMatchday.componen
 import {AddTeamToMatchdayComponent} from '../pages/matchday/addTeamToMatchday.component';
 import {MyGamesComponent} from '../pages/myGames/myGames.component';
 import {GameDetailsComponent} from '../pages/gameDetails/gameDetails.component';
+import {PlayerComponent} from '../pages/gameDetails/player.component'
 import {ProfileComponent} from '../pages/profile/profile.component';
 import {RegisterComponent} from '../pages/register/register.component';
 import {UserManagementComponent} from '../pages/userManagement/userManagement.component';
@@ -40,6 +41,7 @@ import {MatchTime} from './pipes/matchTime';
     AddTeamToMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
+    PlayerComponent,
     ProfileComponent,
     RegisterComponent,
     UserManagementComponent,
@@ -74,6 +76,7 @@ import {MatchTime} from './pipes/matchTime';
     AddTeamToMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
+    PlayerComponent,
     ProfileComponent,
     RegisterComponent,
     UserManagementComponent,
