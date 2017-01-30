@@ -18,6 +18,7 @@
 // gameDetails-->player style
 // ViewTeam: "Fertig" Button ausgrauen, wenn keine Changes gemacht wurden
 // gameDetails: Remove player directly from list
+// unnötige css klassen löschen
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
