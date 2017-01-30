@@ -30,7 +30,7 @@
       <div *ngIf="item.home == 'unknown'"><p>TBA</p></div>
     </ion-item>
   </div>
-  <ion-fab right bottom>
+  <ion-fab right bottom *ngIf="(isAdmin)">
     <button ion-fab icon-only color="secondary" (click)="createGame()">
       <ion-icon name="add"></ion-icon>
     </button>

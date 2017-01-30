@@ -2,7 +2,6 @@
 //4 men 2 women for isNotMini (Logik allgemein)
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController} from 'ionic-angular';
-import { MyGamesService } from '../../providers/myGames.service';
 import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component';
 import { PlayerComponent } from './player.component';
 import firebase from 'firebase';
@@ -11,12 +10,13 @@ import {Utilities} from '../../app/utilities';
 @Component({
   selector: 'page-gameDetails',
   templateUrl: 'gameDetails.component.html',
-  providers: [MyGamesService]
 })
 export class GameDetailsComponent implements OnInit{
 
   editMode: boolean = false;
   playerStatus: string = 'accepted';
+  isAdmin: boolean;
+  currentUser: any;
   loading: any;
   gameItem: any;
   playerArray: any;
@@ -37,14 +37,23 @@ export class GameDetailsComponent implements OnInit{
   timeChanged: boolean;
 
   ngOnInit() {
+    this.isTrainer();
     this.playerArray = this.Utilities.allPlayers;
     this.teamArray = this.Utilities.allTeams;
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private MyGamesService: MyGamesService, private Utilities: Utilities,  private alertCtrl: AlertController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController) {
     //Load data in array
     this.gameItem = navP.get('gameItem');
   }
+
+  isTrainer() {
+        this.currentUser = this.Utilities.user;
+        firebase.database().ref("/clubs/12/players/" + this.currentUser.uid + "/").once('value', snapshot => {
+            let data = snapshot.val();
+            this.isAdmin = data.isTrainer;
+        })
+    }
 
   getFirstFourPicUrls(match) {
     let urlArray = [];

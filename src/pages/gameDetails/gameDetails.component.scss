@@ -1,32 +1,37 @@
-.thumbnail-matchday-top-left-l {
-    width: 55px;
-    height: 55px;
-    border-top-left-radius: 100%;
-    padding: 0;
-    margin-bottom: 0px;
-    margin-right: 0px;
-}
+page-gameDetails{
+    .gameDetails-inputs input{
+        text-align: right;
+    }
 
-.thumbnail-matchday-top-right-l {
-    width: 55px;
-    height: 55px;
-    border-top-right-radius: 100%;
-    padding: 0;
-    margin-bottom: 0px;
-}
+    .thumbnail-matchday-top-left-l {
+        width: 55px;
+        height: 55px;
+        border-top-left-radius: 100%;
+        padding: 0;
+        margin-bottom: 0px;
+        margin-right: 0px;
+    }
 
-.thumbnail-matchday-bottom-right-l {
-    width: 55px;
-    height: 55px;
-    border-bottom-right-radius: 100%;
-    padding: 0;
-    margin-left: 0px;
-}
+    .thumbnail-matchday-top-right-l {
+        width: 55px;
+        height: 55px;
+        border-top-right-radius: 100%;
+        padding: 0;
+        margin-bottom: 0px;
+    }
 
-.thumbnail-matchday-bottom-left-l {
-    width: 55px;
-    height: 55px;
-    border-bottom-left-radius: 100%;
-    padding: 0;
-}
+    .thumbnail-matchday-bottom-right-l {
+        width: 55px;
+        height: 55px;
+        border-bottom-right-radius: 100%;
+        padding: 0;
+        margin-left: 0px;
+    }
 
+    .thumbnail-matchday-bottom-left-l {
+        width: 55px;
+        height: 55px;
+        border-bottom-left-radius: 100%;
+        padding: 0;
+    }
+}

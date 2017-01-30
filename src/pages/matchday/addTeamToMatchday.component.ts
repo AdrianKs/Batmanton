@@ -1,7 +1,6 @@
 //todo
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -9,7 +8,6 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-addTeamToMatchday',
   templateUrl: 'addTeamToMatchday.component.html',
-  providers: [MatchdayService]
 })
 
 export class AddTeamToMatchdayComponent implements OnInit{
@@ -55,10 +53,14 @@ export class AddTeamToMatchdayComponent implements OnInit{
         }
         counter ++;
       }
-    this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit);
+    if (this.match.team == "0"){
+      this.relevantTeams = this.getRelevantTeams(0);
+    } else {
+      this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit);
+    }
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private MatchdayService: MatchdayService, private Utilities: Utilities, private alertCtrl: AlertController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController) {
     this.match = navP.get('matchItem');
     this.allTeams = navP.get('relevantTeamsItem');
   }
@@ -207,9 +209,19 @@ export class AddTeamToMatchdayComponent implements OnInit{
         for (let i in snapshot.val()) {
           if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.pendingArray[k]){
             console.log("inviteExists now true");
-              firebase.database().ref('clubs/12/invites/' + i).update({
-                state: 0
-              });
+            if (snapshot.val()[i].state != 0){
+              //push-Benachrichtigung an snapshot.val()[i].recipient
+              //Zugriff auf Spielerobjekt
+              /*for (let j in this.allPlayers){
+                let player;
+                if (this.allPlayers[j].id == snapshot.val()[i].recipient){
+                  player = this.allPlayers[j];
+                }
+              }*/
+            }
+            firebase.database().ref('clubs/12/invites/' + i).update({
+              state: 0
+            });
             inviteExists = true;
           }     
         }
@@ -221,6 +233,15 @@ export class AddTeamToMatchdayComponent implements OnInit{
             sender: this.Utilities.user.uid,
             state: 0
           });
+          //push-Benachrichtigung an this.pendingArray[k]
+          //Zugriff auf Spielerobjekt
+          /*for (let l in this.allPlayers){
+            let player;
+            if (this.allPlayers[l].id == this.pendingArray[k]){
+              player = this.allPlayers[l];
+              console.log(player);
+            }
+          }*/
         }
       });
     }

@@ -73,8 +73,8 @@
                       {{item.birthday | birthday}}
                     </div>
                   </div>
-                  <button ion-button outline item-right *ngIf="item.accepted==false && item.pending==false && item.declined==false" color="secondary" (click)="addPlayer(item)">Hinzufügen</button>
-                  <button ion-button outline item-right *ngIf="item.accepted==true || item.pending==true || item.declined==true" color="danger" (click)="removePlayer(item)">Entfernen</button>
+                  <button ion-button outline round item-right icon-only *ngIf="item.accepted==false && item.pending==false && item.declined==false" color="secondary" (click)="addPlayer(item)"><ion-icon name="add"></ion-icon></button>
+                  <button ion-button outline round item-right icon-only *ngIf="item.accepted==true || item.pending==true || item.declined==true" color="danger" (click)="removePlayer(item)"><ion-icon name="close"></ion-icon></button>
                 </ion-item>
                 </div>
             </div>

@@ -55,11 +55,21 @@
                         doneText="Ok" cancelText="Abbrechen"></ion-datetime>
         </ion-item>
       </form>
+      <div class ="centerContainer">
+        <button ion-button small outline color="secondary" (click)="showTemplates()" icon-left item-right>
+          <ion-icon name="arrow-dropright"></ion-icon>
+          Adressvorlagen
+        </button>
+      </div>
+      <ion-item class="createGameButtonContainer">
+        <ion-checkbox  [(ngModel)]="templateChecked" color="secondary"></ion-checkbox>
+        <ion-label>Adresse als Vorlage speichern</ion-label>
+      </ion-item>
     </div>
   </div>
 </ion-content>
 <ion-footer>
-  <div class="pictureContainer">
+  <div class="centerContainer">
     <button ion-button outline round color="secondary" (click)="createGame()"> 
       Spiel erstellen
     </button>

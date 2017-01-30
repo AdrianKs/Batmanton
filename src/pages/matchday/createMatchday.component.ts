@@ -1,21 +1,21 @@
 //todo
-//create enemy team
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component'
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'page-createMatchday',
   templateUrl: 'createMatchday.component.html',
-  providers: [MatchdayService]
 })
 
 export class CreateMatchdayComponent implements OnInit {
   public createMatchdayForm;
+  templateChecked: boolean;
+  dataTemplates: any;
   match = {id: this.id, opponent: this.opponent, team: this.team, home: this.home, location: {street: this.street, zipcode: this.zipcode}, time: this.time, pendingPlayers: this.pendingPlayersArray};
   id: any;
   opponent: string;
@@ -42,10 +42,12 @@ export class CreateMatchdayComponent implements OnInit {
     this.streetChanged = false;
     this.zipcodeChanged = false;
     this.timeChanged = false;
+    this.templateChecked = false;
+    this.getTemplates();
   }
 
   
-  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder) {
+  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder) {
     this.createMatchdayForm = formBuilder.group({
       opponent: [],
       team: [],
@@ -54,6 +56,20 @@ export class CreateMatchdayComponent implements OnInit {
       zipcode: [],
       time: []
     })
+  }
+
+  getTemplates(){
+    firebase.database().ref('clubs/12/templates').once('value', snapshot => {
+      let templateArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        templateArray[counter] = snapshot.val()[i];
+        templateArray[counter].id = i;
+        counter++;
+      }
+      this.dataTemplates = templateArray;
+      this.dataTemplates = _.sortBy(this.dataTemplates, "opponent");
+    });
   }
 
   elementChanged(input) {
@@ -98,6 +114,15 @@ export class CreateMatchdayComponent implements OnInit {
 
   createGame(){
     if (this.opponentChanged && this.teamChanged && this.formValid){
+      if (this.templateChecked == true){
+        let id = this.makeid();
+        firebase.database().ref('clubs/12/templates/').child(id).set({
+          opponent: this.match.opponent,
+          street: this.match.location.street,
+          zipcode: this.match.location.zipcode
+        })
+      }
+
       if (this.homeChanged == false){
         this.match.home = "unknown";
       } else {
@@ -181,4 +206,42 @@ export class CreateMatchdayComponent implements OnInit {
       this.navCtrl.pop();
     }
   }
+
+  showTemplates(){
+    let alert = this.alertCtrl.create();
+    let dataAvailable = false;
+    alert.setTitle('Vorlage auswählen');
+
+    for (let i in this.dataTemplates){
+      alert.addInput({
+        type: 'radio',
+        label: this.dataTemplates[i].opponent + ": " + this.dataTemplates[i].street + ", " + this.dataTemplates[i].zipcode,
+        value: this.dataTemplates[i].id,
+        checked: false
+      });
+      dataAvailable = true;
+    }
+    
+
+    alert.addButton('Abbruch');
+    alert.addButton({
+      text: 'OK',
+      handler: data => {
+        if (data == null){
+
+        } else {
+          this.updateTemplate(data);
+        }
+      }
+    });
+    alert.present();
+  }
+
+  updateTemplate(opponentID){
+    firebase.database().ref('clubs/12/templates/'+opponentID).once('value', snapshot => {
+      this.match.location.street = snapshot.val().street;
+      this.match.location.zipcode = snapshot.val().zipcode;
+    });
+  }
+
 }

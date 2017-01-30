@@ -4,7 +4,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
-import { MyGamesService } from '../../providers/myGames.service';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -12,7 +11,6 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-myGames',
   templateUrl: 'myGames.component.html',
-  providers: [MyGamesService]
 })
 
 export class MyGamesComponent implements OnInit {
@@ -38,7 +36,7 @@ export class MyGamesComponent implements OnInit {
   loading: any;
   today: String = new Date().toISOString();
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private MyGamesService: MyGamesService, private Utilities: Utilities, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private Utilities: Utilities, private loadingCtrl: LoadingController) {
 
   }
 
@@ -130,10 +128,7 @@ export class MyGamesComponent implements OnInit {
   }
 
   verifyAccept(inviteItem){
-    firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
-      match: inviteItem.match,
-      recipient: inviteItem.recipient,
-      sender: inviteItem.sender,
+    firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
       state: 1
     });
     inviteItem.state = 1;
@@ -195,11 +190,7 @@ export class MyGamesComponent implements OnInit {
           } else {
             this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
           }
-          firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
-            excuse: data,
-            match: inviteItem.match,
-            recipient: inviteItem.recipient,
-            sender: inviteItem.sender,
+          firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
             state: 2
           });
         }
@@ -230,11 +221,8 @@ export class MyGamesComponent implements OnInit {
                     } else {
                       this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
                     }
-                    firebase.database().ref('clubs/12/invites/' + inviteItem.id).set({
+                    firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
                       excuse: this.testRadioResult + ': ' +data.extra,
-                      match: inviteItem.match,
-                      recipient: inviteItem.recipient,
-                      sender: inviteItem.sender,
                       state: 2
                     });
                   }

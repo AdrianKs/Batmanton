@@ -4,7 +4,6 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';
 import { CreateMatchdayComponent } from './createMatchday.component';
-import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -12,7 +11,6 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-matchday',
   templateUrl: 'matchday.component.html',
-  providers: [MatchdayService]
 })
 
 export class MatchdayComponent implements OnInit {
@@ -22,6 +20,7 @@ export class MatchdayComponent implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.isTrainer();
     this.dataInvites = this.Utilities.allInvites;
     this.loadData(true, null);
   }
@@ -29,10 +28,20 @@ export class MatchdayComponent implements OnInit {
   dataGames: any;
   dataInvites: any;
   loading: any;
+  currentUser: any;
+  isAdmin: boolean;
   
-  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     
   }
+
+  isTrainer() {
+        this.currentUser = this.Utilities.user;
+        firebase.database().ref('/clubs/12/players/' + this.currentUser.uid + '/').once('value', snapshot => {
+            let data = snapshot.val();
+            this.isAdmin = data.isTrainer;
+        });
+    }
 
   loadData(showLoading: boolean, event): void {
     if (showLoading) {

@@ -7,7 +7,7 @@
       <button ion-button *ngIf="(editMode)" (click)="cancelEditProfile()">Abbrechen</button>
     </ion-buttons>
     <ion-title>Spieledetails</ion-title>
-    <ion-buttons right>
+    <ion-buttons right *ngIf="(isAdmin)">
       <button *ngIf="(!editMode)" ion-button (click)="editProfile()">Bearbeiten
       </button>
       <button
@@ -196,12 +196,16 @@
       </div>
     </ion-list>
   </div>
-  <div class="pictureContainer">
-    <button ion-button outline round color="secondary" *ngIf="(editMode)" (click)="addPlayers()"> 
-      Spieler bearbeiten
-    </button>
-    <button ion-button outline round color="danger" *ngIf="(editMode)" (click)="deleteGame()"> 
-      Spiel löschen
-    </button>
-  </div>
 </ion-content>
+<ion-footer *ngIf="(editMode)">
+  <ion-item>
+    <div class="pictureContainer">
+      <button ion-button outline round color="secondary" (click)="addPlayers()"> 
+        Spieler bearbeiten
+      </button>
+      <button ion-button outline round color="danger" (click)="deleteGame()"> 
+        Spiel löschen
+      </button>
+    </div>
+  </ion-item>
+</ion-footer>
