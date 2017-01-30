@@ -138,9 +138,7 @@ export class MyApp {
    * @param user logged-in user, to check if the mail is verified
    */
   checkForVerification() {
-    console.log(this.utilities.user);
     if (!this.utilities.user.emailVerified){
-      console.log("not verified");
       let confirm = this.alertCtrl.create({
         title: 'Bitte bestätigen Sie Ihre Email Adresse',
         message: 'Bestätigunsmail erneut senden?',
