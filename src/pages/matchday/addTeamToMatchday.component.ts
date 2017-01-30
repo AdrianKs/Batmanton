@@ -183,7 +183,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
   }
 
   confirmPlayer(){
-
+    let pushIDs: Array<any> = [];
     firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
       pendingPlayers: this.pendingArray,
       acceptedPlayers: this.acceptedArray,
@@ -199,7 +199,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
             firebase.database().ref('clubs/12/invites/' + i).remove();
           }
         }
-      }      
+      }
     });
 
 
@@ -212,18 +212,19 @@ export class AddTeamToMatchdayComponent implements OnInit{
             if (snapshot.val()[i].state != 0){
               //push-Benachrichtigung an snapshot.val()[i].recipient
               //Zugriff auf Spielerobjekt
-              /*for (let j in this.allPlayers){
-                let player;
+              for (let j in this.allPlayers){
                 if (this.allPlayers[j].id == snapshot.val()[i].recipient){
-                  player = this.allPlayers[j];
+                  for (let pushID in this.allPlayers[j].pushid){
+                    pushIDs.push(pushID);
+                  }
                 }
-              }*/
+              }
             }
             firebase.database().ref('clubs/12/invites/' + i).update({
               state: 0
             });
             inviteExists = true;
-          }     
+          }
         }
         if (inviteExists == false){
           let id = this.makeid();
@@ -235,16 +236,18 @@ export class AddTeamToMatchdayComponent implements OnInit{
           });
           //push-Benachrichtigung an this.pendingArray[k]
           //Zugriff auf Spielerobjekt
-          /*for (let l in this.allPlayers){
-            let player;
+          for (let l in this.allPlayers){
             if (this.allPlayers[l].id == this.pendingArray[k]){
-              player = this.allPlayers[l];
-              console.log(player);
+              for (let pushID in this.allPlayers[l].pushid){
+                pushIDs.push(pushID);
+              }
             }
-          }*/
+          }
         }
       });
     }
+    console.log(pushIDs);
+    this.Utilities.sendPushNotification(pushIDs, 'Sie haben eine Einladung zu einem Spiel erhalten');
     this.navCtrl.popToRoot();
   }
 
