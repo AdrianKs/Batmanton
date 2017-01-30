@@ -15,6 +15,7 @@ import * as _ from 'lodash';
 
 
 @Component({
+    selector: 'page-viewTeam',
     templateUrl: 'viewTeam.component.html'
 })
 export class ViewTeamComponent implements OnInit {
@@ -195,7 +196,7 @@ export class ViewTeamComponent implements OnInit {
                 type: this.teamArt
             });
 
-            //UPDATE Array 
+            //UPDATE Array
             this.team.ageLimit = this.altersK;
             this.team.name = this.teamName;
             this.team.type = this.teamArt;

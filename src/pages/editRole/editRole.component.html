@@ -17,24 +17,24 @@
 <ion-content padding>
   <div class="topContainer">
     <div class="pictureContainer">
-      <img src="{{player.picUrl}}" class="profileImg picture-border" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+      <img src="{{player.picUrl}}" class="profile-image picture-border" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
     </div>
     <div class="playerDataContainer">
       <ion-item>
-        <ion-label class="playerLabel">Name:</ion-label>
-        <ion-label class="playerValue">{{player.firstname}} {{player.lastname}}</ion-label>
+        <ion-label class="form-label">Name:</ion-label>
+        <ion-label class="form-value">{{player.firstname}} {{player.lastname}}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label class="playerLabel">E-Mail:</ion-label>
-        <ion-label class="playerValue">{{player.email}}</ion-label>
+        <ion-label class="form-label">E-Mail:</ion-label>
+        <ion-label class="form-value">{{player.email}}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label class="playerLabel">Geburtstag:</ion-label>
-        <ion-label class="playerValue">{{player.birthday | birthday}}</ion-label>
+        <ion-label class="form-label">Geburtstag:</ion-label>
+        <ion-label class="form-value">{{player.birthday | birthday}}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label class="playerLabel">Mannschaft:</ion-label>
-        <ion-label class="playerValue">{{player.team | teams}}</ion-label>
+        <ion-label class="form-label">Mannschaft:</ion-label>
+        <ion-label class="form-value">{{player.team | teams}}</ion-label>
       </ion-item>
     </div>
   </div>

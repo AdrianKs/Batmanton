@@ -9,6 +9,10 @@
 // checkItem(item)? in GameDetails
 // Zu einem Spieltag hinzugefügte Spieler können nicht mehr entfernt werden
 // Frauen kann man beim Hinzufügen zu einem Spiel nicht wieder direkt entfernen
+// Fix infinite loading indicator iPhone
+// handle error wenn keine internetverbindung besteht
+// Einheitliches Erscheinungsbild für matchday & team beim hinzufügen von spielern
+// Bug: Alter der Mannschaft wird nach Bearbeitung resettet, wenn man Spieler hinzufügen will
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
