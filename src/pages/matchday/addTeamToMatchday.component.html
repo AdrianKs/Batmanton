@@ -41,7 +41,7 @@
                 <ion-item>
                   <div>
                     <div class="itemPlayerLeft">
-                      <img src="{{item.picUrl}}" class="profileImage" onError="this.src='assets/images/user-shape-64.png'" />
+                      <img src="{{item.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
                     </div>
                     <div class="itemPlayerRight">
                       <div class="mainDetails">
@@ -71,7 +71,7 @@
                   <ion-item>
                     <div>
                       <div class="itemPlayerLeft">
-                        <img src="{{item.picUrl}}" class="profileImage" onError="this.src='assets/images/user-shape-64.png'" />
+                        <img src="{{item.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
                       </div>
                       <div class="itemPlayerRight">
                         <div class="mainDetails">
@@ -99,21 +99,23 @@
       </ion-list>
       </div>
   </ion-list>
+
 <!--HEAD-->
 </ion-content>
-<!--style branch (second style)-->
-<!--</ion-content>-->
-<!--<ion-footer>-->
-  <!--<div class="pictureContainer">-->
-    <!--<div *ngIf="match.id == true">-->
-    <!--<button ion-button outline round color="secondary" (click)="createGame()">-->
-      <!--Spieler hinzufügen-->
-    <!--</button>-->
+
+<!--STYLE BRANCH updates part 3-->
+  <!--<div class="bottomContainer">-->
+    <!--<div *ngIf="match.team != 0" class="saveButtonContainer">-->
+      <!--<button ion-button outline icon-left round color="secondary" (click)="createGame()">-->
+        <!--<ion-icon name="add"></ion-icon>-->
+        <!--Spieler hinzufügen-->
+      <!--</button>-->
     <!--</div>-->
-    <!--<div *ngIf="match.id != true">-->
-    <!--<button ion-button outline round color="secondary" (click)="createGame()">-->
-      <!--Spiel erstellen-->
-    <!--</button>-->
+    <!--<div *ngIf="match.team == 0"class="saveButtonContainer">-->
+      <!--<button ion-button outline icon-left round color="secondary" (click)="createGame()">-->
+        <!--<ion-icon name="add"></ion-icon>-->
+        <!--Spiel erstellen-->
+      <!--</button>-->
     <!--</div>-->
   <!--</div>-->
-<!--</ion-footer>-->
+<!--</ion-content>-->

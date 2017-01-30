@@ -34,7 +34,7 @@
                       (ionChange)="homeSelectChanged()" doneText="Ok" cancelText="Abbrechen">
               <ion-option value=true>Heim</ion-option>
               <ion-option value=false>Auswärts</ion-option>
-            </ion-select> 
+            </ion-select>
         </ion-item>
         <ion-item>
           <ion-label stacked>Adresse</ion-label>
@@ -67,11 +67,13 @@
       </ion-item>
     </div>
   </div>
-</ion-content>
-<ion-footer>
-  <div class="centerContainer">
-    <button ion-button outline round color="secondary" (click)="createGame()"> 
-      Spiel erstellen
-    </button>
+
+  <div class="bottomContainer">
+    <div class="saveButtonContainer">
+      <button ion-button outline icon-left round color="secondary" (click)="createGame()">
+        <ion-icon name="add"></ion-icon>
+        Spiel erstellen
+      </button>
+    </div>
   </div>
-</ion-footer>
+</ion-content>

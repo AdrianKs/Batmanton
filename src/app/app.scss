@@ -28,10 +28,6 @@ p {
   color: #d2d2d2;
 }
 
-ion-label {
-  margin-left: 5px;
-}
-
 .menuHeader {
   background-color: #cccccc;
   height: 15%;
@@ -100,7 +96,7 @@ ion-label {
 .thumbnail-pictures{
   background-color: $yellow-shade;
   border-radius: 50%;
-  padding: 3px;
+  padding: 2px;
 }
 
 .thumbnail-pictures-big{
@@ -190,12 +186,18 @@ ion-label {
   height: 55px;
 }
 
-.profileImage {
+.player-item-image {
   border-radius: 50%;
   width: 48px;
   height: 48px;
   background-color: $yellow-shade;
   padding: 2px;
+}
+
+.profile-image{
+  border-radius: 10rem;
+  width: 12em;
+  height: 12em;
 }
 
 .itemPlayerLeft {
@@ -261,4 +263,29 @@ ion-label {
   width: 25px;
   height: 25px;
   margin-top: 8px;
+}
+
+.align-center{
+  text-align: center;
+}
+
+.inline{
+  display: inline-block;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.form-value {
+  font-size: 14px;
+}
+
+//changes of ion styles
+.ion-select{
+  max-width: 100%;
+}
+
+ion-label {
+  margin-left: 5px;
 }
