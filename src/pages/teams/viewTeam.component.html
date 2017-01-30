@@ -25,15 +25,15 @@
       <div class="pictureContainer inline">
         <div class="thumbnail-pictures-big">
           <div>
-            <img class="thumbnail-top-left-big" src="{{getFirstFourPicUrls(gameItem)[0]}}"
+            <img class="thumbnail-top-left-big" src="{{getFirstFourPicUrls()[0]}}"
                  onError="this.src='assets/images/user-shape-64.png'"/>
-            <img class="thumbnail-top-right-big" src="{{getFirstFourPicUrls(gameItem)[1]}}"
+            <img class="thumbnail-top-right-big" src="{{getFirstFourPicUrls()[1]}}"
                  onError="this.src='assets/images/user-shape-64.png'"/>
           </div>
           <div class="bottom-thumbnail-row-big">
-            <img class="thumbnail-bottom-left-big" src="{{getFirstFourPicUrls(gameItem)[2]}}"
+            <img class="thumbnail-bottom-left-big" src="{{getFirstFourPicUrls()[2]}}"
                  onError="this.src='assets/images/user-shape-64.png'"/>
-            <img class="thumbnail-bottom-right-big" src="{{getFirstFourPicUrls(gameItem)[3]}}"
+            <img class="thumbnail-bottom-right-big" src="{{getFirstFourPicUrls()[3]}}"
                  onError="this.src='assets/images/user-shape-64.png'"/>
           </div>
         </div>
@@ -76,11 +76,11 @@
           </ion-item>
           <ion-item *ngIf="(editMode)">
             <ion-label color="primary">Teamname:</ion-label>
-            <ion-input #teamName formControlName="teamName" class="data-input" value="{{team.name}}"></ion-input>
+            <ion-input #teamName class="form-value" formControlName="teamName" value="{{team.name}}"></ion-input>
           </ion-item>
           <ion-item *ngIf="(editMode)">
             <ion-label color="primary">Altersklasse:</ion-label>
-            <ion-select [(ngModel)]="altersklasse" [ngModelOptions]="{standalone: true}">
+            <ion-select class="form-value" [(ngModel)]="altersklasse" [ngModelOptions]="{standalone: true}">
               <ion-option value="9">U 09</ion-option>
               <ion-option value="11">U 11</ion-option>
               <ion-option value="13">U 13</ion-option>
@@ -92,7 +92,7 @@
           </ion-item>
           <ion-item *ngIf="(editMode)">
             <ion-label color="primary">Art:</ion-label>
-            <ion-select [(ngModel)]="teamArt" [ngModelOptions]="{standalone: true}">
+            <ion-select class="form-value" [(ngModel)]="teamArt" [ngModelOptions]="{standalone: true}">
               <ion-option value="Normal">Normal</ion-option>
               <ion-option value="Mini">Mini</ion-option>
             </ion-select>

@@ -13,6 +13,7 @@
 // handle error wenn keine internetverbindung besteht
 // Einheitliches Erscheinungsbild für matchday & team beim hinzufügen von spielern
 // Bug: Alter der Mannschaft wird nach Bearbeitung resettet, wenn man Spieler hinzufügen will
+// Cookie login
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";

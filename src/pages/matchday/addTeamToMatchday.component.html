@@ -76,10 +76,10 @@
                       <div class="itemPlayerRight">
                         <div class="mainDetails">
                           {{ item.lastname }}, {{item.firstname}}
-                          <button *ngIf="item.added==false"  class="player-item-button" ion-button round outline icon-only color="secondary" (click)="addPlayer(item)">
+                          <button *ngIf="item.accepted==false && item.pending==false && item.declined==false"  class="player-item-button" ion-button round outline icon-only color="secondary" (click)="addPlayer(item)">
                             <ion-icon name="add"></ion-icon>
                           </button>
-                          <button *ngIf="item.added==true" class="player-item-button" ion-button round outline icon-only color="danger" (click)="removePlayer(item)">
+                          <button *ngIf="item.accepted==true || item.pending==true || item.declined==true" class="player-item-button" ion-button round outline icon-only color="danger" (click)="removePlayer(item)">
                             <ion-icon name="remove"></ion-icon>
                           </button>
                         </div>
@@ -89,10 +89,6 @@
                       </div>
                     </div>
                   </ion-item>
-                </div>
-                <button ion-button round item-right *ngIf="item.accepted==false && item.pending==false && item.declined==false" color="secondary" (click)="addPlayer(item)"><ion-icon name="add"></ion-icon></button>
-                <button ion-button round item-right *ngIf="item.accepted==true || item.pending==true || item.declined==true" color="danger" (click)="removePlayer(item)"><ion-icon name="close"></ion-icon></button>
-              </ion-item>
             </div>
           </div>
         </div>
