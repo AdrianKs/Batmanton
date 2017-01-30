@@ -140,7 +140,7 @@ export class ProfileComponent implements OnInit {
 
   finishEditProfile() {
     if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.genderChanged || this.teamChanged) && this.formValid) {
-      firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).set({
+      firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).update({
         birthday: this.utilities.userData.birthday,
         email: this.utilities.userData.email,
         firstname: this.utilities.userData.firstname,
