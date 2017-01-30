@@ -10,24 +10,28 @@
 <ion-content padding>
   <div *ngFor="let item of dataGames">
     <ion-item (click)="openDetails($event, item)">
-      <div item-left>
-        <div class="thumbnail-pictures">
-          <div>
-            <img class="thumbnail-top-left" src="{{getFirstFourPicUrls(item)[0]}}" onError="this.src='assets/images/user-shape-64.png'"/>
-            <img class="thumbnail-top-right" src="{{getFirstFourPicUrls(item)[1]}}" onError="this.src='assets/images/user-shape-64.png'"/>
-          </div>
-          <div class="bottom-thumbnail-row">
-            <img class="thumbnail-bottom-left" src="{{getFirstFourPicUrls(item)[2]}}" onError="this.src='assets/images/user-shape-64.png'"/>
-            <img class="thumbnail-bottom-right" src="{{getFirstFourPicUrls(item)[3]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+      <div>
+        <div class="itemLeft">
+          <div class="thumbnail-pictures">
+            <div>
+              <img class="thumbnail-top-left" src="{{getFirstFourPicUrls(item)[0]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+              <img class="thumbnail-top-right" src="{{getFirstFourPicUrls(item)[1]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+            </div>
+            <div class="bottom-thumbnail-row">
+              <img class="thumbnail-bottom-left" src="{{getFirstFourPicUrls(item)[2]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+              <img class="thumbnail-bottom-right" src="{{getFirstFourPicUrls(item)[3]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+            </div>
           </div>
         </div>
+        <div class="itemRight">
+          <div *ngIf="item.time == 0"><p>TBA</p></div>
+          <div *ngIf="item.time != 0"><p>{{ item.time | matchTime }}</p></div>
+          <div class="mainDetails">{{ item.opponent }}</div>
+          <div *ngIf="item.home == true"><p>Heim</p></div>
+          <div *ngIf="item.home == false && item.home != 'unknown'"><p>Auswärts</p></div>
+          <div *ngIf="item.home == 'unknown'"><p>TBA</p></div>
+        </div>
       </div>
-      <div *ngIf="item.time == 0"><p>TBA</p></div>
-      <div *ngIf="item.time != 0"><p>{{ item.time | matchTime }}</p></div>
-      {{ item.opponent }}
-      <div *ngIf="item.home == true"><p>Heim</p></div>
-      <div *ngIf="item.home == false && item.home != 'unknown'"><p>Auswärts</p></div>
-      <div *ngIf="item.home == 'unknown'"><p>TBA</p></div>
     </ion-item>
   </div>
   <ion-fab right bottom>

@@ -6,6 +6,9 @@
 // Change Passwort
 // Delete Profile
 // remove duplicate profilePicture ID in ViewTeams
+// checkItem(item)? in GameDetails
+// Zu einem Spieltag hinzugefügte Spieler können nicht mehr entfernt werden
+// Frauen kann man beim Hinzufügen zu einem Spiel nicht wieder direkt entfernen
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";

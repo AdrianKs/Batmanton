@@ -17,7 +17,7 @@
 <ion-content padding>
   <div class="topContainer">
     <div class="pictureContainer">
-      <img src="{{player.picUrl}}" class="profileImg" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+      <img src="{{player.picUrl}}" class="profileImg picture-border" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
     </div>
     <div class="playerDataContainer">
       <ion-item>
@@ -50,7 +50,7 @@
       </ion-item>
     </div>
     <div class="saveButtonContainer" *ngIf="!sameUser">
-      <button icon-left ion-button outline round color="danger" (click)="showConfirm($event, player)"> 
+      <button icon-left ion-button outline round color="danger" (click)="showConfirm($event, player)">
         <ion-icon name="close" md="md-close"></ion-icon>
         Benutzer löschen
       </button>
