@@ -184,7 +184,6 @@ export class AddTeamToMatchdayComponent implements OnInit{
 
   confirmPlayer(){
     let pushIDs = [];
-    let counter = 0;
     firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
       pendingPlayers: this.pendingArray,
       acceptedPlayers: this.acceptedArray,
@@ -203,11 +202,10 @@ export class AddTeamToMatchdayComponent implements OnInit{
       }
     });
 
-    //counter = 0;
-    for (let k in this.pendingArray){
-      counter = 0;
-      let inviteExists = false;
-      firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+
+    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+      for (let k in this.pendingArray){
+        let inviteExists = false;
         for (let i in snapshot.val()) {
           if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.pendingArray[k]){
             console.log("inviteExists now true");
@@ -217,10 +215,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
               for (let j in this.allPlayers){
                 if (this.allPlayers[j].id == snapshot.val()[i].recipient){
                   for (let pushID in this.allPlayers[j].pushid){
-                    console.log(this.allPlayers[j]);
-                    pushIDs[counter] = pushID;
-                    //pushIDs.push(pushID);
-                    counter++;
+                    pushIDs.push(pushID);
                   }
                 }
               }
@@ -241,27 +236,22 @@ export class AddTeamToMatchdayComponent implements OnInit{
           });
           //push-Benachrichtigung an this.pendingArray[k]
           //Zugriff auf Spielerobjekt
-          //counter = 0;
           for (let l in this.allPlayers){
             if (this.allPlayers[l].id == this.pendingArray[k]){
               for (let pushID in this.allPlayers[l].pushid){
-                console.log(this.allPlayers[l]);
-                console.log("hier kommt eine pushID");
-                console.log(pushID);
-                pushIDs[counter] = pushID;
-                counter++;
-                //pushIDs.push(pushID);
+                pushIDs.push(pushID);
               }
             }
           }
         }
-        console.log(pushIDs);
-        if(pushIDs.length != 0){
-          console.log("ruft pushfunction");
-          this.Utilities.sendPushNotification(pushIDs, 'Sie haben eine Einladung zu einem Spiel erhalten');
-        }
-      });
-    }
+      }
+      console.log(pushIDs);
+      if(pushIDs.length != 0){
+        console.log("ruft pushfunction");
+        this.Utilities.sendPushNotification(pushIDs, 'Sie haben eine Einladung zu einem Spiel erhalten');
+      }
+    });
+
 
 
     this.navCtrl.popToRoot();

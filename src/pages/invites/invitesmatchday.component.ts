@@ -50,11 +50,8 @@ export class InvitesMatchdayComponent {
             let pushIds = [];
             console.log(player);
             console.log("under console log");
-            let counter = 0;
             for (let i in player.pushid) {
-              console.log(i);
-              pushIds[counter] = i;
-              counter++;
+              pushIds.push(i);
             }
 
             console.log(pushIds);
