@@ -31,6 +31,8 @@ build/
 $RECYCLE.BIN/
 
 src/app/firebaseAppData.ts
+.io-config.json
+ionic.config.json
 
 .DS_Store
 Thumbs.db

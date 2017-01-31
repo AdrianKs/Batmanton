@@ -6,8 +6,8 @@
 
 <ion-content padding>
   <div class="pictureContainer">
-    <img src="assets/images/ic_account_circle_black_48dp_2x.png" *ngIf="!base64Image" class="img-circle"/>
-    <img class="img-circle" [src]="base64Image" *ngIf="base64Image" align="center"/>
+    <img class="picture-border" src="assets/images/user-shape-256.png" *ngIf="!base64Image" class="img-circle"/>
+    <img class="img-circle picture-border" [src]="base64Image" *ngIf="base64Image" align="center"/>
   </div>
 
   <div class="pictureContainer">
@@ -21,7 +21,7 @@
   </div>
 
   <div class="buttom-center">
-    <button ion-button round (click)="uploadPicture()">
+    <button ion-button round outline (click)="uploadPicture()">
       Bestätigen
     </button>
     <br>

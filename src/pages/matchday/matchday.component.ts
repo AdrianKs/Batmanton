@@ -1,8 +1,9 @@
+//todo
+//keine spiele vorhanden
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';
 import { CreateMatchdayComponent } from './createMatchday.component';
-import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -10,22 +11,42 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-matchday',
   templateUrl: 'matchday.component.html',
-  providers: [MatchdayService]
 })
 
 export class MatchdayComponent implements OnInit {
 
   ngOnInit() {
-    this.getGames();
+
+  }
+
+  ionViewWillEnter() {
+    this.isTrainer();
+    this.dataInvites = this.Utilities.allInvites;
+    this.loadData(true, null);
   }
 
   dataGames: any;
+  dataInvites: any;
+  loading: any;
+  currentUser: any;
+  isAdmin: boolean;
   
-  constructor(public navCtrl: NavController, private MatchdayService: MatchdayService, private Utilities: Utilities) {
+  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     
   }
 
-  getGames(): void {
+  isTrainer() {
+        this.currentUser = this.Utilities.user;
+        firebase.database().ref('/clubs/12/players/' + this.currentUser.uid + '/').once('value', snapshot => {
+            let data = snapshot.val();
+            this.isAdmin = data.isTrainer;
+        });
+    }
+
+  loadData(showLoading: boolean, event): void {
+    if (showLoading) {
+      this.createAndShowLoading();
+    }
     firebase.database().ref('clubs/12/matches').once('value', snapshot => {
       let gamesArray = [];
       let counter = 0;
@@ -36,13 +57,41 @@ export class MatchdayComponent implements OnInit {
       }
       this.dataGames = gamesArray;
       this.dataGames = _.sortBy(this.dataGames, "time").reverse();
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+  }
+
+  createAndShowErrorAlert(error) {
+      let alert = this.alertCtrl.create({
+        title: 'Fehler beim Empfangen der Daten',
+        message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+
+  createAndShowLoading() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
     })
+    this.loading.present();
   }
 
   getFirstFourPicUrls(match) {
     let urlArray = [];
     let counter = 0;
-    for (let i of this.Utilities.allInvites) {
+    for (let i of this.dataInvites) {
       if (i.match == match.id && i.sender == this.Utilities.user.uid && counter < 4){
           for(let j of this.Utilities.allPlayers){
             if(i.recipient == j.id){
@@ -60,12 +109,7 @@ export class MatchdayComponent implements OnInit {
   }
 
   doRefresh(refresher) {
-    console.log('Refreshed');
-    this.getGames();
-    setTimeout(() => {
-      console.log('New Data loaded.');
-      refresher.complete();
-    }, 1000);
+    this.loadData(false, refresher);
   }
 
 

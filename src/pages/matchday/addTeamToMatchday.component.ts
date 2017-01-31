@@ -1,6 +1,6 @@
+//todo
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { MatchdayService } from '../../providers/matchday.service';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -8,7 +8,6 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-addTeamToMatchday',
   templateUrl: 'addTeamToMatchday.component.html',
-  providers: [MatchdayService]
 })
 
 export class AddTeamToMatchdayComponent implements OnInit{
@@ -19,19 +18,29 @@ export class AddTeamToMatchdayComponent implements OnInit{
   teamPosition: number;
   counter: number = 0;
   matchesCounter: number;
-  tempArray = [];
-  alreadyPending: number;
+  acceptedArray = [];
+  pendingArray = [];
+  declinedArray = [];
+  deletedArray = [];
   allTeams: any;
   relevantTeams: any;
   allPlayers: any;
   buttonDisabled: Array<boolean>;
 
   ngOnInit(){
-    this.alreadyPending = 0;
+    if (this.match.acceptedPlayers){
+      for (let i in this.match.acceptedPlayers){
+        this.acceptedArray[i]=this.match.acceptedPlayers[i];
+      }
+    }
     if (this.match.pendingPlayers){
       for (let i in this.match.pendingPlayers){
-        this.tempArray[i]=this.match.pendingPlayers[i];
-        this.alreadyPending++;
+        this.pendingArray[i]=this.match.pendingPlayers[i];
+      }
+    }
+    if (this.match.declinedPlayers){
+      for (let i in this.match.declinedPlayers){
+        this.declinedArray[i]=this.match.declinedPlayers[i];
       }
     }
     this.allPlayers = this.setPlayers();
@@ -44,10 +53,14 @@ export class AddTeamToMatchdayComponent implements OnInit{
         }
         counter ++;
       }
-    this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit);
+    if (this.match.team == "0"){
+      this.relevantTeams = this.getRelevantTeams(0);
+    } else {
+      this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit);
+    }
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private MatchdayService: MatchdayService, private Utilities: Utilities, private alertCtrl: AlertController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController) {
     this.match = navP.get('matchItem');
     this.allTeams = navP.get('relevantTeamsItem');
   }
@@ -59,26 +72,27 @@ export class AddTeamToMatchdayComponent implements OnInit{
       for (let i in snapshot.val()) {
         playerArray[counter] = snapshot.val()[i];
         playerArray[counter].id = i;
-        playerArray[counter].added = false;
-        playerArray[counter].included = false;
+        playerArray[counter].accepted = false;
+        playerArray[counter].pending = false;
+        playerArray[counter].declined = false;
         if (this.match.acceptedPlayers){
           for (let i in this.match.acceptedPlayers){
             if (this.match.acceptedPlayers[i] == playerArray[counter].id){
-              playerArray[counter].included = true;
+              playerArray[counter].accepted = true;
             }
           }
         }
         if (this.match.pendingPlayers){
           for (let i in this.match.pendingPlayers){
             if (this.match.pendingPlayers[i] == playerArray[counter].id){
-              playerArray[counter].included = true;
+              playerArray[counter].pending = true;
             }
           }
         }
         if (this.match.declinedPlayers){
           for (let i in this.match.declinedPlayers){
             if (this.match.declinedPlayers[i] == playerArray[counter].id){
-              playerArray[counter].included = true;
+              playerArray[counter].declined = true;
             }
           }
         }
@@ -101,67 +115,136 @@ export class AddTeamToMatchdayComponent implements OnInit{
 
   addPlayer(player){
     let counter = 0;
-    for (let i in this.tempArray) {
-        counter++;
+    for (let i in this.pendingArray) {
+      counter++;
+    }
+    this.pendingArray[counter]= player.id;
+    for (let i in this.deletedArray){
+      if (this.deletedArray[i] == player.id){
+        this.deletedArray[i] = null;
       }
-    this.tempArray[counter]= player.id;
-    player.added = true;
-    console.log(this.tempArray);
-    console.log(this.match.id);
+    }
+    player.pending = true;
+    console.log('pending:');
+    console.log(this.pendingArray);
   }
 
   removePlayer(player){
     let counter = 0;
-    for (let i in this.tempArray) {
-      if (this.tempArray[i] == player.id){
-        this.tempArray.splice(counter, 1);
+    if(player.pending == true){
+      for (let i in this.pendingArray) {
+        if (this.pendingArray[i] == player.id){
+          this.pendingArray.splice(counter, 1);
+          this.deletedArray.push(player.id);
+        }
+        counter ++;
       }
-      counter ++;
+      player.pending = false;
+      console.log('pending: ');
+      console.log(this.pendingArray);
     }
-    player.added = false;
-    console.log(this.tempArray);
+    counter = 0;
+    if(player.accepted == true){
+      for (let i in this.acceptedArray) {
+        if (this.acceptedArray[i] == player.id){
+          this.acceptedArray.splice(counter, 1);
+          this.deletedArray.push(player.id);
+        }
+        counter ++;
+      }
+      player.accepted = false;
+      console.log('accepted: ');
+      console.log(this.acceptedArray);
+      console.log('deleted: ');
+      console.log(this.deletedArray);
+    }
+    counter = 0;
+    if(player.declined == true){
+      for (let i in this.declinedArray) {
+        if (this.declinedArray[i] == player.id){
+          this.declinedArray.splice(counter, 1);
+        }
+        counter ++;
+      }
+      player.declined = false;
+      console.log('declined: ');
+      console.log(this.declinedArray);
+    }
   }
 
-  createGame(){
-    this.match.pendingPlayers = this.tempArray;
+  makeid() {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-    if (this.match.id){
-      firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
-        pendingPlayers: this.match.pendingPlayers
-      });
-      this.matchesCounter = this.match.id;
-    } else {
-      firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-        let matchesArray = [];
-        this.matchesCounter = 0;
-        for (let i in snapshot.val()) {
-          matchesArray[this.matchesCounter] = snapshot.val()[i];
-          this.matchesCounter++;
+      for (var i = 0; i < 26; i++)
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      return text;
+  }
+
+  confirmPlayer(){
+
+    firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
+      pendingPlayers: this.pendingArray,
+      acceptedPlayers: this.acceptedArray,
+      declinedPlayers: this.declinedArray
+    });
+
+    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+      for (let i in snapshot.val()) {
+        for (let j in this.deletedArray){
+          if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.deletedArray[j]){
+            console.log("gefunden");
+            console.log(i);
+            firebase.database().ref('clubs/12/invites/' + i).remove();
+          }
         }
-        matchesArray.push(this.match);
-        firebase.database().ref('clubs/12').update({
-            matches: matchesArray
-        });
+      }      
+    });
+
+
+    for (let k in this.pendingArray){
+      let inviteExists = false;
+      firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+        for (let i in snapshot.val()) {
+          if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.pendingArray[k]){
+            console.log("inviteExists now true");
+            if (snapshot.val()[i].state != 0){
+              //push-Benachrichtigung an snapshot.val()[i].recipient
+              //Zugriff auf Spielerobjekt
+              /*for (let j in this.allPlayers){
+                let player;
+                if (this.allPlayers[j].id == snapshot.val()[i].recipient){
+                  player = this.allPlayers[j];
+                }
+              }*/
+            }
+            firebase.database().ref('clubs/12/invites/' + i).update({
+              state: 0
+            });
+            inviteExists = true;
+          }     
+        }
+        if (inviteExists == false){
+          let id = this.makeid();
+          firebase.database().ref('clubs/12/invites/').child(id).set({
+            match: this.match.id.toString(),
+            recipient: this.pendingArray[k],
+            sender: this.Utilities.user.uid,
+            state: 0
+          });
+          //push-Benachrichtigung an this.pendingArray[k]
+          //Zugriff auf Spielerobjekt
+          /*for (let l in this.allPlayers){
+            let player;
+            if (this.allPlayers[l].id == this.pendingArray[k]){
+              player = this.allPlayers[l];
+              console.log(player);
+            }
+          }*/
+        }
       });
     }
-    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-      let invitesArray = [];
-      let invitesCounter = 0;
-      for (let i in snapshot.val()) {
-        invitesArray[invitesCounter] = snapshot.val()[i];
-        invitesCounter++;
-      }
-      console.log(this.alreadyPending);
-      console.log(this.match.pendingPlayers.length);
-      console.log(this.match.pendingPlayers[1]);
-      for (var i = this.alreadyPending; i < this.match.pendingPlayers.length; i++){
-        invitesArray.push({match: this.matchesCounter.toString(), recipient: this.match.pendingPlayers[this.alreadyPending], sender: this.Utilities.user.uid, state: 0});
-        this.alreadyPending++;
-      }
-      firebase.database().ref('clubs/12').update({
-          invites: invitesArray
-      });
-    });
     this.navCtrl.popToRoot();
   }
 
@@ -179,16 +262,16 @@ export class AddTeamToMatchdayComponent implements OnInit{
           text: 'Ja',
           handler: () => {
             if(this.match.pendingPlayers){
-              this.tempArray = this.match.pendingPlayers;
+              this.pendingArray = this.match.pendingPlayers;
             } else {
-              this.tempArray = [];
+              this.pendingArray = [];
             }
             this.navCtrl.pop();
           }
         }
       ]
     });
-    confirm.present()
+    confirm.present();
   }
 }
 

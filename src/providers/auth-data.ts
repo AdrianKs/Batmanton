@@ -41,6 +41,7 @@ export class AuthData {
           pushid: ''
           });
         this.utilities.user = newUser;
+        newUser.sendEmailVerification();
       });
   }
 

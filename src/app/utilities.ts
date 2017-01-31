@@ -4,12 +4,13 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import * as _ from 'lodash';
+import {AlertController} from "ionic-angular";
 
 @Injectable()
 export class Utilities {
   public fireAuth: any;
   user: any;
-  userData: any = "";
+  userData: any = {};
   allTeams: Array<any>;
   allTeamsVal: Array<any>;
   teamsLoaded: boolean = false;
@@ -17,12 +18,16 @@ export class Utilities {
   allInvites: Array<any>;
   invitesLoaded: boolean = false;
   allPlayers: Array<any>;
+  inRegister: boolean = false;
 
-  constructor() {
+  constructor(public alertCtrl: AlertController) {
     this.fireAuth = firebase.auth();
     this.setInvites();
-    this.setPlayers();
-    
+   // this.setPlayers();
+  }
+
+  setInRegister(): void {
+    this.inRegister = !this.inRegister;
   }
 
   /**
@@ -30,8 +35,10 @@ export class Utilities {
    */
   setUserData(): void {
     firebase.database().ref('clubs/12/players/' + this.user.uid).once('value', snapshot => {
-      this.userData = snapshot.val();
-      this.userLoaded = true;
+      if(snapshot.val() != null) {
+        this.userData = snapshot.val();
+        this.userLoaded = true;
+      }
     })
   }
 

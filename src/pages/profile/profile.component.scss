@@ -4,21 +4,6 @@ page-profile {
     margin-top: 20px;
   }
 
-  .profile-image {
-    border-radius: 10rem;
-    width: 12em;
-    height: 12em;
-  }
-
-  .bottomContainer {
-    margin-top: 30px;
-    text-align: center;
-  }
-
-  .saveButtonContainer {
-    margin-top: 30px;
-  }
-
   .profile-inputs input {
     text-align: right;
   }
@@ -33,13 +18,5 @@ page-profile {
 
   .picture-click:active {
     opacity: 0.5;
-  }
-
-  .profileLabel {
-    font-weight: bold;
-  }
-
-  .profileValue {
-    font-size: 14px;
   }
 }

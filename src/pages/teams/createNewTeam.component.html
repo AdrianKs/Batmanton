@@ -16,35 +16,81 @@
 
 <ion-content padding>
     <form class="center-form" [formGroup]="addTeamForm" (submit)="proceedProcess()" novalidate>
-        <div class="topContainer">
-            <h4 class="teamHeadline">Bild hinzufügen</h4>
-            <div class="pictureContainer">
-                <img id="teamPic" src="assets/images/ic_account_circle_black_48dp_2x.png" class="team-image" (click)="changeTeamPicture()"
-                />
-                <!--<img id="teamPic" (click)="changeTeamPicture()" />-->
-            </div>
             <div class="playerDataContainer">
-                <h4 class="teamHeadline">Mannschaftsdetails</h4>
-                <ion-item>
-                    <ion-label class="playerLabel">Teamname:</ion-label>
-                    <ion-input #TeamName formControlName="TeamName" class="playerValue"></ion-input>
+                <ion-list>
+                    <ion-list-header>Mannschaftsname</ion-list-header>
+                    <ion-item>
+                        <ion-input #TeamName formControlName="TeamName" placeholder="Namen eingeben"></ion-input>
+                    </ion-item>
+                </ion-list>
+                <ion-list>
+                    <ion-list-header>Altersinformationen</ion-list-header>
+                    <ion-item>
+                    <ion-label>Maximales Alter:</ion-label>
+                    <ion-select [(ngModel)]="altersklasse" placeholder="Auswählen" [ngModelOptions]="{standalone: true}" (ionInput)="selectAltersklasse(altersklasse)">
+                        <ion-option value="9">U 09</ion-option>
+                        <ion-option value="11">U 11</ion-option>
+                        <ion-option value="13">U 13</ion-option>
+                        <ion-option value="15">U 15</ion-option>
+                        <ion-option value="17">U 17</ion-option>
+                        <ion-option value="19">U 19</ion-option>
+                        <ion-option value="0">Erwachsen</ion-option>
+                    </ion-select>
+                    <!--<ion-input #maxAlt class="playerValue" formControlName="maxAlt" type="number"></ion-input>-->
                 </ion-item>
                 <ion-item>
-                    <ion-label class="playerLabel">Maximales Alter:</ion-label>
-                    <ion-input #maxAlt class="playerValue" formControlName="maxAlt" type="number"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-label class="playerLabel">Altersbezeichnung:</ion-label>
-                    <ion-select formControlName="altersBez" placeholder="Auswählen...">
+                    <ion-label>Art:</ion-label>
+                    <ion-select [(ngModel)]="teamArt" placeholder="Auswählen" [ngModelOptions]="{standalone: true}">
+                        <ion-option value="Normal">Normal</ion-option>
+                        <ion-option value="Mini">Mini</ion-option>
+                    </ion-select>
+                    <!--<ion-label *ngIf="altersklasse ==9" class="data-label">Schüler</ion-label>
+                    <ion-label *ngIf="altersklasse ==11" class="data-label">Schüler</ion-label>
+                    <ion-label *ngIf="altersklasse ==13" class="data-label">Schüler</ion-label>
+                    <ion-label *ngIf="altersklasse ==15" class="data-label">Schüler</ion-label>
+                    <ion-label *ngIf="altersklasse ==17" class="data-label">Jugend</ion-label>
+                    <ion-label *ngIf="altersklasse ==19" class="data-label">Jugend</ion-label>
+                    <ion-label *ngIf="altersklasse==0" class="data-label">Erwachsen</ion-label>-->
+                    <!--<ion-select formControlName="altersBez" placeholder="Auswählen...">
                         <ion-option value=0>Erwachsen</ion-option>
                         <ion-option>Mini</ion-option>
-                    </ion-select>
-
+                    </ion-select>-->
                     <!--<ion-input #altersBez formControlName="altersBez" class="playerValue"></ion-input>-->
                 </ion-item>
+                </ion-list>
+                <!--<ion-item>
+                    <ion-label class="create-label">Teamname:</ion-label>
+                    <ion-input #TeamName formControlName="TeamName" class="playerValue"></ion-input>
+                </ion-item>-->
+                <!--<ion-item>
+                    <ion-label class="create-label">Maximales Alter:</ion-label>
+                    <ion-select [(ngModel)]="altersklasse" placeholder="Auswählen..." [ngModelOptions]="{standalone: true}" (ionInput)="selectAltersklasse(altersklasse)">
+                        <ion-option value="9">U 09</ion-option>
+                        <ion-option value="11">U 11</ion-option>
+                        <ion-option value="13">U 13</ion-option>
+                        <ion-option value="15">U 15</ion-option>
+                        <ion-option value="17">U 17</ion-option>
+                        <ion-option value="19">U 19</ion-option>
+                        <ion-option value="0">Erwachsen</ion-option>
+                    </ion-select>-->
+                    <!--<ion-input #maxAlt class="playerValue" formControlName="maxAlt" type="number"></ion-input>-->
+                <!--</ion-item>
+                <ion-item>
+                    <ion-label class="create-label">Altersbezeichnung:</ion-label>
+                    <ion-label *ngIf="altersklasse ==9">Schüler</ion-label>
+                    <ion-label *ngIf="altersklasse ==11">Schüler</ion-label>
+                    <ion-label *ngIf="altersklasse ==13">Schüler</ion-label>
+                    <ion-label *ngIf="altersklasse ==15">Schüler</ion-label>
+                    <ion-label *ngIf="altersklasse ==17">Jugend</ion-label>
+                    <ion-label *ngIf="altersklasse ==19">Jugend</ion-label>
+                    <ion-label *ngIf="altersklasse==0">Erwachsen</ion-label>-->
+                    <!--<ion-select formControlName="altersBez" placeholder="Auswählen...">
+                        <ion-option value=0>Erwachsen</ion-option>
+                        <ion-option>Mini</ion-option>
+                    </ion-select>-->
+                    <!--<ion-input #altersBez formControlName="altersBez" class="playerValue"></ion-input>-->
+                <!--</ion-item>-->
             </div>
-
-        </div>
-        <button class="submitButtonAdd" ion-button type="submit" color="secondary">Hinzufügen</button>
+        <button class="submitButtonAdd" ion-button outline round type="submit" color="secondary">Hinzufügen</button>
     </form>
 </ion-content>

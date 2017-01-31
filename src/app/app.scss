@@ -28,10 +28,6 @@ p {
   color: #d2d2d2;
 }
 
-ion-label {
-  margin-left: 5px;
-}
-
 .menuHeader {
   background-color: #cccccc;
   height: 15%;
@@ -53,27 +49,33 @@ ion-label {
 }
 
 .menuBtnAbout .item-inner {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid $yellow-shade;
 }
 
 .menuIcons {
   margin-right: 10px;
+  color: $yellow-shade;
 }
 
 .menuBtnLogout {
   position: absolute;
   right: 0px;
   bottom: 2px;
+  margin-right: 6px;
+  color: $orange-shade;
 }
 
 .menuHeaderPic {
   position: absolute;
-  top: 5px;
+  top: 8px;
   left: 15px;
-  width: 48px;
-  height: 48px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
+  background: $yellow-shade;
+  padding: 2px;
 }
+
 
 .menuBtnHeader {
   position: absolute;
@@ -82,42 +84,229 @@ ion-label {
 }
 
 .mainPlayerContent {
-  font-size: 12px;
+  font-size: 15px;
+  color: white !important;
 }
 
 .secPlayerContent {
-  font-size: 10px;
-  color: lightslategray;
+  font-size: 11px;
+  color: #999999;
 }
 
-.thumbnail-matchday-top-left {
+.thumbnail-pictures{
+  background-color: $yellow-shade;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.thumbnail-pictures-big{
+  background-color: $yellow-shade;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.thumbnail-top-left {
     width: 30px;
     height: 30px;
     border-top-left-radius: 100%;
     padding: 0;
     margin-bottom: -4px;
     margin-right: -4px;
+    background-color: black;
 }
 
-.thumbnail-matchday-top-right {
+.thumbnail-top-right {
     width: 30px;
     height: 30px;
     border-top-right-radius: 100%;
     padding: 0;
     margin-bottom: -4px;
+    background-color: black;
 }
 
-.thumbnail-matchday-bottom-right {
+.thumbnail-bottom-right {
     width: 30px;
     height: 30px;
     border-bottom-right-radius: 100%;
     padding: 0;
     margin-left: -4px;
+    background-color: black;
 }
 
-.thumbnail-matchday-bottom-left {
+.thumbnail-bottom-left {
     width: 30px;
     height: 30px;
     border-bottom-left-radius: 100%;
     padding: 0;
+    background-color: black;
+}
+
+
+.thumbnail-top-left-big {
+  width: 55px;
+  height: 55px;
+  border-top-left-radius: 100%;
+  padding: 0;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  background-color: black;
+}
+
+.thumbnail-top-right-big {
+  width: 55px;
+  height: 55px;
+  border-top-right-radius: 100%;
+  padding: 0;
+  margin-bottom: 0px;
+  background-color: black;
+}
+
+.thumbnail-bottom-right-big {
+  width: 55px;
+  height: 55px;
+  border-bottom-right-radius: 100%;
+  padding: 0;
+  margin-left: 0px;
+  background-color: black;
+}
+
+.thumbnail-bottom-left-big {
+  width: 55px;
+  height: 55px;
+  border-bottom-left-radius: 100%;
+  padding: 0;
+  background-color: black;
+}
+
+.bottom-thumbnail-row{
+  height: 30px;
+}
+
+.bottom-thumbnail-row-big{
+  height: 55px;
+}
+
+.player-item-image {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  background-color: $yellow-shade;
+  padding: 2px;
+}
+
+.profile-image{
+  border-radius: 10rem;
+  width: 12em;
+  height: 12em;
+}
+
+.itemPlayerLeft {
+  width: 15%;
+  float: left;
+  padding-top: 7px;
+  padding-left: 3px;
+}
+
+.itemPlayerRight{
+  width: 85%;
+  color: lightslategrey;
+  float: right;
+  padding: 8px 8px 8px 15px;
+}
+
+.itemLeft {
+  float: left;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 3px;
+}
+
+.itemRight{
+  color: lightslategrey;
+  padding: 14px 8px 8px 15px;
+  margin-left: 77px;
+}
+
+.center-form {
+  text-align: center;
+}
+
+.mainDetails {
+  color: white;
+}
+
+.fab{
+  background-color: $orange-shade !important;
+}
+
+.picture-border{
+  background-color: $yellow-shade;
+  padding: 3px;
+}
+
+.input-ios .text-input{
+  padding-right: 0px;
+}
+
+.label-ios {
+  margin: 5px 8px 5px 0;
+}
+
+.pictureContainer{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.player-item-button{
+  float: right;
+  width: 25px;
+  height: 25px;
+  margin-top: 8px;
+}
+
+.align-center{
+  text-align: center;
+}
+
+.inline{
+  display: inline-block;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.form-value {
+  font-size: 14px;
+}
+
+.edit-players-button-container{
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.players-list{
+  margin-bottom: 15px;
+}
+
+.bottomContainer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.saveButtonContainer{
+  margin-top: 30px;
+}
+
+.button-width{
+  width: 190px;
+}
+
+//changes of ion styles
+ion-select{
+  max-width: 100%;
+}
+
+ion-label {
+  margin-left: 5px;
 }

@@ -2,15 +2,25 @@
  * Created by kochsiek on 08.12.2016.
  */
 // todo:
-// Einstellungsscreen (Benachrichtigungen, Verein ändern, PW ändern, E-Mail ändern)
-// Error Handling (global)
-// kleinere Fonts
-// Admin/ Spieler Rolle
-// Enter App Screen, Passwortabfrage
-// Passwort validate
-// Don't skip select profile picture screen
-// Delete Account from Firebase?
-// Update Profile Picture in User Management and elsewhere after upload (/ changing picUrl)
+// Enter App Screen
+// Change Passwort
+// Delete Profile
+// Fix infinite loading indicator iPhone
+// handle error wenn keine internetverbindung besteht
+// Bug: Alter der Mannschaft wird nach Bearbeitung resettet, wenn man Spieler hinzufügen will
+// Cookie login
+// AddTeamsToMatchday: Unterschied zwischen "Fertig" und "Zurück" Button? Warum wird man bei "Fertig" wieder in die Übersicht geleitet?
+// Spieldetails: "Kein Spieler" Label hinzufügen
+// register style
+// invites style
+// myGames style
+// gameDetails-->player style
+// ViewTeam: "Fertig" Button ausgrauen, wenn keine Changes gemacht wurden
+// gameDetails: Remove player directly from list
+// unnötige css klassen löschen
+// style für android
+// Color of Date Time Picker white machen
+// AddTeamsToMatchday & View Team: Spieler in Spielerliste direkt löschbar machen, Im Spieler-Bearbeiten Screen Spieler auch wieder herauslöschen können
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
@@ -30,6 +40,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.setActionSheetOptions();
+    this.utilities.setUserData();
   }
 
   public profileForm;
@@ -141,7 +152,7 @@ export class ProfileComponent implements OnInit {
 
   finishEditProfile() {
     if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.genderChanged || this.teamChanged) && this.formValid) {
-      firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).set({
+      firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).update({
         birthday: this.utilities.userData.birthday,
         email: this.utilities.userData.email,
         firstname: this.utilities.userData.firstname,

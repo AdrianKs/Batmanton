@@ -22,20 +22,34 @@
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #387ef5,
+  //primary:    #387ef5,
+  primary:    #ff8c00,
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #222
 );
 
+$dark-shade: #1B211F;
+$secondary-dark-shade: #2A2E2E;
+$yellow-shade: #FFF200;
+$orange-shade: #ff8c00;
+//$orange-shade: #FCA233;
+//$orange-shade: #C96F00;
 
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
+$toolbar-ios-background: $dark-shade;
+$segment-button-ios-background-color-activated: $yellow-shade;
+$segment-button-ios-background-color: $dark-shade;
+$toolbar-ios-button-color: $yellow-shade;
 
+$fab-list-button-background-color: $yellow-shade;
+$fab-ios-list-button-background-color-activated: $yellow-shade;
 
+$list-ios-header-color: white;
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -60,6 +74,18 @@ $colors: (
 
 @import "ionic.theme.default";
 
+$background-color: $secondary-dark-shade;
+//$background-color: #5D6161;
+
+$list-text-color: white;
+//$list-text-color: black;
+
+$list-background-color: $secondary-dark-shade;
+//$list-background-color: #5D6161;
+
+$list-border-color: $yellow-shade;
+$toolbar-border-color: $yellow-shade;
+$refresher-border-color: #B3A600;
 
 // Ionicons
 // --------------------------------------------------

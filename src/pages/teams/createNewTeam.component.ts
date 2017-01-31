@@ -3,7 +3,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { ViewTeamComponent } from './viewTeam.component';
-import { NavController, ActionSheetController } from 'ionic-angular';
+import { NavController, ActionSheetController, AlertController } from 'ionic-angular';
 import { FirebaseProvider } from '../../providers/firebase-provider';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
@@ -20,7 +20,8 @@ import { Camera } from 'ionic-native';
 })
 export class CreateTeamComponent implements OnInit {
 
-
+    altersklasse: number = -1;
+    teamArt: any;
     database: any;
     addTeamForm: any;
     teamName: any;
@@ -32,6 +33,7 @@ export class CreateTeamComponent implements OnInit {
     picUrl: any;
     teamPicId: any;
     changedPic: boolean = false;
+    newTeamId: any;
 
     ngOnInit(): void {
         this.initActionSheet();
@@ -41,20 +43,25 @@ export class CreateTeamComponent implements OnInit {
         public fbP: FirebaseProvider,
         public utilities: Utilities,
         public formBuilder: FormBuilder,
-        public actionSheetCtrl: ActionSheetController) {
+        public actionSheetCtrl: ActionSheetController,
+        public alertCtrl: AlertController) {
         this.addTeamForm = formBuilder.group({
             TeamName: ['', Validators.compose([Validators.required])],
             maxAlt: ['', Validators.compose([Validators.required])],
-            altersBez: ['', Validators.compose([Validators.required])]
+            altersBez: ['']
         });
         this.database = firebase.database();
+    }
+
+    selectAltersklasse(value) {
+        this.altersklasse = value;
     }
 
     makeid() {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-        for (var i = 0; i < 7; i++)
+        for (var i = 0; i < 26; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
 
         return text;
@@ -82,43 +89,99 @@ export class CreateTeamComponent implements OnInit {
     }
 
     proceedProcess() {
+        this.newTeamId = this.makeid();
         this.teamName = this.addTeamForm.value.TeamName;
-        this.maxAlt = this.addTeamForm.value.maxAlt;
-        this.altersBez = this.addTeamForm.value.altersBez;
-        if (this.altersBez == "Mini") {
-            this.altersBez = 1;
+        this.maxAlt = this.altersklasse;
+       /* if (this.altersklasse <= 15 && this.altersklasse != 0) {
+            this.altersBez = "Schüler";
+        } else if (this.altersklasse <= 19 && this.altersklasse > 15) {
+            this.altersBez = "Jugend";
         } else {
-            this.altersBez = 0;
+            this.altersBez = "Erwachsen";
         }
-        this.database.ref('clubs/12/teams/').once('value', snapshot => {
-            if(!this.changedPic){
-                this.picUrl = '';
-                this.teamPicId = '';
-            }
+        //this.altersBez = this.addTeamForm.value.altersBez;
+        if (this.altersBez == "Schüler") {
+            this.altersBez = 1;
+        } else if (this.altersBez == "Jugend") {
+            this.altersBez = 0;
+        } else {
+            this.altersBez = 2;
+        }
+        let lokalTeam = {
+                ageLimit: this.maxAlt,
+                name: this.teamName,
+                type: this.teamArt
+            }*/
+        this.database.ref('clubs/12/teams/').child(this.newTeamId).set({
+            ageLimit: this.maxAlt,
+            name: this.teamName,
+            type: this.teamArt
+        }).then(data => {
+            this.showSuccessAlert();
+        })
+        /*this.database.ref('clubs/12/teams/').once('value', snapshot => {
             let lokalTeam = {
                 ageLimit: this.maxAlt,
                 name: this.teamName,
-                type: this.altersBez,
-                teamPicUrl: this.picUrl,
-                teamPicId: this.teamPicId
+                type: this.altersBez
             }
             //TEAMS LOKAL IM ARRAY
             let teamArray = [];
-            let counter = 0;
+            let counter;
             for (let i in snapshot.val()) {
                 teamArray[i] = snapshot.val()[i];
-                counter++;
             }
             teamArray.push(lokalTeam);
+            for (let i in teamArray) {
+                counter = i;
+            }
+            console.log(counter);
+            this.newTeamId = counter;
             //Datenbank updaten
             firebase.database().ref('clubs/12/').update({
                 teams: teamArray
             });
-            this.navCtrl.popToRoot();
+
+        }).then((data) => {
+            this.showSuccessAlert();
+        });*/
+    }
+
+    showSuccessAlert() {
+        let alert = this.alertCtrl.create({
+            message: 'Die Mannschaft wurde erfolgreich angelegt! Möchten Sie der Mannschaft direkt Spieler zuweisen?',
+            title: 'Mannschaft angelegt',
+            buttons: [
+                {
+                    text: 'Später',
+                    handler: () => {
+                        this.toRoot()
+                    }
+                },
+                {
+                    text: 'Spieler hinzufügen',
+                    handler: () => {
+                        this.addPlayers();
+                    }
+                }
+            ]
+        });
+        alert.present();
+    }
+
+    toRoot() {
+        this.navCtrl.pop();
+    }
+
+    addPlayers() {
+        this.navCtrl.push(EditPlayerComponent, {
+            toRoot: 'yes',
+            teamId: this.newTeamId,
+            maxAge: this.maxAlt
         });
     }
 
-    altersBezChanged(input){
+    altersBezChanged(input) {
         this.altersBez = input;
     }
 
@@ -177,9 +240,9 @@ export class CreateTeamComponent implements OnInit {
             });
     }
 
-    changeTeamPicture(){
+    changeTeamPicture() {
         let actionSheet = this.actionSheetCtrl.create(this.actionSheetOptions);
-            actionSheet.present();
+        actionSheet.present();
     }
 
 }
