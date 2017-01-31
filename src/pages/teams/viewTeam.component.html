@@ -123,19 +123,23 @@
     <!--</ion-row>-->
   <!--</ion-grid>-->
 
+  <!--<div *ngIf="(editMode)" class="bottomContainer">-->
+    <!--<div class="saveButtonContainer">-->
+      <!--<button class="add-players-button" ion-button icon-left outline round (click)="editPlayers()" color="secondary">-->
+        <!--<ion-icon name="add"></ion-icon>-->
+        <!--Spieler hinzufügen-->
+      <!--</button>-->
+    <!--</div>-->
+  <!--</div>-->
+
   <div *ngIf="(editMode)" class="bottomContainer">
-    <div class="saveButtonContainer">
-      <button class="add-players-button" ion-button icon-left outline round (click)="editPlayers()" color="secondary">
-        <ion-icon name="add"></ion-icon>
-        Spieler hinzufügen
-      </button>
-      <button class="delete-team-button" ion-button icon-left outline round (click)="presentConfirm(null, 'delT')" color="danger">
-        <ion-icon name="close"></ion-icon>
-        Mannschaft löschen
-      </button>
-    </div>
+    <button class="button-width" ion-button outline round color="danger" icon-left (click)="presentConfirm(null, 'delT')">
+      <ion-icon name="close"></ion-icon>
+      Mannschaft löschen
+    </button>
   </div>
 
+  <ion-list-header class="align-center">Spieler</ion-list-header>
   <ion-toolbar no-border-top>
     <ion-segment [(ngModel)]="geschlecht">
       <ion-segment-button value="maenner">
@@ -147,7 +151,7 @@
     </ion-segment>
   </ion-toolbar>
   <div [ngSwitch]="geschlecht">
-    <ion-list *ngSwitchCase="'maenner'">
+    <ion-list class="players-list" *ngSwitchCase="'maenner'">
       <div *ngIf="!teamHasPlayers">
         <p class="no-Players-p">Keine Spieler vorhanden</p>
       </div>
@@ -175,7 +179,7 @@
         </div>
       </div>
     </ion-list>
-    <ion-list *ngSwitchCase="'frauen'">
+    <ion-list class="players-list" *ngSwitchCase="'frauen'">
       <div *ngIf="!teamHasPlayers">
         <p class="no-Players-p">Keine Spieler vorhanden</p>
       </div>
@@ -198,11 +202,17 @@
                 </div>
               </div>
             </div>
-
           </ion-item>
-
         </div>
       </div>
     </ion-list>
   </div>
+
+  <div class="edit-players-button-container">
+    <button class="button-width" ion-button outline round color="secondary" icon-left (click)="editPlayers()">
+      <ion-icon name="create"></ion-icon>
+      Spieler bearbeiten
+    </button>
+  </div>
+
 </ion-content>

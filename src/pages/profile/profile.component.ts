@@ -7,7 +7,6 @@
 // Delete Profile
 // Fix infinite loading indicator iPhone
 // handle error wenn keine internetverbindung besteht
-// Einheitliches Erscheinungsbild für matchday & team beim hinzufügen von spielern
 // Bug: Alter der Mannschaft wird nach Bearbeitung resettet, wenn man Spieler hinzufügen will
 // Cookie login
 // AddTeamsToMatchday: Unterschied zwischen "Fertig" und "Zurück" Button? Warum wird man bei "Fertig" wieder in die Übersicht geleitet?
@@ -20,9 +19,8 @@
 // gameDetails: Remove player directly from list
 // unnötige css klassen löschen
 // style für android
-// Spieldetails/ ViewTeam: delete button nur anzeigen, wenn edit mode = true
-// Spieldetails/ ViewTeam: edit players button immer anzeigen
 // Color of Date Time Picker white machen
+// AddTeamsToMatchday & View Team: Spieler in Spielerliste direkt löschbar machen, Im Spieler-Bearbeiten Screen Spieler auch wieder herauslöschen können
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";

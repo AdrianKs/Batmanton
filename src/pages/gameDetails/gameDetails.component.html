@@ -40,7 +40,6 @@
       </div>
     </div>
     <div class="game-details-form game-details-inputs">
-    <!--<form class="center-form" novalidate>-->
       <ion-item *ngIf="(!editMode)">
         <ion-label class="form-label">Gegner:</ion-label>
         <ion-label class="form-value">{{ gameItem.opponent }}</ion-label>
@@ -118,6 +117,15 @@
                       doneText="Ok" cancelText="Abbrechen"></ion-datetime>
       </ion-item>
     </div>
+
+    <div *ngIf="(editMode)" class="bottomContainer">
+        <button class="button-width" ion-button outline round color="danger" icon-left (click)="deleteGame()">
+          <ion-icon name="close"></ion-icon>
+          Spiel löschen
+        </button>
+    </div>
+
+    <ion-list-header class="align-center">Spieler</ion-list-header>
       <ion-toolbar no-border-top>
         <ion-segment [(ngModel)]="playerStatus">
           <ion-segment-button value="accepted">
@@ -131,10 +139,9 @@
           </ion-segment-button>
         </ion-segment>
       </ion-toolbar>
-    <!--</div>-->
   </div>
   <div [ngSwitch]="playerStatus">
-    <ion-list *ngSwitchCase="'accepted'">
+    <ion-list class="players-list" *ngSwitchCase="'accepted'">
       <div *ngFor="let relevantPlayer of gameItem.acceptedPlayers">
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
@@ -159,7 +166,7 @@
         </div>
       </div>
     </ion-list>
-    <ion-list *ngSwitchCase="'pending'">
+    <ion-list class="players-list" *ngSwitchCase="'pending'">
       <div *ngFor="let relevantPlayer of gameItem.pendingPlayers">
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
@@ -184,7 +191,7 @@
         </div>
       </div>
     </ion-list>
-    <ion-list *ngSwitchCase="'declined'">
+    <ion-list class="players-list" *ngSwitchCase="'declined'">
       <div *ngFor="let relevantPlayer of gameItem.declinedPlayers">
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
@@ -211,17 +218,11 @@
     </ion-list>
   </div>
 
-  <div *ngIf="(!editMode)" class="bottomContainer">
-    <div class="saveButtonContainer">
-      <button ion-button outline round color="secondary" icon-left (click)="addPlayers()">
-        <ion-icon name="create"></ion-icon>
-        Spieler bearbeiten
-      </button>
-      <button ion-button outline round color="danger" icon-left (click)="deleteGame()">
-        <ion-icon name="close"></ion-icon>
-        Spiel löschen
-      </button>
-    </div>
+  <div class="edit-players-button-container">
+    <button class="button-width" ion-button outline round color="secondary" icon-left (click)="addPlayers()">
+      <ion-icon name="add"></ion-icon>
+      Spieler einladen
+    </button>
   </div>
 
 </ion-content>
