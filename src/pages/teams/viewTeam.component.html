@@ -108,31 +108,7 @@
     </div>
   </div>
 
-  <!--<ion-grid *ngIf="(editMode)">-->
-    <!--<ion-row>-->
-      <!--<button class="editPlayerButton" ion-button icon-left outline round (click)="editPlayers()" color="secondary">-->
-        <!--<ion-icon name="add"></ion-icon>-->
-        <!--Spieler hinzufügen-->
-      <!--</button>-->
-    <!--</ion-row>-->
-    <!--<ion-row>-->
-      <!--<button class="editPlayerButton" ion-button icon-left outline round (click)="presentConfirm(null, 'delT')" color="danger">-->
-        <!--<ion-icon name="close"></ion-icon>-->
-        <!--Mannschaft löschen-->
-      <!--</button>-->
-    <!--</ion-row>-->
-  <!--</ion-grid>-->
-
-  <!--<div *ngIf="(editMode)" class="bottomContainer">-->
-    <!--<div class="saveButtonContainer">-->
-      <!--<button class="add-players-button" ion-button icon-left outline round (click)="editPlayers()" color="secondary">-->
-        <!--<ion-icon name="add"></ion-icon>-->
-        <!--Spieler hinzufügen-->
-      <!--</button>-->
-    <!--</div>-->
-  <!--</div>-->
-
-  <div *ngIf="(editMode)" class="bottomContainer">
+  <div *ngIf="(editMode)" class="delete-button-container">
     <button class="button-width" ion-button outline round color="danger" icon-left (click)="presentConfirm(null, 'delT')">
       <ion-icon name="close"></ion-icon>
       Mannschaft löschen
