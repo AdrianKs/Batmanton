@@ -29,7 +29,7 @@ export class InvitesMatchdayComponent {
       message: 'Die Einladung wurde erneut versendet',
       position: 'top',
       duration: 3000,
-      
+
     });
     toast.present();
   }
@@ -57,5 +57,17 @@ export class InvitesMatchdayComponent {
 
   goToPage(value) {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
+  }
+
+  doRefresh(refresher) {
+    console.log('Refreshed');
+    this.utilities.setInvites();
+    this.invites = this.utilities.allInvites;
+    this.utilities.setPlayers();
+    this.players = this.utilities.allPlayers;
+    setTimeout(() => {
+      console.log('New Data loaded.');
+      refresher.complete();
+    }, 1000);
   }
 }
