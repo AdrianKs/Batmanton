@@ -1,0 +1,346 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+@media (max-width: 320px) {
+  /* CSS that should be displayed if width is equal to or less than 800px goes here */
+  .menuHeaderPic {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+  }
+}
+
+@media (min-width: 321px){
+  .menuHeaderPic {
+    position: absolute;
+    top: 20px;
+    left: 15px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+  }
+}
+
+form {
+  margin-bottom: 32px;
+  button {
+    margin-top: 20px;
+  }
+}
+
+p {
+  font-size: 0.8em;
+  color: #d2d2d2;
+}
+
+.menuHeader {
+  background-color: #cccccc;
+  height: 17%;
+}
+
+.menuHeaderContent{
+  width: 100%;
+  height: 100%;
+}
+
+.menuToolbar{
+  height: 100% !important;
+}
+
+.menuBottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.menuBtnAbout .item-inner {
+  border-top: 1px solid $yellow-shade;
+}
+
+.menuIcons {
+  margin-right: 10px;
+  color: $yellow-shade;
+}
+
+.menuBtnLogout {
+  position: absolute;
+  right: 0px;
+  bottom: 2px;
+  margin-right: 6px;
+  color: $orange-shade;
+}
+
+<<<<<<< HEAD
+.menuHeaderPic {
+  position: absolute;
+  top: 8px;
+  left: 15px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: $yellow-shade;
+  padding: 2px;
+}
+
+
+=======
+>>>>>>> 163f9906a350782a78fd51898aabf61e383afc94
+.menuBtnHeader {
+  position: absolute;
+  bottom: 10px;
+  left: 15px;
+}
+
+.mainPlayerContent {
+  font-size: 15px;
+  color: white !important;
+}
+
+.secPlayerContent {
+  font-size: 11px;
+  color: #999999;
+}
+
+.thumbnail-pictures{
+  background-color: $yellow-shade;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.thumbnail-pictures-big{
+  background-color: $yellow-shade;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.thumbnail-top-left {
+    width: 30px;
+    height: 30px;
+    border-top-left-radius: 100%;
+    padding: 0;
+    margin-bottom: -4px;
+    margin-right: -4px;
+    background-color: black;
+}
+
+.thumbnail-top-right {
+    width: 30px;
+    height: 30px;
+    border-top-right-radius: 100%;
+    padding: 0;
+    margin-bottom: -4px;
+    background-color: black;
+}
+
+.thumbnail-bottom-right {
+    width: 30px;
+    height: 30px;
+    border-bottom-right-radius: 100%;
+    padding: 0;
+    margin-left: -4px;
+    background-color: black;
+}
+
+.thumbnail-bottom-left {
+    width: 30px;
+    height: 30px;
+    border-bottom-left-radius: 100%;
+    padding: 0;
+    background-color: black;
+}
+
+
+.thumbnail-top-left-big {
+  width: 55px;
+  height: 55px;
+  border-top-left-radius: 100%;
+  padding: 0;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  background-color: black;
+}
+
+.thumbnail-top-right-big {
+  width: 55px;
+  height: 55px;
+  border-top-right-radius: 100%;
+  padding: 0;
+  margin-bottom: 0px;
+  background-color: black;
+}
+
+.thumbnail-bottom-right-big {
+  width: 55px;
+  height: 55px;
+  border-bottom-right-radius: 100%;
+  padding: 0;
+  margin-left: 0px;
+  background-color: black;
+}
+
+.thumbnail-bottom-left-big {
+  width: 55px;
+  height: 55px;
+  border-bottom-left-radius: 100%;
+  padding: 0;
+  background-color: black;
+}
+
+.bottom-thumbnail-row{
+  height: 30px;
+}
+
+.bottom-thumbnail-row-big{
+  height: 55px;
+}
+
+.player-item-image {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  background-color: $yellow-shade;
+  padding: 2px;
+}
+
+.profile-image{
+  border-radius: 10rem;
+  width: 12em;
+  height: 12em;
+}
+
+.itemPlayerLeft {
+  width: 15%;
+  float: left;
+  padding-top: 7px;
+  padding-left: 3px;
+}
+
+.itemPlayerRight{
+  width: 85%;
+  color: lightslategrey;
+  float: right;
+  padding: 8px 8px 8px 15px;
+}
+
+.itemLeft {
+  float: left;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 3px;
+}
+
+.itemRight{
+  color: lightslategrey;
+  padding: 14px 8px 8px 15px;
+  margin-left: 77px;
+}
+
+.center-form {
+  text-align: center;
+}
+
+.mainDetails {
+  color: white;
+}
+
+.fab{
+  background-color: $orange-shade !important;
+}
+
+.picture-border{
+  background-color: $yellow-shade;
+  padding: 3px;
+}
+
+.input-ios .text-input{
+  padding-right: 0px;
+}
+
+.label-ios {
+  margin: 5px 8px 5px 0;
+}
+
+.pictureContainer{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.player-item-button{
+  float: right;
+  width: 25px;
+  height: 25px;
+  margin-top: 8px;
+}
+
+.align-center{
+  text-align: center;
+}
+
+.inline{
+  display: inline-block;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.form-value {
+  font-size: 14px;
+}
+
+.edit-players-button-container{
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.delete-button-container{
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.players-list{
+  margin-bottom: 15px;
+}
+
+.bottomContainer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.saveButtonContainer{
+  margin-top: 30px;
+}
+
+.button-width{
+  width: 205px;
+}
+
+//changes of ion styles
+ion-select{
+  max-width: 100%;
+}
+
+ion-label {
+  margin-left: 5px;
+}
+
+.picker-opt{
+  color: white;
+}
