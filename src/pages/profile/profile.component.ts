@@ -18,8 +18,8 @@
 // ViewTeam: "Fertig" Button ausgrauen, wenn keine Changes gemacht wurden
 // gameDetails: Remove player directly from list
 // unnötige css klassen löschen
-// style für android
 // AddTeamsToMatchday & View Team: Spieler in Spielerliste direkt löschbar machen, Im Spieler-Bearbeiten Screen Spieler auch wieder herauslöschen können
+// MyGames: Label wenn keine Spiele verfügbar sind
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
