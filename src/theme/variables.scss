@@ -42,11 +42,11 @@ $orange-shade: #ff8c00;
 // iOS only Sass variables can go here
 
 $toolbar-ios-background: $dark-shade;
-$segment-button-ios-background-color-activated: $yellow-shade;
-$segment-button-ios-background-color: $dark-shade;
 $toolbar-ios-button-color: $yellow-shade;
 
-$fab-list-button-background-color: $yellow-shade;
+$segment-button-ios-background-color-activated: $yellow-shade;
+$segment-button-ios-background-color: $dark-shade;
+
 $fab-ios-list-button-background-color-activated: $yellow-shade;
 
 $list-ios-header-color: white;
@@ -55,7 +55,16 @@ $list-ios-header-color: white;
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+$toolbar-md-background: $dark-shade;
+$toolbar-md-button-color: $yellow-shade;
 
+$segment-button-md-border-color-activated: $yellow-shade;
+$segment-button-md-text-color-activated: $yellow-shade;
+
+$fab-md-list-button-background-color-activated: $yellow-shade;
+
+$list-md-header-color: white;
+$list-md-border-color: $yellow-shade;
 
 
 // App Windows Variables
@@ -86,6 +95,8 @@ $list-background-color: $secondary-dark-shade;
 $list-border-color: $yellow-shade;
 $toolbar-border-color: $yellow-shade;
 $refresher-border-color: #B3A600;
+
+$fab-list-button-background-color: $yellow-shade;
 
 // Ionicons
 // --------------------------------------------------
