@@ -19,7 +19,6 @@
 // gameDetails: Remove player directly from list
 // unnötige css klassen löschen
 // style für android
-// Color of Date Time Picker white machen
 // AddTeamsToMatchday & View Team: Spieler in Spielerliste direkt löschbar machen, Im Spieler-Bearbeiten Screen Spieler auch wieder herauslöschen können
 
 import {Component, OnInit} from '@angular/core';
