@@ -14,7 +14,6 @@ import { document } from "@angular/platform-browser/src/facade/browser";
 export class UserManagementComponent implements OnInit {
 
   ngOnInit() {
-    //this.groupPlayers(this.dataPlayer);
   }
 
   ionViewDidEnter() {
@@ -26,7 +25,6 @@ export class UserManagementComponent implements OnInit {
   dataPlayer: any[];
   dataPlayerSearch: any;
   selectedPlayer: any;
-  // groupedPlayers: any[];
 
   constructor(private navCtrl: NavController,
     private navParams: NavParams,

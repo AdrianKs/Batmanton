@@ -32,7 +32,6 @@ export class EditRoleComponent {
         if (this.player.id === this.utilities.user.uid) {
             this.sameUser = true;
         }
-
     }
 
 
@@ -118,5 +117,3 @@ export class EditRoleComponent {
         confirm.present();
     }
 }
-
-//TODO delete and update list without db connection
