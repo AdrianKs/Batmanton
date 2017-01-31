@@ -252,11 +252,6 @@ p {
   margin: 5px 8px 5px 0;
 }
 
-.bottomContainer {
-  margin-top: 30px;
-  text-align: center;
-}
-
 .pictureContainer{
   text-align: center;
   margin-top: 20px;
@@ -283,6 +278,28 @@ p {
 
 .form-value {
   font-size: 14px;
+}
+
+.edit-players-button-container{
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.players-list{
+  margin-bottom: 15px;
+}
+
+.bottomContainer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.saveButtonContainer{
+  margin-top: 30px;
+}
+
+.button-width{
+  width: 190px;
 }
 
 //changes of ion styles
