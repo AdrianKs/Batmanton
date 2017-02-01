@@ -3,7 +3,6 @@
  */
 // todo:
 // Enter App Screen
-// Delete Profile
 // Fix infinite loading indicator iPhone
 // handle error wenn keine internetverbindung besteht
 // Erwachsenenmanschaften werden nicht im Profil angezeigt
