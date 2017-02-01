@@ -28,6 +28,9 @@ export class MyGamesComponent implements OnInit {
   loggedInUserID: string = this.Utilities.user.uid;
   dataGames: any;
   dataInvites: any;
+  counterPast: any;
+  counterFuture: any;
+  counterOpen: any;
   testRadioOpen: boolean;
   testRadioResult;
   declined: boolean;
@@ -44,6 +47,9 @@ export class MyGamesComponent implements OnInit {
     if (showLoading) {
       this.createAndShowLoading();
     }
+    this.counterPast = 0;
+    this.counterFuture = 0;
+    this.counterOpen = 0;
     firebase.database().ref('clubs/12/matches').once('value', snapshot => {
       let gamesArray = [];
       let counter = 0;
@@ -75,6 +81,7 @@ export class MyGamesComponent implements OnInit {
         counter++;
       }
       this.dataInvites = inviteArray;
+      this.count();
     }).then((data) => {
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
@@ -107,6 +114,33 @@ export class MyGamesComponent implements OnInit {
     this.loading.present();
   }
 
+  count(){
+    for (let j in this.dataInvites){
+      if(this.dataInvites[j].recipient == this.loggedInUserID){
+        if(this.dataInvites[j].state == 0){
+          this.counterOpen++;
+        }
+        if(this.dataInvites[j].state == 1){
+          for (let i in this.dataGames){
+            if (this.dataGames[i].id == this.dataInvites[j].match){
+              if(this.dataGames[i].time < this.today && this.dataGames[i].time != '0'){
+                this.counterPast++;
+              } else {
+                this.counterFuture++;
+              }
+            }
+          }
+          
+        }
+      }
+    }
+    console.log(this.dataGames);
+    console.log(this.dataInvites);
+    console.log(this.counterPast);
+    console.log(this.counterFuture);
+    console.log(this.counterOpen);
+  }
+
    getFirstFourPicUrls(match) {
     let urlArray = [];
     let counter = 0;
@@ -128,6 +162,7 @@ export class MyGamesComponent implements OnInit {
   }
 
   verifyAccept(inviteItem){
+    this.counterOpen--;
     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
       state: 1
     });
@@ -190,7 +225,9 @@ export class MyGamesComponent implements OnInit {
           } else {
             this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
           }
+          this.counterFuture--;
           firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
+            excuse: this.testRadioResult,
             state: 2
           });
         }
@@ -221,6 +258,7 @@ export class MyGamesComponent implements OnInit {
                     } else {
                       this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
                     }
+                    this.counterFuture--;
                     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
                       excuse: this.testRadioResult + ': ' +data.extra,
                       state: 2

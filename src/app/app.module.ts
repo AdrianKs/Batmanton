@@ -12,6 +12,7 @@ import {MyGamesComponent} from '../pages/myGames/myGames.component';
 import {GameDetailsComponent} from '../pages/gameDetails/gameDetails.component';
 import {PlayerComponent} from '../pages/gameDetails/player.component'
 import {ProfileComponent} from '../pages/profile/profile.component';
+import {ChangePasswordComponent} from '../pages/profile/changePassword.component';
 import {RegisterComponent} from '../pages/register/register.component';
 import {UserManagementComponent} from '../pages/userManagement/userManagement.component';
 import {ResetPasswordComponent} from '../pages/resetPassword/resetPassword.component';
@@ -43,6 +44,7 @@ import {MatchTime} from './pipes/matchTime';
     GameDetailsComponent,
     PlayerComponent,
     ProfileComponent,
+    ChangePasswordComponent,
     RegisterComponent,
     UserManagementComponent,
     ResetPasswordComponent,
@@ -78,6 +80,7 @@ import {MatchTime} from './pipes/matchTime';
     GameDetailsComponent,
     PlayerComponent,
     ProfileComponent,
+    ChangePasswordComponent,
     RegisterComponent,
     UserManagementComponent,
     ResetPasswordComponent,

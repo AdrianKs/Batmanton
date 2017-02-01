@@ -21,7 +21,7 @@
 <ion-content>
   <div>
     <div class="picture-container">
-      <img id="profileImage" class="profile-image picture-click picture-border" src="{{this.utilities.userData.picUrl}}"
+      <img class="profile-image picture-click picture-border" src="{{this.utilities.userData.picUrl}}"
            onError="this.src='assets/images/user-shape-256.png'" (click)="changeProfilePicture()">
     </div>
     <br/>
@@ -113,12 +113,23 @@
     </form>
 
     <div *ngIf="(!editMode)" class="bottomContainer">
-      <div class="saveButtonContainer">
-        <button ion-button round color="danger" icon-left outline (click)="logout()">
-          <ion-icon name="log-out"></ion-icon>
-          Logout
-        </button>
-      </div>
+      <button class="button-width" ion-button round color="danger" icon-left outline (click)="logout()">
+        <ion-icon name="log-out"></ion-icon>
+        Logout
+      </button>
+    </div>
+
+    <div *ngIf="(editMode)" class="bottomContainer">
+      <button class="button-width" ion-button round icon-left outline (click)="changePassword()">
+        <ion-icon name="lock"></ion-icon>
+        Passwort ändern
+      </button>
+    </div>
+    <div *ngIf="(editMode)" class="align-center">
+      <button class="button-width" ion-button round color="danger" icon-left outline (click)="deleteProfile()">
+        <ion-icon name="close"></ion-icon>
+        Profil löschen
+      </button>
     </div>
 
   </div>

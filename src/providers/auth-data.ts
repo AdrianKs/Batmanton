@@ -49,11 +49,23 @@ export class AuthData {
     return this.fireAuth.sendPasswordResetEmail(email);
   }
 
+  changePassword(newPassword: string, passwordOld: string): any{
+    var that = this;
+    var credentials = firebase.auth.EmailAuthProvider.credential(
+      this.utilities.userData.email,
+      passwordOld
+    );
+
+    return this.fireAuth.currentUser.reauthenticate(credentials).then(function() {
+      that.fireAuth.currentUser.updatePassword(newPassword);
+    });
+  }
+
   changeEmail(email: string): any {
     return this.fireAuth.currentUser.updateEmail(email).then(function() {
       // Update successful.
     }, function(error) {
-      // An error happened.
+      alert(error.message);
     });
   }
 
