@@ -2,7 +2,7 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component'
 
@@ -14,10 +14,11 @@ export class InvitesMatchdayComponent {
   matchday: any;
   invites: any;
   players: any;
+  loadingElement: any;
   profilePictureURL: any;
 
 
-  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities, public alertCtrl: AlertController, public toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private loadingCtrl: LoadingController, public utilities: Utilities, public alertCtrl: AlertController, public toastCtrl: ToastController) {
     //Load data in array
     this.matchday = navP.get('matchday');
     this.invites = navP.get('invites');
@@ -59,15 +60,21 @@ export class InvitesMatchdayComponent {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 
+  showLoadingElement() {
+    this.loadingElement = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
+    })
+    this.loadingElement.present();
+  }
+
   doRefresh(refresher) {
-    console.log('Refreshed');
+    this.showLoadingElement();
     this.utilities.setInvites();
     this.invites = this.utilities.allInvites;
     this.utilities.setPlayers();
     this.players = this.utilities.allPlayers;
-    setTimeout(() => {
-      console.log('New Data loaded.');
-      refresher.complete();
-    }, 1000);
+    refresher.complete();
+    this.loadingElement.dismiss().catch(() => { });
   }
 }

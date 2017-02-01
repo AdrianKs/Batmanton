@@ -3,7 +3,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, LoadingController, NavParams } from 'ionic-angular';
 
 import { InvitesMatchdayComponent } from "../invites/invitesmatchday.component";
 
@@ -19,19 +19,21 @@ import { Utilities } from '../../app/utilities';
 export class InvitesComponent implements OnInit {
   login: any;
   dataMatchday: any;
+  loadingElement: any;
 
   ionViewWillEnter() {
+    this.showLoadingElement();
     this.utilities.setInvites();
     this.getMatchday();
+    this.loadingElement.dismiss();
   }
-  
+
   ngOnInit() {
 
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities) {
+  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities, public loadingCtrl: LoadingController) {
     //Load data in arrays
-
   }
 
   getMatchday(): void {
@@ -51,13 +53,13 @@ export class InvitesComponent implements OnInit {
     let urlArray = [];
     let counter = 0;
     for (let i of this.utilities.allInvites) {
-      if (i.match == match.id && i.sender == this.utilities.user.uid && counter < 4){
-          for(let j of this.utilities.allPlayers){
-            if(i.recipient == j.id){
-              urlArray[counter] = j.picUrl;
-              counter ++;
-            }
+      if (i.match == match.id && i.sender == this.utilities.user.uid && counter < 4) {
+        for (let j of this.utilities.allPlayers) {
+          if (i.recipient == j.id) {
+            urlArray[counter] = j.picUrl;
+            counter++;
           }
+        }
       }
     }
     return urlArray;
@@ -86,15 +88,21 @@ export class InvitesComponent implements OnInit {
     this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players });
   }
 
-   doRefresh(refresher) {
-    console.log('Refreshed');
+  showLoadingElement() {
+    this.loadingElement = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
+    })
+    this.loadingElement.present();
+  }
+
+  doRefresh(refresher) {
+    this.showLoadingElement();
     this.utilities.setTeams();
     this.getMatchday();
     this.utilities.setInvites();
     this.utilities.setPlayers();
-    setTimeout(() => {
-      console.log('New Data loaded.');
-      refresher.complete();
-    }, 1000);
+    refresher.complete();
+    this.loadingElement.dismiss();
   }
 }
