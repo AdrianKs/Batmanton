@@ -77,10 +77,20 @@ export class EditRoleComponent {
     deleteUser(player) {
         firebase.database().ref('clubs/12/players/' + player.id).remove();
         this.isDeleted = true;
-       // this.utilities.setPlayers();
+        //this.utilities.setPlayers();
+        this.deleteInvites(player.id);
         this.navigateBackToList();
     }
 
+    deleteInvites(playerId) {
+        firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+            for (let i in snapshot.val()) {
+                if (snapshot.val()[i].recipient == playerId) {
+                    firebase.database().ref('clubs/12/invites/' + i).remove();
+                }
+            }
+        });
+    }
 
     navigateBackToList() {
         this.navCtrl.pop();
