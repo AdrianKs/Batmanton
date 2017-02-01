@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Einladungen Spieltag {{matchday.id}}</ion-title>
+    <ion-title>Eingeladene Spieler</ion-title>
     <ion-buttons right>
       <button ion-button (click)="goToPage(matchday)">
         <ion-icon name="information-circle" clear item-right></ion-icon>
@@ -54,4 +54,7 @@
       </div>
     </div>
   </ion-list>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content>
