@@ -6,16 +6,16 @@
 
 <ion-content padding>
   <div class="picture-container">
-    <img class="picture-border" src="assets/images/user-shape-256.png" *ngIf="!base64Image" class="img-circle"/>
-    <img class="img-circle picture-border" [src]="base64Image" *ngIf="base64Image" align="center"/>
+    <img class="profile-image picture-border" src="assets/images/user-shape-256.png" *ngIf="!base64Image"/>
+    <img class="profile-image picture-border" [src]="base64Image" *ngIf="base64Image"/>
   </div>
 
-  <div class="pictureContainer">
-    <button class="buttonApart" ion-button clear large icon-only color="dark" (click)="takePicture()">
+  <div class="picture-container">
+    <button class="buttonApart" ion-button clear large icon-only color="yellow" (click)="takePicture()">
       <ion-icon name="camera"></ion-icon>
     </button>
 
-    <button class="buttonApart" ion-button clear large icon-only color="dark" (click)="getPicture()">
+    <button class="buttonApart" ion-button clear large icon-only color="yellow" (click)="getPicture()">
       <ion-icon name="images"></ion-icon>
     </button>
   </div>
