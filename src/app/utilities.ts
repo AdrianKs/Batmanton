@@ -90,7 +90,7 @@ export class Utilities {
   calculateAge(birthdayString) {
     let birthdayDate = new Date(birthdayString);
 
-    let todayDate = new Date("2016-11-26");
+    let todayDate = new Date();
     let todayYear = todayDate.getFullYear();
     let todayMonth = todayDate.getMonth();
     let todayDay = todayDate.getDate();
@@ -110,7 +110,7 @@ export class Utilities {
     let age = this.calculateAge(birthdayString);
     let relevantTeams: Array<any> = [];
     this.allTeams.forEach(function (team) {
-      if (team.ageLimit > age || team.ageLimit === 0) {
+      if (team.ageLimit > age || team.ageLimit == 0) {
         relevantTeams.push(team);
       }
     });

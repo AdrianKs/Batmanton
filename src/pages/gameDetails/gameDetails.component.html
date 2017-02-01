@@ -46,7 +46,7 @@
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Gegner:</ion-label>
-        <ion-input class="form-value" #opponent [(ngModel)]="gameItem.opponent"
+        <ion-input class="form-value" #opponent placeholder="Gegner" [(ngModel)]="gameItem.opponent"
                   (input)="opponentEnteredChanged(opponent)"></ion-input>
       </ion-item>
       <ion-item *ngIf="(!editMode)">
@@ -94,12 +94,12 @@
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Adresse:</ion-label>
-        <ion-input class="form-value" #street [(ngModel)]="gameItem.location.street"
+        <ion-input class="form-value" #street placeholder="Straße, Hausnr." [(ngModel)]="gameItem.location.street"
                   (input)="streetEnteredChanged(street)"></ion-input><br>
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">PLZ:</ion-label>
-        <ion-input class="form-value" #zipcode [(ngModel)]="gameItem.location.zipcode"
+        <ion-input class="form-value" #zipcode placeholder="PLZ" [(ngModel)]="gameItem.location.zipcode"
                   (input)="zipcodeSelectChanged(zipcode)"></ion-input>
       </ion-item>
       <ion-item *ngIf="(!editMode)">
