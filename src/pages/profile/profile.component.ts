@@ -95,7 +95,7 @@ export class ProfileComponent implements OnInit {
   }
 
   setActionSheetOptions() {
-    if (this.utilities.userData.picUrl === "" || this.utilities.userData.picUrl == undefined) {
+    if (this.utilities.userData.picUrl == "" || this.utilities.userData.picUrl == undefined) {
       this.actionSheetOptions = {
         title: 'Profilbild ändern',
         buttons: [
@@ -174,8 +174,6 @@ export class ProfileComponent implements OnInit {
       this.authData.changeEmail(this.utilities.userData.email);
     }
     if (this.teamChanged) {
-      console.log("TeamOld" + this.teamOld)
-      console.log("TeamNew" + this.utilities.userData.team)
       this.utilities.removePlayerFromTeam(this.teamOld, this.utilities.user.uid);
       this.utilities.addPlayerToTeam(this.utilities.userData.team, this.utilities.user.uid);
     }
