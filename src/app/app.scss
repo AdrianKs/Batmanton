@@ -288,7 +288,7 @@ p {
   margin: 5px 8px 5px 0;
 }
 
-.pictureContainer{
+.picture-container{
   text-align: center;
   margin-top: 20px;
 }
@@ -306,6 +306,14 @@ p {
 
 .inline{
   display: inline-block;
+}
+
+.invalid {
+  border-bottom: 1px solid #FF6153;
+}
+
+.error-message .item-inner {
+  border-bottom: 0 !important;
 }
 
 .form-label {
@@ -333,10 +341,6 @@ p {
 .bottomContainer {
   margin-top: 30px;
   text-align: center;
-}
-
-.saveButtonContainer{
-  margin-top: 30px;
 }
 
 .button-width{
