@@ -22,7 +22,6 @@
 // Alter in Spielerlisten anzeigen
 // Art der Mannschaft in teams Liste anzeigen
 // Mannschaft in Spieltage anzeigen
-// Spieltag nur als Admin bearbeiten können
 // Handle deleted users
 // GameDetails: Placeholder im Edit Mode
 
