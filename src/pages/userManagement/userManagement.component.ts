@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, LoadingController } from 'ionic-angular';
 import { EditRoleComponent } from '../editRole/editRole.component';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
@@ -13,12 +13,25 @@ import { document } from "@angular/platform-browser/src/facade/browser";
 })
 export class UserManagementComponent implements OnInit {
 
+  loading: any;
+
   ngOnInit() {
   }
 
-  ionViewDidEnter() {
+  /*ionViewDidEnter() {
+    this.createAndPresentLoading();
     this.dataPlayer = this.utilities.allPlayers;
     this.dataPlayerSearch = this.dataPlayer;
+    this.loading.dismiss().catch((error) => console.log("error caught"));
+  }*/
+
+  ionViewWillEnter() {
+    this.createAndPresentLoading();
+    this.utilities.setPlayers().then(() => {
+      this.dataPlayer = this.utilities.allPlayers;
+      this.dataPlayerSearch = this.dataPlayer;
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+    });
   }
 
   geschlecht: string = "maenner";
@@ -27,8 +40,17 @@ export class UserManagementComponent implements OnInit {
   selectedPlayer: any;
 
   constructor(private navCtrl: NavController,
+    private loadingCtrl: LoadingController,
     private navParams: NavParams,
     public utilities: Utilities) {
+  }
+
+  createAndPresentLoading() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten...'
+    })
+    this.loading.present();
   }
 
   initializeItems() {
