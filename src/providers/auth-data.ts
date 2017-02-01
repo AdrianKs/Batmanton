@@ -69,6 +69,22 @@ export class AuthData {
     });
   }
 
+  deleteUser(password: string): any{
+    var that = this;
+    var credentials = firebase.auth.EmailAuthProvider.credential(
+      this.utilities.userData.email,
+      password
+    );
+
+    return this.fireAuth.currentUser.reauthenticate(credentials).then(function() {
+      that.fireAuth.currentUser.delete().then(function() {
+        // User deleted.
+      }, function(error) {
+        alert(error.message);
+      });;
+    });
+  }
+
   logoutUser(): any {
     return this.fireAuth.signOut();
   }

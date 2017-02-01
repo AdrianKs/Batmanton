@@ -365,20 +365,41 @@ export class ProfileComponent implements OnInit {
   deleteProfile() {
     let alert = this.alertCtrl.create({
       title: 'Profil löschen',
-      message: 'Wollen Sie Ihr Profil wirklich löschen? Der Vorgang kann nicht rückgängig gemacht werden.',
+      message: 'Wollen Sie Ihr Profil wirklich löschen? Der Vorgang kann nicht rückgängig gemacht werden.' +
+      'Bitte geben Sie Ihr Passwort ein, um fortzufahren.',
       buttons: [
         {
           text: 'Abbrechen',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
+          role: 'cancel'
         },
         {
           text: 'Löschen',
-          handler: () => {
-            console.log('Delete clicked');
+          handler: data => {
+            var that = this;
+            this.authData.deleteUser(data.password).then(() => {
+              firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).remove();
+              this.logout();
+            }, function () {
+              let alert = that.alertCtrl.create({
+                message: "Passwort ist inkorrekt.",
+                buttons: [
+                  {
+                    text: "Ok",
+                    role: 'cancel'
+                  }
+                ]
+              });
+              alert.present();
+            });
           }
+        }
+      ],
+      inputs: [
+        {
+          id: 'passwordConfirmInput',
+          name: 'password',
+          placeholder: 'Password',
+          type: 'password'
         }
       ]
     });
