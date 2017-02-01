@@ -29,10 +29,12 @@
           <!--<img src="assets/images/ic_account_circle_black_48dp_2x.png">-->
 
           <p>{{matchday.time | matchTime}}</p>
-          <h2><b>Spieltag {{matchday.id}}</b></h2>
           <div *ngFor="let team of utilities.allTeams">
             <div *ngIf="team.id == matchday.team">
-              <p>{{matchday.opponent}}</p>
+              <h2><b>{{matchday.opponent}}</b></h2>
+              <div *ngIf="matchday.home == true"><p>Heim</p></div>
+              <div *ngIf="matchday.home == false && matchday.home != 'unknown'"><p>Auswärts</p></div>
+              <div *ngIf="matchday.home == 'unknown'"><p>TBA</p></div>
             </div>
           </div>
           <br>

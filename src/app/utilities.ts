@@ -59,7 +59,7 @@ export class Utilities {
   }
 
   setPlayers() {
-    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
+    return firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
       let playerArray = [];
       let counter = 0;
       for (let i in snapshot.val()) {

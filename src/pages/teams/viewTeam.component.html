@@ -4,8 +4,8 @@
       <button *ngIf="(editMode)" ion-button (click)="toggleEditMode()">
         Abbrechen
       </button>
-      <button *ngIf="(!editMode)" ion-button (click)="popToRoot()">
-        Zurück
+      <button *ngIf="(!editMode)" ion-button (click)="popToRoot()" icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>Mannschaftsdetails</ion-title>
@@ -184,7 +184,7 @@
     </ion-list>
   </div>
 
-  <div class="edit-players-button-container">
+  <div class="edit-players-button-container" *ngIf="(isAdmin)">
     <button class="button-width" ion-button outline round color="secondary" icon-left (click)="editPlayers()">
       <ion-icon name="create"></ion-icon>
       Spieler bearbeiten

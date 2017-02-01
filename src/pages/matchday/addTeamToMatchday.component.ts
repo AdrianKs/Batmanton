@@ -106,7 +106,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
   getRelevantTeams(ageLimit) {
     let relevantTeams: Array<any> = [];
     this.allTeams.forEach(function (team) {
-      if (team.ageLimit <= ageLimit || ageLimit === 0) {
+      if (team.ageLimit <= ageLimit && team.ageLimit != 0 || ageLimit == 0) {
         relevantTeams.push(team);
       }
     });
