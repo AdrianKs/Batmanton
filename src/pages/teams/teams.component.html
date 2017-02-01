@@ -45,7 +45,7 @@
       </ion-item>
     </div>
   </ion-list>
-  <ion-fab right bottom>
+  <ion-fab right bottom *ngIf="(isAdmin)">
      <button ion-fab icon-only color="secondary" (click)="pushToAddNewTeam()">
     <ion-icon name="add"></ion-icon>
   </button>

@@ -21,12 +21,16 @@ export class TeamsComponent implements OnInit {
   error: boolean = false;
   loading: any;
   allPlayers: any;
+  currentUser:any;
+  isAdmin:any;
+
 
   ngOnInit(): void {
 
   }
 
   ionViewWillEnter() {
+    this.isTrainer();
     this.allPlayers = this.utilities.allPlayers;
     this.setTeams(true, null);
   }
@@ -35,6 +39,14 @@ export class TeamsComponent implements OnInit {
 
 
   }
+
+  isTrainer() {
+        this.currentUser = this.utilities.user;
+        firebase.database().ref("/clubs/12/players/" + this.currentUser.uid + "/").once('value', snapshot => {
+            let data = snapshot.val();
+            this.isAdmin = data.isTrainer;
+        })
+    }
 
   setTeams(showLoading: boolean, event) {
     if (showLoading) {
