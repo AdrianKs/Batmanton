@@ -8,13 +8,13 @@
   <ion-toolbar no-border-bottom>
     <ion-segment [(ngModel)]="gameStatus">
       <ion-segment-button value="vergangene">
-        Vergangene 
+        Vergangene ({{counterPast}})
       </ion-segment-button>
-      <ion-segment-button value="bevorstehende">
-        Bevorstehende
+      <ion-segment-button value="demnaechst">
+        Demnächst ({{counterFuture}})
       </ion-segment-button>
       <ion-segment-button value="offene">
-        Offene
+        Offene ({{counterOpen}})
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -58,7 +58,7 @@
       </div>
     </ion-list>
 
-    <ion-list *ngSwitchCase="'bevorstehende'">
+    <ion-list *ngSwitchCase="'demnaechst'">
       <div *ngFor="let gameItem of dataGames">
         <div *ngFor="let inviteItem of dataInvites">
           <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
