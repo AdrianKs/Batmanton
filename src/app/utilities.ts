@@ -165,6 +165,11 @@ export class Utilities {
         if (userPosition != undefined) {
           firebase.database().ref('clubs/12/teams/' + teamID + '/players/' + userPosition).remove();
         }
+        if (userID != undefined){
+          firebase.database().ref('clubs/12/players/' + userID + '/').update({
+            team: '0'
+          })
+        }
       });
     }
   }

@@ -28,6 +28,8 @@ export class EditPlayerComponent implements OnInit {
     groupedPlayers: any = [];
     allPlayersG;
     toRoot: any;
+    womanCounter:any = 0;
+    manCounter:any = 0;
 
     ngOnInit(): void {
         //this.playersOfTeam = [];
@@ -96,7 +98,7 @@ export class EditPlayerComponent implements OnInit {
         for (let i in this.allPlayers) {
             player = this.allPlayers[i];
             teamOfPlayer = player.team;
-            if (teamOfPlayer != "0") {
+            if (teamOfPlayer == this.teamId) {
                 player.isAdded = true;
             } else {
                 player.isAdded = false;
@@ -246,6 +248,13 @@ export class EditPlayerComponent implements OnInit {
         this.presentToast("Spieler zum Team hinzugefügt");
     }
 
+    removePlayer(p: any){
+        p.isAdded = false;
+        this.utilities.removePlayerFromTeam(this.teamId, p.id);
+        this.utilities.setTeams();
+        this.presentToast("Spieler vom Team entfernt");
+    }
+
     getPlayersOfTeam() {
         this.database.ref("/clubs/12/teams/" + this.teamId + "/players/").once('value', snapshot => {
             this.playersOfTeamPlaceholder = snapshot.val();
@@ -279,10 +288,25 @@ export class EditPlayerComponent implements OnInit {
             //console.log("Name: " + this.allPlayers[i].lastname + ", Alter: " + age);
             if (this.ageLimit != 0) {
                 if (this.ageLimit >= age) {
-                    relevantPlayers.push(this.allPlayers[i]);
+                    if((this.allPlayers[i].team == this.teamId) || this.allPlayers[i].team == "0"){
+                        if(this.allPlayers[i].gender == "m"){
+                            this.manCounter++;
+                        }else{
+                            this.womanCounter++;
+                        }
+                        relevantPlayers.push(this.allPlayers[i]);
+                    }
                 }
             }else{
-                relevantPlayers.push(this.allPlayers[i]);
+                if((this.allPlayers[i].team == this.teamId) || this.allPlayers[i].team == "0"){
+                    if(this.allPlayers[i].gender == "m"){
+                            this.manCounter++;
+                        }else{
+                            this.womanCounter++;
+                        }
+                        relevantPlayers.push(this.allPlayers[i]);
+                    }
+                //relevantPlayers.push(this.allPlayers[i]);
             }
         }
         this.allPlayers = relevantPlayers;

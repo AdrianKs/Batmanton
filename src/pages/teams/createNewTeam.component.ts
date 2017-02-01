@@ -34,6 +34,7 @@ export class CreateTeamComponent implements OnInit {
     teamPicId: any;
     changedPic: boolean = false;
     newTeamId: any;
+    sKlasse:any;
 
     ngOnInit(): void {
         this.initActionSheet();
@@ -115,7 +116,8 @@ export class CreateTeamComponent implements OnInit {
         this.database.ref('clubs/12/teams/').child(this.newTeamId).set({
             ageLimit: this.maxAlt,
             name: this.teamName,
-            type: this.teamArt
+            type: this.teamArt,
+            sclass: this.sKlasse
         }).then(data => {
             this.showSuccessAlert();
         })

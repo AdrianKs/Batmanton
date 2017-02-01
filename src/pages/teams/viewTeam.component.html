@@ -74,6 +74,10 @@
             <ion-label *ngIf="team.type==0" class="form-value">Jugend</ion-label>
             <ion-label *ngIf="team.type==2" class="form-value">Erwachsen</ion-label>-->
           </ion-item>
+          <ion-item *ngIf="(!editMode)">
+            <ion-label class="form-label">S-Klasse</ion-label>
+            <ion-label class="form-value">{{sKlasse}}</ion-label>
+          </ion-item>
           <ion-item *ngIf="(editMode)">
             <ion-label color="primary">Teamname:</ion-label>
             <ion-input #teamName class="form-value" formControlName="teamName" value="{{team.name}}"></ion-input>
@@ -104,6 +108,14 @@
             <ion-label *ngIf="altersklasse ==19" class="data-label">Jugend</ion-label>
             <ion-label *ngIf="altersklasse==0" class="data-label">Erwachsen</ion-label>-->
           </ion-item>
+           <ion-item *ngIf="(editMode)">
+              <ion-label color="primary">S-Klasse:</ion-label>
+              <ion-select class="form-value" [(ngModel)]="sKlasse" [ngModelOptions]="{standalone: true}">
+                <ion-option value="S1">S1</ion-option>
+                <ion-option value="S2">S2</ion-option>
+                <ion-option value="S3">S3</ion-option>
+              </ion-select>
+            </ion-item>
       </form>
     </div>
   </div>
@@ -131,6 +143,9 @@
       <div *ngIf="!teamHasPlayers">
         <p class="no-Players-p">Keine Spieler vorhanden</p>
       </div>
+      <div *ngIf="manCounter==0 && teamHasPlayers">
+            <p class="no-Players-p">Keine männlichen Spieler vorhanden.</p>
+          </div>
       <div *ngFor="let p of allPlayers">
         <div *ngIf="p.gender=='m'">
           <ion-item *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
@@ -159,6 +174,9 @@
       <div *ngIf="!teamHasPlayers">
         <p class="no-Players-p">Keine Spieler vorhanden</p>
       </div>
+      <div *ngIf="womanCounter==0 && teamHasPlayers">
+            <p class="no-Players-p">Keine weiblichen Spieler vorhanden.</p>
+          </div>
       <div *ngFor="let p of allPlayers">
         <div *ngIf="p.gender=='f'">
           <ion-item *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
@@ -190,5 +208,7 @@
       Spieler bearbeiten
     </button>
   </div>
-
+<ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
 </ion-content>
