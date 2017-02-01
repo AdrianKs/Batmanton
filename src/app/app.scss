@@ -19,7 +19,7 @@
   /* CSS that should be displayed if width is equal to or less than 800px goes here */
 .platform-android .menuHeaderPic{
   position: absolute;
-  top: 20px;
+  top: 16px;
   left: 15px;
   width: 36px;
   height: 36px;
@@ -43,7 +43,7 @@
 @media (min-width: 321px){
 .platform-android .menuHeaderPic{
   position: absolute;
-  top: 20px;
+  top: 16px;
   left: 15px;
   width: 55px;
   height: 55px;
