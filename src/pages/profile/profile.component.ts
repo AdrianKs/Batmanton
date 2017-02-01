@@ -3,7 +3,6 @@
  */
 // todo:
 // Enter App Screen
-// Change Passwort
 // Delete Profile
 // Fix infinite loading indicator iPhone
 // handle error wenn keine internetverbindung besteht
@@ -20,10 +19,17 @@
 // unnötige css klassen löschen
 // AddTeamsToMatchday & View Team: Spieler in Spielerliste direkt löschbar machen, Im Spieler-Bearbeiten Screen Spieler auch wieder herauslöschen können
 // MyGames: Label wenn keine Spiele verfügbar sind
+// Alter in Spielerlisten anzeigen
+// Art der Mannschaft in teams Liste anzeigen
+// Mannschaft in Spieltage anzeigen
+// Spieltag nur als Admin bearbeiten können
+// Handle deleted users
+// GameDetails: Placeholder im Edit Mode
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
-import {NavController, ActionSheetController, LoadingController} from 'ionic-angular';
+import {ChangePasswordComponent} from "./changePassword.component";
+import {NavController, ActionSheetController, LoadingController, AlertController} from 'ionic-angular';
 import firebase from 'firebase';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import {AuthData} from '../../providers/auth-data';
@@ -77,7 +83,7 @@ export class ProfileComponent implements OnInit {
   public base64String: string;
 
 
-  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, public authData: AuthData, public actionSheetCtrl: ActionSheetController, public utilities: Utilities, public loadingCtrl: LoadingController,) {
+  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, public authData: AuthData, public actionSheetCtrl: ActionSheetController, public utilities: Utilities, public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
     this.profileForm = formBuilder.group({
       firstname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
       lastname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
@@ -357,6 +363,33 @@ export class ProfileComponent implements OnInit {
     }
 
     return null;
+  }
+
+  deleteProfile() {
+    let alert = this.alertCtrl.create({
+      title: 'Profil löschen',
+      message: 'Wollen Sie Ihr Profil wirklich löschen? Der Vorgang kann nicht rückgängig gemacht werden.',
+      buttons: [
+        {
+          text: 'Abbrechen',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Löschen',
+          handler: () => {
+            console.log('Delete clicked');
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  changePassword() {
+    this.navCtrl.push(ChangePasswordComponent);
   }
 }
 
