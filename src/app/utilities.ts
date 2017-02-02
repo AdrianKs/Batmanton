@@ -19,6 +19,8 @@ export class Utilities {
   invitesLoaded: boolean = false;
   allPlayers: Array<any>;
   inRegister: boolean = false;
+  loggedIn: boolean = false;
+  LOCAL_TOKEN_KEY: string = 'Batmanton';
 
   constructor(public alertCtrl: AlertController) {
     this.fireAuth = firebase.auth();

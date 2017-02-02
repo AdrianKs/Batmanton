@@ -29,6 +29,7 @@ import {Gender} from './pipes/gender';
 import {Player} from './pipes/player';
 import {Teams} from './pipes/teams';
 import {MatchTime} from './pipes/matchTime';
+import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import {MatchTime} from './pipes/matchTime';
     Gender,
     Player,
     Teams,
-    MatchTime
+    MatchTime,
+    ClubPasswordComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -91,7 +93,8 @@ import {MatchTime} from './pipes/matchTime';
     //PopoverPage,
     //EditTeamComponent,
     EditPlayerComponent,
-    CreateTeamComponent
+    CreateTeamComponent,
+    ClubPasswordComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

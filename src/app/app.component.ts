@@ -15,6 +15,7 @@ import { firebaseConfig } from "./firebaseAppData";
 import { setUser } from "./globalVars";
 import { AuthData } from '../providers/auth-data';
 import {Utilities} from './utilities';
+import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -43,6 +44,7 @@ export class MyApp {
 
     this.initializeApp();
 
+
     firebase.auth().onAuthStateChanged((user) => {
       //utilities.user = user;
 
@@ -53,11 +55,20 @@ export class MyApp {
         this.checkIfUserDeleted(user.uid);
       }
       if (!user) {
+        utilities.loggedIn = false;
         utilities.user = {};
-        this.rootPage = LoginComponent;
+        if (this.loadUserCredentials()) {
+          this.rootPage = LoginComponent;
+        } else {
+          this.rootPage = ClubPasswordComponent;
+        }
       } else {
         if(this.nav.getActive() == undefined){
-          this.rootPage = MatchdayComponent;
+          if (this.loadUserCredentials()) {
+            this.rootPage = MatchdayComponent;
+          } else {
+            this.rootPage = ClubPasswordComponent;
+          }
         }
       }
     });
@@ -111,6 +122,7 @@ export class MyApp {
           if(!this.utilities.inRegister){
             this.checkForVerification();
           }
+          this.utilities.loggedIn = true;
         } else {
           this.logout();
           let alert = this.alertCtrl.create({
@@ -159,4 +171,16 @@ export class MyApp {
       confirm.present();
     }
   }
+
+  loadUserCredentials() {
+  let token = window.localStorage.getItem(this.utilities.LOCAL_TOKEN_KEY);
+  if (token) {
+    console.log(token);
+    return true;
+  }
+  else{
+    console.log('shit - not in the club');
+    return false;
+  }
+}
 }
