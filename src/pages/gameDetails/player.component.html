@@ -1,5 +1,10 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button ion-button clear (click)="goBack()">
+        Zurück
+      </button>
+    </ion-buttons>
     <ion-title>Profil</ion-title>
   </ion-navbar>
 </ion-header>
