@@ -36,7 +36,7 @@
       <div *ngFor="let item of allPlayers">
         <div *ngIf="item.team==teamSelection">
           <div *ngIf="item.gender=='m'">
-            <ion-item>
+            <ion-item class="less-label-margin">
               <div>
                 <div class="itemPlayerLeft">
                   <img src="{{item.picUrl}}" class="player-item-image"
@@ -70,7 +70,7 @@
       <div *ngFor="let item of allPlayers">
         <div *ngIf="item.team==teamSelection">
           <div *ngIf="item.gender=='f'">
-            <ion-item>
+            <ion-item class="less-label-margin">
               <div>
                 <div class="itemPlayerLeft">
                   <img src="{{item.picUrl}}" class="player-item-image"

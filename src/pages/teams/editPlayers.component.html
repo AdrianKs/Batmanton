@@ -92,7 +92,7 @@
         <div *ngFor="let item of allPlayers">
           <!--<div *ngFor="let item of group.players">-->
           <div *ngIf="item.gender=='m'">
-            <ion-item>
+            <ion-item class="less-label-margin">
               <div>
                 <div class="itemPlayerLeft">
                   <img src="{{item.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
@@ -120,7 +120,7 @@
       <ion-list *ngSwitchCase="'frauen'">
         <div *ngFor="let item of allPlayers">
           <div *ngIf="item.gender=='f'">
-            <ion-item>
+            <ion-item class="less-label-margin">
               <div>
                 <div class="itemPlayerLeft">
                   <img src="{{item.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />

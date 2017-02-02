@@ -142,7 +142,7 @@
     <ion-list class="players-list" *ngSwitchCase="'maenner'">
       <div *ngFor="let p of allPlayers">
         <div *ngIf="p.gender=='m'">
-          <ion-item *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
+          <ion-item class="less-label-margin" *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
             <div>
               <div class="itemPlayerLeft">
                 <img src="{{p.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
@@ -168,7 +168,7 @@
     <ion-list class="players-list" *ngSwitchCase="'frauen'">
       <div *ngFor="let p of allPlayers">
         <div *ngIf="p.gender=='f'">
-          <ion-item *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
+          <ion-item class="less-label-margin" *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
             <div>
               <div class="itemPlayerLeft">
                 <img src="{{p.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
