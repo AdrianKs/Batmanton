@@ -14,6 +14,7 @@ export class InvitesMatchdayComponent {
   matchday: any;
   invites: any;
   players: any;
+  mode: any;
   loadingElement: any;
   profilePictureURL: any;
 
@@ -23,6 +24,7 @@ export class InvitesMatchdayComponent {
     this.matchday = navP.get('matchday');
     this.invites = navP.get('invites');
     this.players = navP.get('players');
+    this.mode = navP.get('mode');
   }
 
   showMessage() {
@@ -59,10 +61,7 @@ export class InvitesMatchdayComponent {
   goToPage(value) {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
-
-  goBack(){
-    this.navCtrl.popToRoot();
-  }
+  
 
   showLoadingElement() {
     this.loadingElement = this.loadingCtrl.create({
@@ -80,5 +79,9 @@ export class InvitesMatchdayComponent {
     this.players = this.utilities.allPlayers;
     refresher.complete();
     this.loadingElement.dismiss().catch(() => { });
+  }
+
+  popPage(){
+    this.navCtrl.pop();
   }
 }
