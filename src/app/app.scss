@@ -314,7 +314,7 @@ p {
   display: inline-block;
 }
 
-.invalid {
+.invalid .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner{
   border-bottom: 1px solid #FF6153;
 }
 
