@@ -25,7 +25,7 @@
             </div>
           </div>
 
-          <div class="itemRight">
+          <div class="itemRight padding-top">
             <div *ngIf="matchday.time == 0">TBA</div>
             <div *ngIf="matchday.time != 0">{{ matchday.time | matchTime }}</div>
             <div class="mainDetails">{{ matchday.opponent }}</div>
