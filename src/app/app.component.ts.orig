@@ -14,12 +14,11 @@ import firebase from 'firebase';
 import { firebaseConfig } from "./firebaseAppData";
 import { setUser } from "./globalVars";
 import { AuthData } from '../providers/auth-data';
-<<<<<<< 284a22b17ed1aee90798abab23935ac0ace804d8
-import {Utilities} from './utilities';
+import { Utilities } from './utilities';
+<<<<<<< HEAD
 import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
 =======
-import { Utilities } from './utilities';
->>>>>>> implemented platform func, added new tests...
+>>>>>>> e46a7632c72ef623854d379aa0347d0f20cbde1c
 
 firebase.initializeApp(firebaseConfig);
 
@@ -68,17 +67,16 @@ export class MyApp {
           this.rootPage = ClubPasswordComponent;
         }
       } else {
-<<<<<<< 284a22b17ed1aee90798abab23935ac0ace804d8
-        if(this.nav.getActive() == undefined){
+        if (this.nav.getActive() == undefined) {
+<<<<<<< HEAD
           if (this.loadUserCredentials()) {
             this.rootPage = MatchdayComponent;
           } else {
             this.rootPage = ClubPasswordComponent;
           }
 =======
-        if (this.nav.getActive() == undefined) {
           this.rootPage = MatchdayComponent;
->>>>>>> implemented platform func, added new tests...
+>>>>>>> e46a7632c72ef623854d379aa0347d0f20cbde1c
         }
       }
     });
