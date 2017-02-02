@@ -7,6 +7,7 @@ import {InvitesMatchdayComponent} from '../pages/invites/invitesmatchday.compone
 import {LoginComponent} from '../pages/login/login.component';
 import {MatchdayComponent} from '../pages/matchday/matchday.component';
 import {CreateMatchdayComponent} from '../pages/matchday/createMatchday.component';
+import {TemplateComponent} from '../pages/matchday/template.component';
 import {AddTeamToMatchdayComponent} from '../pages/matchday/addTeamToMatchday.component';
 import {MyGamesComponent} from '../pages/myGames/myGames.component';
 import {GameDetailsComponent} from '../pages/gameDetails/gameDetails.component';
@@ -40,6 +41,7 @@ import {ClubPasswordComponent} from "../pages/club-password/clubPassword.compone
     LoginComponent,
     MatchdayComponent,
     CreateMatchdayComponent,
+    TemplateComponent,
     AddTeamToMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
@@ -77,6 +79,7 @@ import {ClubPasswordComponent} from "../pages/club-password/clubPassword.compone
     LoginComponent,
     MatchdayComponent,
     CreateMatchdayComponent,
+    TemplateComponent,
     AddTeamToMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,

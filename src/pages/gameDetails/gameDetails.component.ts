@@ -8,7 +8,7 @@
 //dummy
 //home bug
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, AlertController} from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController} from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component';
 import { PlayerComponent } from './player.component';
 import firebase from 'firebase';
@@ -45,22 +45,73 @@ export class GameDetailsComponent implements OnInit{
 
   ngOnInit() {
     this.isTrainer();
-    this.playerArray = this.Utilities.allPlayers;
-    this.teamArray = this.Utilities.allTeams;
+    this.playerArray = this.Utilities.allPlayers;  
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController) {
-    //Load data in array
+  ionViewWillEnter() {
+    this.setTeams(true, null);
+  }
+
+  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.gameItem = navP.get('gameItem');
   }
 
   isTrainer() {
-        this.currentUser = this.Utilities.user;
-        firebase.database().ref("/clubs/12/players/" + this.currentUser.uid + "/").once('value', snapshot => {
-            let data = snapshot.val();
-            this.isAdmin = data.isTrainer;
-        })
+      this.currentUser = this.Utilities.user;
+      firebase.database().ref("/clubs/12/players/" + this.currentUser.uid + "/").once('value', snapshot => {
+          let data = snapshot.val();
+          if (this.isAdmin = data.isTrainer){
+            this.isAdmin = true;
+          } else {
+            this.isAdmin = false;
+          }
+      })
+  }
+
+  setTeams(showLoading: boolean, event) {
+    if (showLoading) {
+      this.createAndShowLoading();
     }
+    firebase.database().ref('clubs/12/teams').once('value', snapshot => {
+      let teamArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        teamArray[counter] = snapshot.val()[i];
+        teamArray[counter].id = i;
+        counter++;
+      }
+      this.teamArray = teamArray;
+      this.teamArray = teamArray;
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+  }
+
+  createAndShowErrorAlert(error) {
+    let alert = this.alertCtrl.create({
+      title: 'Fehler beim Empfangen der Daten',
+      message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  createAndShowLoading() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
+    })
+    this.loading.present();
+  }
 
   getFirstFourPicUrls(match) {
     let urlArray = [];
@@ -90,13 +141,6 @@ export class GameDetailsComponent implements OnInit{
 
   finishEditProfile() {
     if (this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged) {
-      if (this.gameItem.home){
-        if (this.gameItem.home == true){
-          this.gameItem.home = true;
-        } else {
-          this.gameItem.home = false;
-        }
-      }
       firebase.database().ref('clubs/12/matches/' + this.gameItem.id).set({
         opponent: this.gameItem.opponent,
         team: this.gameItem.team,
@@ -199,7 +243,6 @@ export class GameDetailsComponent implements OnInit{
   }
 
   openProfile(item){
-    console.log(item);
     this.navCtrl.push(PlayerComponent, { player: item});
   }
 
@@ -218,6 +261,10 @@ export class GameDetailsComponent implements OnInit{
     } else {
       this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.gameItem, relevantTeamsItem: this.teamArray});
     }
+  }
+
+  removePlayer(item){
+    
   }
 
   deleteGame(){

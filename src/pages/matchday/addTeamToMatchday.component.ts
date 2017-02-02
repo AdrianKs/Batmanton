@@ -1,4 +1,5 @@
 //todo
+//teams nicht aktuell
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import firebase from 'firebase';
