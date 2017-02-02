@@ -87,9 +87,6 @@
   <ion-list>
     <div [ngSwitch]="geschlecht">
       <ion-list *ngSwitchCase="'maenner'">
-        <div *ngIf="manCounter==0">
-            <p class="no-Players-p">Keine männlichen Spieler verfügbar.</p>
-          </div>
         <!--<ion-item-group *ngFor="let group of groupedPlayers">
                     <ion-item-divider *ngIf="group.add==true" light>{{group.letter}}</ion-item-divider>-->
         <div *ngFor="let item of allPlayers">
@@ -118,11 +115,9 @@
             </ion-item>
           </div>
         </div>
+        <ion-label *ngIf="manCounter==0" class="align-center no-items">Keine männlichen Spieler verfügbar</ion-label>
       </ion-list>
       <ion-list *ngSwitchCase="'frauen'">
-        <div *ngIf="womanCounter==0">
-            <p class="no-Players-p">Keine weiblichen Spieler verfügbar.</p>
-          </div>
         <div *ngFor="let item of allPlayers">
           <div *ngIf="item.gender=='f'">
             <ion-item>
@@ -148,6 +143,7 @@
             </ion-item>
           </div>
         </div>
+        <ion-label *ngIf="womanCounter==0" class="align-center no-items">Keine weiblichen Spieler verfügbar</ion-label>
       </ion-list>
     </div>
   </ion-list>
