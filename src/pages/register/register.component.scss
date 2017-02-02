@@ -1,11 +1,6 @@
 page-register {
-  .button-center {
-    text-align: center;
-  }
-
   .datetime-text:empty:not(:focus):before{
     content: "Geburtstag";
     color: #999;
   }
-
 }

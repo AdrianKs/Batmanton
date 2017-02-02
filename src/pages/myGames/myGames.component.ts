@@ -24,7 +24,7 @@ export class MyGamesComponent implements OnInit {
   }
 
 
-  gameStatus: string = "vergangene";
+  gameStatus: string = "offene";
   loggedInUserID: string = this.Utilities.user.uid;
   dataGames: any;
   dataInvites: any;

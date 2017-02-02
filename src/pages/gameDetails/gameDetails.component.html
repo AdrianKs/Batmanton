@@ -145,7 +145,7 @@
       <div *ngFor="let relevantPlayer of gameItem.acceptedPlayers">
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
-            <ion-item (click)="openProfile(player)">
+            <ion-item class="less-label-margin" (click)="openProfile(player)">
               <div>
                 <div class="itemPlayerLeft">
                   <img src="{{player.picUrl}}" class="player-item-image"
@@ -170,7 +170,7 @@
       <div *ngFor="let relevantPlayer of gameItem.pendingPlayers">
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
-            <ion-item (click)="openProfile(player)">
+            <ion-item class="less-label-margin" (click)="openProfile(player)">
               <div>
                 <div class="itemPlayerLeft">
                   <img src="{{player.picUrl}}" class="player-item-image"
@@ -195,7 +195,7 @@
       <div *ngFor="let relevantPlayer of gameItem.declinedPlayers">
         <div *ngFor="let player of playerArray">
           <div *ngIf="relevantPlayer == player.id">
-            <ion-item (click)="openProfile(player)">
+            <ion-item class="less-label-margin" (click)="openProfile(player)">
               <div>
                 <div class="itemPlayerLeft">
                   <img src="{{player.picUrl}}" class="player-item-image"

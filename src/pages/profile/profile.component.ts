@@ -2,26 +2,25 @@
  * Created by kochsiek on 08.12.2016.
  */
 // todo:
-// Enter App Screen
 // Fix infinite loading indicator iPhone
 // handle error wenn keine internetverbindung besteht
 // Erwachsenenmanschaften werden nicht im Profil angezeigt
 // Cookie login
 // AddTeamsToMatchday: Unterschied zwischen "Fertig" und "Zurück" Button? Warum wird man bei "Fertig" wieder in die Übersicht geleitet?
 // Spieldetails: "Kein Spieler" Label hinzufügen
-// invites style
-// searchbar dunkelgrau
 // ViewTeam: "Fertig" Button ausgrauen, wenn keine Changes gemacht wurden
 // gameDetails: Remove player directly from list
 // unnötige css klassen löschen
 // AddTeamsToMatchday & View Team: Spieler in Spielerliste direkt löschbar machen, Im Spieler-Bearbeiten Screen Spieler auch wieder herauslöschen können
 // MyGames: Label wenn keine Spiele verfügbar sind
-// Alter in Spielerlisten anzeigen
 // Art der Mannschaft in teams Liste anzeigen
 // Mannschaft in Spieltage anzeigen
 // Handle deleted users
 // GameDetails: Placeholder im Edit Mode
 // Mannschaften: Remove player image from thumbnails, when user leaves team
+// Bug: wenn man beim spieltag den ort auf Heim einstellt und fertig drückt, wird der wieder auf "auswärts" gesetzt
+// Wenn man im Spieltag Spieler hinzufügt und auf "Fertig" klickt, wird man in die Spieleliste und nicht Übersicht navigiert
+// Margin bei ListItems verringern
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";

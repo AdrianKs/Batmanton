@@ -12,7 +12,7 @@
   <ion-searchbar placeholder="Suche" (ionInput)="getItems($event)"></ion-searchbar>
   <ion-list>
     <div *ngFor="let item of teams">
-      <ion-item (click)="viewTeam($event, item)" [(ngModel)]="item.name" ngDefaultControl>
+      <ion-item (click)="viewTeam($event, item)" [(ngModel)]="item.name" ngDefaultControl class="less-label-margin">
         <div>
           <div class="itemLeft">
               <div class="thumbnail-pictures">

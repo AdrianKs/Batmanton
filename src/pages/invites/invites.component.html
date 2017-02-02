@@ -10,46 +10,49 @@
 <ion-content padding>
   <ion-list>
     <div *ngFor="let matchday of dataMatchday">
-      <div *ngIf="countStates(matchday)[0] > 0 || countStates(matchday)[1] > 0 || countStates(matchday)[2] > 0" >
-        <ion-item (click)="goToPage($event, matchday, utilities.allInvites, utilities.allPlayers, profilePictureURL)">
-           <div item-left>
+      <div *ngIf="countStates(matchday)[0] > 0 || countStates(matchday)[1] > 0 || countStates(matchday)[2] > 0">
+        <ion-item class="less-label-margin" (click)="goToPage($event, matchday, utilities.allInvites, utilities.allPlayers, profilePictureURL, countStates(matchday))">
+          <div class="itemLeft margin-top">
             <div class="thumbnail-pictures">
               <div>
-                <img class="thumbnail-top-left" src="{{getFirstFourPicUrls(matchday)[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-                <img class="thumbnail-top-right" src="{{getFirstFourPicUrls(matchday)[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                <img class="thumbnail-top-left" src="{{getFirstFourPicUrls(matchday)[0]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+                <img class="thumbnail-top-right" src="{{getFirstFourPicUrls(matchday)[1]}}" onError="this.src='assets/images/user-shape-64.png'"/>
               </div>
               <div class="bottom-thumbnail-row">
-                <img class="thumbnail-bottom-left" src="{{getFirstFourPicUrls(matchday)[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-                <img class="thumbnail-bottom-right" src="{{getFirstFourPicUrls(matchday)[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+                <img class="thumbnail-bottom-left" src="{{getFirstFourPicUrls(matchday)[2]}}" onError="this.src='assets/images/user-shape-64.png'"/>
+                <img class="thumbnail-bottom-right" src="{{getFirstFourPicUrls(matchday)[3]}}" onError="this.src='assets/images/user-shape-64.png'"/>
               </div>
             </div>
           </div>
 
-          <!--<img src="{{player.picUrl}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">-->
-          <!--<img src="assets/images/ic_account_circle_black_48dp_2x.png">-->
+          <div class="itemRight padding-top">
+            <div *ngIf="matchday.time == 0">TBA</div>
+            <div *ngIf="matchday.time != 0">{{ matchday.time | matchTime }}</div>
+            <div class="mainDetails">{{ matchday.opponent }}</div>
+            <div *ngIf="matchday.home == true">Heim</div>
+            <div *ngIf="matchday.home == false && matchday.home != 'unknown'">Auswärts</div>
+            <div *ngIf="matchday.home == 'unknown'">TBA</div>
 
-          <p>{{matchday.time | matchTime}}</p>
-          <div *ngFor="let team of utilities.allTeams">
-            <div *ngIf="team.id == matchday.team">
-              <h2><b>{{matchday.opponent}}</b></h2>
-              <div *ngIf="matchday.home == true"><p>Heim</p></div>
-              <div *ngIf="matchday.home == false && matchday.home != 'unknown'"><p>Auswärts</p></div>
-              <div *ngIf="matchday.home == 'unknown'"><p>TBA</p></div>
-            </div>
+            <ion-badge class="margin-top" color="secondary" item-bottom>
+              <ion-icon name="thumbs-up"></ion-icon>
+              {{countStates(matchday)[1]}}
+            </ion-badge>
+            <ion-badge class="margin-top" color="danger" item-bottom>
+              <ion-icon name="thumbs-down"></ion-icon>
+              {{countStates(matchday)[2]}}
+            </ion-badge>
+            <ion-badge class="margin-top" color="blue" item-bottom>
+              <ion-icon name="mail"></ion-icon>
+              {{countStates(matchday)[0]}}
+            </ion-badge>
           </div>
-          <br>
+
           <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
-          <ion-badge color="secondary" item-bottom>
-            <ion-icon name="thumbs-up"></ion-icon> {{countStates(matchday)[1]}} </ion-badge>
-          <ion-badge color="danger" item-bottom>
-            <ion-icon name="thumbs-down"></ion-icon> {{countStates(matchday)[2]}} </ion-badge>
-          <ion-badge item-bottom>
-            <ion-icon name="mail"></ion-icon> {{countStates(matchday)[0]}} </ion-badge>
         </ion-item>
       </div>
     </div>
   </ion-list>
-   <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 </ion-content>

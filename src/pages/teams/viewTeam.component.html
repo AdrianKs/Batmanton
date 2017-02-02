@@ -140,15 +140,9 @@
   </ion-toolbar>
   <div [ngSwitch]="geschlecht">
     <ion-list class="players-list" *ngSwitchCase="'maenner'">
-      <div *ngIf="!teamHasPlayers">
-        <p class="no-Players-p">Keine Spieler vorhanden</p>
-      </div>
-      <div *ngIf="manCounter==0 && teamHasPlayers">
-            <p class="no-Players-p">Keine männlichen Spieler vorhanden.</p>
-          </div>
       <div *ngFor="let p of allPlayers">
         <div *ngIf="p.gender=='m'">
-          <ion-item *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
+          <ion-item class="less-label-margin" *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
             <div>
               <div class="itemPlayerLeft">
                 <img src="{{p.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
@@ -166,20 +160,15 @@
               </div>
             </div>
           </ion-item>
-
         </div>
       </div>
+      <ion-label *ngIf="!teamHasPlayers" class="align-center no-items">Keine Spieler vorhanden</ion-label>
+      <ion-label *ngIf="manCounter==0 && teamHasPlayers" class="align-center no-items">Keine männlichen Spieler vorhanden</ion-label>
     </ion-list>
     <ion-list class="players-list" *ngSwitchCase="'frauen'">
-      <div *ngIf="!teamHasPlayers">
-        <p class="no-Players-p">Keine Spieler vorhanden</p>
-      </div>
-      <div *ngIf="womanCounter==0 && teamHasPlayers">
-            <p class="no-Players-p">Keine weiblichen Spieler vorhanden.</p>
-          </div>
       <div *ngFor="let p of allPlayers">
         <div *ngIf="p.gender=='f'">
-          <ion-item *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
+          <ion-item class="less-label-margin" *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
             <div>
               <div class="itemPlayerLeft">
                 <img src="{{p.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
@@ -199,6 +188,8 @@
           </ion-item>
         </div>
       </div>
+      <ion-label *ngIf="!teamHasPlayers" class="align-center no-items">Keine Spieler vorhanden</ion-label>
+      <ion-label *ngIf="womanCounter==0 && teamHasPlayers" class="align-center no-items">Keine weiblichen Spieler vorhanden</ion-label>
     </ion-list>
   </div>
 

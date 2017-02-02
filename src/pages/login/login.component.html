@@ -2,13 +2,13 @@
   <form [formGroup]="loginForm" class="center-form" (submit)="loginUser()" novalidate>
 
     <ion-item>
-      <ion-label stacked>Email</ion-label>
+      <ion-label stacked>E-Mail</ion-label>
       <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
-                 placeholder="Email Addresse"
+                 placeholder="Ihre E-Mail Addresse"
                  [class.invalid]="!loginForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid  && (emailChanged || submitAttempt)">
-      <p>Bitte geben Sie eine gültige Email-Adresse ein.</p>
+      <p>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
     </ion-item>
 
     <ion-item>
@@ -28,7 +28,7 @@
 
   </form>
 
-  <div class="button-center">
+  <div class="align-center">
     <button ion-button round clear (click)="goToSignup()">
       Registrieren
     </button>

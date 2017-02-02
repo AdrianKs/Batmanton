@@ -7,14 +7,16 @@
   </ion-navbar>
   <ion-toolbar no-border-bottom>
     <ion-segment [(ngModel)]="gameStatus">
-      <ion-segment-button value="vergangene">
-        Vergangene ({{counterPast}})
+      <ion-segment-button value="offene">
+        Offene
+        <ion-badge *ngIf="counterOpen > 0" class="badge-counter" item-bottom>{{counterOpen}}</ion-badge>
       </ion-segment-button>
       <ion-segment-button value="demnaechst">
-        Demnächst ({{counterFuture}})
+        Demnächst
+        <ion-badge *ngIf="counterFuture > 0" class="badge-counter" item-bottom>{{counterFuture}}</ion-badge>
       </ion-segment-button>
-      <ion-segment-button value="offene">
-        Offene ({{counterOpen}})
+      <ion-segment-button value="vergangene">
+        Vergangene
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -28,7 +30,7 @@
           <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
             <div *ngIf="inviteItem.match == gameItem.id">
               <div *ngIf="gameItem.time < today && gameItem.time != '0'">
-                <ion-item (click)="openDetails($event, gameItem)">
+                <ion-item (click)="openDetails($event, gameItem)" class="less-label-margin">
                   <div class="itemLeft">
                     <div class="thumbnail-pictures">
                       <div>
@@ -46,13 +48,14 @@
                     </div>
                   </div>
                   <div class="itemRight">
-                    <div *ngIf="gameItem.time == 0"><p>TBA</p></div>
-                    <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | matchTime }}</p></div>
+                    <div *ngIf="gameItem.time == 0">TBA</div>
+                    <div *ngIf="gameItem.time != 0">{{ gameItem.time | matchTime }}</div>
                     <div class="mainDetails">{{ gameItem.opponent }}</div>
-                    <div *ngIf="gameItem.home == true"><p>Heim</p></div>
-                    <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
-                    <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
+                    <div *ngIf="gameItem.home == true">Heim</div>
+                    <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'">Auswärts</div>
+                    <div *ngIf="gameItem.home == 'unknown'">TBA</div>
                   </div>
+                  <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
                 </ion-item>
               </div>
             </div>
@@ -71,7 +74,7 @@
             <div *ngIf="inviteItem.match == gameItem.id">
               <div *ngIf="gameItem.time > today || gameItem.time == '0'">
                 <ion-item-sliding #item>
-                  <ion-item (click)="openDetails($event, gameItem)">
+                  <ion-item (click)="openDetails($event, gameItem)" class="less-label-margin">
                     <div class="itemLeft">
                       <div class="thumbnail-pictures">
                         <div>
@@ -89,13 +92,14 @@
                       </div>
                     </div>
                     <div class="itemRight">
-                      <div *ngIf="gameItem.time == 0"><p>TBA</p></div>
-                      <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | matchTime }}</p></div>
+                      <div *ngIf="gameItem.time == 0">TBA</div>
+                      <div *ngIf="gameItem.time != 0">{{ gameItem.time | matchTime }}</div>
                       <div class="mainDetails">{{ gameItem.opponent }}</div>
-                      <div *ngIf="gameItem.home == true"><p>Heim</p></div>
-                      <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
-                      <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
+                      <div *ngIf="gameItem.home == true">Heim</div>
+                      <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'">Auswärts</div>
+                      <div *ngIf="gameItem.home == 'unknown'">TBA</div>
                     </div>
+                    <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
                   </ion-item>
                   <ion-item-options side="right">
                     <button ion-button color="danger" (click)="doRadio(inviteItem, 1)">
@@ -126,7 +130,7 @@
           <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 0">
             <div *ngIf="inviteItem.match == gameItem.id">
               <ion-item-sliding #item>
-                <ion-item (click)="openDetails($event, gameItem)">
+                <ion-item (click)="openDetails($event, gameItem)" class="less-label-margin">
                   <div class="itemLeft">
                     <div class="thumbnail-pictures">
                       <div>
@@ -144,13 +148,14 @@
                     </div>
                   </div>
                   <div class="itemRight">
-                    <div *ngIf="gameItem.time == 0"><p>TBA</p></div>
-                    <div *ngIf="gameItem.time != 0"><p>{{ gameItem.time | matchTime }}</p></div>
+                    <div *ngIf="gameItem.time == 0">TBA</div>
+                    <div *ngIf="gameItem.time != 0">{{ gameItem.time | matchTime }}</div>
                     <div class="mainDetails">{{ gameItem.opponent }}</div>
-                    <div *ngIf="gameItem.home == true"><p>Heim</p></div>
-                    <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
-                    <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
+                    <div *ngIf="gameItem.home == true">Heim</div>
+                    <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'">Auswärts</div>
+                    <div *ngIf="gameItem.home == 'unknown'">TBA</div>
                   </div>
+                  <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
                 </ion-item>
 
                 <ion-item-options side="right">
@@ -178,9 +183,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="counterOpen == 0">
-        <ion-label class="align-center no-items">Keine Spiele vorhanden</ion-label>
-      </div>
+      <ion-label *ngIf="counterOpen == 0" class="align-center no-items">Keine Spiele vorhanden</ion-label>
     </ion-list>
   </div>
   <ion-refresher (ionRefresh)="doRefresh($event)">

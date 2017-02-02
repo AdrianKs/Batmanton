@@ -90,33 +90,37 @@ export class Utilities {
   }
 
   calculateAge(birthdayString) {
-    let birthdayDate = new Date(birthdayString);
+    if(birthdayString != undefined) {
+      let birthdayDate = new Date(birthdayString);
 
-    let todayDate = new Date();
-    let todayYear = todayDate.getFullYear();
-    let todayMonth = todayDate.getMonth();
-    let todayDay = todayDate.getDate();
-    let age = todayYear - birthdayDate.getFullYear();
+      let todayDate = new Date();
+      let todayYear = todayDate.getFullYear();
+      let todayMonth = todayDate.getMonth();
+      let todayDay = todayDate.getDate();
+      let age = todayYear - birthdayDate.getFullYear();
 
-    if (todayMonth < birthdayDate.getMonth()) {
-      age--;
+      if (todayMonth < birthdayDate.getMonth()) {
+        age--;
+      }
+
+      if (birthdayDate.getMonth() == todayMonth && todayDay < birthdayDate.getDate()) {
+        age--;
+      }
+      return age;
     }
-
-    if (birthdayDate.getMonth() == todayMonth && todayDay < birthdayDate.getDate()) {
-      age--;
-    }
-    return age;
   }
 
   getRelevantTeams(birthdayString) {
-    let age = this.calculateAge(birthdayString);
-    let relevantTeams: Array<any> = [];
-    this.allTeams.forEach(function (team) {
-      if (team.ageLimit > age || team.ageLimit == 0) {
-        relevantTeams.push(team);
-      }
-    });
-    return relevantTeams;
+    if(birthdayString != undefined) {
+      let age = this.calculateAge(birthdayString);
+      let relevantTeams: Array<any> = [];
+      this.allTeams.forEach(function (team) {
+        if (team.ageLimit > age || team.ageLimit == 0) {
+          relevantTeams.push(team);
+        }
+      });
+      return relevantTeams;
+    }
   }
 
   addPlayerToTeam(teamID, userID) {

@@ -126,7 +126,11 @@ p {
 
 .secPlayerContent {
   font-size: 11px;
-  color: #999999;
+  color: $third-dark-shade;
+}
+
+.secondaryDetails{
+  font-size: 14px;
 }
 
 .thumbnail-pictures{
@@ -245,7 +249,7 @@ p {
 
 .itemPlayerRight{
   width: 85%;
-  color: lightslategrey;
+  color: $third-dark-shade;
   float: right;
   padding: 8px 8px 8px 15px;
 }
@@ -258,9 +262,10 @@ p {
 }
 
 .itemRight{
-  color: lightslategrey;
-  padding: 14px 8px 8px 15px;
+  color: $third-dark-shade;
+  padding: 12px 8px 8px 15px;
   margin-left: 77px;
+  font-size: 14px;
 }
 
 .center-form {
@@ -269,6 +274,7 @@ p {
 
 .mainDetails {
   color: white;
+  font-size: 16px;
 }
 
 .fab{
@@ -308,7 +314,7 @@ p {
   display: inline-block;
 }
 
-.invalid {
+.invalid .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner{
   border-bottom: 1px solid #FF6153;
 }
 
@@ -356,12 +362,35 @@ ion-label {
   margin-left: 5px;
 }
 
+.searchbar-md .searchbar-input{
+  background-color: $dark-shade;
+}
+
+.searchbar-ios .searchbar-input{
+  background-color: $secondary-dark-shade;
+}
+
 .picker-opt{
   color: white;
 }
 
 .no-items{
-  color: lightslategray;
+  color: $third-dark-shade;
   font-size: 16px;
   margin-top: 20px;
+}
+
+.less-label-margin .label-md{
+  margin-top: 5px;
+  margin-bottom: 8px;
+}
+
+.badge-counter{
+  color: black;
+  background-color: $yellow-shade;
+  border-radius: 50%;
+  width: 14px;
+  font-size: 1rem;
+  padding: 2px;
+  margin-left: 3px;
 }
