@@ -9,9 +9,7 @@
 // Cookie login
 // AddTeamsToMatchday: Unterschied zwischen "Fertig" und "Zurück" Button? Warum wird man bei "Fertig" wieder in die Übersicht geleitet?
 // Spieldetails: "Kein Spieler" Label hinzufügen
-// register style
 // invites style
-// myGames style
 // searchbar dunkelgrau
 // ViewTeam: "Fertig" Button ausgrauen, wenn keine Changes gemacht wurden
 // gameDetails: Remove player directly from list
