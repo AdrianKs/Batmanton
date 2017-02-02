@@ -22,6 +22,7 @@
 // Handle deleted users
 // GameDetails: Placeholder im Edit Mode
 // Mannschaften: Remove player image from thumbnails, when user leaves team
+// Bug: wenn man beim spieltag den ort auf Heim einstellt und fertig drückt, wird der wieder auf "auswärts" gesetzt
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
