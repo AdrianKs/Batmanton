@@ -33,6 +33,7 @@ $colors: (
 
 $dark-shade: #1B211F;
 $secondary-dark-shade: #2A2E2E;
+$third-dark-shade: #909494;
 $yellow-shade: #FFF200;
 $orange-shade: #ff8c00;
 //$orange-shade: #FCA233;
@@ -52,6 +53,11 @@ $fab-ios-list-button-background-color-activated: $yellow-shade;
 
 $list-ios-header-color: white;
 
+$searchbar-ios-input-clear-icon-color: $third-dark-shade;
+$searchbar-ios-input-placeholder-color: white;
+$searchbar-ios-input-search-icon-color: $third-dark-shade;
+$searchbar-ios-input-text-color: white;
+
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
@@ -66,6 +72,11 @@ $fab-md-list-button-background-color-activated: $yellow-shade;
 
 $list-md-header-color: white;
 $list-md-border-color: $yellow-shade;
+
+$searchbar-md-input-clear-icon-color: $third-dark-shade;
+$searchbar-md-input-placeholder-color: $third-dark-shade;
+$searchbar-md-input-search-icon-color: $third-dark-shade;
+$searchbar-md-input-text-color: white;
 
 
 // App Windows Variables
