@@ -14,7 +14,6 @@
 // unnötige css klassen löschen
 // AddTeamsToMatchday & View Team: Spieler in Spielerliste direkt löschbar machen, Im Spieler-Bearbeiten Screen Spieler auch wieder herauslöschen können
 // MyGames: Label wenn keine Spiele verfügbar sind
-// Alter in Spielerlisten anzeigen (--> Pipe)
 // Art der Mannschaft in teams Liste anzeigen
 // Mannschaft in Spieltage anzeigen
 // Handle deleted users

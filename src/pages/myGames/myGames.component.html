@@ -183,9 +183,7 @@
           </div>
         </div>
       </div>
-      <div *ngIf="counterOpen == 0">
-        <ion-label class="align-center no-items">Keine Spiele vorhanden</ion-label>
-      </div>
+      <ion-label *ngIf="counterOpen == 0" class="align-center no-items">Keine Spiele vorhanden</ion-label>
     </ion-list>
   </div>
   <ion-refresher (ionRefresh)="doRefresh($event)">
