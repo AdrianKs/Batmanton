@@ -1,8 +1,10 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button *ngIf="(!editMode)" ion-button (click)="goBack()" icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Eingeladene Spieler</ion-title>
     <ion-buttons right>
       <button ion-button (click)="goToPage(matchday)">
@@ -21,7 +23,8 @@
             <div *ngIf="player.id == item.recipient">
               <div *ngIf="item.state == '0'">
                 <ion-item (click)="showConfirm()">
-                      <img item-left src="{{player.picUrl}}" class="thumbnail-invite" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                  <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
+                       onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
                   <h2> {{player.firstname}} {{player.lastname}} </h2>
                   <h3>
                     <ion-badge color="primary" item-bottom> Keine Antwort</ion-badge>
@@ -31,7 +34,8 @@
               </div>
               <div *ngIf="item.state == '1'">
                 <ion-item>
-                      <img item-left src="{{player.picUrl}}" class="thumbnail-invite" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                  <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
+                       onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
                   <h2> {{player.firstname}} {{player.lastname}} </h2>
                   <h3>
                     <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
@@ -39,8 +43,9 @@
                 </ion-item>
               </div>
               <div *ngIf="item.state == '2'">
-                <ion-item>          
-                      <img item-left src="{{player.picUrl}}" class="thumbnail-invite" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                <ion-item>
+                  <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
+                       onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
                   <h2> {{player.firstname}} {{player.lastname}} </h2>
                   <h3>
                     <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>

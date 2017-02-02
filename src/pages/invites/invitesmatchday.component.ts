@@ -60,6 +60,10 @@ export class InvitesMatchdayComponent {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 
+  goBack(){
+    this.navCtrl.popToRoot();
+  }
+
   showLoadingElement() {
     this.loadingElement = this.loadingCtrl.create({
       spinner: 'ios',
