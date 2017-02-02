@@ -7,14 +7,16 @@
   </ion-navbar>
   <ion-toolbar no-border-bottom>
     <ion-segment [(ngModel)]="gameStatus">
-      <ion-segment-button value="vergangene">
-        Vergangene ({{counterPast}})
+      <ion-segment-button value="offene">
+        Offene
+        <ion-badge *ngIf="counterOpen > 0" class="badge-counter" item-bottom>{{counterOpen}}</ion-badge>
       </ion-segment-button>
       <ion-segment-button value="demnaechst">
-        Demnächst ({{counterFuture}})
+        Demnächst
+        <ion-badge *ngIf="counterFuture > 0" class="badge-counter" item-bottom>{{counterFuture}}</ion-badge>
       </ion-segment-button>
-      <ion-segment-button value="offene">
-        Offene ({{counterOpen}})
+      <ion-segment-button value="vergangene">
+        Vergangene
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -28,7 +30,7 @@
           <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
             <div *ngIf="inviteItem.match == gameItem.id">
               <div *ngIf="gameItem.time < today && gameItem.time != '0'">
-                <ion-item (click)="openDetails($event, gameItem)">
+                <ion-item (click)="openDetails($event, gameItem)" class="less-label-margin">
                   <div class="itemLeft">
                     <div class="thumbnail-pictures">
                       <div>
@@ -72,7 +74,7 @@
             <div *ngIf="inviteItem.match == gameItem.id">
               <div *ngIf="gameItem.time > today || gameItem.time == '0'">
                 <ion-item-sliding #item>
-                  <ion-item (click)="openDetails($event, gameItem)">
+                  <ion-item (click)="openDetails($event, gameItem)" class="less-label-margin">
                     <div class="itemLeft">
                       <div class="thumbnail-pictures">
                         <div>
@@ -128,7 +130,7 @@
           <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 0">
             <div *ngIf="inviteItem.match == gameItem.id">
               <ion-item-sliding #item>
-                <ion-item (click)="openDetails($event, gameItem)">
+                <ion-item (click)="openDetails($event, gameItem)" class="less-label-margin">
                   <div class="itemLeft">
                     <div class="thumbnail-pictures">
                       <div>

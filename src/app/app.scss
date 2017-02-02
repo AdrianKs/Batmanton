@@ -372,7 +372,17 @@ ion-label {
   margin-top: 20px;
 }
 
-.label-md{
+.less-label-margin .label-md{
   margin-top: 5px;
   margin-bottom: 8px;
+}
+
+.badge-counter{
+  color: black;
+  background-color: $yellow-shade;
+  border-radius: 50%;
+  width: 14px;
+  font-size: 1rem;
+  padding: 2px;
+  margin-left: 3px;
 }

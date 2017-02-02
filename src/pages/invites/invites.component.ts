@@ -84,8 +84,8 @@ export class InvitesComponent implements OnInit {
     return [pending, accepted, declined];
   }
 
-  goToPage(ev, value, invites, players, picture) {
-    this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players});
+  goToPage(ev, value, invites, players, picture, counts) {
+    this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players, counts: counts});
   }
 
   showLoadingElement() {

@@ -10,14 +10,16 @@ import { GameDetailsComponent } from '../gameDetails/gameDetails.component'
   selector: 'page-invitesmatchday',
   templateUrl: 'invitesmatchday.component.html'
 })
-export class InvitesMatchdayComponent {
+export class InvitesMatchdayComponent{
+
   matchday: any;
   invites: any;
   players: any;
   mode: any;
+  counts: any;
   loadingElement: any;
   profilePictureURL: any;
-  playerStatus: string = 'all';
+  playerStatus: string = 'accepted';
 
 
   constructor(private navCtrl: NavController, private navP: NavParams, private loadingCtrl: LoadingController, public utilities: Utilities, public alertCtrl: AlertController, public toastCtrl: ToastController) {
@@ -26,11 +28,12 @@ export class InvitesMatchdayComponent {
     this.invites = navP.get('invites');
     this.players = navP.get('players');
     this.mode = navP.get('mode');
+    this.counts = navP.get('counts');
   }
 
   showMessage() {
     let toast = this.toastCtrl.create({
-      message: 'Die Einladung wurde erneut versendet',
+      message: 'Die Einladung wurde erneut versendet.',
       position: 'top',
       duration: 3000,
 

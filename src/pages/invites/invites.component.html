@@ -11,7 +11,7 @@
   <ion-list>
     <div *ngFor="let matchday of dataMatchday">
       <div *ngIf="countStates(matchday)[0] > 0 || countStates(matchday)[1] > 0 || countStates(matchday)[2] > 0">
-        <ion-item (click)="goToPage($event, matchday, utilities.allInvites, utilities.allPlayers, profilePictureURL)">
+        <ion-item class="less-label-margin" (click)="goToPage($event, matchday, utilities.allInvites, utilities.allPlayers, profilePictureURL, countStates(matchday))">
           <div class="itemLeft margin-top">
             <div class="thumbnail-pictures">
               <div>
