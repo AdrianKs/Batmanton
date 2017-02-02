@@ -1,5 +1,7 @@
 //todo
 //keine spiele vorhanden
+//Mannschaft
+//bilder
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';

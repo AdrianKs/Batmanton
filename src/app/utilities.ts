@@ -21,6 +21,7 @@ export class Utilities {
   inRegister: boolean = false;
   loggedIn: boolean = false;
   LOCAL_TOKEN_KEY: string = 'Batmanton';
+  counterOpen: any;
 
   constructor(public alertCtrl: AlertController) {
     this.fireAuth = firebase.auth();
@@ -175,5 +176,23 @@ export class Utilities {
       });
     }
   }
+  
+  countOpen(){
+    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+      this.counterOpen = 0;
+      let inviteArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        if(snapshot.val()[i].recipient == this.user.uid && snapshot.val()[i].state == 0){
+          this.counterOpen++;
+          console.log("+1");
+        }
+      }
+      console.log(this.counterOpen);
+    });
+  }
+
 }
+
+
 

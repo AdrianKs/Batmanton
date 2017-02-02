@@ -1,3 +1,5 @@
+//todo
+//Zurück button
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
@@ -13,5 +15,9 @@ export class PlayerComponent {
 
     constructor(private navCtrl: NavController, private navParams: NavParams, public alertCtrl: AlertController, public utilities: Utilities) {
         this.player = navParams.get('player');
+    }
+
+    goBack(){
+        this.navCtrl.pop();
     }
 }
