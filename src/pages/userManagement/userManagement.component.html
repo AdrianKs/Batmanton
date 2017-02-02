@@ -4,6 +4,11 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Benutzerverwaltung</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="openInfo()">
+        <ion-icon name="information-circle" clear item-right></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -42,6 +47,12 @@
           </ion-item>
         </div>
       </div>
+      <div *ngIf="countMan == 0">
+        <ion-label class="align-center no-items">Keine Spiele vorhanden</ion-label>
+      </div>
+      <div *ngIf="countMan != 0">
+        <ion-label class="align-center no-items">{{countMan}} Spieler</ion-label>
+      </div>
     </ion-list>
     <ion-list *ngSwitchCase="'frauen'">
       <div *ngFor="let item of dataPlayer; let i = index;">
@@ -63,6 +74,12 @@
             </div>
           </ion-item>
         </div>
+      </div>
+      <div *ngIf="countWoman == 0">
+        <ion-label class="align-center no-items">Keine Spiele vorhanden</ion-label>
+      </div>
+      <div *ngIf="countWoman != 0">
+        <ion-label class="align-center no-items">{{countWoman}} Spieler</ion-label>
       </div>
     </ion-list>
   </div>

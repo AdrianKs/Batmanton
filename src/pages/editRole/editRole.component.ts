@@ -15,6 +15,7 @@ export class EditRoleComponent {
     isChanged: boolean;
     isDeleted: boolean;
     sameUser: boolean;
+    editMode: boolean = false;
 
     constructor(private navCtrl: NavController,
         private navParams: NavParams,
@@ -50,6 +51,9 @@ export class EditRoleComponent {
         }
     }
 
+   /* editRole(){
+        this.editMode = true;
+    }*/
 
     changeRole(ev, player) {
         let successFlag = true;
