@@ -5,7 +5,6 @@ import { Component, OnInit } from '@angular/core';
 import { ViewTeamComponent } from './viewTeam.component';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
-import firebase from 'firebase';
 import { CreateTeamComponent } from './createNewTeam.component';
 import { TeamsProvider } from '../../providers/teams-provider';
 
@@ -19,8 +18,6 @@ export class TeamsComponent implements OnInit {
   teams: any[];
   teamsSearch: any[];
   database: any;
-  playerArray: any[];
-  error: boolean = false;
   loading: any;
   allPlayers: any;
   currentUser: any;
