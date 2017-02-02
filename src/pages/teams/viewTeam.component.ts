@@ -48,7 +48,10 @@ export class ViewTeamComponent implements OnInit {
     allPlayers: any;
     teamHasPlayers: boolean = true;
     originalPlayers: any;
-    originalMatches:any;
+    originalMatches: any;
+    sKlasse: any;
+    manCounter: any = 0;
+    womanCounter: any = 0;
     /**
      * OLD VALUES
      */
@@ -60,7 +63,7 @@ export class ViewTeamComponent implements OnInit {
     base64String: string;
 
     altersklasse: number;
-    teamArt:any;
+    teamArt: any;
     loading: any;
 
 
@@ -88,9 +91,26 @@ export class ViewTeamComponent implements OnInit {
      * Diese Methode wird jedes Mal ausgeführt, sobald die View aufgebaut wird und sorgt so für den Refresh der Daten.
      */
     ionViewWillEnter() {
+        this.teamHasPlayers = true;
         this.isTrainer();
         this.teamId = this.navP.get("teamId");
-        this.buildTeam();
+        this.createAndPresentLoading();
+        this.manCounter = 0;
+        this.womanCounter = 0;
+        this.buildTeam().then(() => {
+            this.loading.dismiss().catch((error) => console.log("error caught"));
+        });
+    }
+
+
+    doRefresh(event) {
+        this.teamHasPlayers = true;
+        this.isTrainer();
+        this.manCounter = 0;
+        this.womanCounter = 0;
+        this.buildTeam().then(() => {
+            event.complete();
+        });
     }
 
     constructor(
@@ -120,7 +140,25 @@ export class ViewTeamComponent implements OnInit {
                 this.teamHasPlayers = false;
             }
         }).then((data) => {
-            this.loading.dismiss().catch((error) => console.log("error caught"));
+            this.countGenders();
+        })
+    }
+
+    countGenders() {
+        this.database.ref('/clubs/12/players/').once('value', snapshot => {
+            let players = snapshot.val();
+            let player;
+            let age;
+            for (let i in players) {
+                player = players[i];
+                if (player.team == this.teamId) {
+                    if (player.gender == "m") {
+                        this.manCounter++;
+                    } else {
+                        this.womanCounter++;
+                    }
+                }
+            }
         })
     }
 
@@ -133,13 +171,13 @@ export class ViewTeamComponent implements OnInit {
     }
 
     buildTeam() {
-        this.createAndPresentLoading();
-        this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
+        return this.database.ref("/clubs/12/teams/" + this.teamId + "/").once('value', snapshot => {
             this.team = snapshot.val();
             this.teamNameOld = this.team.name;
             this.altersKOld = this.team.ageLimit;
             this.altersklasse = this.team.ageLimit;
             this.teamArt = this.team.type;
+            this.sKlasse = this.team.sclass;
             /*this.altersBezOld = this.team.type;
             if (this.altersBezOld == 1) {
                 this.altersBezOld = "Schüler";
@@ -193,14 +231,15 @@ export class ViewTeamComponent implements OnInit {
             firebase.database().ref('clubs/12/teams/' + this.teamId).update({
                 ageLimit: this.altersK,
                 name: this.teamName,
-                type: this.teamArt
+                type: this.teamArt,
+                sclass: this.sKlasse
             });
 
             //UPDATE Array
             this.team.ageLimit = this.altersK;
             this.team.name = this.teamName;
             this.team.type = this.teamArt;
-
+            this.team.sclass = this.sKlasse;
             console.log(this.team);
 
         }
@@ -234,13 +273,13 @@ export class ViewTeamComponent implements OnInit {
             this.altersBezChanged = true;
         }
 
-      /*  if (this.altersklasse <= 15 && this.altersklasse != 0) {
-            this.altersBez = 1;
-        } else if (this.altersklasse <= 19 && this.altersklasse > 15) {
-            this.altersBez = 0;
-        } else {
-            this.altersBez = 2;
-        }*/
+        /*  if (this.altersklasse <= 15 && this.altersklasse != 0) {
+              this.altersBez = 1;
+          } else if (this.altersklasse <= 19 && this.altersklasse > 15) {
+              this.altersBez = 0;
+          } else {
+              this.altersBez = 2;
+          }*/
 
         if ((!this.altersKChanged) && (!this.altersBezChanged) && (!this.teamNameChanged)) {
             //Keine Änderung
@@ -335,14 +374,14 @@ export class ViewTeamComponent implements OnInit {
         });
     }
 
-    deleteTeamFromMatches(){
+    deleteTeamFromMatches() {
         this.database.ref('clubs/12/matches').once('value', snapshot => {
             this.originalMatches = snapshot.val();
-        }).then((data)=>{
+        }).then((data) => {
             let match;
-            for(let i in this.originalMatches){
+            for (let i in this.originalMatches) {
                 match = this.originalMatches[i];
-                if(match.team == this.teamId){
+                if (match.team == this.teamId) {
                     match.team = '0';
                 }
             }

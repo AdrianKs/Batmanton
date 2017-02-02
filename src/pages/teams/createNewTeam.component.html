@@ -58,6 +58,17 @@
                     <!--<ion-input #altersBez formControlName="altersBez" class="playerValue"></ion-input>-->
                 </ion-item>
                 </ion-list>
+                <ion-list>
+                    <ion-list-header>Zusatzinfos</ion-list-header>
+                    <ion-item>
+                        <ion-label>S-Klasse:</ion-label>
+                        <ion-select [(ngModel)]="sKlasse" placeholder="Auswählen" [ngModelOptions]="{standalone:true}">
+                            <ion-option value="S1">S1</ion-option>
+                            <ion-option value="S2">S2</ion-option>
+                            <ion-option value="S3">S3</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-list>
                 <!--<ion-item>
                     <ion-label class="create-label">Teamname:</ion-label>
                     <ion-input #TeamName formControlName="TeamName" class="playerValue"></ion-input>
