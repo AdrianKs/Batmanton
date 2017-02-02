@@ -10,7 +10,6 @@
 <ion-content padding>
   <div *ngFor="let item of dataGames">
     <ion-item (click)="openDetails($event, item)">
-      <div>
         <div class="itemLeft">
           <div class="thumbnail-pictures">
             <div>
@@ -31,7 +30,6 @@
           <div *ngIf="item.home == false && item.home != 'unknown'"><p>Auswärts</p></div>
           <div *ngIf="item.home == 'unknown'"><p>TBA</p></div>
         </div>
-      </div>
     </ion-item>
   </div>
   <ion-fab right bottom *ngIf="(isAdmin)">
