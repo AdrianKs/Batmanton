@@ -46,7 +46,7 @@ export class CreateMatchdayComponent implements OnInit {
     this.getTemplates();
   }
 
-  
+
   constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder) {
     this.createMatchdayForm = formBuilder.group({
       opponent: [],
@@ -141,7 +141,7 @@ export class CreateMatchdayComponent implements OnInit {
       if (this.timeChanged == false){
         this.match.time = "0";
       }
-      
+
       this.match.id = this.makeid();
       firebase.database().ref('clubs/12/matches/').child(this.match.id).set({
         opponent: this.match.opponent,
@@ -154,8 +154,9 @@ export class CreateMatchdayComponent implements OnInit {
         zipcode: this.match.location.zipcode
       })
       let alert = this.alertCtrl.create({
-          message: 'Das Spiel wurde erfolgreich angelegt! Möchten Sie dem Spiel direkt Spieler zuweisen?',
-          title: 'Mannschaft angelegt',
+          message: 'Der Spieltag wurde erfolgreich angelegt.' +
+          'Möchten Sie dem Spiel direkt Spieler zuweisen?',
+          title: 'Spieltag angelegt',
           buttons: [
               {
                   text: 'Später',
@@ -221,7 +222,7 @@ export class CreateMatchdayComponent implements OnInit {
       });
       dataAvailable = true;
     }
-    
+
 
     alert.addButton('Abbruch');
     alert.addButton({
