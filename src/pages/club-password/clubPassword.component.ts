@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import {NavController, AlertController, LoadingController} from 'ionic-angular';
 import {Validators, FormBuilder} from "@angular/forms";
-import {AuthData} from "../../providers/auth-data";
 import {MatchdayComponent} from "../matchday/matchday.component";
 import {LoginComponent} from "../login/login.component";
 import {Utilities} from "../../app/utilities";
@@ -18,11 +17,11 @@ import {Utilities} from "../../app/utilities";
 })
 export class ClubPasswordComponent {
   public clubPasswordForm;
-  clubPasswordChanged: boolean = false;
   submitAttempt: boolean = false;
   hashedPassword = 19045090;
+  passwordChanged: boolean = false;
 
-  constructor(public authData: AuthData, public formBuilder: FormBuilder,
+  constructor(public formBuilder: FormBuilder,
               public navCtrl: NavController, public loadingCtrl: LoadingController,
               public alertCtrl: AlertController, public utilities: Utilities) {
 
@@ -34,9 +33,11 @@ export class ClubPasswordComponent {
   elementChanged(input){
     let field = input.inputControl.name;
     this[field + "Changed"] = true;
+    this.passwordChanged = true;
   }
 
   setClubPassword() {
+    this.submitAttempt = true;
     let enteredPassword = this.clubPasswordForm.value.clubPassword;
     console.log(enteredPassword);
     console.log(this.hashPassword(enteredPassword));
@@ -47,7 +48,19 @@ export class ClubPasswordComponent {
       } else {
         this.navCtrl.setRoot(LoginComponent);
       }
+    }else if(this.clubPasswordForm.controls.clubPassword.valid){
+      let alert = this.alertCtrl.create({
+        message: "Vereinspasswort ist falsch.",
+        buttons: [
+          {
+            text: "Ok",
+            role: 'cancel'
+          }
+        ]
+      });
+      alert.present();
     }
+
   }
 
   hashPassword(password): any {
