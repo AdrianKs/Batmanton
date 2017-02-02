@@ -130,7 +130,7 @@ export class MyGamesComponent implements OnInit {
               }
             }
           }
-          
+
         }
       }
     }
@@ -170,7 +170,7 @@ export class MyGamesComponent implements OnInit {
     this.pendingToAccepted(inviteItem.match, this.loggedInUserID);
     let alert = this.alertCtrl.create({
       title: 'Zugesagt',
-      message: 'Du wirst diesem Spieltag zugeteilt!',
+      message: 'Du wirst diesem Spieltag zugeteilt.',
       buttons: ['Ok']
     });
     alert.present()
@@ -211,7 +211,7 @@ export class MyGamesComponent implements OnInit {
       value: 'miscellaneous'
     });
 
-    alert.addButton('Abbruch');
+    alert.addButton('Abbrechen');
     alert.addButton({
       text: 'Absenden',
       handler: data => {
@@ -243,7 +243,7 @@ export class MyGamesComponent implements OnInit {
               ],
               buttons: [
                 {
-                  text: 'Abbruch',
+                  text: 'Abbrechen',
                   handler: data => {
                     console.log('Cancel clicked');
                   }
