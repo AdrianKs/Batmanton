@@ -96,7 +96,7 @@ export class UserManagementComponent implements OnInit {
   openInfo() {
     let alert = this.alertCtrl.create({
       title: 'Übersicht User',
-      subTitle: 'Anzahl der User: ' + this.dataPlayer.length + ' \niOS: ' + this.countIos + ' Android: ' + this.countAndroid,
+      subTitle: "Anzahl der User: " + this.dataPlayer.length  + "<br><br>iOS: " + this.countIos + "<br>Android: " + this.countAndroid,
       buttons: ['OK']
     });
     alert.present();
