@@ -85,7 +85,7 @@ export class InvitesComponent implements OnInit {
   }
 
   goToPage(ev, value, invites, players, picture) {
-    this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players });
+    this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players});
   }
 
   showLoadingElement() {
