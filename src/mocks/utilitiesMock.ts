@@ -13,11 +13,12 @@ export class UtilitiesMock {
                 birthday: "",
                 email: "",
                 firstname: "",
-                gender: "",
+                gender: "m",
                 isPlayer: true,
                 isTrainer: false,
                 lastname: "",
                 picUrl: "",
+                platform: "ios",
                 pushId: "",
                 state: 0,
                 team: "16"
@@ -27,17 +28,29 @@ export class UtilitiesMock {
                 birthday: "",
                 email: "",
                 firstname: "",
-                gender: "",
+                gender: "f",
                 isPlayer: true,
                 isTrainer: false,
                 lastname: "",
                 picUrl: "",
+                platform: "ios",
                 pushId: "",
                 state: 0,
                 team: "16"
             }
         ]
-
     }
 
+    setPlayers() {
+        var test = this.allPlayers;
+        var p1 = new Promise(
+            function (resolve, reject) {
+                if(test != undefined){
+                    resolve('success');
+                }else{
+                    reject('fail');
+                }
+            });
+        return p1;
+    }
 }
