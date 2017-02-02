@@ -218,7 +218,7 @@
     </ion-list>
   </div>
 
-  <div class="edit-players-button-container">
+  <div *ngIf="(editMode)" class="edit-players-button-container">
     <button class="button-width" ion-button outline round color="secondary" icon-left (click)="addPlayers()">
       <ion-icon name="add"></ion-icon>
       Spieler einladen

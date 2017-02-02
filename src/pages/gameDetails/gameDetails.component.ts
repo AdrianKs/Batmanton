@@ -1,5 +1,12 @@
 //todo
 //4 men 2 women for isNotMini (Logik allgemein)
+//aushilfscounter
+//Adressvorlagen
+//pending bei Zeitänderung
+//spieler selbst bei gamedetails löschen
+//Alter der Leute
+//dummy
+//home bug
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController} from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component';
@@ -84,7 +91,7 @@ export class GameDetailsComponent implements OnInit{
   finishEditProfile() {
     if (this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged) {
       if (this.gameItem.home){
-          if (this.gameItem.home == true){
+        if (this.gameItem.home == true){
           this.gameItem.home = true;
         } else {
           this.gameItem.home = false;
@@ -197,7 +204,7 @@ export class GameDetailsComponent implements OnInit{
   }
 
   goBack(){
-    this.navCtrl.popToRoot();
+    this.navCtrl.pop();
   }
 
   addPlayers(){

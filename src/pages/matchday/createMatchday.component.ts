@@ -1,4 +1,6 @@
 //todo
+//Adressvorlagen bearbeiten
+//Team (altersklasse, sklasse)
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component'
@@ -232,6 +234,8 @@ export class CreateMatchdayComponent implements OnInit {
 
         } else {
           this.updateTemplate(data);
+          this.streetChanged = true;
+          this.zipcodeChanged = true;
         }
       }
     });
