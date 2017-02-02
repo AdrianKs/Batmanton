@@ -76,9 +76,9 @@
     </ion-item>
 
     <ion-item>
-      <ion-label stacked>Email</ion-label>
+      <ion-label stacked>E-Mail</ion-label>
       <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
-                 placeholder="Ihre Email-Adresse"
+                 placeholder="Ihre E-Mail-Adresse"
                  [class.invalid]="!signupForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!signupForm.controls.email.valid  && (emailChanged || submitAttempt)">
