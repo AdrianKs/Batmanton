@@ -17,6 +17,7 @@ export class InvitesMatchdayComponent {
   mode: any;
   loadingElement: any;
   profilePictureURL: any;
+  playerStatus: string = 'all';
 
 
   constructor(private navCtrl: NavController, private navP: NavParams, private loadingCtrl: LoadingController, public utilities: Utilities, public alertCtrl: AlertController, public toastCtrl: ToastController) {
@@ -61,7 +62,7 @@ export class InvitesMatchdayComponent {
   goToPage(value) {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
-  
+
 
   showLoadingElement() {
     this.loadingElement = this.loadingCtrl.create({

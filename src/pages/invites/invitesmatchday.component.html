@@ -17,6 +17,9 @@
 <ion-content padding>
    <ion-toolbar no-border-top>
         <ion-segment [(ngModel)]="playerStatus">
+          <ion-segment-button value="all">
+            Alle
+          </ion-segment-button>
           <ion-segment-button value="accepted">
             Zugesagt
           </ion-segment-button>
@@ -28,50 +31,121 @@
           </ion-segment-button>
         </ion-segment>
   </ion-toolbar>
-  <ion-list>
-    <div *ngFor="let item of invites">
-      <div *ngIf="item.match == matchday.id">
-        <div *ngFor="let player of players">
-          <div *ngIf="item.sender == utilities.user.uid">
-            <div *ngIf="player.id == item.recipient">
-              <div *ngIf="item.state == '0'">
-                <ion-item (click)="showConfirm()">
-                  <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
-                       onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
-                  <h2> {{player.firstname}} {{player.lastname}} </h2>
-                  <h3>
-                    <ion-badge color="primary" item-bottom> Keine Antwort</ion-badge>
-                  </h3>
-                  <ion-icon item-right name="ios-notifications"></ion-icon>
-                </ion-item>
-              </div>
-              <div *ngIf="item.state == '1'">
-                <ion-item>
-                  <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
-                       onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
-                  <h2> {{player.firstname}} {{player.lastname}} </h2>
-                  <h3>
-                    <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
-                  </h3>
-                </ion-item>
-              </div>
-              <div *ngIf="item.state == '2'">
-                <ion-item>
-                  <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
-                       onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
-                  <h2> {{player.firstname}} {{player.lastname}} </h2>
-                  <h3>
-                    <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>
-                  </h3>
-                  <p>{{item.excuse}}</p>
-                </ion-item>
+
+  <div [ngSwitch]="playerStatus">
+    <ion-list *ngSwitchCase="'all'">
+      <div *ngFor="let item of invites">
+        <div *ngIf="item.match == matchday.id">
+          <div *ngFor="let player of players">
+            <div *ngIf="item.sender == utilities.user.uid">
+              <div *ngIf="player.id == item.recipient">
+                <div *ngIf="item.state == '0'">
+                  <ion-item (click)="showConfirm()">
+                    <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
+                        onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                    <h2> {{player.firstname}} {{player.lastname}} </h2>
+                    <h3>
+                      <ion-badge color="primary" item-bottom> Keine Antwort</ion-badge>
+                    </h3>
+                    <ion-icon item-right name="ios-notifications"></ion-icon>
+                  </ion-item>
+                </div>
+                <div *ngIf="item.state == '1'">
+                  <ion-item>
+                    <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
+                        onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                    <h2> {{player.firstname}} {{player.lastname}} </h2>
+                    <h3>
+                      <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
+                    </h3>
+                  </ion-item>
+                </div>
+                <div *ngIf="item.state == '2'">
+                  <ion-item>
+                    <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
+                        onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                    <h2> {{player.firstname}} {{player.lastname}} </h2>
+                    <h3>
+                      <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>
+                    </h3>
+                    <p>{{item.excuse}}</p>
+                  </ion-item>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </ion-list>
+    </ion-list>
+     <ion-list *ngSwitchCase="'accepted'">
+      <div *ngFor="let item of invites">
+        <div *ngIf="item.match == matchday.id">
+          <div *ngFor="let player of players">
+            <div *ngIf="item.sender == utilities.user.uid">
+              <div *ngIf="player.id == item.recipient">
+                <div *ngIf="item.state == '1'">
+                  <ion-item>
+                    <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
+                        onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                    <h2> {{player.firstname}} {{player.lastname}} </h2>
+                    <h3>
+                      <ion-badge color="secondary" item-bottom> Zugesagt</ion-badge>
+                    </h3>
+                  </ion-item>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-list>
+     <ion-list *ngSwitchCase="'declined'">
+      <div *ngFor="let item of invites">
+        <div *ngIf="item.match == matchday.id">
+          <div *ngFor="let player of players">
+            <div *ngIf="item.sender == utilities.user.uid">
+              <div *ngIf="player.id == item.recipient">
+                <div *ngIf="item.state == '2'">
+                  <ion-item>
+                    <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
+                        onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                    <h2> {{player.firstname}} {{player.lastname}} </h2>
+                    <h3>
+                      <ion-badge color="danger" item-bottom> Abgesagt</ion-badge>
+                    </h3>
+                  </ion-item>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-list>
+    <ion-list *ngSwitchCase="'pending'">
+      <div *ngFor="let item of invites">
+        <div *ngIf="item.match == matchday.id">
+          <div *ngFor="let player of players">
+            <div *ngIf="item.sender == utilities.user.uid">
+              <div *ngIf="player.id == item.recipient">
+                <div *ngIf="item.state == '0'">
+                  <ion-item (click)="showConfirm()">
+                    <img item-left src="{{player.picUrl}}" class="thumbnail-invite"
+                        onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'">
+                    <h2> {{player.firstname}} {{player.lastname}} </h2>
+                    <h3>
+                      <ion-badge color="primary" item-bottom> Keine Antwort</ion-badge>
+                    </h3>
+                    <ion-icon item-right name="ios-notifications"></ion-icon>
+                  </ion-item>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ion-list>
+  </div>
+  
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
