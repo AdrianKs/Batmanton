@@ -12,11 +12,13 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { document } from "@angular/platform-browser/src/facade/browser";
 import { EditRoleComponent } from '../editRole/editRole.component';
 import * as _ from 'lodash';
+import { TeamsProvider } from '../../providers/teams-provider';
 
 
 @Component({
     selector: 'page-viewTeam',
-    templateUrl: 'viewTeam.component.html'
+    templateUrl: 'viewTeam.component.html',
+    providers: [TeamsProvider]
 })
 export class ViewTeamComponent implements OnInit {
 
@@ -80,28 +82,60 @@ export class ViewTeamComponent implements OnInit {
      * Diese Methode wird verwendet, um die Rolle des aktuellen Benutzers abzufragen.
      */
     isTrainer() {
-        this.currentUser = this.utils.user;
-        this.database.ref("/clubs/12/players/" + this.currentUser.uid + "/").once('value', snapshot => {
+        this.currentUser = this.utils.userData;
+        this.isAdmin = this.currentUser.isTrainer;
+        /*this.database.ref("/clubs/12/players/" + this.currentUser.uid + "/").once('value', snapshot => {
             let data = snapshot.val();
             this.isAdmin = data.isTrainer;
-        })
+        })*/
     }
 
     /**
      * Diese Methode wird jedes Mal ausgeführt, sobald die View aufgebaut wird und sorgt so für den Refresh der Daten.
      */
     ionViewWillEnter() {
+        this.teamId = this.navP.get("teamId");
+        this.teamsProvider.teamId = this.teamId;
         this.teamHasPlayers = true;
         this.isTrainer();
-        this.teamId = this.navP.get("teamId");
         this.createAndPresentLoading();
         this.manCounter = 0;
         this.womanCounter = 0;
-        this.buildTeam().then(() => {
-            this.loading.dismiss().catch((error) => console.log("error caught"));
+        this.teamsProvider.buildTeam().then(() => {
+            if (this.team != null && this.team != undefined) {
+                this.teamsProvider.refreshPlayers().then(() => {
+                    this.teamsProvider.checkIfTeamsHasPlayers().then(() => {
+                        this.teamsProvider.countGenders().then(() => {
+                            this.team = this.teamsProvider.team;
+                            this.teamNameOld = this.team.name;
+                            this.altersKOld = this.team.ageLimit;
+                            this.altersklasse = this.team.ageLimit;
+                            this.teamArt = this.team.type;
+                            this.sKlasse = this.team.sclass;
+                            this.allPlayers = this.teamsProvider.allPlayers;
+                            this.teamHasPlayers = this.teamsProvider.teamHasPlayers;
+                            this.manCounter = this.teamsProvider.manCounter;
+                            this.womanCounter = this.teamsProvider.womanCounter;
+                            this.loading.dismiss().catch((error) => console.log("error caught"));
+                        });
+                    });
+                });
+            } else {
+                this.loading.dismiss().catch((error) => {
+                    console.log("error caught");
+                })
+                let alert = this.alertCtrl.create({
+                    title: 'Fehler',
+                    message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten.',
+                    buttons: ['OK']
+                })
+            }
         });
     }
 
+    ionViewDidLoad() {
+
+    }
 
     doRefresh(event) {
         this.teamHasPlayers = true;
@@ -121,7 +155,8 @@ export class ViewTeamComponent implements OnInit {
         public formBuilder: FormBuilder,
         public actionSheetCtrl: ActionSheetController,
         public loadingCtrl: LoadingController,
-        public modalCtrl: ModalController) {
+        public modalCtrl: ModalController,
+        public teamsProvider: TeamsProvider) {
 
 
         this.teamForm = formBuilder.group({
@@ -394,8 +429,21 @@ export class ViewTeamComponent implements OnInit {
     }
 
     deleteTeam() {
-        this.database.ref('clubs/12/teams/' + this.teamId).remove();
-        this.deleteTeamFromPlayers();
+        this.createAndPresentLoading();
+        this.teamsProvider.deleteTeam().then(() => {
+            this.teamsProvider.deleteTeamFromPlayers().then(() => {
+                this.originalPlayers = this.teamsProvider.playerDBArray;
+                this.teamsProvider.updateDatabaseWithArray("players", this.originalPlayers).then(()=>{
+                    this.teamsProvider.deleteTeamFromMatches().then(()=>{
+                        this.originalMatches = this.teamsProvider.matchesDBArray;
+                        this.teamsProvider.updateDatabaseWithArray("matches", this.originalMatches).then(()=>{
+                            this.loading.dismiss().catch((error)=>console.log(error.message));
+                            this.navCtrl.popToRoot();
+                        })
+                    })
+                })
+            })
+        })
     }
 
     presentConfirm(p: any, action: string) {
