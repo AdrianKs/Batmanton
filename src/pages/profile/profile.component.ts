@@ -2,7 +2,6 @@
  * Created by kochsiek on 08.12.2016.
  */
 // todo:
-// Enter App Screen
 // Fix infinite loading indicator iPhone
 // handle error wenn keine internetverbindung besteht
 // Erwachsenenmanschaften werden nicht im Profil angezeigt
@@ -10,6 +9,7 @@
 // AddTeamsToMatchday: Unterschied zwischen "Fertig" und "Zurück" Button? Warum wird man bei "Fertig" wieder in die Übersicht geleitet?
 // Spieldetails: "Kein Spieler" Label hinzufügen
 // invites style
+// enter app screen style
 // searchbar dunkelgrau
 // ViewTeam: "Fertig" Button ausgrauen, wenn keine Changes gemacht wurden
 // gameDetails: Remove player directly from list
