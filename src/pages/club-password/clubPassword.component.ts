@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, AlertController, LoadingController} from 'ionic-angular';
+import {NavController, AlertController, LoadingController, MenuController} from 'ionic-angular';
 import {Validators, FormBuilder} from "@angular/forms";
 import {MatchdayComponent} from "../matchday/matchday.component";
 import {LoginComponent} from "../login/login.component";
@@ -22,7 +22,10 @@ export class ClubPasswordComponent {
 
   constructor(public formBuilder: FormBuilder,
               public navCtrl: NavController, public loadingCtrl: LoadingController,
-              public alertCtrl: AlertController, public utilities: Utilities) {
+              public alertCtrl: AlertController, public utilities: Utilities, public menuCtrl: MenuController) {
+
+    this.menuCtrl.enable(false, 'mainMenu');
+
 
     this.clubPasswordForm = formBuilder.group({
       clubPassword: ['', Validators.compose([Validators.required])],
@@ -41,6 +44,7 @@ export class ClubPasswordComponent {
     if(this.utilities.hashPassword(enteredPassword) == this.utilities.hashedPassword){
       window.localStorage.setItem(this.utilities.LOCAL_TOKEN_KEY, enteredPassword);
       if(this.utilities.loggedIn){
+        this.menuCtrl.enable(true, 'mainMenu');
         this.navCtrl.setRoot(MatchdayComponent);
       } else {
         this.navCtrl.setRoot(LoginComponent);

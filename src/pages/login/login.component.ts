@@ -27,7 +27,6 @@ export class LoginComponent {
               public loadingCtrl: LoadingController, public menuCtrl: MenuController) {
 
 
-    this.menuCtrl.close('mainMenu');
     this.menuCtrl.enable(false, 'mainMenu');
 
     this.loginForm = formBuilder.group({
