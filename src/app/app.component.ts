@@ -203,7 +203,7 @@ export class MyApp {
 
   loadUserCredentials() {
   let token = window.localStorage.getItem(this.utilities.LOCAL_TOKEN_KEY);
-  if (token) {
+  if (this.utilities.hashPassword(token) == this.utilities.hashedPassword) {
     console.log(token);
     return true;
   }

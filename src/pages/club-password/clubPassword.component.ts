@@ -18,7 +18,6 @@ import {Utilities} from "../../app/utilities";
 export class ClubPasswordComponent {
   public clubPasswordForm;
   submitAttempt: boolean = false;
-  hashedPassword = 19045090;
   passwordChanged: boolean = false;
 
   constructor(public formBuilder: FormBuilder,
@@ -39,10 +38,8 @@ export class ClubPasswordComponent {
   setClubPassword() {
     this.submitAttempt = true;
     let enteredPassword = this.clubPasswordForm.value.clubPassword;
-    console.log(enteredPassword);
-    console.log(this.hashPassword(enteredPassword));
-    if(this.hashPassword(enteredPassword) == this.hashedPassword){
-      window.localStorage.setItem(this.utilities.LOCAL_TOKEN_KEY, '' + this.hashedPassword);
+    if(this.utilities.hashPassword(enteredPassword) == this.utilities.hashedPassword){
+      window.localStorage.setItem(this.utilities.LOCAL_TOKEN_KEY, enteredPassword);
       if(this.utilities.loggedIn){
         this.navCtrl.setRoot(MatchdayComponent);
       } else {
@@ -62,18 +59,4 @@ export class ClubPasswordComponent {
     }
 
   }
-
-  hashPassword(password): any {
-    let hash = 0, i, chr, len;
-    if (password.length === 0) return hash;
-    for (i = 0, len = password.length; i < len; i++) {
-      chr   = password.charCodeAt(i);
-      hash  = ((hash << 5) - hash) + chr;
-      hash |= 0; // Convert to 32bit integer
-    }
-    return hash;
-  };
-
-
-
 }

@@ -21,6 +21,7 @@ export class Utilities {
   inRegister: boolean = false;
   loggedIn: boolean = false;
   LOCAL_TOKEN_KEY: string = 'Batmanton';
+  hashedPassword = 19045090;
 
   constructor(public alertCtrl: AlertController) {
     this.fireAuth = firebase.auth();
@@ -179,5 +180,16 @@ export class Utilities {
       });
     }
   }
+
+  hashPassword(password): any {
+    let hash = 0, i, chr, len;
+    if (password.length === 0) return hash;
+    for (i = 0, len = password.length; i < len; i++) {
+      chr   = password.charCodeAt(i);
+      hash  = ((hash << 5) - hash) + chr;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+  };
 }
 
