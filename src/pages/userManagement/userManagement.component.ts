@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { EditRoleComponent } from '../editRole/editRole.component';
+import { CreatePlayerComponent } from './createPlayer.component';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
 import { document } from "@angular/platform-browser/src/facade/browser";
@@ -22,6 +23,7 @@ export class UserManagementComponent implements OnInit {
   countMan: any = 0;
   countIos: any = 0;
   countAndroid: any = 0;
+  countWeb: any = 0;
 
   constructor(private navCtrl: NavController,
     private loadingCtrl: LoadingController,
@@ -52,6 +54,10 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
+  createPlayer(){
+    this.navCtrl.push(CreatePlayerComponent);
+  }
+
   checkPlayers() {
     this.countMan = 0;
     this.countWoman = 0;
@@ -72,6 +78,8 @@ export class UserManagementComponent implements OnInit {
         this.countIos++;
       } else if (this.dataPlayer[i].platform == 'android') {
         this.countAndroid++;
+      }else if(this.dataPlayer[i].platform == 'web'){
+        this.countWeb++;
       }
     }
   }
@@ -96,7 +104,7 @@ export class UserManagementComponent implements OnInit {
   openInfo() {
     let alert = this.alertCtrl.create({
       title: 'Übersicht User',
-      subTitle: "Anzahl der User: " + this.dataPlayer.length  + "<br><br>iOS: " + this.countIos + "<br>Android: " + this.countAndroid,
+      subTitle: "Anzahl der User: " + this.dataPlayer.length  + "<br><br>iOS: " + this.countIos + "<br>Android: " + this.countAndroid + "<br>Web: " + this.countWeb,
       buttons: ['OK']
     });
     alert.present();
