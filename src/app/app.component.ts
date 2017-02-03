@@ -117,7 +117,7 @@ export class MyApp {
     } else if (this.platform.is('android')) {
       tempPlat = "android";
     } else {
-      tempPlat = 'none'
+      tempPlat = "web";
     }
 
     firebase.database().ref('clubs/12/players/' + userID).update({

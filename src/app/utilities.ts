@@ -4,7 +4,7 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import * as _ from 'lodash';
-import {AlertController} from "ionic-angular";
+import { AlertController } from "ionic-angular";
 
 @Injectable()
 export class Utilities {
@@ -25,7 +25,7 @@ export class Utilities {
   constructor(public alertCtrl: AlertController) {
     this.fireAuth = firebase.auth();
     this.setInvites();
-   // this.setPlayers();
+    // this.setPlayers();
   }
 
   setInRegister(): void {
@@ -37,7 +37,7 @@ export class Utilities {
    */
   setUserData(): void {
     firebase.database().ref('clubs/12/players/' + this.user.uid).once('value', snapshot => {
-      if(snapshot.val() != null) {
+      if (snapshot.val() != null) {
         this.userData = snapshot.val();
         this.userLoaded = true;
       }
@@ -74,6 +74,24 @@ export class Utilities {
     });
   }
 
+  createPlayer(playerId, playerData) {
+    return firebase.database().ref('clubs/12/players/').child(playerId).set({
+      birthday: playerData.birthday,
+      email: playerData.email,
+      firstname: playerData.firstname,
+      gender: playerData.gender,
+      isDefault: playerData.isDefault,
+      isPlayer: playerData.isPlayer,
+      isTrainer: playerData.isTrainer,
+      lastname: playerData.lastname,
+      picUrl: playerData.picUrl,
+      platform: playerData.platform,
+      pushid: playerData.pushid,
+      state: playerData.state,
+      team: playerData.team
+    });
+  }
+
   setInvites() {
     this.invitesLoaded = false;
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
@@ -90,7 +108,7 @@ export class Utilities {
   }
 
   calculateAge(birthdayString) {
-    if(birthdayString != undefined) {
+    if (birthdayString != undefined) {
       let birthdayDate = new Date(birthdayString);
 
       let todayDate = new Date();
@@ -111,7 +129,7 @@ export class Utilities {
   }
 
   getRelevantTeams(birthdayString) {
-    if(birthdayString != undefined) {
+    if (birthdayString != undefined) {
       let age = this.calculateAge(birthdayString);
       let relevantTeams: Array<any> = [];
       this.allTeams.forEach(function (team) {
@@ -171,7 +189,7 @@ export class Utilities {
         if (userPosition != undefined) {
           firebase.database().ref('clubs/12/teams/' + teamID + '/players/' + userPosition).remove();
         }
-        if (userID != undefined){
+        if (userID != undefined) {
           firebase.database().ref('clubs/12/players/' + userID + '/').update({
             team: '0'
           })

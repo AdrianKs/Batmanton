@@ -83,6 +83,11 @@
       </div>
     </ion-list>
   </div>
+  <ion-fab right bottom >
+    <button ion-fab icon-only (click)="createPlayer()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
  <ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
