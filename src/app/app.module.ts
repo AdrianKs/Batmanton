@@ -30,6 +30,7 @@ import {Player} from './pipes/player';
 import {Teams} from './pipes/teams';
 import {MatchTime} from './pipes/matchTime';
 import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
+import {CreatePlayerComponent} from "../pages/userManagement/createPlayer.component";
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {ClubPasswordComponent} from "../pages/club-password/clubPassword.compone
     Player,
     Teams,
     MatchTime,
-    ClubPasswordComponent
+    ClubPasswordComponent,
+    CreatePlayerComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -94,7 +96,8 @@ import {ClubPasswordComponent} from "../pages/club-password/clubPassword.compone
     //EditTeamComponent,
     EditPlayerComponent,
     CreateTeamComponent,
-    ClubPasswordComponent
+    ClubPasswordComponent,
+    CreatePlayerComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

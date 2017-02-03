@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
+import {MatchdayComponent} from '../matchday/matchday.component';
 import firebase from 'firebase';
 
 @Component({
@@ -69,6 +70,7 @@ export class EditRoleComponent {
         if (successFlag) {
             if (this.sameUser) {
                 this.utilities.setUserData();
+                //this.navCtrl.push(MatchdayComponent);
             }
             this.presentToast("Rolle wurde erfolgreich bearbeitet");
             this.navigateBackToList();
