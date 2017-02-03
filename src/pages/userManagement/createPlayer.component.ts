@@ -46,7 +46,7 @@ export class CreatePlayerComponent implements OnInit {
     createPlayer() {
         this.submitAttempt = true;
 
-        if (!this.createPlayerForm.valid) {
+        if (!this.createPlayerForm.valid || !this.gender || !this.team) {
             console.log('Form not valid');
         } else {
             this.playerId = this.makeid();
@@ -60,7 +60,7 @@ export class CreatePlayerComponent implements OnInit {
                 isTrainer: false,
                 lastname: this.createPlayerForm.value.lastname,
                 picUrl: "",
-                platform: "",
+                platform: "sonstige",
                 pushid: "",
                 state: 0,
                 team: this.team

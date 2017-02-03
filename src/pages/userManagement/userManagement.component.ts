@@ -24,6 +24,7 @@ export class UserManagementComponent implements OnInit {
   countIos: any = 0;
   countAndroid: any = 0;
   countWeb: any = 0;
+  countSonst: any = 0;
 
   constructor(private navCtrl: NavController,
     private loadingCtrl: LoadingController,
@@ -80,6 +81,8 @@ export class UserManagementComponent implements OnInit {
         this.countAndroid++;
       }else if(this.dataPlayer[i].platform == 'web'){
         this.countWeb++;
+      } else if(this.dataPlayer[i].platform == 'sonstige'){
+        this.countSonst++;
       }
     }
   }
@@ -104,7 +107,7 @@ export class UserManagementComponent implements OnInit {
   openInfo() {
     let alert = this.alertCtrl.create({
       title: 'Übersicht User',
-      subTitle: "Anzahl der User: " + this.dataPlayer.length  + "<br><br>iOS: " + this.countIos + "<br>Android: " + this.countAndroid + "<br>Web: " + this.countWeb,
+      subTitle: "Anzahl der User: " + this.dataPlayer.length  + "<br><br>iOS: " + this.countIos + "<br>Android: " + this.countAndroid + "<br>Web: " + this.countWeb + "<br>Sonstige: " + this.countSonst,
       buttons: ['OK']
     });
     alert.present();
