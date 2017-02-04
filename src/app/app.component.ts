@@ -117,7 +117,7 @@ export class MyApp {
     } else if (this.platform.is('android')) {
       tempPlat = "android";
     } else {
-      tempPlat = 'none'
+      tempPlat = "web";
     }
 
     firebase.database().ref('clubs/12/players/' + userID).update({
@@ -203,13 +203,18 @@ export class MyApp {
 
   loadUserCredentials() {
   let token = window.localStorage.getItem(this.utilities.LOCAL_TOKEN_KEY);
-  if (token) {
-    console.log(token);
-    return true;
-  }
-  else{
+  if(token){
+    if (this.utilities.hashPassword(token) == this.utilities.hashedPassword) {
+      console.log(token);
+      return true;
+    } else{
+      console.log('shit - not in the club');
+      return false;
+    }
+  } else {
     console.log('shit - not in the club');
     return false;
   }
+
 }
 }

@@ -10,12 +10,12 @@ import { GameDetailsComponent } from '../gameDetails/gameDetails.component'
   selector: 'page-invitesmatchday',
   templateUrl: 'invitesmatchday.component.html'
 })
-export class InvitesMatchdayComponent{
+
+export class InvitesMatchdayComponent {
 
   matchday: any;
   invites: any;
   players: any;
-  mode: any;
   counts: any;
   loadingElement: any;
   profilePictureURL: any;
@@ -27,8 +27,26 @@ export class InvitesMatchdayComponent{
     this.matchday = navP.get('matchday');
     this.invites = navP.get('invites');
     this.players = navP.get('players');
-    this.mode = navP.get('mode');
     this.counts = navP.get('counts');
+  }
+
+  countStates(match) {
+    let accepted = 0;
+    let declined = 0;
+    let pending = 0;
+    for (let i of this.utilities.allInvites) {
+      if (i.match == match.id && i.sender == this.utilities.user.uid) {
+        if (i.state == 0) {
+          pending = pending + 1;
+        } else if (i.state == 1) {
+          accepted = accepted + 1;
+        } else if (i.state == 2) {
+          declined = declined + 1;
+        }
+      }
+    }
+    //return [{pen: pending, acc: accepted, dec: declined}];
+    return [pending, accepted, declined];
   }
 
   showMessage() {
@@ -81,11 +99,12 @@ export class InvitesMatchdayComponent{
     this.invites = this.utilities.allInvites;
     this.utilities.setPlayers();
     this.players = this.utilities.allPlayers;
+    this.counts = this.countStates(this.matchday);
     refresher.complete();
     this.loadingElement.dismiss().catch(() => { });
   }
 
-  popPage(){
+  popPage() {
     this.navCtrl.pop();
   }
 }

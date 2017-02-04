@@ -38,7 +38,8 @@ export class AuthData {
           isPlayer: true,
           isTrainer: false,
           picUrl: "",
-          pushid: ''
+          pushid: '',
+          isDefault: false
           });
         this.utilities.user = newUser;
         newUser.sendEmailVerification();
