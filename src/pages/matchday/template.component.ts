@@ -95,9 +95,10 @@ export class TemplateComponent implements OnInit {
     firebase.database().ref('clubs/12/templates/'+templateItem.id).remove();
     let toast = this.toastCtrl.create({
       message: 'Adressvorlage wurde gelöscht',
-      duration: 3000,
+      duration: 1000,
       position: 'top'
     });
+    toast.present();
   }
 
   editTemplate(templateItem){
