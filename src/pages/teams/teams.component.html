@@ -9,7 +9,7 @@
 
 <ion-content padding>
   <!--<button ion-button (click)="testGetData()">Print Data</button>-->
-  <ion-searchbar placeholder="Suche" (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-searchbar placeholder="Suche" (ionInput)="getItems($event.target.value)"></ion-searchbar>
   <ion-list>
     <div *ngFor="let item of teams">
       <ion-item (click)="viewTeam($event, item)" [(ngModel)]="item.name" ngDefaultControl>

@@ -98,7 +98,7 @@ export class TeamsComponent implements OnInit {
   getItems(ev) {
     this.initializeTeams();
 
-    let val = ev.target.value;
+    let val = ev;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);

@@ -2,7 +2,7 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController, ModalController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController} from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
 import { EditPlayerComponent } from './editPlayers.component';
 import { FormBuilder} from '@angular/forms';
@@ -171,7 +171,6 @@ export class ViewTeamComponent implements OnInit {
         public utils: Utilities,
         public formBuilder: FormBuilder,
         public loadingCtrl: LoadingController,
-        public modalCtrl: ModalController,
         public teamsProvider: TeamsProvider) {
 
 
