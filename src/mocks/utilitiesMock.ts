@@ -1,11 +1,16 @@
 export class UtilitiesMock {
     user: any;
+    userData:any;
     allPlayers: any[];
     allTeams: Array<any>;
 
     constructor() {
         this.user = {
             uid: "12345"
+        }
+
+        this.userData = {
+            isTrainer: true
         }
 
         this.allPlayers = [
