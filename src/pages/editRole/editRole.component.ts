@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
-import {MatchdayComponent} from '../matchday/matchday.component';
+import { MatchdayComponent } from '../matchday/matchday.component';
 import firebase from 'firebase';
 
 @Component({
@@ -52,9 +52,9 @@ export class EditRoleComponent {
         }
     }
 
-   /* editRole(){
-        this.editMode = true;
-    }*/
+    /* editRole(){
+         this.editMode = true;
+     }*/
 
     changeRole(ev, player) {
         let successFlag = true;
@@ -70,10 +70,12 @@ export class EditRoleComponent {
         if (successFlag) {
             if (this.sameUser) {
                 this.utilities.setUserData();
-                //this.navCtrl.push(MatchdayComponent);
+                this.presentToast("Rolle wurde erfolgreich bearbeitet");
+                // this.navCtrl.push(MatchdayComponent);
+            } else {
+                this.presentToast("Rolle wurde erfolgreich bearbeitet");
+                this.navigateBackToList();
             }
-            this.presentToast("Rolle wurde erfolgreich bearbeitet");
-            this.navigateBackToList();
         } else {
             this.presentToast("Error. Bitte versuchen Sie es erneut!");
         }
@@ -85,6 +87,7 @@ export class EditRoleComponent {
         this.isDeleted = true;
         //this.utilities.setPlayers();
         this.deleteInvites(player.id);
+
         this.navigateBackToList();
     }
 
@@ -92,7 +95,35 @@ export class EditRoleComponent {
         firebase.database().ref('clubs/12/invites').once('value', snapshot => {
             for (let i in snapshot.val()) {
                 if (snapshot.val()[i].recipient == playerId) {
+                    this.deletePlayerFromMatches(playerId, snapshot.val()[i].match, snapshot.val()[i].state);
                     firebase.database().ref('clubs/12/invites/' + i).remove();
+                }
+            }
+        });
+    }
+
+    deletePlayerFromMatches(playerId, matchId, inviteState) {
+        firebase.database().ref('clubs/12/matches/' + matchId).once('value', snapshot => {
+            //pending state
+            if (inviteState == 0) {
+                for (let i in snapshot.val().pendingPlayers) {
+                    if (playerId == snapshot.val().pendingPlayers[i]) {
+                        firebase.database().ref('clubs/12/matches/' + matchId + '/pendingPlayers/' + i).remove();
+                    }
+                }
+                //accepted state
+            } else if (inviteState == 1) {
+                for (let i in snapshot.val().acceptedPlayers) {
+                    if (playerId == snapshot.val().acceptedPlayers[i]) {
+                       firebase.database().ref('clubs/12/matches/' + matchId + '/acceptedPlayers/' + i).remove();
+                    }
+                }
+                //declined state
+            } else if (inviteState == 2) {
+                for (let i in snapshot.val().declinedPlayers) {
+                    if (playerId == snapshot.val().declinedPlayers[i]) {
+                        firebase.database().ref('clubs/12/matches/' + matchId + '/declinedPlayers/' + i).remove();
+                    }
                 }
             }
         });
