@@ -24,7 +24,6 @@ export class Utilities {
   hashedPassword = 19045090;
   counterOpen: any;
 
-
   constructor(public alertCtrl: AlertController) {
     this.fireAuth = firebase.auth();
     this.setInvites();
@@ -226,6 +225,7 @@ export class Utilities {
       console.log(this.counterOpen);
     });
   }
+
 }
 
 
