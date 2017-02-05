@@ -74,16 +74,6 @@ export class GameDetailsComponent implements OnInit{
     if (this.dataLoaded == true){
       this.setCounter();
     }
-    console.log(this.playerArray);
-    console.log(this.dataTemplate);
-    console.log(this.teamArray);
-    console.log(this.acceptedCounter);
-    console.log(this.pendingCounter);
-    console.log(this.declinedCounter);
-    console.log(this.acceptedMaleCounter);
-    console.log(this.acceptedFemaleCounter);
-    console.log('pending:');
-    console.log(this.pendingArray);
   }
 
   constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
@@ -161,6 +151,16 @@ export class GameDetailsComponent implements OnInit{
       }
       this.setCounter();
       this.dataLoaded = true;
+      console.log(this.playerArray);
+      console.log(this.dataTemplate);
+      console.log(this.teamArray);
+      console.log(this.acceptedCounter);
+      console.log(this.pendingCounter);
+      console.log(this.declinedCounter);
+      console.log(this.acceptedMaleCounter);
+      console.log(this.acceptedFemaleCounter);
+      console.log('pending:');
+      console.log(this.pendingArray);
     }).then((data) => {
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
