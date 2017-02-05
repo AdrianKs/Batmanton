@@ -87,7 +87,7 @@ export class EditRoleComponent {
         this.isDeleted = true;
         //this.utilities.setPlayers();
         this.deleteInvites(player.id);
-
+        this.removePlayerFromTeam(player.team, player.id);
         this.navigateBackToList();
     }
 
@@ -115,7 +115,7 @@ export class EditRoleComponent {
             } else if (inviteState == 1) {
                 for (let i in snapshot.val().acceptedPlayers) {
                     if (playerId == snapshot.val().acceptedPlayers[i]) {
-                       firebase.database().ref('clubs/12/matches/' + matchId + '/acceptedPlayers/' + i).remove();
+                        firebase.database().ref('clubs/12/matches/' + matchId + '/acceptedPlayers/' + i).remove();
                     }
                 }
                 //declined state
@@ -124,6 +124,16 @@ export class EditRoleComponent {
                     if (playerId == snapshot.val().declinedPlayers[i]) {
                         firebase.database().ref('clubs/12/matches/' + matchId + '/declinedPlayers/' + i).remove();
                     }
+                }
+            }
+        });
+    }
+
+    removePlayerFromTeam(teamId, playerId) {
+        firebase.database().ref('clubs/12/teams/' + teamId).once('value', snapshot => {
+            for (let i in snapshot.val().players) {
+                if (playerId == snapshot.val().players[i]) {
+                    return firebase.database().ref('clubs/12/teams/' + teamId + '/players/' + i).remove();
                 }
             }
         });
