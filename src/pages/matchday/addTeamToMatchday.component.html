@@ -6,7 +6,7 @@
       </button>
     </ion-buttons>
     <ion-buttons right>
-      <button ion-button (click)="confirmPlayer()">Fertig
+      <button *ngIf="!editMode" ion-button (click)="confirmPlayer()">Fertig
       </button>
     </ion-buttons>
     <ion-title>Spieler hinzufügen</ion-title>

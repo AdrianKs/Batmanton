@@ -186,7 +186,7 @@ export class CreateMatchdayComponent implements OnInit {
       if (this.homeChanged == false){
         this.match.home = "unknown";
       } else {
-        if (this.match.home == true){
+        if (this.match.home == "true"){
           this.match.home = true;
         } else {
           this.match.home = false;
@@ -227,7 +227,7 @@ export class CreateMatchdayComponent implements OnInit {
               {
                   text: 'Spieler hinzufügen',
                   handler: () => {
-                      this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, relevantTeamsItem: this.relevantTeams});
+                      this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, statusArray: {acceptedArray: 0, pendingArray: 0, declinedArray: 0, deletedArray: 0}, counterArray: {acceptedCounter: 0, pendingCounter:0, declinedCounter:0}, playerArray: [], relevantTeamsItem: this.relevantTeams, editMode: false});
                   }
               }
           ]
