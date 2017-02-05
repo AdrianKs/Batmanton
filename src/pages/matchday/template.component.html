@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button ion-button clear (click)="goBack()">
+        Zurück
+      </button>
+    </ion-buttons>
+    <ion-title center>Adressvorlagen</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div>
+    <ion-list>
+      <div *ngFor="let item of dataTemplate">
+        <div *ngIf="item.deleted==false">
+          <ion-item-sliding>
+            <ion-item>
+                <div>
+                  <div class="mainDetails">{{item.club}}</div>
+                  <p>{{item.street}}<p>
+                  <p>{{item.zipcode}}
+                </div>
+            </ion-item>
+            <ion-item-options side="right">
+              <button ion-button color="secondary" (click)="editTemplate(item)">
+                <ion-icon name="settings"></ion-icon>
+                Bearbeiten
+              </button>
+              <button ion-button color="danger" (click)="deleteTemplate(item)">
+                <ion-icon name="trash"></ion-icon>
+                Löschen
+              </button>
+            </ion-item-options>
+          </ion-item-sliding>
+        </div>
+      </div>
+    </ion-list>
+  </div>
+  <div *ngIf="counter == 0">
+    <ion-label class="align-center no-items">Keine Adressvorlagen vorhanden</ion-label>
+  </div>
+  <ion-fab right bottom>
+    <button ion-fab icon-only (click)="createTemplate()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+</ion-content>
+

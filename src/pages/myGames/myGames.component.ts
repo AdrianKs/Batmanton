@@ -1,6 +1,6 @@
 //todo
 //Notification (bzw. in Menüleiste)
-//Keine Spiele vorhanden
+//counter für utilities
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
@@ -96,7 +96,6 @@ export class MyGamesComponent implements OnInit {
     });
   }
 
-
   createAndShowErrorAlert(error) {
       let alert = this.alertCtrl.create({
         title: 'Fehler beim Empfangen der Daten',
@@ -134,11 +133,6 @@ export class MyGamesComponent implements OnInit {
         }
       }
     }
-    console.log(this.dataGames);
-    console.log(this.dataInvites);
-    console.log(this.counterPast);
-    console.log(this.counterFuture);
-    console.log(this.counterOpen);
   }
 
    getFirstFourPicUrls(match) {
@@ -163,6 +157,15 @@ export class MyGamesComponent implements OnInit {
 
   verifyAccept(inviteItem){
     this.counterOpen--;
+    for (let i in this.dataGames){
+      if (this.dataGames[i].id == inviteItem.match){
+        if(this.dataGames[i].time < this.today && this.dataGames[i].time != '0'){
+          this.counterPast++;
+        } else {
+          this.counterFuture++;
+        }
+      }
+    }
     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
       state: 1
     });
@@ -225,7 +228,7 @@ export class MyGamesComponent implements OnInit {
           } else {
             this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
           }
-          this.counterFuture--;
+          this.counterOpen--;
           firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
             excuse: this.testRadioResult,
             state: 2
@@ -258,7 +261,7 @@ export class MyGamesComponent implements OnInit {
                     } else {
                       this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
                     }
-                    this.counterFuture--;
+                    this.counterOpen--;
                     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
                       excuse: this.testRadioResult + ': ' +data.extra,
                       state: 2
