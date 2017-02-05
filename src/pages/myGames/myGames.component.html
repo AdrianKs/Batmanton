@@ -51,8 +51,8 @@
                     <div *ngIf="gameItem.time == 0">TBA</div>
                     <div *ngIf="gameItem.time != 0">{{ gameItem.time | matchTime }}</div>
                     <div class="mainDetails">{{ gameItem.opponent }}</div>
-                    <div *ngIf="item.team == 0"><p>keine Mannschaft</p></div>
-                    <div *ngIf="item.team != 0"><p>{{ gameItem.team | teams}}</p></div>
+                    <div *ngIf="gameItem.team == 0"><p>keine Mannschaft</p></div>
+                    <div *ngIf="gameItem.team != 0"><p>{{ gameItem.team | teams}}</p></div>
                     <div *ngIf="gameItem.home == true"><p>Heim</p></div>
                     <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
                     <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
@@ -97,8 +97,8 @@
                       <div *ngIf="gameItem.time == 0">TBA</div>
                       <div *ngIf="gameItem.time != 0">{{ gameItem.time | matchTime }}</div>
                       <div class="mainDetails">{{ gameItem.opponent }}</div>
-                      <div *ngIf="item.team == 0"><p>keine Mannschaft</p></div>
-                      <div *ngIf="item.team != 0"><p>{{ gameItem.team | teams}}</p></div>
+                      <div *ngIf="gameItem.team == 0"><p>keine Mannschaft</p></div>
+                      <div *ngIf="gameItem.team != 0"><p>{{ gameItem.team | teams}}</p></div>
                       <div *ngIf="gameItem.home == true"><p>Heim</p></div>
                       <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
                       <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
@@ -155,8 +155,8 @@
                     <div *ngIf="gameItem.time == 0">TBA</div>
                     <div *ngIf="gameItem.time != 0">{{ gameItem.time | matchTime }}</div>
                     <div class="mainDetails">{{ gameItem.opponent }}</div>
-                    <div *ngIf="item.team == 0"><p>keine Mannschaft</p></div>
-                    <div *ngIf="item.team != 0"><p>{{ gameItem.team | teams}}</p></div>
+                    <div *ngIf="gameItem.team == 0"><p>keine Mannschaft</p></div>
+                    <div *ngIf="gameItem.team != 0"><p>{{ gameItem.team | teams}}</p></div>
                     <div *ngIf="gameItem.home == true"><p>Heim</p></div>
                     <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
                     <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
