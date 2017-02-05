@@ -85,7 +85,6 @@ export class EditRoleComponent {
     deleteUser(player) {
         firebase.database().ref('clubs/12/players/' + player.id).remove();
         this.isDeleted = true;
-        //this.utilities.setPlayers();
         this.deleteInvites(player.id);
         this.removePlayerFromTeam(player.team, player.id);
         this.navigateBackToList();

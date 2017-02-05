@@ -36,6 +36,15 @@ describe("CreatePlayerComponentTest", () => {
         expect(component).toBeTruthy();
     });
 
+    it('nameStartsWithCapital', () => {
+        let firstnameControl = component.createPlayerForm.controls.firstname;
+        firstnameControl._value = "Testuser";
+        expect(component.startsWithACapital(firstnameControl)).toBeNull();
+
+        firstnameControl._value = "testuser";
+        expect(component.startsWithACapital(firstnameControl)).toBeTruthy();
+    });
+
     afterEach(() => {
         fixture.destroy();
         component = null;
