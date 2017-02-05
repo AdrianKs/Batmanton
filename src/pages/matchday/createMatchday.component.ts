@@ -41,6 +41,10 @@ export class CreateMatchdayComponent implements OnInit {
   timeChanged: boolean;
 
   ngOnInit(){
+  }
+
+  ionViewWillEnter() {
+    this.loadData(true, null);
     this.opponentChanged = false;
     this.teamChanged = false;
     this.homeChanged = false;
@@ -48,10 +52,6 @@ export class CreateMatchdayComponent implements OnInit {
     this.zipcodeChanged = false;
     this.timeChanged = false;
     this.templateChecked = false;
-  }
-
-  ionViewWillEnter() {
-    this.loadData(true, null);
   }
 
   
@@ -227,7 +227,7 @@ export class CreateMatchdayComponent implements OnInit {
               {
                   text: 'Spieler hinzufügen',
                   handler: () => {
-                      this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, statusArray: {acceptedArray: 0, pendingArray: 0, declinedArray: 0, deletedArray: 0}, counterArray: {acceptedCounter: 0, pendingCounter:0, declinedCounter:0}, playerArray: [], relevantTeamsItem: this.relevantTeams, editMode: false});
+                      this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, statusArray: {acceptedArray: 0, pendingArray: 0, declinedArray: 0, deletedArray: 0}, counterArray: {acceptedCounter: 0, acceptedMaleCounter: 0, acceptedFemaleCounter: 0, pendingCounter:0, declinedCounter:0}, playerArray: null, relevantTeamsItem: this.relevantTeams, editMode: false});
                   }
               }
           ]

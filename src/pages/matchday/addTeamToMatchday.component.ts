@@ -1,7 +1,7 @@
 //todo
 //teams nicht aktuell
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -14,6 +14,7 @@ import * as _ from 'lodash';
 export class AddTeamToMatchdayComponent implements OnInit{
   geschlecht: string = 'maenner';
   match: any;
+  loading: any;
   invite: any;
   teamSelection: any;
   teamPosition: number;
@@ -26,6 +27,8 @@ export class AddTeamToMatchdayComponent implements OnInit{
   declinedArray: any;
   deletedArray: any;
   acceptedCounter: any;
+  acceptedMaleCounter: any;
+  acceptedFemaleCounter: any;
   pendingCounter: any;
   declinedCounter: any;
   allTeams: any;
@@ -35,16 +38,22 @@ export class AddTeamToMatchdayComponent implements OnInit{
   editMode: any;
 
   ngOnInit(){
+    
+  }
+
+  ionViewWillEnter() {
     this.acceptedArray = this.statusArray.acceptedArray;
     this.pendingArray = this.statusArray.pendingArray;
     this.declinedArray = this.statusArray.declinedArray;
     this.deletedArray = this.statusArray.deletedArray;
     this.acceptedCounter = this.counterArray.acceptedCounter;
+    this.acceptedMaleCounter = this.counterArray.acceptedMaleCounter;
+    this.acceptedFemaleCounter = this.counterArray.acceptedFemaleCounter;
     this.pendingCounter = this.counterArray.pendingCounter;
     this.declinedCounter = this.counterArray.declinedCounter;
     console.log(this.pendingArray);
-    if (this.allPlayers == []){
-      this.allPlayers = this.setPlayers;
+    if (this.editMode != true){
+      this.loadData(true, null);
     }
     this.teamSelection = this.match.team;
     let counter = 0;
@@ -59,10 +68,10 @@ export class AddTeamToMatchdayComponent implements OnInit{
       this.relevantTeams = this.getRelevantTeams(0);
     } else {
       this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit);
-    }
+    }  
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     this.match = navP.get('matchItem');
     this.allPlayers = navP.get('playerArray');
     this.statusArray = navP.get('statusArray');
@@ -71,7 +80,10 @@ export class AddTeamToMatchdayComponent implements OnInit{
     this.allTeams = navP.get('relevantTeamsItem');
   }
 
-  setPlayers() {
+  loadData(showLoading: boolean, event) {
+    if (showLoading) {
+      this.createAndShowLoading();
+    }
     firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
       let playerArray = [];
       let counter = 0;
@@ -106,7 +118,35 @@ export class AddTeamToMatchdayComponent implements OnInit{
       }
       this.allPlayers = playerArray;
       this.allPlayers = _.sortBy(this.allPlayers, "lastname");
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
     });
+  }
+
+  createAndShowErrorAlert(error) {
+      let alert = this.alertCtrl.create({
+        title: 'Fehler beim Empfangen der Daten',
+        message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+
+  createAndShowLoading() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
+    })
+    this.loading.present();
   }
 
   getRelevantTeams(ageLimit) {
@@ -126,6 +166,16 @@ export class AddTeamToMatchdayComponent implements OnInit{
         counter++;
       }
       this.acceptedArray[counter]= player.id;
+      for (let j in this.allPlayers){
+        if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "m"){
+          this.acceptedMaleCounter++;
+          break;
+        }
+        if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "f"){
+          this.acceptedFemaleCounter++;
+          break;
+        }
+      }
       this.acceptedCounter++;
       player.accepted = true;
       player.deleted = false;
@@ -174,6 +224,16 @@ export class AddTeamToMatchdayComponent implements OnInit{
           this.deletedArray.push(player.id);
         }
         counter ++;
+        for (let j in this.allPlayers){
+          if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "m"){
+            this.acceptedMaleCounter--;
+            break;
+          }
+          if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "f"){
+            this.acceptedFemaleCounter--;
+            break;
+          }
+        }
         this.acceptedCounter--;
       }
       player.accepted = false;
@@ -276,7 +336,11 @@ export class AddTeamToMatchdayComponent implements OnInit{
   }
 
   goBack(){
-    this.navCtrl.pop();
+    if (this.editMode != true){
+      this.navCtrl.popToRoot();
+    } else {
+      this.navCtrl.pop();
+    }
   }
 }
 
