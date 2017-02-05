@@ -1,6 +1,4 @@
 //todo
-//keine spiele vorhanden
-//Mannschaft
 //bilder
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
@@ -32,6 +30,7 @@ export class MatchdayComponent implements OnInit {
   loading: any;
   currentUser: any;
   isAdmin: boolean;
+  counter: any;
   
   constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     
@@ -51,11 +50,11 @@ export class MatchdayComponent implements OnInit {
     }
     firebase.database().ref('clubs/12/matches').once('value', snapshot => {
       let gamesArray = [];
-      let counter = 0;
+      this.counter = 0;
       for (let i in snapshot.val()) {
-        gamesArray[counter] = snapshot.val()[i];
-        gamesArray[counter].id = i;
-        counter++;
+        gamesArray[this.counter] = snapshot.val()[i];
+        gamesArray[this.counter].id = i;
+        this.counter++;
       }
       this.dataGames = gamesArray;
       this.dataGames = _.sortBy(this.dataGames, "time").reverse();

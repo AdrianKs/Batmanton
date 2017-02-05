@@ -1,5 +1,3 @@
-//todo
-//Zurück button
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';

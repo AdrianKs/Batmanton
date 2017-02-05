@@ -59,7 +59,12 @@
                     placeholder="{{gameItem.team | teams}}"
                     (ionChange)="teamSelectChanged(gameItem.team)" doneText="Ok" cancelText="Abbrechen">
           <ion-option value=0>keine Mannschaft</ion-option>
-          <ion-option *ngFor="let item of teamArray" value="{{item.id}}">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of teamArray" value="{{item.id}}">{{item.name}}
+            {{item.name}}
+            <div *ngIf="item.ageLimit==0">(Erw.</div>
+            <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
+            {{item.sclass}})
+          </ion-option>
         </ion-select>
       </ion-item>
       <ion-item *ngIf="(!editMode)">
@@ -154,6 +159,11 @@
                 <div class="itemPlayerRight">
                   <div class="mainDetails">
                     {{ player.lastname }}, {{player.firstname}}
+                    <button *ngIf="editMode"
+                          class="player-item-button" ion-button round outline icon-only color="danger"
+                          (click)="removePlayer(item)">
+                    <ion-icon name="remove"></ion-icon>
+                    </button>
                   </div>
                   <div class="secondaryDetails">
                     {{player.team | teams}} <br/>
@@ -179,6 +189,11 @@
                 <div class="itemPlayerRight">
                   <div class="mainDetails">
                     {{ player.lastname }}, {{player.firstname}}
+                    <button *ngIf="editMode"
+                          class="player-item-button" ion-button round outline icon-only color="danger"
+                          (click)="removePlayer(item)">
+                    <ion-icon name="remove"></ion-icon>
+                    </button>
                   </div>
                   <div class="secondaryDetails">
                     {{player.team | teams}} <br/>
@@ -204,6 +219,11 @@
                 <div class="itemPlayerRight">
                   <div class="mainDetails">
                     {{ player.lastname }}, {{player.firstname}}
+                    <button *ngIf="editMode"
+                          class="player-item-button" ion-button round outline icon-only color="danger"
+                          (click)="removePlayer(item)">
+                    <ion-icon name="remove"></ion-icon>
+                    </button>
                   </div>
                   <div class="secondaryDetails">
                     {{player.team | teams}} <br/>
