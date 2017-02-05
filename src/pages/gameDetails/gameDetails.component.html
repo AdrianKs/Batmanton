@@ -122,7 +122,7 @@
                       doneText="Ok" cancelText="Abbrechen"></ion-datetime>
       </ion-item>
     </div>
-    
+
     <div *ngIf="(editMode)" class ="align-center">
       <button ion-button small outline color="secondary" (click)="showTemplates()" icon-left item-right>
         <ion-icon name="arrow-dropright"></ion-icon>
@@ -144,6 +144,53 @@
         </button>
     </div>
 
+    <div *ngFor="let team of teamArray">
+      <div *ngIf="team.id == gameItem.team">
+        <div *ngIf="team.type == 'Normal'">
+          <ion-list-header class="align-center">Normal</ion-list-header>
+          <ion-item icon-left>
+            <div class = "itemLeft">
+              <ion-icon *ngIf="acceptedCounter >= 6" name="checkmark-circle"></ion-icon>
+              <ion-icon *ngIf="acceptedCounter < 6" name="close-circle"></ion-icon>
+            </div>
+            <div class = "itemRight mainDetails">
+              <p>6 Spieler aufgestellt</p>
+            </div>
+          </ion-item>
+          <ion-item icon-left>
+            <div class="itemLeft">
+              <ion-icon *ngIf="acceptedMaleCounter >= 4" name="checkmark-circle"></ion-icon>
+              <ion-icon *ngIf="acceptedMaleCounter < 4" name="close-circle"></ion-icon>
+            </div>
+            <div class="itemRight">
+              <p>4 Männer aufgestellt</p>
+            </div>
+          </ion-item>
+          <ion-item icon-left>
+            <div class="itemLeft">
+              <ion-icon *ngIf="acceptedFemaleCounter >= 2" name="checkmark-circle"></ion-icon>
+              <ion-icon *ngIf="acceptedFemaleCounter < 2" name="close-circle"></ion-icon>
+            </div>
+            <div class="itemRight">
+              <p>2 Frauen aufgestellt</p>
+            </div>
+          </ion-item>
+        </div>
+        <div *ngIf="team.type == 'Mini'">
+          <ion-list-header class="align-center">Mini</ion-list-header>
+          <ion-item icon-left>
+            <div class="itemLeft">
+              <ion-icon *ngIf="acceptedCounter >= 4" name="checkmark-circle"></ion-icon>
+              <ion-icon *ngIf="acceptedCounter < 4" name="close-circle"></ion-icon>
+            </div>
+            <div class="itemRight">
+              <p>4 Spieler aufgestellt</p>
+            </div>
+          </ion-item>
+        </div>
+      </div>
+    </div>
+    
     <ion-list-header class="align-center">Spieler</ion-list-header>
       <ion-toolbar no-border-top>
         <ion-segment [(ngModel)]="playerStatus">

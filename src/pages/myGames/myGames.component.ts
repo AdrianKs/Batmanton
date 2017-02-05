@@ -228,7 +228,7 @@ export class MyGamesComponent implements OnInit {
           } else {
             this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
           }
-          this.counterFuture--;
+          this.counterOpen--;
           firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
             excuse: this.testRadioResult,
             state: 2
@@ -261,7 +261,7 @@ export class MyGamesComponent implements OnInit {
                     } else {
                       this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
                     }
-                    this.counterFuture--;
+                    this.counterOpen--;
                     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
                       excuse: this.testRadioResult + ': ' +data.extra,
                       state: 2
