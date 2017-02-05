@@ -41,16 +41,12 @@ export class UtilitiesMock {
         ]
     }
 
-    setPlayers() {
+    setPlayers(): Promise<{status: string}> {
         var test = this.allPlayers;
-        var p1 = new Promise(
-            function (resolve, reject) {
-                if(test != undefined){
-                    resolve('success');
-                }else{
-                    reject('fail');
-                }
-            });
-        return p1;
+        return new Promise((resolve)=>{
+           resolve('success');
+        }).catch((reject)=>{
+            reject('failed');
+        })
     }
 }
