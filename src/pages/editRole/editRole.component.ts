@@ -71,7 +71,7 @@ export class EditRoleComponent {
             if (this.sameUser) {
                 this.utilities.setUserData();
                 this.presentToast("Rolle wurde erfolgreich bearbeitet");
-                // this.navCtrl.push(MatchdayComponent);
+                this.navCtrl.setRoot(MatchdayComponent);
             } else {
                 this.presentToast("Rolle wurde erfolgreich bearbeitet");
                 this.navigateBackToList();
