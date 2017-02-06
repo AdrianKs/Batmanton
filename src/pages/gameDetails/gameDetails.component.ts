@@ -2,6 +2,7 @@
 //4 men 2 women for isNotMini (Logik allgemein)
 //aushilfscounter
 //check createMatchday
+//Alarm bei Zeitänderung
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController} from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component';
@@ -108,6 +109,11 @@ export class GameDetailsComponent implements OnInit{
         playerArray[counter].pending = false;
         playerArray[counter].declined = false;
         playerArray[counter].deleted = false;
+        if (playerArray[counter].team == this.gameItem.team){
+          playerArray[counter].isMainTeam = true;
+        } else {
+          playerArray[counter].isMainTeam = false;
+        }
         if (this.gameItem.acceptedPlayers){
           for (let i in this.gameItem.acceptedPlayers){
             if (this.gameItem.acceptedPlayers[i] == playerArray[counter].id){
@@ -370,6 +376,23 @@ export class GameDetailsComponent implements OnInit{
   teamSelectChanged(input) {
     if (this.teamOld != input) {
       this.teamChanged = true;
+      for (let i in this.playerArray){
+        if (this.playerArray[i].team == this.gameItem.team){
+          if (this.playerArray[i] == false){
+            this.playerArray[i].isMainTeam = true;
+            if (this.playerArray[i].accepted = true){
+              this.playerArray[i].helpCounter--;
+            }
+          }
+        } else {
+          if (this.playerArray[i] == true){
+            this.playerArray[i].isMainTeam = false;
+            if (this.playerArray[i].accepted = true){
+              this.playerArray[i].helpCounter++;
+            }
+          }
+        }
+      }
     } else {
       this.teamChanged = false;
     }
@@ -482,6 +505,13 @@ export class GameDetailsComponent implements OnInit{
         }
         counter ++;
       }
+      if (player.isMainTeam == false){
+        for (let i in this.playerArray){
+          if(player.id == this.playerArray[i].id){
+            this.playerArray[i].helpCounter--;
+          }
+        }
+      }
       player.accepted = false;
       console.log('accepted: ');
       console.log(this.acceptedArray);
@@ -535,6 +565,16 @@ export class GameDetailsComponent implements OnInit{
       declinedPlayers: this.declinedArray
     });
 
+    firebase.database().ref('clubs/12/players').once('value', snapshot => {
+      for (let i in this.playerArray){
+        if (i == this.playerArray[i].id){
+          firebase.database().ref('clubs/12/players/').child(i).update({
+            helpCounter: this.playerArray[i].helpCounter
+          });
+        }
+      }
+    });
+
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       for (let i in snapshot.val()) {
         for (let j in this.deletedArray){
@@ -549,43 +589,62 @@ export class GameDetailsComponent implements OnInit{
     
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       for (let k in this.pendingArray){
-        let inviteExists = false;
-        for (let i in snapshot.val()) {
-          if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.pendingArray[k]){
-            console.log("inviteExists now true");
-            if (snapshot.val()[i].state != 0 || this.timeChanged){
-              //push-Benachrichtigung an snapshot.val()[i].recipient
+        for (let j in this.playerArray){
+          if (this.playerArray[j].id == this.pendingArray[k] && this.playerArray[j].isDefault == false){
+            let inviteExists = false;
+            for (let i in snapshot.val()) {
+              if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.pendingArray[k]){
+                console.log("inviteExists now true");
+                if (this.playerArray[j].isMainTeam == false){
+                  firebase.database().ref('clubs/12/invites/').child(i).update({
+                    assist: true
+                  });
+                } else {
+                  firebase.database().ref('clubs/12/invites/').child(i).update({
+                    assist: false
+                  });
+                }
+                if (snapshot.val()[i].state != 0){
+                  //push-Benachrichtigung an snapshot.val()[i].recipient
+                  //Zugriff auf Spielerobjekt
+                  /*for (let j in this.allPlayers){
+                    let player;
+                    if (this.allPlayers[j].id == snapshot.val()[i].recipient){
+                      player = this.allPlayers[j];
+                    }
+                  }*/
+                }
+                firebase.database().ref('clubs/12/invites/' + i).update({
+                  state: 0
+                });
+                inviteExists = true;
+              }     
+            }
+            if (inviteExists == false){
+              let id = this.makeid();
+              firebase.database().ref('clubs/12/invites/').child(id).set({
+                assist: false,
+                match: this.gameItem.id.toString(),
+                recipient: this.pendingArray[k],
+                sender: this.Utilities.user.uid,
+                state: 0
+              });
+              if (this.playerArray[j].isMainTeam == false){
+                firebase.database().ref('clubs/12/invites/').child(id).update({
+                  assist: true
+                });
+              }
+              //push-Benachrichtigung an this.pendingArray[k]
               //Zugriff auf Spielerobjekt
-              /*for (let j in this.allPlayers){
+              /*for (let l in this.allPlayers){
                 let player;
-                if (this.allPlayers[j].id == snapshot.val()[i].recipient){
-                  player = this.allPlayers[j];
+                if (this.allPlayers[l].id == this.pendingArray[k]){
+                  player = this.allPlayers[l];
+                  console.log(player);
                 }
               }*/
             }
-            firebase.database().ref('clubs/12/invites/' + i).update({
-              state: 0
-            });
-            inviteExists = true;
-          }     
-        }
-        if (inviteExists == false){
-          let id = this.makeid();
-          firebase.database().ref('clubs/12/invites/').child(id).set({
-            match: this.gameItem.id.toString(),
-            recipient: this.pendingArray[k],
-            sender: this.Utilities.user.uid,
-            state: 0
-          });
-          //push-Benachrichtigung an this.pendingArray[k]
-          //Zugriff auf Spielerobjekt
-          /*for (let l in this.allPlayers){
-            let player;
-            if (this.allPlayers[l].id == this.pendingArray[k]){
-              player = this.allPlayers[l];
-              console.log(player);
-            }
-          }*/
+          }
         }
       }
     });

@@ -20,6 +20,7 @@ export class MyGamesComponent implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.dataPlayer = this.Utilities.setPlayers;
     this.loadData(true, null);
   }
 
@@ -28,9 +29,11 @@ export class MyGamesComponent implements OnInit {
   loggedInUserID: string = this.Utilities.user.uid;
   dataGames: any;
   dataInvites: any;
+  dataPlayer: any;
   counterPast: any;
   counterFuture: any;
   counterOpen: any;
+  helpCounter: any;
   testRadioOpen: boolean;
   testRadioResult;
   declined: boolean;
@@ -169,6 +172,17 @@ export class MyGamesComponent implements OnInit {
     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
       state: 1
     });
+    for (let i in this.dataPlayer){
+      if (this.dataPlayer[i].id == this.loggedInUserID){
+        this.helpCounter = this.dataPlayer[i].helpCounter;
+        break;
+      }
+    }
+    if (inviteItem.assist == true){
+      firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+        helpCounter: this.helpCounter++
+      });
+    }
     inviteItem.state = 1;
     this.pendingToAccepted(inviteItem.match, this.loggedInUserID);
     let alert = this.alertCtrl.create({
@@ -227,6 +241,17 @@ export class MyGamesComponent implements OnInit {
             this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
           } else {
             this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+            for (let i in this.dataPlayer){
+              if (this.dataPlayer[i].id == this.loggedInUserID){
+                this.helpCounter = this.dataPlayer[i].helpCounter;
+                break;
+              }
+            }
+            if (inviteItem.assist == true){
+              firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+                helpCounter: this.helpCounter--
+              });
+            }
           }
           this.counterOpen--;
           firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
@@ -260,6 +285,17 @@ export class MyGamesComponent implements OnInit {
                       this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
                     } else {
                       this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+                      for (let i in this.dataPlayer){
+                        if (this.dataPlayer[i].id == this.loggedInUserID){
+                          this.helpCounter = this.dataPlayer[i].helpCounter;
+                          break;
+                        }
+                      }
+                      if (inviteItem.assist == true){
+                        firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+                          helpCounter: this.helpCounter--
+                        });
+                      }
                     }
                     this.counterOpen--;
                     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
