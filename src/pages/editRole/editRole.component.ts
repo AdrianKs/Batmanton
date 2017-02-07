@@ -67,11 +67,11 @@ export class EditRoleComponent {
          this.editMode = true;
      }*/
 
-     /**
-      * Writes/Updates the new state of the player into the database
-      * @param ev event-handler
-      * @param player to update the right one
-      */
+    /**
+     * Writes/Updates the new state of the player into the database
+     * @param ev event-handler
+     * @param player to update the right one
+     */
     changeRole(ev, player) {
         let successFlag = true;
 
@@ -105,7 +105,11 @@ export class EditRoleComponent {
     deleteUser(player) {
         firebase.database().ref('clubs/12/players/' + player.id).remove();
         this.isDeleted = true;
-        this.deleteInvites(player.id);
+        if (player.isDefault == true) {
+            this.deleteDefaultPlayerFromMatches(player.id)
+        } else {
+            this.deleteInvites(player.id);
+        }
         this.removePlayerFromTeam(player.team, player.id);
         this.navigateBackToList();
     }
@@ -156,6 +160,24 @@ export class EditRoleComponent {
                 }
             }
         });
+    }
+
+    /**
+     * Delete Default Player from MatchdayComponent
+     * @param playerId to find and delete the player
+     */
+    deleteDefaultPlayerFromMatches(playerId) {
+        let tempMatchId;
+        firebase.database().ref('clubs/12/matches').once('value', snapshot => {
+            for (let i in snapshot.val()) {
+                tempMatchId = i;
+                for (let y in snapshot.val()[i].acceptedPlayers) {
+                    if (playerId == snapshot.val()[i].acceptedPlayers[y]) {
+                        firebase.database().ref('clubs/12/matches/'+ tempMatchId +'/acceptedPlayers/'+y).remove();
+                    }
+                }
+            }
+        })
     }
 
     /**
