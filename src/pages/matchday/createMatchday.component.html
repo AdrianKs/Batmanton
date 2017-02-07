@@ -27,9 +27,9 @@
           <ion-option value=0>keine Mannschaft</ion-option>
           <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">
             {{item.name}}
-            <div *ngIf="item.ageLimit==0">(Erw.</div>
+            <div *ngIf="item.ageLimit==0">(Erw.,</div>
             <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
-            {{item.sclass}})
+            S{{item.sclass}})
           </ion-option>
         </ion-select>
         </ion-item>

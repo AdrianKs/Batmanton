@@ -228,7 +228,7 @@ export class CreateMatchdayComponent implements OnInit {
               {
                   text: 'Spieler hinzufügen',
                   handler: () => {
-                      this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, statusArray: {acceptedArray: 0, pendingArray: 0, declinedArray: 0, deletedArray: 0}, counterArray: {acceptedCounter: 0, acceptedMaleCounter: 0, acceptedFemaleCounter: 0, pendingCounter:0, declinedCounter:0}, playerArray: null, relevantTeamsItem: this.relevantTeams, editMode: false});
+                      this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, statusArray: {acceptedArray: [], pendingArray: [], declinedArray: [], deletedArray: []}, counterArray: {acceptedCounter: 0, acceptedMaleCounter: 0, acceptedFemaleCounter: 0, pendingCounter:0, declinedCounter:0}, playerArray: null, relevantTeamsItem: this.relevantTeams, editMode: false});
                   }
               }
           ]
