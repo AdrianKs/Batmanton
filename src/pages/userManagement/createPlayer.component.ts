@@ -25,6 +25,9 @@ export class CreatePlayerComponent implements OnInit {
     submitAttempt: boolean = false;
     playerData: any;
 
+    /**
+     * Constructor to initialize the Component and the Create-Player form
+     */
     constructor(private navCtrl: NavController,
         private formBuilder: FormBuilder,
         private utilities: Utilities) {
@@ -39,10 +42,16 @@ export class CreatePlayerComponent implements OnInit {
     ngOnInit() {
     }
 
+    /**
+     * Navigates back to root --> UserManagementComponent
+     */
     goBack() {
         this.navCtrl.popToRoot();
     }
 
+    /**
+     * Creates a player and writes it to the database if the form is valid
+     */
     createPlayer() {
         this.submitAttempt = true;
 
@@ -73,6 +82,9 @@ export class CreatePlayerComponent implements OnInit {
         }
     }
 
+    /**
+     * Function to create a unique id for the created player
+     */
     makeid() {
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -85,7 +97,7 @@ export class CreatePlayerComponent implements OnInit {
 
 
     /**
- * This method checks if a input field was changed
+ * This function checks if a input field was changed
  * @param input Input field to check
  */
     elementChanged(input) {
@@ -93,6 +105,9 @@ export class CreatePlayerComponent implements OnInit {
         this[field + "Changed"] = true;
     }
 
+    /**
+     * Checks if the selection of the birthday was changed
+     */
     birthdaySelectChanged() {
         this.relevantTeams = this.utilities.getRelevantTeams(this.createPlayerForm.value.birthday);
         if (this.team != undefined && this.utilities.allTeamsVal[this.team] != undefined) {
@@ -112,7 +127,7 @@ export class CreatePlayerComponent implements OnInit {
         this.gender = input;
         this.genderChanged = true;
     }
-
+    
     teamSelectChanged(input) {
         this.team = input;
         this.teamChanged = true;
@@ -121,6 +136,7 @@ export class CreatePlayerComponent implements OnInit {
 
     /**
  * This function checks, if the input field starts with a capital letter
+ * @param formcontrol to check the value
  */
     startsWithACapital(c: FormControl) {
         let NAME_REGEXP = new RegExp("[A-Z]");

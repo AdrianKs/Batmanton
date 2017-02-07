@@ -18,6 +18,13 @@ export class EditRoleComponent {
     sameUser: boolean;
     editMode: boolean = false;
 
+    /**
+     * Constructor to initialize EditRoleComponent
+     * @param NavController to handle navigation
+     * @param NavParams to handle Parameters from other views
+     * @param ToastController to handler toasts in the view
+     * @param Utilities to reach the database functionalities
+     */
     constructor(private navCtrl: NavController,
         private navParams: NavParams,
         public toastCtrl: ToastController,
@@ -40,6 +47,10 @@ export class EditRoleComponent {
     ionViewDidEnter() {
     }
 
+    /**
+     * Functions checks if change in isTrainer or isPlayer was changed
+     * @param ev event-handler
+     */
     changeValue(ev) {
         if (!(this.player.isPlayer == false && this.player.isTrainer == false)) {
             if (this.isSpielerOld != this.player.isPlayer || this.isTrainerOld != this.player.isTrainer) {
@@ -56,6 +67,11 @@ export class EditRoleComponent {
          this.editMode = true;
      }*/
 
+     /**
+      * Writes/Updates the new state of the player into the database
+      * @param ev event-handler
+      * @param player to update the right one
+      */
     changeRole(ev, player) {
         let successFlag = true;
 
@@ -82,6 +98,10 @@ export class EditRoleComponent {
 
     }
 
+    /**
+     * Deletes the user from the database
+     * @param player who will be deleted
+     */
     deleteUser(player) {
         firebase.database().ref('clubs/12/players/' + player.id).remove();
         this.isDeleted = true;
@@ -90,6 +110,10 @@ export class EditRoleComponent {
         this.navigateBackToList();
     }
 
+    /**
+     * Deletes all invites belonging to the player
+     * @param playerId to delete the right invites
+     */
     deleteInvites(playerId) {
         firebase.database().ref('clubs/12/invites').once('value', snapshot => {
             for (let i in snapshot.val()) {
@@ -101,6 +125,12 @@ export class EditRoleComponent {
         });
     }
 
+    /**
+     * Deletes the player from all matches
+     * @param playerId to check if the player is part of the match
+     * @param matchId to get the specific game
+     * @param inviteState get the specifi match
+     */
     deletePlayerFromMatches(playerId, matchId, inviteState) {
         firebase.database().ref('clubs/12/matches/' + matchId).once('value', snapshot => {
             //pending state
@@ -128,6 +158,11 @@ export class EditRoleComponent {
         });
     }
 
+    /**
+     * Deletes player from Team 
+     * @param teamId to get specific team
+     * @param playerId to delete the right player from the team
+     */
     removePlayerFromTeam(teamId, playerId) {
         firebase.database().ref('clubs/12/teams/' + teamId).once('value', snapshot => {
             for (let i in snapshot.val().players) {
@@ -138,10 +173,16 @@ export class EditRoleComponent {
         });
     }
 
+    /**
+     * Navigates back to the root --> UsermanagementComponent
+     */
     navigateBackToList() {
         this.navCtrl.pop();
     }
 
+    /**
+     * Shows toast if a action was successfull or not
+     */
     presentToast(customMessage: string) {
         let toast = this.toastCtrl.create({
             message: customMessage,
@@ -151,6 +192,11 @@ export class EditRoleComponent {
         toast.present();
     }
 
+    /**
+     * Shows Confirm to ask the user if he/she is sure to delete the player
+     * @param ev event-handler
+     * @param player if yes then delete the player afterwards
+     */
     showConfirm(ev, player) {
         let confirm = this.alertCtrl.create({
             title: 'Benutzer löschen',
