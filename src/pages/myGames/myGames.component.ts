@@ -28,9 +28,11 @@ export class MyGamesComponent implements OnInit {
   loggedInUserID: string = this.Utilities.user.uid;
   dataGames: any;
   dataInvites: any;
+  dataPlayer: any;
   counterPast: any;
   counterFuture: any;
   counterOpen: any;
+  helpCounter: any;
   testRadioOpen: boolean;
   testRadioResult;
   declined: boolean;
@@ -82,6 +84,28 @@ export class MyGamesComponent implements OnInit {
       }
       this.dataInvites = inviteArray;
       this.count();
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
+      let playerArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        playerArray[counter] = snapshot.val()[i];
+        playerArray[counter].id = i;
+        counter++;
+      }
+      this.dataPlayer = playerArray;
+      this.dataPlayer = _.sortBy(this.dataPlayer, "lastname");
     }).then((data) => {
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
@@ -169,6 +193,17 @@ export class MyGamesComponent implements OnInit {
     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
       state: 1
     });
+    if (inviteItem.assist == true){
+      for (let i in this.dataPlayer){
+        if (this.dataPlayer[i].id == this.loggedInUserID){
+          this.helpCounter = this.dataPlayer[i].helpCounter;
+          this.helpCounter++;
+          firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+            helpCounter: this.helpCounter
+          });
+        }
+      }
+    }
     inviteItem.state = 1;
     this.pendingToAccepted(inviteItem.match, this.loggedInUserID);
     let alert = this.alertCtrl.create({
@@ -177,6 +212,7 @@ export class MyGamesComponent implements OnInit {
       buttons: ['Ok']
     });
     alert.present()
+    this.loadData(false, null);
   }
 
   doRadio(inviteItem, value) {
@@ -227,12 +263,24 @@ export class MyGamesComponent implements OnInit {
             this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
           } else {
             this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+            if (inviteItem.assist == true){
+              for (let i in this.dataPlayer){
+                if (this.dataPlayer[i].id == this.loggedInUserID){
+                  this.helpCounter = this.dataPlayer[i].helpCounter;
+                  this.helpCounter--;
+                  firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+                    helpCounter: this.helpCounter
+                  });
+                }
+              }
+            }
           }
           this.counterOpen--;
           firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
             excuse: this.testRadioResult,
             state: 2
           });
+          this.loadData(false, null);
         }
         if(this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous'){
             let prompt = this.alertCtrl.create({
@@ -260,12 +308,24 @@ export class MyGamesComponent implements OnInit {
                       this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
                     } else {
                       this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+                    if (inviteItem.assist == true){
+                      for (let i in this.dataPlayer){
+                        if (this.dataPlayer[i].id == this.loggedInUserID){
+                          this.helpCounter = this.dataPlayer[i].helpCounter;
+                          this.helpCounter--;
+                          firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+                            helpCounter: this.helpCounter
+                          });
+                        }
+                      }
+                    }
                     }
                     this.counterOpen--;
                     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
                       excuse: this.testRadioResult + ': ' +data.extra,
                       state: 2
                     });
+                    this.loadData(false, null);
                   }
                 }
               ]
