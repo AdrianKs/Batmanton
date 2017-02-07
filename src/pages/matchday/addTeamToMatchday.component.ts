@@ -65,7 +65,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
         }
         counter ++;
       }
-    if (this.match.team == "0"){
+    if (this.match.team == 0){
       this.relevantTeams = this.getRelevantTeams(0, 1);
     } else {
       this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit, this.allTeams[this.teamPosition].sclass);
@@ -94,6 +94,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
         playerArray[counter].accepted = false;
         playerArray[counter].pending = false;
         playerArray[counter].declined = false;
+        playerArray[counter].deleted = false;
         if (playerArray[counter].team == this.match.team){
           playerArray[counter].isMainTeam = true;
         } else {
@@ -167,6 +168,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
 
   addPlayer(player){
     let counter = 0;
+    console.log(this.allPlayers);
     if (player.isDefault == true){
       for (let i in this.acceptedArray) {
         counter++;
@@ -186,19 +188,45 @@ export class AddTeamToMatchdayComponent implements OnInit{
       player.accepted = true;
       player.deleted = false;
       if (player.isMainTeam == false){
-        player.helpCounter++;
+        for (let i in this.allPlayers){
+          if (this.allPlayers[i].id == player.id){
+            this.allPlayers[i].helpCounter++;
+          }
+        }
+        console.log(this.allPlayers)
+      }
+      if (player.helpCounter == 3){
+        let alert = this.alertCtrl.create({
+          title: 'Achtung!',
+          message: 'Dieser Spieler hat schon bereits bei 2 Spielen ausgeholfen.',
+          buttons: ['OK']
+        });
+        alert.present();
       }
       console.log('accepted:');
       console.log(this.acceptedArray);
       console.log(this.acceptedCounter);
     } else {
+      console.log('pls');
       for (let i in this.pendingArray) {
         counter++;
       }
+      console.log('have');
       this.pendingArray[counter]= player.id;
       this.pendingCounter++;
+      console.log('mercy');
       player.pending = true;
       player.deleted = false;
+      if (player.isMainTeam == false){
+        if (player.helpCounter == 2){
+          let alert = this.alertCtrl.create({
+            title: 'Achtung!',
+            message: 'Dieser Spieler hat schon bereits bei 2 Spielen ausgeholfen.',
+            buttons: ['OK']
+          });
+          alert.present();
+        }
+      }
       console.log('pending:');
       console.log(this.pendingArray);
       console.log(this.pendingCounter);
@@ -206,16 +234,6 @@ export class AddTeamToMatchdayComponent implements OnInit{
     for (let i in this.deletedArray){
       if (this.deletedArray[i] == player.id){
         this.deletedArray[i] = null;
-      }
-    }
-    if (player.isMainTeam == false){
-      if (player.helpCounter == 2){
-        let alert = this.alertCtrl.create({
-          title: 'Achtung!',
-          message: 'Dieser Spieler hat schon bereits bei 2 Spielen ausgeholfen.',
-          buttons: ['OK']
-        });
-        alert.present();
       }
     }
   }
@@ -302,11 +320,15 @@ export class AddTeamToMatchdayComponent implements OnInit{
     });
 
     firebase.database().ref('clubs/12/players').once('value', snapshot => {
-      for (let i in this.allPlayers){
-        if (i == this.allPlayers[i].id){
-          firebase.database().ref('clubs/12/players/').child(i).update({
-            helpCounter: this.allPlayers[i].helpCounter
-          });
+      console.log(this.allPlayers);
+      for (let i in snapshot.val()){
+        for (let j in this.allPlayers){
+          if (this.allPlayers[j].id == i){
+            console.log(this.allPlayers[j].helpCounter);
+            firebase.database().ref('clubs/12/players/' + i ).update({
+              helpCounter: this.allPlayers[j].helpCounter
+            });
+          }
         }
       }
     });
@@ -392,6 +414,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
     if (this.editMode != true){
       this.navCtrl.popToRoot();
     } else {
+      console.log(this.allPlayers);
       this.navCtrl.pop();
     }
   }
