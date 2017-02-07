@@ -381,8 +381,8 @@ export class GameDetailsComponent implements OnInit{
         } else {
           this.playerArray[i].isMainTeam = false;
         }
-        for (let j in this.gameItem.acceptedPlayers){
-          if (this.gameItem.acceptedPlayers[j] == this.playerArray[i].id){
+        for (let j in this.acceptedArray){
+          if (this.acceptedArray[j] == this.playerArray[i].id){
             console.log("Helpcounter changed.");
             if (this.playerArray[i].isMainTeam == true){
               this.playerArray[i].helpCounter--;

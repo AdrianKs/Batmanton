@@ -64,6 +64,7 @@ export class CreatePlayerComponent implements OnInit {
                 email: "",
                 firstname: this.createPlayerForm.value.firstname,
                 gender: this.gender,
+                helpCounter: 0,
                 isDefault: true,
                 isPlayer: true,
                 isTrainer: false,
