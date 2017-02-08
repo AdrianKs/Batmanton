@@ -1,81 +1,90 @@
 <ion-header>
-    <ion-navbar hideBackButton="true">
-        <ion-buttons left>
-            <button ion-button clear (click)="goBack()">
-        Zurück
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button ion-button (click)="goBack()" icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
       </button>
-        </ion-buttons>
-        <ion-title center>Erstelle Spieler</ion-title>
-    </ion-navbar>
+    </ion-buttons>
+    <ion-title center>Erstelle Spieler</ion-title>
+  </ion-navbar>
 </ion-header>
 
 
 <ion-content padding>
-    <div class="topContainer">
-        <div class="playerDataContainer">
-            <form class="center-form" [formGroup]="createPlayerForm" novalidate>
-                <ion-item>
-                    <ion-label stacked>Vorname</ion-label>
-                    <ion-input #firstname formControlName="firstname" (change)="elementChanged(firstname)" placeholder="Vorname" [class.invalid]="!createPlayerForm.controls.firstname.valid  && (firstnameChanged || submitAttempt)"></ion-input>
-                </ion-item>
-                <ion-item class="error-message" *ngIf="!createPlayerForm.controls.firstname.valid  && createPlayerForm.controls.firstname._errors.required && (firstnameChanged || submitAttempt)">
-                    <p>Bitte den Vorname eingeben.</p>
-                </ion-item>
-                <ion-item class="error-message" *ngIf="!createPlayerForm.controls.firstname.valid && createPlayerForm.controls.firstname._errors.incorrectNameFormat && (firstnameChanged || submitAttempt)
+  <div class="topContainer">
+    <div class="playerDataContainer">
+      <form class="center-form" [formGroup]="createPlayerForm" novalidate>
+        <ion-item>
+          <ion-label stacked>Vorname</ion-label>
+          <ion-input #firstname formControlName="firstname" (change)="elementChanged(firstname)" placeholder="Vorname"
+                     [class.invalid]="!createPlayerForm.controls.firstname.valid  && (firstnameChanged || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item class="error-message"
+                  *ngIf="!createPlayerForm.controls.firstname.valid  && createPlayerForm.controls.firstname._errors.required && (firstnameChanged || submitAttempt)">
+          <p>Bitte den Vorname eingeben.</p>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!createPlayerForm.controls.firstname.valid && createPlayerForm.controls.firstname._errors.incorrectNameFormat && (firstnameChanged || submitAttempt)
                                             && !createPlayerForm.controls.firstname._errors.required">
-                    <p>Der Vorname muss mit einem Großbuchstaben beginnen.</p>
-                </ion-item>
+          <p>Der Vorname muss mit einem Großbuchstaben beginnen.</p>
+        </ion-item>
 
-                <ion-item>
-                    <ion-label stacked>Nachname</ion-label>
-                    <ion-input #lastname formControlName="lastname" (change)="elementChanged(lastname)" placeholder="Nachname" [class.invalid]="!createPlayerForm.controls.lastname.valid  && (lastnameChanged || submitAttempt)"></ion-input>
-                </ion-item>
-                <ion-item class="error-message" *ngIf="!createPlayerForm.controls.lastname.valid  && createPlayerForm.controls.lastname._errors.required && (lastnameChanged || submitAttempt)">
-                    <p>Bitte den Nachnamen eingeben.</p>
-                </ion-item>
-                <ion-item class="error-message" *ngIf="!createPlayerForm.controls.lastname.valid && createPlayerForm.controls.lastname._errors.incorrectNameFormat && (lastnameChanged || submitAttempt)
+        <ion-item>
+          <ion-label stacked>Nachname</ion-label>
+          <ion-input #lastname formControlName="lastname" (change)="elementChanged(lastname)" placeholder="Nachname"
+                     [class.invalid]="!createPlayerForm.controls.lastname.valid  && (lastnameChanged || submitAttempt)"></ion-input>
+        </ion-item>
+        <ion-item class="error-message"
+                  *ngIf="!createPlayerForm.controls.lastname.valid  && createPlayerForm.controls.lastname._errors.required && (lastnameChanged || submitAttempt)">
+          <p>Bitte den Nachnamen eingeben.</p>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="!createPlayerForm.controls.lastname.valid && createPlayerForm.controls.lastname._errors.incorrectNameFormat && (lastnameChanged || submitAttempt)
                                            && !createPlayerForm.controls.lastname._errors.required">
-                    <p>Der Nachname muss mit einem Großbuchstaben beginnen.</p>
-                </ion-item>
+          <p>Der Nachname muss mit einem Großbuchstaben beginnen.</p>
+        </ion-item>
 
-                <ion-item>
-                    <ion-label stacked>Geburtstag</ion-label>
-                    <ion-datetime #birthday formControlName="birthday" class="datetime-text" displayFormat="DD.MM.YYYY " pickerFormat="DD MM YYYY"
-                        (ionChange)="birthdaySelectChanged()" placeholder="Geburtstag" [class.invalid]="!createPlayerForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)"></ion-datetime>
-                </ion-item>
-                <ion-item class="error-message" *ngIf="!createPlayerForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)">
-                    <p>Bitte den Geburtsdatum eingeben.</p>
-                </ion-item>
-                <ion-item>
-                    <ion-label stacked>Geschlecht</ion-label>
-                    <ion-select [(ngModel)]="gender" (ionChange)="genderSelectChanged(gender)" [ngModelOptions]="{standalone: true}" placeholder="Geschlecht"
-                        [class.invalid]="(!genderChanged && submitAttempt)">
-                        <ion-option value="m">männlich</ion-option>
-                        <ion-option value="f">weiblich</ion-option>
-                    </ion-select>
-                </ion-item>
-                <ion-item class="error-message" *ngIf="(!genderChanged && submitAttempt)">
-                    <p>Bitte das Geschlecht auswählen.</p>
-                </ion-item>
+        <ion-item>
+          <ion-label stacked>Geburtstag</ion-label>
+          <ion-datetime #birthday formControlName="birthday" class="datetime-text" displayFormat="DD.MM.YYYY "
+                        pickerFormat="DD MM YYYY"
+                        (ionChange)="birthdaySelectChanged()" placeholder="Geburtstag"
+                        [class.invalid]="!createPlayerForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)"></ion-datetime>
+        </ion-item>
+        <ion-item class="error-message"
+                  *ngIf="!createPlayerForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)">
+          <p>Bitte den Geburtsdatum eingeben.</p>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>Geschlecht</ion-label>
+          <ion-select [(ngModel)]="gender" (ionChange)="genderSelectChanged(gender)"
+                      [ngModelOptions]="{standalone: true}" placeholder="Geschlecht"
+                      [class.invalid]="(!genderChanged && submitAttempt)">
+            <ion-option value="m">männlich</ion-option>
+            <ion-option value="f">weiblich</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="(!genderChanged && submitAttempt)">
+          <p>Bitte das Geschlecht auswählen.</p>
+        </ion-item>
 
-                <ion-item>
-                    <ion-label stacked>Mannschaft</ion-label>
-                    <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}" placeholder="Mannschaft"
-                        [class.invalid]="(!teamChanged && submitAttempt)">
-                        <ion-option value=0>keine Mannschaft</ion-option>
-                        <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
-                    </ion-select>
-                </ion-item>
-                <ion-item class="error-message" *ngIf="(!teamChanged && submitAttempt)">
-                    <p>Bitte das Team angeben.</p>
-                </ion-item>
-            </form>
-        </div>
+        <ion-item>
+          <ion-label stacked>Mannschaft</ion-label>
+          <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"
+                      placeholder="Mannschaft"
+                      [class.invalid]="(!teamChanged && submitAttempt)">
+            <ion-option value=0>keine Mannschaft</ion-option>
+            <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item class="error-message" *ngIf="(!teamChanged && submitAttempt)">
+          <p>Bitte das Team angeben.</p>
+        </ion-item>
+      </form>
     </div>
-    <div class="bottomContainer">
-        <button ion-button outline icon-left round color="secondary" (click)="createPlayer()">
+  </div>
+  <div class="bottomContainer">
+    <button ion-button outline icon-left round color="secondary" (click)="createPlayer()">
       <ion-icon name="add"></ion-icon>
       Spieler erstellen
     </button>
-    </div>
+  </div>
 </ion-content>
