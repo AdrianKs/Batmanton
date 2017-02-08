@@ -53,8 +53,8 @@ export class AuthData {
   }
 
   changePassword(newPassword: string, passwordOld: string): any{
-    var that = this;
-    var credentials = firebase.auth.EmailAuthProvider.credential(
+    let that = this;
+    let credentials = firebase.auth.EmailAuthProvider.credential(
       this.utilities.userData.email,
       passwordOld
     );
@@ -73,8 +73,8 @@ export class AuthData {
   }
 
   deleteUser(password: string): any{
-    var that = this;
-    var credentials = firebase.auth.EmailAuthProvider.credential(
+    let that = this;
+    let credentials = firebase.auth.EmailAuthProvider.credential(
       this.utilities.userData.email,
       password
     );
@@ -84,7 +84,7 @@ export class AuthData {
         // User deleted.
       }, function(error) {
         alert(error.message);
-      });;
+      });
     });
   }
 
