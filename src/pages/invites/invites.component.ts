@@ -1,30 +1,31 @@
-/**
- * Created by kochsiek on 08.12.2016.
- */
 import { Component, OnInit } from '@angular/core';
 
 import { NavController, LoadingController, NavParams } from 'ionic-angular';
 
 import { InvitesMatchdayComponent } from "../invites/invitesmatchday.component";
 
-import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
+
+import { InvitesProvider } from '../../providers/invites-provider';
 
 @Component({
   selector: 'page-invites',
   templateUrl: 'invites.component.html',
-  //providers: [InvitesService]
+  providers: [InvitesProvider]
 })
 
 export class InvitesComponent implements OnInit {
   login: any;
-  dataMatchday: any;
   loadingElement: any;
+  allInvites: Array<any>;
+  allPlayers: Array<any>;
+  allMatchdays: Array<any>;
 
   ionViewWillEnter() {
     this.showLoadingElement();
-    this.utilities.setInvites();
-    this.getMatchday();
+    this.invitesProvider.setInvites();
+    this.invitesProvider.setMatchdays();
+    this.invitesProvider.setPlayers();
     this.loadingElement.dismiss();
   }
 
@@ -32,29 +33,16 @@ export class InvitesComponent implements OnInit {
 
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, public utilities: Utilities, public loadingCtrl: LoadingController) {
+  constructor(public invitesProvider: InvitesProvider, private navCtrl: NavController, private navP: NavParams, public utilities: Utilities, public loadingCtrl: LoadingController) {
     //Load data in arrays
-  }
-
-  getMatchday(): void {
-    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-      let matchdayArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        matchdayArray[counter] = snapshot.val()[i];
-        matchdayArray[counter].id = i;
-        counter++;
-      }
-      this.dataMatchday = matchdayArray;
-    })
   }
 
   getFirstFourPicUrls(match) {
     let urlArray = [];
     let counter = 0;
-    for (let i of this.utilities.allInvites) {
+    for (let i of this.invitesProvider.allInvites) {
       if (i.match == match.id && i.sender == this.utilities.user.uid && counter < 4) {
-        for (let j of this.utilities.allPlayers) {
+        for (let j of this.invitesProvider.allPlayers) {
           if (i.recipient == j.id) {
             urlArray[counter] = j.picUrl;
             counter++;
@@ -69,7 +57,7 @@ export class InvitesComponent implements OnInit {
     let accepted = 0;
     let declined = 0;
     let pending = 0;
-    for (let i of this.utilities.allInvites) {
+    for (let i of this.invitesProvider.allInvites) {
       if (i.match == match.id && i.sender == this.utilities.user.uid) {
         if (i.state == 0) {
           pending = pending + 1;
@@ -80,12 +68,11 @@ export class InvitesComponent implements OnInit {
         }
       }
     }
-    //return [{pen: pending, acc: accepted, dec: declined}];
     return [pending, accepted, declined];
   }
 
-  goToPage(ev, value, invites, players, picture, counts) {
-    this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players, counts: counts});
+  goToPage(ev, value, invites, players, picture, counts, invitesProvider) {
+    this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players});
   }
 
   showLoadingElement() {
@@ -98,10 +85,9 @@ export class InvitesComponent implements OnInit {
 
   doRefresh(refresher) {
     this.showLoadingElement();
-    this.utilities.setTeams();
-    this.getMatchday();
-    this.utilities.setInvites();
-    this.utilities.setPlayers();
+    this.invitesProvider.setMatchdays();
+    this.invitesProvider.setInvites();
+    this.invitesProvider.setPlayers();
     refresher.complete();
     this.loadingElement.dismiss();
   }
