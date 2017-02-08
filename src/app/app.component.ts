@@ -72,6 +72,7 @@ export class MyApp {
           }
         }
       }
+      this.utilities.countOpen();
     });
 
     utilities.setTeams();
@@ -106,6 +107,10 @@ export class MyApp {
   logout() {
     this.authData.logoutUser();
     this.nav.setRoot(LoginComponent);
+  }
+
+  onMenuOpen(){
+    this.utilities.countOpen();
   }
 
   checkPlatform(userID) {

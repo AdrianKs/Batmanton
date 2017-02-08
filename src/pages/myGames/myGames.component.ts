@@ -192,7 +192,9 @@ export class MyGamesComponent implements OnInit {
     }
     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
       state: 1
-    });
+    }).then(() => {
+      this.Utilities.countOpen();
+    });;
     if (inviteItem.assist == true){
       for (let i in this.dataPlayer){
         if (this.dataPlayer[i].id == this.loggedInUserID){
@@ -279,6 +281,8 @@ export class MyGamesComponent implements OnInit {
           firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
             excuse: this.testRadioResult,
             state: 2
+          }).then(() => {
+            this.Utilities.countOpen();
           });
           this.loadData(false, null);
         }
@@ -324,6 +328,8 @@ export class MyGamesComponent implements OnInit {
                     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
                       excuse: this.testRadioResult + ': ' +data.extra,
                       state: 2
+                    }).then(() => {
+                      this.Utilities.countOpen();
                     });
                     this.loadData(false, null);
                   }

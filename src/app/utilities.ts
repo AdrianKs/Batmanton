@@ -211,7 +211,7 @@ export class Utilities {
     }
     return hash;
   };
-  
+
   countOpen(){
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       this.counterOpen = 0;
@@ -220,10 +220,8 @@ export class Utilities {
       for (let i in snapshot.val()) {
         if(snapshot.val()[i].recipient == this.user.uid && snapshot.val()[i].state == 0){
           this.counterOpen++;
-          console.log("+1");
         }
       }
-      console.log(this.counterOpen);
     });
   }
 

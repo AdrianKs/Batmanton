@@ -1,4 +1,4 @@
-<ion-menu [content]="content" id="mainMenu">
+<ion-menu (ionOpen)="onMenuOpen()" [content]="content" id="mainMenu">
   <ion-header class="menuHeader">
     <ion-toolbar class="menuToolbar">
       <div class="menuHeaderContent">
@@ -30,12 +30,13 @@
         <button *ngIf="p.visible == true || utilities.userData.isTrainer" menuClose ion-item (click)="openPage(p)">
           <ion-icon name="{{p.icon}}" md="md-{{p.icon}}" class="menuIcons"></ion-icon>
           {{p.title}}
+          <span *ngIf="p.title == 'Meine Spiele' && this.utilities.counterOpen > 0" class="badge-counter badge-counter-menu">{{this.utilities.counterOpen}}</span>
         </button>
       </div>
       <div class="menuBottom">
         <button menuClose ion-item (click)="openPage(aboutPage)" class="menuBtnAbout">
             <ion-icon name="information-circle" md="md-information-circle" class="menuIcons"></ion-icon>
-          About 
+          About
         </button>
       </div>
     </ion-list>
