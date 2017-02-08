@@ -354,26 +354,6 @@ p {
   width: 205px;
 }
 
-//changes of ion styles
-ion-select{
-  max-width: 100%;
-}
-
-ion-label {
-  margin-left: 5px;
-}
-
-.searchbar-md .searchbar-input{
-  background-color: $dark-shade;
-}
-
-.searchbar-ios .searchbar-input{
-  background-color: $secondary-dark-shade;
-}
-
-.picker-opt{
-  color: white;
-}
 
 .no-items{
   color: $third-dark-shade;
@@ -415,4 +395,25 @@ ion-label {
   position: absolute;
   top: 3px;
   text-align: center;
+}
+
+//changes of ion styles
+ion-select{
+  max-width: 100%;
+}
+
+ion-label {
+  margin-left: 5px;
+}
+
+.searchbar-md .searchbar-input{
+  background-color: $dark-shade;
+}
+
+.searchbar-ios .searchbar-input{
+  background-color: $secondary-dark-shade;
+}
+
+.picker-opt{
+  color: white;
 }
