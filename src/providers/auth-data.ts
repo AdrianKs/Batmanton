@@ -4,6 +4,7 @@ import firebase from 'firebase';
 // import {setUserID} from "../app/globalVars";
 //import myGlobals from '../app/globalVars';
 import {Utilities} from '../app/utilities';
+import {MenuController} from "ionic-angular";
 /*
   Generated class for the AuthData provider.
 
@@ -15,7 +16,7 @@ export class AuthData {
   public fireAuth: any;
   public userProfile: any;
 
-  constructor(public utilities: Utilities) {
+  constructor(public utilities: Utilities, public menuCtrl: MenuController) {
     this.fireAuth = firebase.auth();
     this.userProfile = firebase.database().ref('clubs/12/players');
   }
@@ -88,6 +89,7 @@ export class AuthData {
   }
 
   logoutUser(): any {
+    this.menuCtrl.close('mainMenu');
     return this.fireAuth.signOut();
   }
 
