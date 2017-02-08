@@ -238,7 +238,7 @@ export class GameDetailsComponent implements OnInit{
     let urlArray = [];
     let counter = 0;
     for (let i of this.Utilities.allInvites) {
-      if (i.match == match.id && i.sender == this.Utilities.user.uid && counter < 4){
+      if (i.match == match.id && counter < 4){
           for(let j of this.Utilities.allPlayers){
             if(i.recipient == j.id){
               urlArray[counter] = j.picUrl;

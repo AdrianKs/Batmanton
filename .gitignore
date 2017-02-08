@@ -38,6 +38,4 @@ ionic.config.json
 Thumbs.db
 UserInterfaceState.xcuserstate
 src/app/main.ts
-src/app/main.dev.ts
-src/app/main.prod.ts
-package.json
+
