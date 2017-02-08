@@ -372,10 +372,12 @@ export class ProfileComponent implements OnInit {
         {
           text: 'Löschen',
           handler: data => {
+            this.utilities.setInRegister();
             var that = this;
             this.authData.deleteUser(data.password).then(() => {
               firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).remove();
               this.logout();
+              this.utilities.setInRegister();
             }, function () {
               let alert = that.alertCtrl.create({
                 message: "Passwort ist inkorrekt.",
