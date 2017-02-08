@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
@@ -29,6 +29,7 @@ export class CreatePlayerComponent implements OnInit {
      * Constructor to initialize the Component and the Create-Player form
      */
     constructor(private navCtrl: NavController,
+        private alertCtrl: AlertController,
         private formBuilder: FormBuilder,
         private utilities: Utilities) {
 
@@ -40,6 +41,26 @@ export class CreatePlayerComponent implements OnInit {
     }
 
     ngOnInit() {
+
+    }
+
+    /**
+     * Shows alert message when view will be entered
+     */
+    ionViewWillEnter() {
+        this.showAlertMessage();
+    }
+
+    /**
+     * Show alert Message
+     */
+    showAlertMessage() {
+        let alert = this.alertCtrl.create({
+            title: 'Hinweis',
+            subTitle: "Die hier erstellten Spieler, werden als Default-User ohne bestehenden Login-Account angelegt",
+            buttons: ['OK']
+        });
+        alert.present();
     }
 
     /**
@@ -128,7 +149,7 @@ export class CreatePlayerComponent implements OnInit {
         this.gender = input;
         this.genderChanged = true;
     }
-    
+
     teamSelectChanged(input) {
         this.team = input;
         this.teamChanged = true;
