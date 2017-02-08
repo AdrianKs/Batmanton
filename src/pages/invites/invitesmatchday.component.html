@@ -19,15 +19,18 @@
     <ion-segment [(ngModel)]="playerStatus">
       <ion-segment-button value="accepted">
         Zugesagt
-        <ion-badge class="badge-counter" item-bottom>{{counts[1]}}</ion-badge>
+        <!--<ion-badge class="badge-counter" item-bottom>{{counts[1]}}</ion-badge>-->
+        <span class="badge-counter">{{counts[1]}}</span>
       </ion-segment-button>
       <ion-segment-button value="declined">
         Abgesagt
-        <ion-badge class="badge-counter" item-bottom>{{counts[2]}}</ion-badge>
+        <!--<ion-badge class="badge-counter" item-bottom>{{counts[2]}}</ion-badge>-->
+        <span class="badge-counter">{{counts[2]}}</span>
       </ion-segment-button>
       <ion-segment-button value="pending">
         Offen
-        <ion-badge class="badge-counter" item-bottom>{{counts[0]}}</ion-badge>
+        <!--<ion-badge class="badge-counter" item-bottom>{{counts[0]}}</ion-badge>-->
+        <span class="badge-counter">{{counts[0]}}</span>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>

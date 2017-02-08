@@ -9,11 +9,13 @@
     <ion-segment [(ngModel)]="gameStatus">
       <ion-segment-button value="offene">
         Offene
-        <ion-badge *ngIf="counterOpen > 0" class="badge-counter" item-bottom>{{counterOpen}}</ion-badge>
+        <!--<ion-badge *ngIf="counterOpen > 0" class="badge-counter" item-bottom>{{counterOpen}}</ion-badge>-->
+        <span *ngIf="counterOpen > 0" class="badge-counter">{{counterOpen}}</span>
       </ion-segment-button>
       <ion-segment-button value="demnaechst">
         Demnächst
-        <ion-badge *ngIf="counterFuture > 0" class="badge-counter" item-bottom>{{counterFuture}}</ion-badge>
+        <!--<ion-badge *ngIf="counterFuture > 0" class="badge-counter" item-bottom>{{counterFuture}}</ion-badge>-->
+        <span *ngIf="counterFuture > 0" class="badge-counter">{{counterFuture}}</span>
       </ion-segment-button>
       <ion-segment-button value="vergangene">
         Vergangene
