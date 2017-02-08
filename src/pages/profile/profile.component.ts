@@ -11,6 +11,10 @@
 // Mannschaft in Spieltageliste anzeigen
 // Mannschaften: Remove player image from thumbnails, when user leaves team
 // Spieler Items on Profilbild click --> open player details
+// gameDetails: Checkliste schöner machen
+// gameDetails && viewTeam: Delete Button ganz unten
+// gameDetails && viewTeam: Edit Players Button nur wenn man auf bearbeiten klickt
+// viewTeam:  wenn man ein team bearbeitet, was zB S Klasse 3 hat, dann wird die S-Klasse nicht in der checkbox selektiert, wenn man auf bearbeiten klickt
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
