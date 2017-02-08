@@ -1,5 +1,5 @@
 //todo
-//keine spiele vorhanden
+//bilder
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';
@@ -30,6 +30,7 @@ export class MatchdayComponent implements OnInit {
   loading: any;
   currentUser: any;
   isAdmin: boolean;
+  counter: any;
   
   constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
     
@@ -49,11 +50,11 @@ export class MatchdayComponent implements OnInit {
     }
     firebase.database().ref('clubs/12/matches').once('value', snapshot => {
       let gamesArray = [];
-      let counter = 0;
+      this.counter = 0;
       for (let i in snapshot.val()) {
-        gamesArray[counter] = snapshot.val()[i];
-        gamesArray[counter].id = i;
-        counter++;
+        gamesArray[this.counter] = snapshot.val()[i];
+        gamesArray[this.counter].id = i;
+        this.counter++;
       }
       this.dataGames = gamesArray;
       this.dataGames = _.sortBy(this.dataGames, "time").reverse();
@@ -92,7 +93,7 @@ export class MatchdayComponent implements OnInit {
     let urlArray = [];
     let counter = 0;
     for (let i of this.dataInvites) {
-      if (i.match == match.id && i.sender == this.Utilities.user.uid && counter < 4){
+      if (i.match == match.id && counter < 4){
           for(let j of this.Utilities.allPlayers){
             if(i.recipient == j.id){
               urlArray[counter] = j.picUrl;

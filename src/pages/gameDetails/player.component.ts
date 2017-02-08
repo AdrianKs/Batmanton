@@ -14,4 +14,8 @@ export class PlayerComponent {
     constructor(private navCtrl: NavController, private navParams: NavParams, public alertCtrl: AlertController, public utilities: Utilities) {
         this.player = navParams.get('player');
     }
+
+    goBack(){
+        this.navCtrl.pop();
+    }
 }

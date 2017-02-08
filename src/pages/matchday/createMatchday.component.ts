@@ -1,7 +1,10 @@
 //todo
+//Adressvorlagen bearbeiten
+//Team (altersklasse, sklasse)
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
-import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component'
+import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component';
+import { TemplateComponent } from './template.component';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
@@ -15,7 +18,7 @@ import * as _ from 'lodash';
 export class CreateMatchdayComponent implements OnInit {
   public createMatchdayForm;
   templateChecked: boolean;
-  dataTemplates: any;
+  dataTemplate: any;
   match = {id: this.id, opponent: this.opponent, team: this.team, home: this.home, location: {street: this.street, zipcode: this.zipcode}, time: this.time, pendingPlayers: this.pendingPlayersArray};
   id: any;
   opponent: string;
@@ -25,8 +28,10 @@ export class CreateMatchdayComponent implements OnInit {
   zipcode: string;
   time: String;
   pendingPlayersArray = [];
-  relevantTeams = this.Utilities.allTeams;
+  relevantTeams: any;
   formValid: boolean = true;
+  counter: any;
+  loading: any;
 
   opponentChanged: boolean;
   teamChanged: boolean;
@@ -36,6 +41,10 @@ export class CreateMatchdayComponent implements OnInit {
   timeChanged: boolean;
 
   ngOnInit(){
+  }
+
+  ionViewWillEnter() {
+    this.loadData(true, null);
     this.opponentChanged = false;
     this.teamChanged = false;
     this.homeChanged = false;
@@ -43,11 +52,10 @@ export class CreateMatchdayComponent implements OnInit {
     this.zipcodeChanged = false;
     this.timeChanged = false;
     this.templateChecked = false;
-    this.getTemplates();
   }
 
-
-  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder) {
+  
+  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder, private loadingCtrl: LoadingController) {
     this.createMatchdayForm = formBuilder.group({
       opponent: [],
       team: [],
@@ -58,18 +66,71 @@ export class CreateMatchdayComponent implements OnInit {
     })
   }
 
-  getTemplates(){
+  loadData(showLoading: boolean, event): void {
+    if (showLoading) {
+      this.createAndShowLoading();
+    }
     firebase.database().ref('clubs/12/templates').once('value', snapshot => {
       let templateArray = [];
+      this.counter = 0;
+      for (let i in snapshot.val()) {
+        templateArray[this.counter] = snapshot.val()[i];
+        templateArray[this.counter].id = i;
+        this.counter++;
+      }
+      this.dataTemplate = templateArray;
+      this.dataTemplate = _.sortBy(this.dataTemplate, "club");
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+    firebase.database().ref('clubs/12/teams').once('value', snapshot => {
+      let teamArray = [];
       let counter = 0;
       for (let i in snapshot.val()) {
-        templateArray[counter] = snapshot.val()[i];
-        templateArray[counter].id = i;
+        teamArray[counter] = snapshot.val()[i];
+        teamArray[counter].id = i;
         counter++;
       }
-      this.dataTemplates = templateArray;
-      this.dataTemplates = _.sortBy(this.dataTemplates, "opponent");
+      this.relevantTeams = teamArray;
+      this.relevantTeams = teamArray;
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
     });
+  }
+
+  createAndShowErrorAlert(error) {
+      let alert = this.alertCtrl.create({
+        title: 'Fehler beim Empfangen der Daten',
+        message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+
+  createAndShowLoading() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
+    })
+    this.loading.present();
   }
 
   elementChanged(input) {
@@ -117,7 +178,7 @@ export class CreateMatchdayComponent implements OnInit {
       if (this.templateChecked == true){
         let id = this.makeid();
         firebase.database().ref('clubs/12/templates/').child(id).set({
-          opponent: this.match.opponent,
+          club: this.match.opponent,
           street: this.match.location.street,
           zipcode: this.match.location.zipcode
         })
@@ -126,7 +187,7 @@ export class CreateMatchdayComponent implements OnInit {
       if (this.homeChanged == false){
         this.match.home = "unknown";
       } else {
-        if (this.match.home == true){
+        if (this.match.home == "true"){
           this.match.home = true;
         } else {
           this.match.home = false;
@@ -167,7 +228,7 @@ export class CreateMatchdayComponent implements OnInit {
               {
                   text: 'Spieler hinzufügen',
                   handler: () => {
-                      this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, relevantTeamsItem: this.relevantTeams});
+                      this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.match, statusArray: {acceptedArray: [], pendingArray: [], declinedArray: [], deletedArray: []}, counterArray: {acceptedCounter: 0, acceptedMaleCounter: 0, acceptedFemaleCounter: 0, pendingCounter:0, declinedCounter:0}, playerArray: null, relevantTeamsItem: this.relevantTeams, editMode: false});
                   }
               }
           ]
@@ -213,11 +274,11 @@ export class CreateMatchdayComponent implements OnInit {
     let dataAvailable = false;
     alert.setTitle('Vorlage auswählen');
 
-    for (let i in this.dataTemplates){
+    for (let i in this.dataTemplate){
       alert.addInput({
         type: 'radio',
-        label: this.dataTemplates[i].opponent + ": " + this.dataTemplates[i].street + ", " + this.dataTemplates[i].zipcode,
-        value: this.dataTemplates[i].id,
+        label: this.dataTemplate[i].club + ": " + this.dataTemplate[i].street + ", " + this.dataTemplate[i].zipcode,
+        value: this.dataTemplate[i].id,
         checked: false
       });
       dataAvailable = true;
@@ -232,17 +293,24 @@ export class CreateMatchdayComponent implements OnInit {
 
         } else {
           this.updateTemplate(data);
+          this.streetChanged = true;
+          this.zipcodeChanged = true;
         }
       }
     });
     alert.present();
   }
 
-  updateTemplate(opponentID){
-    firebase.database().ref('clubs/12/templates/'+opponentID).once('value', snapshot => {
+  updateTemplate(clubID){
+    firebase.database().ref('clubs/12/templates/'+clubID).once('value', snapshot => {
       this.match.location.street = snapshot.val().street;
       this.match.location.zipcode = snapshot.val().zipcode;
     });
   }
 
+  editTemplates(){
+    this.navCtrl.push(TemplateComponent);
+  }
+
 }
+

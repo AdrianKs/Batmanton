@@ -25,7 +25,12 @@
                       placeholder="Mannschaft"
                       (ionChange)="teamSelectChanged()" doneText="Ok" cancelText="Abbrechen">
           <ion-option value=0>keine Mannschaft</ion-option>
-          <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">
+            {{item.name}}
+            <div *ngIf="item.ageLimit==0">(Erw.,</div>
+            <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
+            S{{item.sclass}})
+          </ion-option>
         </ion-select>
         </ion-item>
         <ion-item>
@@ -55,10 +60,13 @@
                         doneText="Ok" cancelText="Abbrechen"></ion-datetime>
         </ion-item>
       </form>
-      <div class ="centerContainer">
+      <div class ="align-center">
         <button ion-button small outline color="secondary" (click)="showTemplates()" icon-left item-right>
           <ion-icon name="arrow-dropright"></ion-icon>
           Adressvorlagen
+        </button>
+        <button ion-button small outline color="secondary" (click)="editTemplates()" icon-only item-right>
+          <ion-icon name="settings"></ion-icon>
         </button>
       </div>
       <ion-item class="createGameButtonContainer">

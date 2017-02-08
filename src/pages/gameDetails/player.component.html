@@ -1,5 +1,10 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button ion-button clear (click)="goBack()">
+        Zurück
+      </button>
+    </ion-buttons>
     <ion-title>Profil</ion-title>
   </ion-navbar>
 </ion-header>
@@ -25,6 +30,10 @@
       <ion-item>
         <ion-label class="playerLabel">Mannschaft:</ion-label>
         <ion-label class="playerValue">{{player.team | teams}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label class="playerLabel">Anzahl Aushilfen:</ion-label>
+        <ion-label class="playerValue">{{player.helpCounter}}</ion-label>
       </ion-item>
     </div>
   </div>

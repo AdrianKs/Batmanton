@@ -4,6 +4,7 @@ import firebase from 'firebase';
 // import {setUserID} from "../app/globalVars";
 //import myGlobals from '../app/globalVars';
 import {Utilities} from '../app/utilities';
+import {MenuController} from "ionic-angular";
 /*
   Generated class for the AuthData provider.
 
@@ -15,7 +16,7 @@ export class AuthData {
   public fireAuth: any;
   public userProfile: any;
 
-  constructor(public utilities: Utilities) {
+  constructor(public utilities: Utilities, public menuCtrl: MenuController) {
     this.fireAuth = firebase.auth();
     this.userProfile = firebase.database().ref('clubs/12/players');
   }
@@ -39,7 +40,8 @@ export class AuthData {
           isTrainer: false,
           picUrl: "",
           pushid: '',
-          isDefault: false
+          isDefault: false,
+          helpCounter: 0
           });
         this.utilities.user = newUser;
         newUser.sendEmailVerification();
@@ -51,8 +53,8 @@ export class AuthData {
   }
 
   changePassword(newPassword: string, passwordOld: string): any{
-    var that = this;
-    var credentials = firebase.auth.EmailAuthProvider.credential(
+    let that = this;
+    let credentials = firebase.auth.EmailAuthProvider.credential(
       this.utilities.userData.email,
       passwordOld
     );
@@ -71,8 +73,8 @@ export class AuthData {
   }
 
   deleteUser(password: string): any{
-    var that = this;
-    var credentials = firebase.auth.EmailAuthProvider.credential(
+    let that = this;
+    let credentials = firebase.auth.EmailAuthProvider.credential(
       this.utilities.userData.email,
       password
     );
@@ -82,11 +84,12 @@ export class AuthData {
         // User deleted.
       }, function(error) {
         alert(error.message);
-      });;
+      });
     });
   }
 
   logoutUser(): any {
+    this.menuCtrl.close('mainMenu');
     return this.fireAuth.signOut();
   }
 

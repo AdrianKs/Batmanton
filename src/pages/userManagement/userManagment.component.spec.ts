@@ -10,6 +10,10 @@ import { Birthday } from '../../app/pipes/birthday';
 import { NavParamsMock } from '../../mocks/navParamsMock';
 import { UtilitiesMock } from '../../mocks/utilitiesMock';
 
+/*
+ * Test-File for UserManagementComponent
+ */
+
 let component: UserManagementComponent;
 let fixture: ComponentFixture<UserManagementComponent>;
 let de: DebugElement;
