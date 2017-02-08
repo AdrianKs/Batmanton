@@ -82,6 +82,7 @@ export class Utilities {
       email: playerData.email,
       firstname: playerData.firstname,
       gender: playerData.gender,
+      helpCounter: playerData.helpCounter,
       isDefault: playerData.isDefault,
       isPlayer: playerData.isPlayer,
       isTrainer: playerData.isTrainer,
