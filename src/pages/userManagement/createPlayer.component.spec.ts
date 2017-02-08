@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { CreatePlayerComponent } from './createPlayer.component';
-import { App, Config, NavParams, Form, IonicModule, Keyboard, MenuController, NavController, Platform, GestureController } from 'ionic-angular';
+import { App, Config, NavParams, Form, IonicModule, Keyboard, MenuController, NavController, Platform, GestureController, AlertController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
 import { NavParamsMock } from '../../mocks/navParamsMock';
 import { UtilitiesMock } from '../../mocks/utilitiesMock';
@@ -20,7 +20,7 @@ describe("CreatePlayerComponentTest", () => {
         TestBed.configureTestingModule({
             declarations: [CreatePlayerComponent],
             imports: [IonicModule],
-            providers: [NavController, App, Config, Form, Keyboard, MenuController, Platform, GestureController,
+            providers: [NavController, App, Config, Form, Keyboard, MenuController, Platform, GestureController, AlertController,
                 { provide: Utilities, useClass: UtilitiesMock },
                 { provide: NavParams, useClass: NavParamsMock }]
         }).compileComponents();
