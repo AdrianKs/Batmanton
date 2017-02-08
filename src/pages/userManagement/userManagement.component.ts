@@ -82,6 +82,8 @@ export class UserManagementComponent implements OnInit {
   checkPlatform() {
     this.countIos = 0;
     this.countAndroid = 0;
+    this.countWeb = 0;
+    this.countSonst = 0;
     for (let i = 0; i <= this.dataPlayer.length - 1; i++) {
       if (this.dataPlayer[i].platform == 'ios') {
         this.countIos++;
