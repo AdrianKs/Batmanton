@@ -2,19 +2,24 @@
  * Created by kochsiek on 08.12.2016.
  */
 // todo:
-// Fix infinite loading indicator iPhone
 // handle error wenn keine internetverbindung besteht
 // ViewTeam: "Fertig" Button ausgrauen, wenn keine Changes gemacht wurden
 // unnötige css klassen löschen
 // Invites: Label wenn keine Einladungen verfügbar sind
 // Art der Mannschaft in teams Liste anzeigen
-// Mannschaft in Spieltageliste anzeigen
 // Mannschaften: Remove player image from thumbnails, when user leaves team
 // Spieler Items on Profilbild click --> open player details
 // gameDetails: Checkliste schöner machen
 // gameDetails && viewTeam: Delete Button ganz unten
 // gameDetails && viewTeam: Edit Players Button nur wenn man auf bearbeiten klickt
 // viewTeam:  wenn man ein team bearbeitet, was zB S Klasse 3 hat, dann wird die S-Klasse nicht in der checkbox selektiert, wenn man auf bearbeiten klickt
+// createMatchday && viewAdressvorlagen: Replace "Zurück"-Button mit Icon
+// countingBadges iOS zentrieren (vllt mit Run Browser testen)
+// gameDetails: Adressvorlagen UI ändern
+// Adressvorlagen: UI
+// Adressvorlagen: Bei Speicherung überprüfen, ob Vorlage schon existiert (Mit Gegnernamen prüfen). Wenn ja, fragen, ob überschrieben werden soll oder ob neu angelegt werden soll ("(2)" anhängen)
+// Adressvorlagen: Bei Umbenennung von Adressvorlage überprüfen, ob Vorlage schon existiert (Mit Gegnernamen prüfen). Wenn ja, fragen, ob überschrieben werden soll oder ob neu angelegt werden soll ("(2)" anhängen)
+// teams & matchday: On slide Items löschen
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
@@ -294,13 +299,14 @@ export class ProfileComponent implements OnInit {
       that.loading.present();
 
     }, function (error) {
+      that.loading.dismiss();
       alert(error.message);
     }, function () {
       that.utilities.userData.picUrl = uploadTask.snapshot.downloadURL;
       firebase.database().ref('clubs/12/players/' + that.utilities.user.uid).update({
         picUrl: that.utilities.userData.picUrl
       });
-
+      that.loading.dismiss();
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
       that.setActionSheetOptions()
     });
