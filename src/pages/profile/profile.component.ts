@@ -13,13 +13,13 @@
 // gameDetails && viewTeam: Delete Button ganz unten
 // gameDetails && viewTeam: Edit Players Button nur wenn man auf bearbeiten klickt
 // viewTeam:  wenn man ein team bearbeitet, was zB S Klasse 3 hat, dann wird die S-Klasse nicht in der checkbox selektiert, wenn man auf bearbeiten klickt
-// createMatchday && viewAdressvorlagen: Replace "Zurück"-Button mit Icon
-// countingBadges iOS zentrieren (vllt mit Run Browser testen)
+// countingBadges iOS zentrieren
 // gameDetails: Adressvorlagen UI ändern
 // Adressvorlagen: UI
 // Adressvorlagen: Bei Speicherung überprüfen, ob Vorlage schon existiert (Mit Gegnernamen prüfen). Wenn ja, fragen, ob überschrieben werden soll oder ob neu angelegt werden soll ("(2)" anhängen)
 // Adressvorlagen: Bei Umbenennung von Adressvorlage überprüfen, ob Vorlage schon existiert (Mit Gegnernamen prüfen). Wenn ja, fragen, ob überschrieben werden soll oder ob neu angelegt werden soll ("(2)" anhängen)
 // teams & matchday: On slide Items löschen
+// invitesmatchday: Grund für Abwesenheit anzeigen
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
