@@ -8,7 +8,9 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-list>
   <div *ngFor="let item of dataGames">
+    <ion-item-sliding>
     <ion-item (click)="openDetails($event, item)" class="less-label-margin">
         <div class="itemLeft">
           <div class="thumbnail-pictures">
@@ -33,7 +35,16 @@
           <div *ngIf="item.home == 'unknown'"><p>TBA</p></div>
         </div>
     </ion-item>
+
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="deleteGame(item)">
+          <ion-icon name='trash'></ion-icon>
+          Löschen
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
   </div>
+  </ion-list>
   <div *ngIf="counter == 0">
     <ion-label class="align-center no-items">Keine Spiele vorhanden</ion-label>
   </div>
@@ -42,7 +53,7 @@
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="loadData(true, $event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 </ion-content>

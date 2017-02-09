@@ -16,7 +16,6 @@ export class TeamsComponent implements OnInit {
 
   teams: any[];
   teamsSearch: any[];
-  database: any;
   playerArray: any[];
   error: boolean = false;
   loading: any;
@@ -138,5 +137,69 @@ export class TeamsComponent implements OnInit {
   doRefresh(ev) {
     this.allPlayers = this.utilities.allPlayers;
     this.setTeams(false, ev);
+  }
+
+  presentConfirm(teamId) {
+    let alert = this.alertCtrl.create({
+      title: 'Mannschaft löschen',
+      message: 'Wollen Sie die Mannschaft wirklich löschen?',
+      buttons: [
+        {
+          text: 'Abbrechen',
+          role: 'cancel'
+        },
+        {
+          text: 'Löschen',
+          handler: () => {
+            this.deleteTeam(teamId);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  deleteTeam(teamId) {
+    firebase.database().ref('clubs/12/teams/' + teamId).remove();
+    this.deleteTeamFromPlayers(teamId);
+  }
+  deleteTeamFromPlayers(teamId) {
+    let originalPlayers;
+    firebase.database().ref('clubs/12/players').once('value', snapshot => {
+      originalPlayers = snapshot.val();
+    }).then(() => {
+      let player;
+      for (let i in originalPlayers) {
+        player = originalPlayers[i];
+        if (player.team == teamId) {
+          player.team = '0';
+        }
+      }
+      firebase.database().ref('clubs/12/').update({
+        players: originalPlayers
+      }).then((data) => {
+        this.deleteTeamFromMatches(teamId);
+      });
+    });
+  }
+
+  deleteTeamFromMatches(teamId) {
+    let originalMatches;
+    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
+      originalMatches = snapshot.val();
+    }).then((data) => {
+      let match;
+      for (let i in originalMatches) {
+        match = originalMatches[i];
+        if (match.team == teamId) {
+          match.team = '0';
+        }
+      }
+      firebase.database().ref('clubs/12/').update({
+        matches: originalMatches
+      }).then(data => {
+        this.doRefresh(event);
+      })
+    })
   }
 }
