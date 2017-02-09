@@ -120,13 +120,6 @@
     </div>
   </div>
 
-  <div *ngIf="(editMode)" class="delete-button-container">
-    <button class="button-width" ion-button outline round color="danger" icon-left (click)="presentConfirm(null, 'delT')">
-      <ion-icon name="close"></ion-icon>
-      Mannschaft löschen
-    </button>
-  </div>
-
   <ion-list-header class="align-center">Spieler</ion-list-header>
   <ion-toolbar no-border-top>
     <ion-segment [(ngModel)]="geschlecht">
@@ -193,10 +186,14 @@
     </ion-list>
   </div>
 
-  <div class="edit-players-button-container" *ngIf="(isAdmin)">
+  <div class="edit-players-button-container" *ngIf="(isAdmin && editMode)">
     <button class="button-width" ion-button outline round color="secondary" icon-left (click)="editPlayers()">
       <ion-icon name="create"></ion-icon>
       Spieler bearbeiten
+    </button>
+    <button class="button-width" ion-button outline round color="danger" icon-left (click)="presentConfirm(null, 'delT')">
+      <ion-icon name="close"></ion-icon>
+      Mannschaft löschen
     </button>
   </div>
 <ion-refresher (ionRefresh)="doRefresh($event)">
