@@ -86,15 +86,15 @@ describe("InvitesMatchdayComponentTesting", () => {
         expect(component.loadingElement).toBeDefined();
     });
 
-    it('shows message invite sent', () => {
+    /*it('shows message invite sent', () => {
         component.showMessage();
         expect(component.showMessage).toBeDefined();
-    })
+    })*/
 
-    it('creates confirm dialogue', () => {
+    /*it('creates confirm dialogue', () => {
         component.showConfirm();
         expect(component.confirm).toBeDefined();
-    })
+    })*/
 
     afterAll(() => {
         fixture.destroy();
