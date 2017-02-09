@@ -212,11 +212,9 @@ export class MyApp {
     if (this.utilities.hashPassword(token) == this.utilities.hashedPassword) {
       return true;
     } else{
-      console.log('shit - not in the club');
       return false;
     }
   } else {
-    console.log('shit - not in the club');
     return false;
   }
 
