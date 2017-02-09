@@ -81,7 +81,13 @@
                     </div>
                     <div class="secondaryDetails">
                       {{player.team | teams}} <br/>
-                      {{player.birthday | birthday}}
+                      
+                      <div *ngIf="item.excuse == 'education'">Grund: Schule/Studium/Beruf</div>
+                      <div *ngIf="item.excuse == 'injured'">Grund: Verletzt</div>
+                      <div *ngIf="item.excuse == 'sick'">Grund: Erkältet</div>
+                      <div *ngIf="item.excuse == 'private'">Grund: Privat</div>
+                      <div *ngIf="item.excuse == 'miscellaneous'">Grund: Sonstige</div>
+
                     </div>
                   </div>
                 </div>
