@@ -19,7 +19,8 @@
 // Adressvorlagen: Bei Speicherung überprüfen, ob Vorlage schon existiert (Mit Gegnernamen prüfen). Wenn ja, fragen, ob überschrieben werden soll oder ob neu angelegt werden soll ("(2)" anhängen)
 // Adressvorlagen: Bei Umbenennung von Adressvorlage überprüfen, ob Vorlage schon existiert (Mit Gegnernamen prüfen). Wenn ja, fragen, ob überschrieben werden soll oder ob neu angelegt werden soll ("(2)" anhängen)
 // teams & matchday: On slide Items löschen
-// invitesmatchday: Grund für Abwesenheit anzeigen
+// Profile: ActionSheet verzögert sich, wenn man in iOS auf das Bild klickt
+// Farbe der Statusleisttexte in iOS ändern
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
