@@ -39,7 +39,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
   editMode: any;
 
   ngOnInit(){
-    
+
   }
 
   ionViewWillEnter() {
@@ -69,7 +69,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
       this.relevantTeams = this.getRelevantTeams(0, 1);
     } else {
       this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit, this.allTeams[this.teamPosition].sclass);
-    }  
+    }
   }
 
   constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
@@ -342,9 +342,9 @@ export class AddTeamToMatchdayComponent implements OnInit{
             firebase.database().ref('clubs/12/invites/' + i).remove();
           }
         }
-      }      
+      }
     });
-  
+
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       for (let k in this.pendingArray){
         for (let j in this.allPlayers){
@@ -376,7 +376,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
                   state: 0
                 });
                 inviteExists = true;
-              }     
+              }
             }
             if (inviteExists == false){
               let id = this.makeid();
@@ -406,7 +406,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
         }
       }
     });
-    
+
     this.navCtrl.popToRoot();
   }
 
@@ -417,10 +417,6 @@ export class AddTeamToMatchdayComponent implements OnInit{
       console.log(this.allPlayers);
       this.navCtrl.pop();
     }
-  }
-
-  openProfile(item){
-    this.navCtrl.push(PlayerComponent, { player: item});
   }
 }
 

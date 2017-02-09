@@ -8,7 +8,6 @@
 // Invites: Label wenn keine Einladungen verfügbar sind
 // Art der Mannschaft in teams Liste anzeigen
 // Mannschaften: Remove player image from thumbnails, when user leaves team
-// Spieler Items on Profilbild click --> open player details
 // gameDetails: Checkliste schöner machen
 // gameDetails && viewTeam: Delete Button ganz unten
 // gameDetails && viewTeam: Edit Players Button nur wenn man auf bearbeiten klickt

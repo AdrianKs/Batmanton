@@ -95,7 +95,7 @@
             <ion-item class="less-label-margin">
               <div>
                 <div class="itemPlayerLeft">
-                  <img src="{{item.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
+                  <img src="{{item.picUrl}}" class="player-item-image picture-click" (click)="this.utilities.openProfile(item, this.nav)" onError="this.src='assets/images/user-shape-64.png'" />
                 </div>
                 <div class="itemPlayerRight">
                   <div class="mainDetails">
@@ -123,7 +123,7 @@
             <ion-item class="less-label-margin">
               <div>
                 <div class="itemPlayerLeft">
-                  <img src="{{item.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
+                  <img src="{{item.picUrl}}" class="player-item-image picture-click" (click)="this.utilities.openProfile(item, this.nav)" onError="this.src='assets/images/user-shape-64.png'" />
                 </div>
                 <div class="itemPlayerRight">
                   <div class="mainDetails">

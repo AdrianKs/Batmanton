@@ -215,7 +215,7 @@
               <ion-item class="less-label-margin">
                 <div>
                   <div class="itemPlayerLeft">
-                    <img src="{{player.picUrl}}" class="player-item-image picture-click" (click)="openProfile(player)"
+                    <img src="{{player.picUrl}}" class="player-item-image picture-click" (click)="this.Utilities.openProfile(player, this.navCtrl)"
                         onError="this.src='assets/images/user-shape-64.png'"/>
                   </div>
                   <div class="itemPlayerRight">
@@ -250,7 +250,7 @@
               <ion-item class="less-label-margin">
                 <div>
                   <div class="itemPlayerLeft">
-                    <img src="{{player.picUrl}}" class="player-item-image picture-click" (click)="openProfile(player)"
+                    <img src="{{player.picUrl}}" class="player-item-image picture-click" (click)="this.Utilities.openProfile(player, this.navCtrl)"
                         onError="this.src='assets/images/user-shape-64.png'"/>
                   </div>
                   <div class="itemPlayerRight">
@@ -285,7 +285,7 @@
               <ion-item class="less-label-margin">
                 <div>
                   <div class="itemPlayerLeft">
-                    <img src="{{player.picUrl}}" class="player-item-image picture-click" (click)="openProfile(player)"
+                    <img src="{{player.picUrl}}" class="player-item-image picture-click" (click)="this.Utilities.openProfile(player, this.navCtrl)"
                         onError="this.src='assets/images/user-shape-64.png'"/>
                   </div>
                   <div class="itemPlayerRight">
