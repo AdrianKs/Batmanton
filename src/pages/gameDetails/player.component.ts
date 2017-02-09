@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
-import { Utilities } from '../../app/utilities';
-import firebase from 'firebase';
+import { NavController, NavParams } from 'ionic-angular';
 
 @Component({
     selector: 'page-player',
@@ -11,7 +9,7 @@ export class PlayerComponent {
 
     player: any;
 
-    constructor(private navCtrl: NavController, private navParams: NavParams, public alertCtrl: AlertController, public utilities: Utilities) {
+    constructor(private navCtrl: NavController, private navParams: NavParams) {
         this.player = navParams.get('player');
     }
 
