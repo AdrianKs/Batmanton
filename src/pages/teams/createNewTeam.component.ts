@@ -21,7 +21,7 @@ import { Camera } from 'ionic-native';
 export class CreateTeamComponent implements OnInit {
 
     altersklasse: number = -1;
-    teamArt: any;
+    teamArt: any = "";
     database: any;
     addTeamForm: any;
     teamName: any;
@@ -34,10 +34,10 @@ export class CreateTeamComponent implements OnInit {
     teamPicId: any;
     changedPic: boolean = false;
     newTeamId: any;
-    sKlasse:any;
+    sKlasse: any = "";
 
     ngOnInit(): void {
-        
+
     }
 
     constructor(public navCtrl: NavController,
@@ -75,9 +75,19 @@ export class CreateTeamComponent implements OnInit {
         this.newTeamId = this.makeid();
         this.teamName = this.addTeamForm.value.TeamName;
         this.maxAlt = this.altersklasse;
-        this.teamsProvider.addNewTeam(this.newTeamId, this.maxAlt, this.teamName, this.teamArt, this.sKlasse).then(()=>{
-            this.showSuccessAlert();
-        })        
+        if (this.teamName != "" && this.maxAlt != "" && this.teamArt != "" && this.sKlasse != "") {
+            this.teamsProvider.addNewTeam(this.newTeamId, this.maxAlt, this.teamName, this.teamArt, this.sKlasse).then(() => {
+                this.utilities.setTeams();
+                this.showSuccessAlert();
+            })
+        }else{
+            let alert = this.alertCtrl.create({
+                message: 'Bitte füllen Sie alle Felder aus.',
+                title: 'Unvollständige Eingaben',
+                buttons:['OK']
+            })
+            alert.present();
+        }
     }
 
     showSuccessAlert() {
