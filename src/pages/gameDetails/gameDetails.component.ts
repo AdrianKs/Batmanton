@@ -4,10 +4,9 @@
 //check createMatchday
 //Alarm bei Zeitänderung
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController} from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component';
 import { TemplateComponent } from '../matchday/template.component'
-import { PlayerComponent } from './player.component';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
 import * as _ from 'lodash';
@@ -71,7 +70,7 @@ export class GameDetailsComponent implements OnInit{
     }
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController) {
     this.gameItem = navP.get('gameItem');
   }
 
@@ -171,28 +170,9 @@ export class GameDetailsComponent implements OnInit{
       }
     });
     }
-     firebase.database().ref('clubs/12/templates').once('value', snapshot => {
-      let templateArray = [];
-      this.counter = 0;
-      for (let i in snapshot.val()) {
-        templateArray[this.counter] = snapshot.val()[i];
-        templateArray[this.counter].id = i;
-        this.counter++;
-      }
-      this.dataTemplate = templateArray;
-      this.dataTemplate = _.sortBy(this.dataTemplate, "club");
-    }).then((data) => {
-      if (showLoading) {
-      this.loading.dismiss().catch((error) => console.log("error caught"));
-      }
-      if(event!=null){
-        event.complete();
-      }
-    }).catch(function (error) {
-      if (showLoading) {
-        this.createAndShowErrorAlert(error);
-      }
-    });
+
+    this.loadTemplateData(showLoading, event);
+
     firebase.database().ref('clubs/12/teams').once('value', snapshot => {
       let teamArray = [];
       let counter = 0;
@@ -206,6 +186,31 @@ export class GameDetailsComponent implements OnInit{
     }).then((data) => {
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+  }
+
+  loadTemplateData(showLoading: boolean, event){
+    firebase.database().ref('clubs/12/templates').once('value', snapshot => {
+      let templateArray = [];
+      this.counter = 0;
+      for (let i in snapshot.val()) {
+        templateArray[this.counter] = snapshot.val()[i];
+        templateArray[this.counter].id = i;
+        this.counter++;
+      }
+      this.dataTemplate = templateArray;
+      this.dataTemplate = _.sortBy(this.dataTemplate, "club");
+    }).then((data) => {
+      if (showLoading) {
+        this.loading.dismiss().catch((error) => console.log("error caught"));
       }
       if(event!=null){
         event.complete();
@@ -296,15 +301,7 @@ export class GameDetailsComponent implements OnInit{
   }
 
   finishEditProfile() {
-    if (this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged || this.templateChecked || this.playersEdited) {
-      if (this.templateChecked == true){
-        let id = this.makeid();
-        firebase.database().ref('clubs/12/templates/').child(id).set({
-          club: this.gameItem.opponent,
-          street: this.gameItem.location.street,
-          zipcode: this.gameItem.location.zipcode
-        })
-      }
+    if (this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged || this.playersEdited) {
       if (this.gameItem.home == "true"){
         this.gameItem.home = true;
       }
@@ -696,6 +693,34 @@ export class GameDetailsComponent implements OnInit{
     confirm.present();
   }
 
+  openTemplatesActionSheet(){
+    let actionSheet = this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: "Adressvorlage speichern",
+          icon: "archive",
+          handler: () => this.saveTemplate()
+        },
+        {
+          text: 'Adressvorlage laden',
+          icon: "open",
+          handler: () => this.showTemplates()
+        },
+        {
+          text: "Adressvorlagen verwalten",
+          icon: "settings",
+          handler: () => this.editTemplates()
+        },
+        {
+          text: 'Abbrechen',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    actionSheet.present();
+  }
+
   showTemplates(){
     let alert = this.alertCtrl.create();
     let dataAvailable = false;
@@ -713,7 +738,7 @@ export class GameDetailsComponent implements OnInit{
     if(this.counter == 0){
       alert.setMessage('Keine Adressvorlage vorhanden.');
     }
-    alert.addButton('Abbruch');
+    alert.addButton('Abbrechen');
     alert.addButton({
       text: 'OK',
       handler: data => {
@@ -730,15 +755,115 @@ export class GameDetailsComponent implements OnInit{
   }
 
   updateTemplate(clubID){
-    firebase.database().ref('clubs/12/templates/'+clubID).once('value', snapshot => {
-      this.gameItem.location.street = snapshot.val().street;
-      this.gameItem.location.zipcode = snapshot.val().zipcode;
-    });
+    if(this.gameItem.opponent == "" || this.gameItem.opponent == undefined){
+      firebase.database().ref('clubs/12/templates/'+clubID).once('value', snapshot => {
+        this.gameItem.opponent = snapshot.val().club;
+        this.gameItem.location.street = snapshot.val().street;
+        this.gameItem.location.zipcode = snapshot.val().zipcode;
+      });
+    }else{
+      firebase.database().ref('clubs/12/templates/'+clubID).once('value', snapshot => {
+        this.gameItem.location.street = snapshot.val().street;
+        this.gameItem.location.zipcode = snapshot.val().zipcode;
+      });
+    }
   }
 
+  saveTemplate() {
+    let that = this;
+    // Get all templates
+    let templateArray = [];
+    let templateArrayVal = [];
+    return firebase.database().ref('clubs/12/templates').once('value').then((snapshot) => {
+      let counter = 0;
+      templateArrayVal = snapshot.val();
+      for (let i in snapshot.val()) {
+        templateArray[counter] = snapshot.val()[i];
+        templateArray[counter].id = i;
+        counter++;
+      }
+    }).then(function() {
+      //Check if template for this team already exists
+      let templateExists = false;
+      let templateId;
+      for(let i in templateArray){
+        if(templateArray[i].club == that.gameItem.opponent){
+          templateId = templateArray[i].id;
+          templateExists = true;
+          break;
+        }
+      }
+
+      // if template already exists, ask user whether the template should be overwritten, a new template should be created, or the action should be cancelled
+      if(templateExists){
+        let alert = that.alertCtrl.create({
+          title: 'Adressvorlage für diesen Gegner existiert bereits',
+          message: 'Die Adressvorlage für diesen Gegner existiert bereits. Möchten Sie sie überschreiben oder eine zusätzliche Adressvorlage für diesen Gegner erstellen?',
+          buttons: [
+            {
+              text: 'Abbrechen',
+              role: 'cancel'
+            },
+            {
+              text: 'Überschreiben',
+              handler: () => {
+                firebase.database().ref('clubs/12/templates/' + templateId).update({
+                  club: that.gameItem.opponent,
+                  street: that.gameItem.location.street,
+                  zipcode: that.gameItem.location.zipcode
+                }).then(function() {
+                  let toast = that.toastCtrl.create({
+                    message: "Adressvorlage überschrieben",
+                    duration: 2000,
+                    position: "top"
+                  });
+                  toast.present();
+                  that.loadTemplateData(true, null)
+                })
+              }
+            },
+            {
+              text: 'Zusätzliche Vorlage',
+              handler: () => {
+                let id = that.makeid();
+                firebase.database().ref('clubs/12/templates/').child(id).set({
+                  club: that.gameItem.opponent + "(2)",
+                  street: that.gameItem.location.street,
+                  zipcode: that.gameItem.location.zipcode
+                }).then(function() {
+                  let toast = that.toastCtrl.create({
+                    message: "Adressvorlage gespeichert",
+                    duration: 2000,
+                    position: "top"
+                  });
+                  toast.present();
+                  that.loadTemplateData(true, null)
+                })
+              }
+            }
+          ]
+        });
+        alert.present();
+      }else{
+        let id = that.makeid();
+        firebase.database().ref('clubs/12/templates/').child(id).set({
+          club: that.gameItem.opponent,
+          street: that.gameItem.location.street,
+          zipcode: that.gameItem.location.zipcode
+        }).then(function() {
+          let toast = that.toastCtrl.create({
+            message: "Adressvorlage gespeichert",
+            duration: 2000,
+            position: "top"
+          });
+          toast.present();
+          that.loadTemplateData(true, null)
+        })
+      }
+    })
+  }
   editTemplates(){
     this.navCtrl.push(TemplateComponent);
   }
-
 }
 

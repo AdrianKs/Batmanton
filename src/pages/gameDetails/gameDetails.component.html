@@ -11,7 +11,7 @@
       <button *ngIf="(!editMode)" ion-button (click)="editProfile()">Bearbeiten
       </button>
       <button
-        [disabled]="(!opponentChanged && !teamChanged && !homeChanged && !streetChanged && !zipcodeChanged && !timeChanged  && !templateChecked && !playersEdited)"
+        [disabled]="(!opponentChanged && !teamChanged && !homeChanged && !streetChanged && !zipcodeChanged && !timeChanged  && !playersEdited)"
         *ngIf="(editMode)" ion-button (click)="finishEditProfile()">Fertig
       </button>
     </ion-buttons>
@@ -124,19 +124,12 @@
       </ion-item>
     </div>
 
-    <div *ngIf="(editMode)" class="align-center">
-      <button ion-button small outline color="secondary" (click)="showTemplates()" icon-left item-right>
-        <ion-icon name="arrow-dropright"></ion-icon>
+    <div *ngIf="(editMode && isAdmin)" class="edit-players-button-container">
+      <button ion-button small outline color="primary" (click)="openTemplatesActionSheet()" icon-left item-right>
+        <ion-icon name="map"></ion-icon>
         Adressvorlagen
       </button>
-      <button ion-button small outline color="secondary" (click)="editTemplates()" icon-only item-right>
-        <ion-icon name="settings"></ion-icon>
-      </button>
     </div>
-    <ion-item *ngIf="(editMode)" class="createGameButtonContainer">
-      <ion-checkbox [(ngModel)]="templateChecked" color="primary"></ion-checkbox>
-      <ion-label>Adresse als Vorlage speichern</ion-label>
-    </ion-item>
 
     <div *ngFor="let team of teamArray">
       <div *ngIf="team.id == gameItem.team">

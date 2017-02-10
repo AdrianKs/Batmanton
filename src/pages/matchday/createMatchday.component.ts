@@ -2,7 +2,7 @@
 //Adressvorlagen bearbeiten
 //Team (altersklasse, sklasse)
 import { Component, OnInit } from '@angular/core';
-import { NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component';
 import { TemplateComponent } from './template.component';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -54,8 +54,8 @@ export class CreateMatchdayComponent implements OnInit {
     this.templateChecked = false;
   }
 
-  
-  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder, private loadingCtrl: LoadingController) {
+
+  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController) {
     this.createMatchdayForm = formBuilder.group({
       opponent: [],
       team: [],
@@ -70,28 +70,9 @@ export class CreateMatchdayComponent implements OnInit {
     if (showLoading) {
       this.createAndShowLoading();
     }
-    firebase.database().ref('clubs/12/templates').once('value', snapshot => {
-      let templateArray = [];
-      this.counter = 0;
-      for (let i in snapshot.val()) {
-        templateArray[this.counter] = snapshot.val()[i];
-        templateArray[this.counter].id = i;
-        this.counter++;
-      }
-      this.dataTemplate = templateArray;
-      this.dataTemplate = _.sortBy(this.dataTemplate, "club");
-    }).then((data) => {
-      if (showLoading) {
-      this.loading.dismiss().catch((error) => console.log("error caught"));
-      }
-      if(event!=null){
-        event.complete();
-      }
-    }).catch(function (error) {
-      if (showLoading) {
-        this.createAndShowErrorAlert(error);
-      }
-    });
+
+    this.loadTemplateData(showLoading, event);
+
     firebase.database().ref('clubs/12/teams').once('value', snapshot => {
       let teamArray = [];
       let counter = 0;
@@ -105,6 +86,31 @@ export class CreateMatchdayComponent implements OnInit {
     }).then((data) => {
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+  }
+
+  loadTemplateData(showLoading: boolean, event){
+    firebase.database().ref('clubs/12/templates').once('value', snapshot => {
+      let templateArray = [];
+      this.counter = 0;
+      for (let i in snapshot.val()) {
+        templateArray[this.counter] = snapshot.val()[i];
+        templateArray[this.counter].id = i;
+        this.counter++;
+      }
+      this.dataTemplate = templateArray;
+      this.dataTemplate = _.sortBy(this.dataTemplate, "club");
+    }).then((data) => {
+      if (showLoading) {
+        this.loading.dismiss().catch((error) => console.log("error caught"));
       }
       if(event!=null){
         event.complete();
@@ -269,6 +275,34 @@ export class CreateMatchdayComponent implements OnInit {
     }
   }
 
+  openTemplatesActionSheet(){
+    let actionSheet = this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: "Adressvorlage speichern",
+          icon: "archive",
+          handler: () => this.saveTemplate()
+        },
+        {
+          text: 'Adressvorlage laden',
+          icon: "open",
+          handler: () => this.showTemplates()
+        },
+        {
+          text: "Adressvorlagen verwalten",
+          icon: "settings",
+          handler: () => this.editTemplates()
+        },
+        {
+          text: 'Abbrechen',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    actionSheet.present();
+  }
+
   showTemplates(){
     let alert = this.alertCtrl.create();
     let dataAvailable = false;
@@ -283,9 +317,10 @@ export class CreateMatchdayComponent implements OnInit {
       });
       dataAvailable = true;
     }
-
-
-    alert.addButton('Abbruch');
+    if(this.counter == 0){
+      alert.setMessage('Keine Adressvorlage vorhanden.');
+    }
+    alert.addButton('Abbrechen');
     alert.addButton({
       text: 'OK',
       handler: data => {
@@ -302,15 +337,115 @@ export class CreateMatchdayComponent implements OnInit {
   }
 
   updateTemplate(clubID){
-    firebase.database().ref('clubs/12/templates/'+clubID).once('value', snapshot => {
-      this.match.location.street = snapshot.val().street;
-      this.match.location.zipcode = snapshot.val().zipcode;
-    });
+    if(this.match.opponent == "" || this.match.opponent == undefined){
+      firebase.database().ref('clubs/12/templates/'+clubID).once('value', snapshot => {
+        this.match.opponent = snapshot.val().club;
+        this.match.location.street = snapshot.val().street;
+        this.match.location.zipcode = snapshot.val().zipcode;
+      });
+    }else{
+      firebase.database().ref('clubs/12/templates/'+clubID).once('value', snapshot => {
+        this.match.location.street = snapshot.val().street;
+        this.match.location.zipcode = snapshot.val().zipcode;
+      });
+    }
   }
 
+  saveTemplate() {
+    let that = this;
+    // Get all templates
+    let templateArray = [];
+    let templateArrayVal = [];
+    return firebase.database().ref('clubs/12/templates').once('value').then((snapshot) => {
+      let counter = 0;
+      templateArrayVal = snapshot.val();
+      for (let i in snapshot.val()) {
+        templateArray[counter] = snapshot.val()[i];
+        templateArray[counter].id = i;
+        counter++;
+      }
+    }).then(function() {
+      //Check if template for this team already exists
+      let templateExists = false;
+      let templateId;
+      for(let i in templateArray){
+        if(templateArray[i].club == that.match.opponent){
+          templateId = templateArray[i].id;
+          templateExists = true;
+          break;
+        }
+      }
+
+      // if template already exists, ask user whether the template should be overwritten, a new template should be created, or the action should be cancelled
+      if(templateExists){
+        let alert = that.alertCtrl.create({
+          title: 'Adressvorlage für diesen Gegner existiert bereits',
+          message: 'Die Adressvorlage für diesen Gegner existiert bereits. Möchten Sie sie überschreiben oder eine zusätzliche Adressvorlage für diesen Gegner erstellen?',
+          buttons: [
+            {
+              text: 'Abbrechen',
+              role: 'cancel'
+            },
+            {
+              text: 'Überschreiben',
+              handler: () => {
+                firebase.database().ref('clubs/12/templates/' + templateId).update({
+                  club: that.match.opponent,
+                  street: that.match.location.street,
+                  zipcode: that.match.location.zipcode
+                }).then(function() {
+                  let toast = that.toastCtrl.create({
+                    message: "Adressvorlage überschrieben",
+                    duration: 2000,
+                    position: "top"
+                  });
+                  toast.present();
+                  that.loadTemplateData(true, null)
+                })
+              }
+            },
+            {
+              text: 'Zusätzliche Vorlage',
+              handler: () => {
+                let id = that.makeid();
+                firebase.database().ref('clubs/12/templates/').child(id).set({
+                  club: that.match.opponent + "(2)",
+                  street: that.match.location.street,
+                  zipcode: that.match.location.zipcode
+                }).then(function() {
+                  let toast = that.toastCtrl.create({
+                    message: "Adressvorlage gespeichert",
+                    duration: 2000,
+                    position: "top"
+                  });
+                  toast.present();
+                  that.loadTemplateData(true, null)
+                })
+              }
+            }
+          ]
+        });
+        alert.present();
+      }else{
+        let id = that.makeid();
+        firebase.database().ref('clubs/12/templates/').child(id).set({
+          club: that.match.opponent,
+          street: that.match.location.street,
+          zipcode: that.match.location.zipcode
+        }).then(function() {
+          let toast = that.toastCtrl.create({
+            message: "Adressvorlage gespeichert",
+            duration: 2000,
+            position: "top"
+          });
+          toast.present();
+          that.loadTemplateData(true, null)
+        })
+      }
+    })
+  }
   editTemplates(){
     this.navCtrl.push(TemplateComponent);
   }
-
 }
 

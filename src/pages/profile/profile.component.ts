@@ -13,8 +13,6 @@
 // gameDetails && viewTeam: Edit Players Button nur wenn man auf bearbeiten klickt
 // viewTeam:  wenn man ein team bearbeitet, was zB S Klasse 3 hat, dann wird die S-Klasse nicht in der checkbox selektiert, wenn man auf bearbeiten klickt
 // countingBadges iOS zentrieren
-// Adressvorlagen: UI
-// Adressvorlagen: Bei Speicherung überprüfen, ob Vorlage schon existiert (Mit Gegnernamen prüfen). Wenn ja, fragen, ob überschrieben werden soll oder ob neu angelegt werden soll ("(2)" anhängen)
 // Adressvorlagen: Bei Umbenennung von Adressvorlage überprüfen, ob Vorlage schon existiert (Mit Gegnernamen prüfen). Wenn ja, fragen, ob überschrieben werden soll oder ob neu angelegt werden soll ("(2)" anhängen)
 // Profile: ActionSheet verzögert sich, wenn man in iOS auf das Bild klickt
 // Farbe der Statusleisttexte in iOS ändern
@@ -23,6 +21,9 @@
 // Bug: Wenn man eine Mannschaft erstellt, und direkt danach einen Spieler hinzufügt und anschließen auf die benutzerverwaltung geht, crasht die App
 // editPlayers & addTeamToMatchday: Beide Toast beim Adden/Entfernen von Spielern, oder beide keinen Toast
 // editPlayers & addTeamToMatchday: Beide einen Fertig-Button oder beide keinen
+// Feature: Wenn man beim Spiel erstellen "Heim" auswählt, soll direkt die Heimadresse eingetragen werden
+// Matchday: Ort zu PLZ hinzufügen
+// Bug: ich kann beim bearbeiten screen die gegner löschen und dann speichern
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
