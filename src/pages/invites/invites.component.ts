@@ -20,11 +20,15 @@ export class InvitesComponent implements OnInit {
   allInvites: Array<any>;
   allPlayers: Array<any>;
   allMatchdays: Array<any>;
+  today: String = new Date().toISOString();
+  matchdayCount: any;
 
   ionViewWillEnter() {
     this.showLoadingElement();
     this.invitesProvider.setInvites();
-    this.invitesProvider.setMatchdays();
+    this.invitesProvider.setMatchdays().then(() => {
+      this.matchdayCount = this.countMatchdays();
+    });
     this.invitesProvider.setPlayers();
     this.loadingElement.dismiss();
   }
@@ -53,6 +57,19 @@ export class InvitesComponent implements OnInit {
     return urlArray;
   }
 
+  countMatchdays() {
+    let counter = 0;
+    for (let match of this.invitesProvider.allMatchdays) {
+      let states = this.countStates(match);
+      if (states[0] > 0 || states[1] > 0 || states[2] > 0) {
+        if (this.today <= match.time) {
+          counter++;
+        }
+      }
+    }
+    return counter;
+  }
+
   countStates(match) {
     let accepted = 0;
     let declined = 0;
@@ -72,7 +89,7 @@ export class InvitesComponent implements OnInit {
   }
 
   goToPage(ev, value, invites, players, picture, counts, invitesProvider) {
-    this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players});
+    this.navCtrl.push(InvitesMatchdayComponent, { matchday: value, invites: invites, players: players });
   }
 
   showLoadingElement() {
