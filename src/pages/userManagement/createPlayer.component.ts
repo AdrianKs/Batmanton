@@ -57,7 +57,7 @@ export class CreatePlayerComponent implements OnInit {
     showAlertMessage() {
         let alert = this.alertCtrl.create({
             title: 'Hinweis',
-            subTitle: "Die hier erstellten Spieler, werden als Default-User ohne bestehenden Login-Account angelegt",
+            subTitle: "Die hier erstellten Spieler werden als Default-User ohne bestehenden Login-Account angelegt",
             buttons: ['OK']
         });
         alert.present();
