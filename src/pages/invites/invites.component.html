@@ -11,6 +11,7 @@
   <ion-list>
     <div *ngFor="let matchday of invitesProvider.allMatchdays">
       <div *ngIf="countStates(matchday)[0] > 0 || countStates(matchday)[1] > 0 || countStates(matchday)[2] > 0">
+      <div *ngIf="today <= matchday.time">
         <ion-item class="less-label-margin" (click)="goToPage($event, matchday, invitesProvider.allInvites, invitesProvider.allPlayers)">
           <div class="itemLeft margin-top">
             <div class="thumbnail-pictures">
@@ -49,8 +50,10 @@
 
           <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
         </ion-item>
+        </div>
+        </div>
       </div>
-    </div>
+       <ion-label *ngIf="matchdayCount == 0" class="align-center no-items">Es sind keine Einladungen vorhanden</ion-label>
   </ion-list>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
