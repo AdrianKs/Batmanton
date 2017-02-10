@@ -31,9 +31,9 @@ export class MatchdayComponent implements OnInit {
   currentUser: any;
   isAdmin: boolean;
   counter: any;
-  
+
   constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
-    
+
   }
 
   isTrainer() {
@@ -83,8 +83,7 @@ export class MatchdayComponent implements OnInit {
 
   createAndShowLoading() {
     this.loading = this.loadingCtrl.create({
-      spinner: 'ios',
-      content: 'Lade Daten'
+      spinner: 'ios'
     })
     this.loading.present();
   }
@@ -104,18 +103,57 @@ export class MatchdayComponent implements OnInit {
     }
     return urlArray;
   }
-  
+
   openDetails(ev, value) {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 
-  doRefresh(refresher) {
-    this.loadData(false, refresher);
-  }
-
-
   createGame(){
     this.navCtrl.push(CreateMatchdayComponent);
+  }
+
+  deleteGame(gameItem){
+    let confirm = this.alertCtrl.create({
+      title: 'Warnung',
+      message: 'Daten können nach Löschvorgang nicht wiederhergestellt werden. Fortfahren?',
+      buttons: [
+        {
+          text: 'Nein',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Ja',
+          handler: () => {
+            firebase.database().ref('clubs/12/players').once('value', snapshot => {
+              for (let i in snapshot.val()){
+                for (let j in gameItem.acceptedPlayers){
+                  if (gameItem.acceptedPlayers[j] == i && snapshot.val()[i].team != gameItem.team){
+                    let newHelpCounter = snapshot.val()[i].helpCounter;
+                    newHelpCounter--;
+                    firebase.database().ref('clubs/12/players/' + i).update({
+                      helpCounter: newHelpCounter
+                    });
+                  }
+                }
+              }
+            });
+            firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+              for (let i in snapshot.val()) {
+                if (snapshot.val()[i].match == gameItem.id){
+                  firebase.database().ref('clubs/12/invites/' + i).remove();
+                }
+              }
+            });
+            firebase.database().ref('clubs/12/matches/' + gameItem.id).remove()
+              .then(() => {
+                this.loadData(true, null);
+              });
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }
 

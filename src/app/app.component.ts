@@ -210,14 +210,11 @@ export class MyApp {
   let token = window.localStorage.getItem(this.utilities.LOCAL_TOKEN_KEY);
   if(token){
     if (this.utilities.hashPassword(token) == this.utilities.hashedPassword) {
-      console.log(token);
       return true;
     } else{
-      console.log('shit - not in the club');
       return false;
     }
   } else {
-    console.log('shit - not in the club');
     return false;
   }
 

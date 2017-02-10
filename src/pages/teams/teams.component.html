@@ -9,9 +9,10 @@
 
 <ion-content padding>
   <!--<button ion-button (click)="testGetData()">Print Data</button>-->
-  <ion-searchbar placeholder="Suche" (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-searchbar placeholder="Suche" (ionInput)="getItems($event.target.value)"></ion-searchbar>
   <ion-list>
     <div *ngFor="let item of teams">
+      <ion-item-sliding>
       <ion-item (click)="viewTeam($event, item)" [(ngModel)]="item.name" ngDefaultControl class="less-label-margin">
         <div>
           <div class="itemLeft">
@@ -43,6 +44,13 @@
           </div>
         </div>
       </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="presentConfirm(item.id)">
+            <ion-icon name='trash'></ion-icon>
+            Löschen
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
     </div>
   </ion-list>
   <ion-fab right bottom *ngIf="(isAdmin)">

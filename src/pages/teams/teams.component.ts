@@ -5,24 +5,25 @@ import { Component, OnInit } from '@angular/core';
 import { ViewTeamComponent } from './viewTeam.component';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { Utilities } from '../../app/utilities';
-import firebase from 'firebase';
 import { CreateTeamComponent } from './createNewTeam.component';
+import { TeamsProvider } from '../../providers/teams-provider';
 
 
 @Component({
-  templateUrl: 'teams.component.html'
+  templateUrl: 'teams.component.html',
+  providers: [TeamsProvider]
 })
 export class TeamsComponent implements OnInit {
 
   teams: any[];
   teamsSearch: any[];
-  database: any;
   playerArray: any[];
   error: boolean = false;
+  database: any;
   loading: any;
   allPlayers: any;
-  currentUser:any;
-  isAdmin:any;
+  currentUser: any;
+  isAdmin: any;
 
 
   ngOnInit(): void {
@@ -35,44 +36,32 @@ export class TeamsComponent implements OnInit {
     this.setTeams(true, null);
   }
 
-  constructor(public navCtrl: NavController, public utilities: Utilities, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public teamProvider: TeamsProvider, public utilities: Utilities, public alertCtrl: AlertController, public loadingCtrl: LoadingController) {
 
 
   }
 
   isTrainer() {
-        this.currentUser = this.utilities.user;
-        firebase.database().ref("/clubs/12/players/" + this.currentUser.uid + "/").once('value', snapshot => {
-            let data = snapshot.val();
-            this.isAdmin = data.isTrainer;
-        })
-    }
+    this.currentUser = this.utilities.userData;
+    this.isAdmin = this.currentUser.isTrainer;
+  }
 
   setTeams(showLoading: boolean, event) {
     if (showLoading) {
       this.createAndShowLoading();
     }
-    firebase.database().ref('clubs/12/teams').once('value', snapshot => {
-      let teamArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        teamArray[counter] = snapshot.val()[i];
-        teamArray[counter].id = i;
-        counter++;
-      }
-      this.teams = teamArray;
-      this.teamsSearch = teamArray;
-      //this.teamsLoaded = true;
-    }).then((data) => {
+    this.teamProvider.setTeams().then(() => {
+      this.teams = this.teamProvider.teams;
+      this.teamsSearch = this.teamProvider.teams;
       if (showLoading) {
-      this.loading.dismiss().catch((error) => console.log("error caught"));
+        this.loading.dismiss().catch((error) => console.log("error caught"));
       }
-      if(event!=null){
+      if (event != null) {
         event.complete();
       }
-    }).catch(function (error) {
+    }).catch((error) => {
       if (showLoading) {
-        this.createAndShowErrorAlert(error);
+        this.createAndShowErrorAlert(error.message);
       }
     });
   }
@@ -111,7 +100,7 @@ export class TeamsComponent implements OnInit {
   getItems(ev) {
     this.initializeTeams();
 
-    let val = ev.target.value;
+    let val = ev;
     if (val && val.trim() != '') {
       this.teams = this.teams.filter((item) => {
         return (item.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
@@ -138,5 +127,69 @@ export class TeamsComponent implements OnInit {
   doRefresh(ev) {
     this.allPlayers = this.utilities.allPlayers;
     this.setTeams(false, ev);
+  }
+
+  presentConfirm(teamId) {
+    let alert = this.alertCtrl.create({
+      title: 'Mannschaft löschen',
+      message: 'Wollen Sie die Mannschaft wirklich löschen?',
+      buttons: [
+        {
+          text: 'Abbrechen',
+          role: 'cancel'
+        },
+        {
+          text: 'Löschen',
+          handler: () => {
+            this.deleteTeam(teamId);
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  deleteTeam(teamId) {
+    firebase.database().ref('clubs/12/teams/' + teamId).remove();
+    this.deleteTeamFromPlayers(teamId);
+  }
+  deleteTeamFromPlayers(teamId) {
+    let originalPlayers;
+    firebase.database().ref('clubs/12/players').once('value', snapshot => {
+      originalPlayers = snapshot.val();
+    }).then(() => {
+      let player;
+      for (let i in originalPlayers) {
+        player = originalPlayers[i];
+        if (player.team == teamId) {
+          player.team = '0';
+        }
+      }
+      firebase.database().ref('clubs/12/').update({
+        players: originalPlayers
+      }).then((data) => {
+        this.deleteTeamFromMatches(teamId);
+      });
+    });
+  }
+
+  deleteTeamFromMatches(teamId) {
+    let originalMatches;
+    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
+      originalMatches = snapshot.val();
+    }).then((data) => {
+      let match;
+      for (let i in originalMatches) {
+        match = originalMatches[i];
+        if (match.team == teamId) {
+          match.team = '0';
+        }
+      }
+      firebase.database().ref('clubs/12/').update({
+        matches: originalMatches
+      }).then(data => {
+        this.doRefresh(event);
+      })
+    })
   }
 }

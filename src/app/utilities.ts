@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import * as _ from 'lodash';
 import { AlertController } from "ionic-angular";
+import { PlayerComponent } from '../pages/gameDetails/player.component';
 
 @Injectable()
 export class Utilities {
@@ -225,6 +226,9 @@ export class Utilities {
     });
   }
 
+  openProfile(item, navCtrl){
+    navCtrl.push(PlayerComponent, { player: item});
+  }
 }
 
 

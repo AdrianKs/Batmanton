@@ -7,7 +7,7 @@
     </ion-buttons>
     <ion-title>Eingeladene Spieler</ion-title>
     <ion-buttons right>
-      <button ion-button (click)="goToPage(matchday)" icon-only>
+      <button ion-button class="info-button-size" (click)="goToPage(matchday)" icon-only>
         <ion-icon name="ios-information-circle-outline" clear item-right></ion-icon>
       </button>
     </ion-buttons>
@@ -44,7 +44,7 @@
               <ion-item class="less-label-margin">
                 <div>
                   <div class="itemPlayerLeft">
-                    <img src="{{player.picUrl}}" class="player-item-image"
+                    <img src="{{player.picUrl}}" class="player-item-image picture-click" (click)="this.utilities.openProfile(player, this.navCtrl)"
                          onError="this.src='assets/images/user-shape-64.png'"/>
                   </div>
                   <div class="itemPlayerRight">
@@ -72,7 +72,7 @@
               <ion-item class="less-label-margin">
                 <div>
                   <div class="itemPlayerLeft">
-                    <img src="{{player.picUrl}}" class="player-item-image"
+                    <img src="{{player.picUrl}}" class="player-item-image picture-click" (click)="this.utilities.openProfile(player, this.navCtrl)"
                          onError="this.src='assets/images/user-shape-64.png'"/>
                   </div>
                   <div class="itemPlayerRight">
@@ -81,7 +81,7 @@
                     </div>
                     <div class="secondaryDetails">
                       {{player.team | teams}} <br/>
-                      
+
                       <div *ngIf="item.excuse == 'education'">Grund: Schule/Studium/Beruf</div>
                       <div *ngIf="item.excuse == 'injured'">Grund: Verletzt</div>
                       <div *ngIf="item.excuse == 'sick'">Grund: Erkältet</div>
@@ -106,7 +106,7 @@
               <ion-item class="less-label-margin">
                 <div>
                   <div class="itemPlayerLeft">
-                    <img src="{{player.picUrl}}" class="player-item-image"
+                    <img src="{{player.picUrl}}" class="player-item-image picture-click" (click)="this.utilities.openProfile(player, this.navCtrl)"
                          onError="this.src='assets/images/user-shape-64.png'"/>
                   </div>
                   <div class="itemPlayerRight">

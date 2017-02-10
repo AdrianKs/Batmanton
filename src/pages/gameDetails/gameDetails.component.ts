@@ -320,17 +320,17 @@ export class GameDetailsComponent implements OnInit{
       if(this.gameItem.acceptedPlayers){
         firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
           acceptedPlayers: this.gameItem.acceptedPlayers
-        });   
+        });
       }
       if(this.gameItem.pendingPlayers){
         firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
           pendingPlayers: this.gameItem.pendingPlayers
-        });   
+        });
       }
       if(this.gameItem.declinedPlayers){
         firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
           declinedPlayers: this.gameItem.declinedPlayers
-        });   
+        });
       }
       firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/location').set({
         street: this.gameItem.location.street,
@@ -451,10 +451,6 @@ export class GameDetailsComponent implements OnInit{
     this.deletedArray = [];
   }
 
-  openProfile(item){
-    this.navCtrl.push(PlayerComponent, { player: item});
-  }
-
   goBack(){
     this.navCtrl.pop();
   }
@@ -547,7 +543,7 @@ export class GameDetailsComponent implements OnInit{
             }
             this.acceptedArray[i] = null;
           }
-        }              
+        }
       }
       for (let i in this.acceptedArray){
         this.acceptedArray[i]=this.acceptedArray[i];
@@ -590,9 +586,9 @@ export class GameDetailsComponent implements OnInit{
             firebase.database().ref('clubs/12/invites/' + i).remove();
           }
         }
-      }      
+      }
     });
-    
+
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       for (let k in this.pendingArray){
         for (let j in this.playerArray){
@@ -626,7 +622,7 @@ export class GameDetailsComponent implements OnInit{
                   state: 0
                 });
                 inviteExists = true;
-              }     
+              }
             }
             if (inviteExists == false){
               let id = this.makeid();
@@ -682,14 +678,14 @@ export class GameDetailsComponent implements OnInit{
                     });
                   }
                 }
-              }  
+              }
             });
             firebase.database().ref('clubs/12/invites').once('value', snapshot => {
               for (let i in snapshot.val()) {
                 if (snapshot.val()[i].match == this.gameItem.id){
                   firebase.database().ref('clubs/12/invites/' + i).remove();
-                }     
-              }      
+                }
+              }
             });
             firebase.database().ref('clubs/12/matches/' + this.gameItem.id).remove();
             this.navCtrl.popToRoot();
@@ -743,6 +739,6 @@ export class GameDetailsComponent implements OnInit{
   editTemplates(){
     this.navCtrl.push(TemplateComponent);
   }
-  
+
 }
 
