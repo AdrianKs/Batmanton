@@ -301,48 +301,57 @@ export class GameDetailsComponent implements OnInit{
   }
 
   finishEditProfile() {
-    if (this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged || this.playersEdited) {
-      if (this.gameItem.home == "true"){
-        this.gameItem.home = true;
-      }
-      if (this.gameItem.home == "false"){
-        this.gameItem.home = false;
-      }
-      firebase.database().ref('clubs/12/matches/' + this.gameItem.id).set({
-        opponent: this.gameItem.opponent,
-        team: this.gameItem.team,
-        home: this.gameItem.home,
-        time: this.gameItem.time
+    if (this.gameItem.opponent == ""){
+      let alert = this.alertCtrl.create({
+        title: 'Achtung!',
+        message: 'Bitte das Feld für die gegnerische Mannschaft ausfüllen.',
+        buttons: ['OK']
       });
-      if(this.gameItem.acceptedPlayers){
-        firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
-          acceptedPlayers: this.gameItem.acceptedPlayers
+      alert.present();
+    } else {
+      if (this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged || this.playersEdited) {
+        if (this.gameItem.home == "true"){
+          this.gameItem.home = true;
+        }
+        if (this.gameItem.home == "false"){
+          this.gameItem.home = false;
+        }
+        firebase.database().ref('clubs/12/matches/' + this.gameItem.id).set({
+          opponent: this.gameItem.opponent,
+          team: this.gameItem.team,
+          home: this.gameItem.home,
+          time: this.gameItem.time
         });
-      }
-      if(this.gameItem.pendingPlayers){
-        firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
-          pendingPlayers: this.gameItem.pendingPlayers
+        if(this.gameItem.acceptedPlayers){
+          firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
+            acceptedPlayers: this.gameItem.acceptedPlayers
+          });
+        }
+        if(this.gameItem.pendingPlayers){
+          firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
+            pendingPlayers: this.gameItem.pendingPlayers
+          });
+        }
+        if(this.gameItem.declinedPlayers){
+          firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
+            declinedPlayers: this.gameItem.declinedPlayers
+          });
+        }
+        firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/location').set({
+          street: this.gameItem.location.street,
+          zipcode: this.gameItem.location.zipcode
         });
+        this.confirmPlayer();
       }
-      if(this.gameItem.declinedPlayers){
-        firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
-          declinedPlayers: this.gameItem.declinedPlayers
-        });
-      }
-      firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/location').set({
-        street: this.gameItem.location.street,
-        zipcode: this.gameItem.location.zipcode
-      });
-      this.confirmPlayer();
+      this.opponentChanged = false;
+      this.teamChanged = false;
+      this.homeChanged = false;
+      this.streetChanged = false;
+      this.zipcodeChanged = false;
+      this.timeChanged = false;
+      this.editMode = false;
+      this.playersEdited = false;
     }
-    this.opponentChanged = false;
-    this.teamChanged = false;
-    this.homeChanged = false;
-    this.streetChanged = false;
-    this.zipcodeChanged = false;
-    this.timeChanged = false;
-    this.editMode = false;
-    this.playersEdited = false;
   }
 
   opponentEnteredChanged(input) {
@@ -446,6 +455,10 @@ export class GameDetailsComponent implements OnInit{
     this.playersEdited = false;
     this.loadData(true, null);
     this.deletedArray = [];
+
+    console.log('accepted: ' + this.acceptedArray);
+    console.log('pending: ' + this.pendingArray);
+    console.log('declined: ' + this.declinedArray);
   }
 
   goBack(){
@@ -485,16 +498,20 @@ export class GameDetailsComponent implements OnInit{
           for (let j in this.playerArray){
             if (player.id==this.playerArray[j].id && this.playerArray[j].gender == "m"){
               this.acceptedMaleCounter--;
-              break;
+              break
             }
             if (player.id==this.playerArray[j].id && this.playerArray[j].gender == "f"){
               this.acceptedFemaleCounter--;
-              break;
+              break
             }
           }
+          console.log(this.acceptedArray[i]);
+          console.log(this.acceptedCounter);
           this.acceptedCounter--;
+          console.log("einmal");
+          console.log(this.acceptedCounter);
         }
-        counter ++;
+        counter++;
       }
       if (player.isMainTeam == false){
         for (let i in this.playerArray){

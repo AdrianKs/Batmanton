@@ -258,19 +258,19 @@ export class AddTeamToMatchdayComponent implements OnInit{
         if (this.acceptedArray[i] == player.id){
           this.acceptedArray.splice(counter, 1);
           this.deletedArray.push(player.id);
+          for (let j in this.allPlayers){
+            if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "m"){
+              this.acceptedMaleCounter--;
+              break;
+            }
+            if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "f"){
+              this.acceptedFemaleCounter--;
+              break;
+            }
+          }
+          this.acceptedCounter--;
         }
         counter ++;
-        for (let j in this.allPlayers){
-          if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "m"){
-            this.acceptedMaleCounter--;
-            break;
-          }
-          if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "f"){
-            this.acceptedFemaleCounter--;
-            break;
-          }
-        }
-        this.acceptedCounter--;
       }
       if (player.isMainTeam == false){
         for (let i in this.allPlayers){
