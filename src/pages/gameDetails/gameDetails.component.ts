@@ -781,96 +781,83 @@ export class GameDetailsComponent implements OnInit{
 
   saveTemplate() {
     let that = this;
-    // Get all templates
-    let templateArray = [];
-    let templateArrayVal = [];
-    return firebase.database().ref('clubs/12/templates').once('value').then((snapshot) => {
-      let counter = 0;
-      templateArrayVal = snapshot.val();
-      for (let i in snapshot.val()) {
-        templateArray[counter] = snapshot.val()[i];
-        templateArray[counter].id = i;
-        counter++;
-      }
-    }).then(function() {
-      //Check if template for this team already exists
-      let templateExists = false;
-      let templateId;
-      for(let i in templateArray){
-        if(templateArray[i].club == that.gameItem.opponent){
-          templateId = templateArray[i].id;
-          templateExists = true;
-          break;
-        }
-      }
+    let templateExists = false;
+    let templateId;
 
-      // if template already exists, ask user whether the template should be overwritten, a new template should be created, or the action should be cancelled
-      if(templateExists){
-        let alert = that.alertCtrl.create({
-          title: 'Adressvorlage für diesen Gegner existiert bereits',
-          message: 'Die Adressvorlage für diesen Gegner existiert bereits. Möchten Sie sie überschreiben oder eine zusätzliche Adressvorlage für diesen Gegner erstellen?',
-          buttons: [
-            {
-              text: 'Abbrechen',
-              role: 'cancel'
-            },
-            {
-              text: 'Überschreiben',
-              handler: () => {
-                firebase.database().ref('clubs/12/templates/' + templateId).update({
-                  club: that.gameItem.opponent,
-                  street: that.gameItem.location.street,
-                  zipcode: that.gameItem.location.zipcode
-                }).then(function() {
-                  let toast = that.toastCtrl.create({
-                    message: "Adressvorlage überschrieben",
-                    duration: 2000,
-                    position: "top"
-                  });
-                  toast.present();
-                  that.loadTemplateData(true, null)
-                })
-              }
-            },
-            {
-              text: 'Zusätzliche Vorlage',
-              handler: () => {
-                let id = that.makeid();
-                firebase.database().ref('clubs/12/templates/').child(id).set({
-                  club: that.gameItem.opponent + "(2)",
-                  street: that.gameItem.location.street,
-                  zipcode: that.gameItem.location.zipcode
-                }).then(function() {
-                  let toast = that.toastCtrl.create({
-                    message: "Adressvorlage gespeichert",
-                    duration: 2000,
-                    position: "top"
-                  });
-                  toast.present();
-                  that.loadTemplateData(true, null)
-                })
-              }
-            }
-          ]
-        });
-        alert.present();
-      }else{
-        let id = that.makeid();
-        firebase.database().ref('clubs/12/templates/').child(id).set({
-          club: that.gameItem.opponent,
-          street: that.gameItem.location.street,
-          zipcode: that.gameItem.location.zipcode
-        }).then(function() {
-          let toast = that.toastCtrl.create({
-            message: "Adressvorlage gespeichert",
-            duration: 2000,
-            position: "top"
-          });
-          toast.present();
-          that.loadTemplateData(true, null)
-        })
+    for(let i in this.dataTemplate){
+      if(this.dataTemplate[i].club == that.gameItem.opponent){
+        templateId = this.dataTemplate[i].id;
+        templateExists = true;
+        break;
       }
-    })
+    }
+
+    // if template already exists, ask user whether the template should be overwritten, a new template should be created, or the action should be cancelled
+    if(templateExists){
+      let alert = that.alertCtrl.create({
+        title: 'Adressvorlage für diesen Gegner existiert bereits',
+        message: 'Die Adressvorlage für diesen Gegner existiert bereits. Möchten Sie sie überschreiben oder eine zusätzliche Adressvorlage für diesen Gegner erstellen?',
+        buttons: [
+          {
+            text: 'Abbrechen',
+            role: 'cancel'
+          },
+          {
+            text: 'Überschreiben',
+            handler: () => {
+              firebase.database().ref('clubs/12/templates/' + templateId).update({
+                club: that.gameItem.opponent,
+                street: that.gameItem.location.street,
+                zipcode: that.gameItem.location.zipcode
+              }).then(function() {
+                let toast = that.toastCtrl.create({
+                  message: "Adressvorlage überschrieben",
+                  duration: 2000,
+                  position: "top"
+                });
+                toast.present();
+                that.loadTemplateData(true, null)
+              })
+            }
+          },
+          {
+            text: 'Zusätzliche Vorlage',
+            handler: () => {
+              let id = that.makeid();
+              firebase.database().ref('clubs/12/templates/').child(id).set({
+                club: that.gameItem.opponent + "(2)",
+                street: that.gameItem.location.street,
+                zipcode: that.gameItem.location.zipcode
+              }).then(function() {
+                let toast = that.toastCtrl.create({
+                  message: "Adressvorlage gespeichert",
+                  duration: 2000,
+                  position: "top"
+                });
+                toast.present();
+                that.loadTemplateData(true, null)
+              })
+            }
+          }
+        ]
+      });
+      alert.present();
+    }else{
+      let id = that.makeid();
+      firebase.database().ref('clubs/12/templates/').child(id).set({
+        club: that.gameItem.opponent,
+        street: that.gameItem.location.street,
+        zipcode: that.gameItem.location.zipcode
+      }).then(function() {
+        let toast = that.toastCtrl.create({
+          message: "Adressvorlage gespeichert",
+          duration: 2000,
+          position: "top"
+        });
+        toast.present();
+        that.loadTemplateData(true, null)
+      })
+    }
   }
   editTemplates(){
     this.navCtrl.push(TemplateComponent);
