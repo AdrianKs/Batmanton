@@ -23,7 +23,7 @@
 // editPlayers & addTeamToMatchday: Beide einen Fertig-Button oder beide keinen
 // Feature: Wenn man beim Spiel erstellen "Heim" auswählt, soll direkt die Heimadresse eingetragen werden
 // Matchday: Ort zu PLZ hinzufügen
-// Bug: ich kann beim bearbeiten screen die gegner löschen und dann speichern
+// Bug: ich kann beim spiel-bearbeiten screen den gegner löschen und dann speichern
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
@@ -36,7 +36,6 @@ import {Camera} from 'ionic-native';
 import {Utilities} from '../../app/utilities';
 
 @Component({
-  selector: 'page-profile',
   templateUrl: 'profile.component.html',
   providers: [AuthData]
 })

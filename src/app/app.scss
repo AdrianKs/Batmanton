@@ -130,6 +130,7 @@ p {
 }
 
 .secondaryDetails{
+  color: $third-dark-shade;
   font-size: 14px;
 }
 
@@ -283,6 +284,10 @@ p {
 
 .center-form {
   text-align: center;
+}
+
+.right-form-inputs input {
+  text-align: right;
 }
 
 .mainDetails {

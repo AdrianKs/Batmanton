@@ -25,7 +25,7 @@
            onError="this.src='assets/images/user-shape-256.png'" (click)="changeProfilePicture()">
     </div>
     <br/>
-    <form class="center-form profile-inputs" [formGroup]="profileForm" novalidate>
+    <form class="center-form right-form-inputs" [formGroup]="profileForm" novalidate>
       <ion-item *ngIf="(!editMode)">
         <ion-label class="form-label">Vorname:</ion-label>
         <ion-label class="form-value">{{utilities.userData.firstname}}</ion-label>
