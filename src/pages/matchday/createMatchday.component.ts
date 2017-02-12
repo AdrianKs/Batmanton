@@ -4,7 +4,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component';
-import { TemplateComponent } from './template.component';
+import { TemplateComponent } from '../templates/template.component';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';

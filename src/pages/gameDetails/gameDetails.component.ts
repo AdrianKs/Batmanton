@@ -6,7 +6,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component';
-import { TemplateComponent } from '../matchday/template.component'
+import { TemplateComponent } from '../templates/template.component'
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
 import * as _ from 'lodash';

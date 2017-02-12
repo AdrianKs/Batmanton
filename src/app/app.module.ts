@@ -7,7 +7,8 @@ import {InvitesMatchdayComponent} from '../pages/invites/invitesmatchday.compone
 import {LoginComponent} from '../pages/login/login.component';
 import {MatchdayComponent} from '../pages/matchday/matchday.component';
 import {CreateMatchdayComponent} from '../pages/matchday/createMatchday.component';
-import {TemplateComponent} from '../pages/matchday/template.component';
+import {TemplateComponent} from '../pages/templates/template.component';
+import {EditTemplateComponent} from '../pages/templates/editTemplate.component';
 import {AddTeamToMatchdayComponent} from '../pages/matchday/addTeamToMatchday.component';
 import {MyGamesComponent} from '../pages/myGames/myGames.component';
 import {GameDetailsComponent} from '../pages/gameDetails/gameDetails.component';
@@ -21,8 +22,6 @@ import {EditRoleComponent} from '../pages/editRole/editRole.component';
 import {TeamsComponent} from '../pages/teams/teams.component';
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
 import {ViewTeamComponent} from '../pages/teams/viewTeam.component';
-//import {PopoverPage} from '../pages/teams/popover.component'; VERALTET UND NICHT MEHR GEBRAUCHT
-//import {EditTeamComponent} from '../pages/teams/editTeam.component'; VERALTET UND NICHT MEHR GEBRAUCHT
 import {EditPlayerComponent} from '../pages/teams/editPlayers.component';
 import {CreateTeamComponent} from '../pages/teams/createNewTeam.component';
 import {Birthday} from './pipes/birthday';
@@ -43,6 +42,7 @@ import {CreatePlayerComponent} from "../pages/userManagement/createPlayer.compon
     MatchdayComponent,
     CreateMatchdayComponent,
     TemplateComponent,
+    EditTemplateComponent,
     AddTeamToMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
@@ -82,6 +82,7 @@ import {CreatePlayerComponent} from "../pages/userManagement/createPlayer.compon
     MatchdayComponent,
     CreateMatchdayComponent,
     TemplateComponent,
+    EditTemplateComponent,
     AddTeamToMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
