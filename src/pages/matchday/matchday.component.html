@@ -28,11 +28,11 @@
           <div *ngIf="item.time == 0">TBA</div>
           <div *ngIf="item.time != 0">{{ item.time | matchTime }}</div>
           <div class="mainDetails">{{ item.opponent }}</div>
-          <div *ngIf="item.team == 0"><p>keine Mannschaft</p></div>
-          <div *ngIf="item.team != 0"><p>{{ item.team | teams}}</p></div>
-          <div *ngIf="item.home == true"><p>Heim</p></div>
-          <div *ngIf="item.home == false && item.home != 'unknown'"><p>Auswärts</p></div>
-          <div *ngIf="item.home == 'unknown'"><p>TBA</p></div>
+          <div *ngIf="item.team == 0">keine Mannschaft</div>
+          <div *ngIf="item.team != 0">{{ item.team | teams}}</div>
+          <div *ngIf="item.home == true">Heim</div>
+          <div *ngIf="item.home == false && item.home != 'unknown'">Auswärts</div>
+          <div *ngIf="item.home == 'unknown'">TBA</div>
         </div>
     </ion-item>
 

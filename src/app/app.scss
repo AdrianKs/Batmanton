@@ -71,11 +71,6 @@ form {
   }
 }
 
-p {
-  font-size: 0.8em;
-  color: #d2d2d2;
-}
-
 .menuHeader {
   background-color: #cccccc;
   height: 19%;
@@ -127,11 +122,6 @@ p {
 .secPlayerContent {
   font-size: 11px;
   color: $third-dark-shade;
-}
-
-.secondaryDetails{
-  color: $third-dark-shade;
-  font-size: 14px;
 }
 
 .thumbnail-pictures{
@@ -278,6 +268,16 @@ p {
   font-size: 14px;
 }
 
+.mainDetails {
+  color: white;
+  font-size: 16px;
+}
+
+.secondaryDetails{
+  color: $third-dark-shade;
+  font-size: 14px;
+}
+
 .white-font{
   color: white;
 }
@@ -288,11 +288,6 @@ p {
 
 .right-form-inputs input {
   text-align: right;
-}
-
-.mainDetails {
-  color: white;
-  font-size: 16px;
 }
 
 .fab{
