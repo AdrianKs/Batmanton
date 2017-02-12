@@ -4,6 +4,11 @@
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Benutzerverwaltung</ion-title>
+    <ion-buttons right>
+      <button ion-button class="info-button-size" (click)="openInfo()" icon-only>
+        <ion-icon name="ios-information-circle-outline" clear item-right></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -24,7 +29,7 @@
     <ion-list *ngSwitchCase="'maenner'">
       <div *ngFor="let item of dataPlayer; let i = index;">
         <div *ngIf="item.gender == 'm'">
-          <ion-item (click)="openEditor($event, item)">
+          <ion-item class="less-label-margin" (click)="openEditor($event, item)">
             <div>
               <div class="itemPlayerLeft">
                 <img id="profileImage" src="{{item.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
@@ -42,11 +47,17 @@
           </ion-item>
         </div>
       </div>
+      <div *ngIf="countMan == 0">
+        <ion-label class="align-center no-items">Keine Spiele vorhanden</ion-label>
+      </div>
+      <div *ngIf="countMan != 0">
+        <ion-label class="align-center no-items">{{countMan}} Spieler</ion-label>
+      </div>
     </ion-list>
     <ion-list *ngSwitchCase="'frauen'">
       <div *ngFor="let item of dataPlayer; let i = index;">
         <div *ngIf="item.gender == 'f'">
-          <ion-item (click)="openEditor($event, item)">
+          <ion-item class="less-label-margin" (click)="openEditor($event, item)">
             <div class="itemPlayer">
               <div class="itemPlayerLeft">
                 <img src="{{item.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
@@ -64,8 +75,19 @@
           </ion-item>
         </div>
       </div>
+      <div *ngIf="countWoman == 0">
+        <ion-label class="align-center no-items">Keine Spiele vorhanden</ion-label>
+      </div>
+      <div *ngIf="countWoman != 0">
+        <ion-label class="align-center no-items">{{countWoman}} Spieler</ion-label>
+      </div>
     </ion-list>
   </div>
+  <ion-fab right bottom >
+    <button ion-fab icon-only (click)="createPlayer()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
  <ion-refresher (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
   </ion-refresher>

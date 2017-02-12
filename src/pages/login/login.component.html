@@ -2,32 +2,33 @@
   <form [formGroup]="loginForm" class="center-form" (submit)="loginUser()" novalidate>
 
     <ion-item>
-      <ion-label stacked>Email</ion-label>
+      <ion-label stacked>E-Mail</ion-label>
       <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
-                 placeholder="Your email address"
+                 placeholder="Ihre E-Mail Addresse"
                  [class.invalid]="!loginForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.email.valid  && (emailChanged || submitAttempt)">
-      <p>Bitte geben Sie eine gültige Email-Adresse ein.</p>
+      <p>Bitte geben Sie eine gültige E-Mail-Adresse ein.</p>
     </ion-item>
 
     <ion-item>
-      <ion-label stacked>Password</ion-label>
+      <ion-label stacked>Passwort</ion-label>
       <ion-input #password formControlName="password" type="password" (change)="elementChanged(password)"
-                 placeholder="Your password"
+                 placeholder="Ihr Passwort"
                  [class.invalid]="!loginForm.controls.password.valid && (passwordChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!loginForm.controls.password.valid  && (passwordChanged || submitAttempt)">
       <p>Ihr Passwort besteht aus mindestens 6 Zeichen.</p>
     </ion-item>
     <br>
-    <button ion-button round outline type="submit">
+    <button ion-button round icon-left outline type="submit">
+      <ion-icon name="log-in"></ion-icon>
       Login
     </button>
 
   </form>
 
-  <div class="button-center">
+  <div class="align-center">
     <button ion-button round clear (click)="goToSignup()">
       Registrieren
     </button>

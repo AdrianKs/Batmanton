@@ -1,12 +1,8 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
     <ion-buttons left>
-      <button ion-button clear (click)="goBack()">
-        Zurück
-      </button>
-    </ion-buttons>
-    <ion-buttons right>
-      <button ion-button (click)="confirmPlayer()">Fertig
+      <button ion-button (click)="confirmPlayer()" icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>Spieler hinzufügen</ion-title>
@@ -18,7 +14,12 @@
     <ion-label stacked>Mannschaft</ion-label>
     <ion-select [(ngModel)]="teamSelection" placeholder="{{match.team | teams}}">
       <ion-option value="0">keine Mannschaft</ion-option>
-      <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
+      <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">
+            {{item.name}}
+            <div *ngIf="item.ageLimit==0">(Erw.,</div>
+            <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
+            S{{item.sclass}})
+          </ion-option>
     </ion-select>
   </ion-item>
   <ion-toolbar>
@@ -36,10 +37,10 @@
       <div *ngFor="let item of allPlayers">
         <div *ngIf="item.team==teamSelection">
           <div *ngIf="item.gender=='m'">
-            <ion-item>
+            <ion-item class="less-label-margin">
               <div>
                 <div class="itemPlayerLeft">
-                  <img src="{{item.picUrl}}" class="player-item-image"
+                  <img src="{{item.picUrl}}" class="player-item-image picture-click" (click)="this.Utilities.openProfile(item, this.navCtrl)"
                        onError="this.src='assets/images/user-shape-64.png'"/>
                 </div>
                 <div class="itemPlayerRight">
@@ -70,10 +71,10 @@
       <div *ngFor="let item of allPlayers">
         <div *ngIf="item.team==teamSelection">
           <div *ngIf="item.gender=='f'">
-            <ion-item>
+            <ion-item class="less-label-margin">
               <div>
                 <div class="itemPlayerLeft">
-                  <img src="{{item.picUrl}}" class="player-item-image"
+                  <img src="{{item.picUrl}}" class="player-item-image picture-click" (click)="this.Utilities.openProfile(item, this.navCtrl)"
                        onError="this.src='assets/images/user-shape-64.png'"/>
                 </div>
                 <div class="itemPlayerRight">

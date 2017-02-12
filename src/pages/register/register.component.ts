@@ -132,7 +132,7 @@ export class RegisterComponent {
   signupUser() {
     this.submitAttempt = true;
 
-    if (!this.signupForm.valid) {
+    if (!this.signupForm.valid || !this.gender || !this.team) {
       console.log(this.signupForm.value);
       console.log("gender: " + this.gender);
       console.log("team: " + this.team);
@@ -152,7 +152,7 @@ export class RegisterComponent {
       }, (error) => {
         this.loading.dismiss();
         let alert = this.alertCtrl.create({
-          message: error.message,
+          message: this.authData.getErrorMessage(error),
           buttons: [
             {
               text: "Ok",

@@ -9,10 +9,11 @@
 
 <ion-content padding>
   <!--<button ion-button (click)="testGetData()">Print Data</button>-->
-  <ion-searchbar placeholder="Suche" (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-searchbar placeholder="Suche" (ionInput)="getItems($event.target.value)"></ion-searchbar>
   <ion-list>
     <div *ngFor="let item of teams">
-      <ion-item (click)="viewTeam($event, item)" [(ngModel)]="item.name" ngDefaultControl>
+      <ion-item-sliding>
+      <ion-item (click)="viewTeam($event, item)" [(ngModel)]="item.name" ngDefaultControl class="less-label-margin">
         <div>
           <div class="itemLeft">
               <div class="thumbnail-pictures">
@@ -31,21 +32,24 @@
             <!<img src="assets/images/ic_account_circle_black_24dp_2x.png" />-->
           <!--</div>-->
           <div class="itemRight">
-            <div class="mainDetails">
-              {{item.name}} <br>
-            </div>
-            <div *ngIf="item.ageLimit==0">
-              Altersklasse: Erwachsen
-            </div>
-            <div *ngIf="item.ageLimit!=0">
-              Altersklasse: U {{item.ageLimit}}
-            </div>
+            <div *ngIf="item.ageLimit==0">Erwachsen</div>
+            <div *ngIf="item.ageLimit!=0">U {{item.ageLimit}}</div>
+            <div class="mainDetails">{{item.name}}</div>
+            <div>{{item.type}}</div>
+            <div>S-Klasse {{item.sclass}}</div>
           </div>
         </div>
       </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="danger" (click)="presentConfirm(item.id)">
+            <ion-icon name='trash'></ion-icon>
+            Löschen
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
     </div>
   </ion-list>
-  <ion-fab right bottom>
+  <ion-fab right bottom *ngIf="(isAdmin)">
      <button ion-fab icon-only color="secondary" (click)="pushToAddNewTeam()">
     <ion-icon name="add"></ion-icon>
   </button>

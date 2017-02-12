@@ -1,13 +1,18 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button ion-button (click)="goBack()" icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>Profil</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <div class="topContainer">
-    <div class="pictureContainer">
-      <img src="{{player.picUrl}}" class="profileImg" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+  <div>
+    <div class="picture-container">
+      <img class="profile-image picture-border" src="{{player.picUrl}}" onError="this.src='assets/images/user-shape-256.png'" />
     </div>
     <div class="playerDataContainer">
       <ion-item>
@@ -19,12 +24,20 @@
         <ion-label class="playerValue">{{player.email}}</ion-label>
       </ion-item>
       <ion-item>
-        <ion-label class="playerLabel">Geburtstag:</ion-label>
+        <ion-label class="playerLabel">Geburtsdatum:</ion-label>
         <ion-label class="playerValue">{{player.birthday | birthday}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label class="playerLabel">Geschlecht:</ion-label>
+        <ion-label class="playerValue">{{player.gender | gender}}</ion-label>
       </ion-item>
       <ion-item>
         <ion-label class="playerLabel">Mannschaft:</ion-label>
         <ion-label class="playerValue">{{player.team | teams}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label class="playerLabel">Anzahl Aushilfen:</ion-label>
+        <ion-label class="playerValue">{{player.helpCounter}}</ion-label>
       </ion-item>
     </div>
   </div>

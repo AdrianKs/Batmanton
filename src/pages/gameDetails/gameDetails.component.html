@@ -1,8 +1,8 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
     <ion-buttons left>
-      <button ion-button clear *ngIf="(!editMode)" (click)="goBack()">
-        Zurück
+      <button *ngIf="(!editMode)" ion-button (click)="goBack()" icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
       </button>
       <button ion-button *ngIf="(editMode)" (click)="cancelEditProfile()">Abbrechen</button>
     </ion-buttons>
@@ -11,7 +11,7 @@
       <button *ngIf="(!editMode)" ion-button (click)="editProfile()">Bearbeiten
       </button>
       <button
-        [disabled]="(!opponentChanged && !teamChanged && !homeChanged && !streetChanged && !zipcodeChanged && !timeChanged)"
+        [disabled]="(!opponentChanged && !teamChanged && !homeChanged && !streetChanged && !zipcodeChanged && !timeChanged  && !playersEdited)"
         *ngIf="(editMode)" ion-button (click)="finishEditProfile()">Fertig
       </button>
     </ion-buttons>
@@ -22,7 +22,7 @@
 <ion-content padding>
   <div>
     <div class="align-center">
-      <div class="pictureContainer inline">
+      <div class="picture-container inline">
         <div class="thumbnail-pictures-big">
           <div>
             <img class="thumbnail-top-left-big" src="{{getFirstFourPicUrls(gameItem)[0]}}"
@@ -39,15 +39,15 @@
         </div>
       </div>
     </div>
-    <div class="game-details-form game-details-inputs">
+    <div class="game-details-form right-form-inputs">
       <ion-item *ngIf="(!editMode)">
         <ion-label class="form-label">Gegner:</ion-label>
         <ion-label class="form-value">{{ gameItem.opponent }}</ion-label>
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Gegner:</ion-label>
-        <ion-input class="form-value" #opponent [(ngModel)]="gameItem.opponent"
-                  (input)="opponentEnteredChanged(opponent)"></ion-input>
+        <ion-input class="form-value" #opponent placeholder="Gegner" [(ngModel)]="gameItem.opponent"
+                   (input)="opponentEnteredChanged(opponent)"></ion-input>
       </ion-item>
       <ion-item *ngIf="(!editMode)">
         <ion-label class="form-label">Team:</ion-label>
@@ -59,7 +59,12 @@
                     placeholder="{{gameItem.team | teams}}"
                     (ionChange)="teamSelectChanged(gameItem.team)" doneText="Ok" cancelText="Abbrechen">
           <ion-option value=0>keine Mannschaft</ion-option>
-          <ion-option *ngFor="let item of teamArray" value="{{item.id}}">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of teamArray" value="{{item.id}}">
+            {{item.name}}
+            <div *ngIf="item.ageLimit==0">(Erw.</div>
+            <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
+            S{{item.sclass}})
+          </ion-option>
         </ion-select>
       </ion-item>
       <ion-item *ngIf="(!editMode)">
@@ -94,13 +99,14 @@
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Adresse:</ion-label>
-        <ion-input class="form-value" #street [(ngModel)]="gameItem.location.street"
-                  (input)="streetEnteredChanged(street)"></ion-input><br>
+        <ion-input class="form-value" #street placeholder="Straße, Hausnr." [(ngModel)]="gameItem.location.street"
+                   (input)="streetEnteredChanged(street)"></ion-input>
+        <br>
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">PLZ:</ion-label>
-        <ion-input class="form-value" #zipcode [(ngModel)]="gameItem.location.zipcode"
-                  (input)="zipcodeSelectChanged(zipcode)"></ion-input>
+        <ion-input class="form-value" #zipcode placeholder="PLZ" [(ngModel)]="gameItem.location.zipcode"
+                   (input)="zipcodeSelectChanged(zipcode)"></ion-input>
       </ion-item>
       <ion-item *ngIf="(!editMode)">
         <ion-label class="form-label">Wann:</ion-label>
@@ -118,110 +124,187 @@
       </ion-item>
     </div>
 
-    <div *ngIf="(editMode)" class="bottomContainer">
-        <button class="button-width" ion-button outline round color="danger" icon-left (click)="deleteGame()">
-          <ion-icon name="close"></ion-icon>
-          Spiel löschen
-        </button>
+    <div *ngIf="(editMode && isAdmin)" class="edit-players-button-container">
+      <button ion-button small outline color="primary" (click)="openTemplatesActionSheet()" icon-left item-right>
+        <ion-icon name="map"></ion-icon>
+        Adressvorlagen
+      </button>
+    </div>
+
+    <div *ngFor="let team of teamArray">
+      <div *ngIf="team.id == gameItem.team">
+        <div *ngIf="team.type == 'Normal'">
+          <ion-list-header class="align-center">Checkliste Normal</ion-list-header>
+          <ion-item icon-left>
+            <div class="itemLeft">
+              <ion-icon color="secondary" *ngIf="acceptedCounter >= 6" name="checkmark-circle"></ion-icon>
+              <ion-icon color="danger" *ngIf="acceptedCounter < 6" name="close-circle"></ion-icon>
+            </div>
+            <div class="itemRight white-font">6 Spieler aufgestellt</div>
+          </ion-item>
+          <ion-item icon-left>
+            <div class="itemLeft">
+              <ion-icon color="secondary" *ngIf="acceptedMaleCounter >= 4" name="checkmark-circle"></ion-icon>
+              <ion-icon color="danger" *ngIf="acceptedMaleCounter < 4" name="close-circle"></ion-icon>
+            </div>
+            <div class="itemRight white-font">4 Männer aufgestellt</div>
+          </ion-item>
+          <ion-item icon-left>
+            <div class="itemLeft">
+              <ion-icon color="secondary" *ngIf="acceptedFemaleCounter >= 2" name="checkmark-circle"></ion-icon>
+              <ion-icon color="danger" *ngIf="acceptedFemaleCounter < 2" name="close-circle"></ion-icon>
+            </div>
+            <div class="itemRight white-font">2 Frauen aufgestellt</div>
+          </ion-item>
+        </div>
+        <div *ngIf="team.type == 'Mini'">
+          <ion-list-header class="align-center">Checkliste  Mini</ion-list-header>
+          <ion-item icon-left>
+            <div class="itemLeft">
+              <ion-icon color="secondary" *ngIf="acceptedCounter >= 4" name="checkmark-circle"></ion-icon>
+              <ion-icon color="danger" *ngIf="acceptedCounter < 4" name="close-circle"></ion-icon>
+            </div>
+            <div class="itemRight white-font">4 Spieler aufgestellt</div>
+          </ion-item>
+        </div>
+      </div>
     </div>
 
     <ion-list-header class="align-center">Spieler</ion-list-header>
-      <ion-toolbar no-border-top>
-        <ion-segment [(ngModel)]="playerStatus">
-          <ion-segment-button value="accepted">
-            Zugesagt
-          </ion-segment-button>
-          <ion-segment-button value="pending">
-            Offen
-          </ion-segment-button>
-          <ion-segment-button value="declined">
-            Abgesagt
-          </ion-segment-button>
-        </ion-segment>
-      </ion-toolbar>
+    <ion-toolbar no-border-top>
+      <ion-segment [(ngModel)]="playerStatus">
+        <ion-segment-button value="accepted">
+          Zugesagt
+        </ion-segment-button>
+        <ion-segment-button value="pending">
+          Offen
+        </ion-segment-button>
+        <ion-segment-button value="declined">
+          Abgesagt
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
   </div>
   <div [ngSwitch]="playerStatus">
     <ion-list class="players-list" *ngSwitchCase="'accepted'">
-      <div *ngFor="let relevantPlayer of gameItem.acceptedPlayers">
+      <div *ngFor="let relevantPlayer of acceptedArray">
         <div *ngFor="let player of playerArray">
-          <div *ngIf="relevantPlayer == player.id">
-            <ion-item (click)="openProfile(player)">
-              <div>
-                <div class="itemPlayerLeft">
-                  <img src="{{player.picUrl}}" class="player-item-image"
-                       onError="this.src='assets/images/user-shape-64.png'"/>
-                </div>
-                <div class="itemPlayerRight">
-                  <div class="mainDetails">
-                    {{ player.lastname }}, {{player.firstname}}
+          <div *ngIf="player.deleted==false">
+            <div *ngIf="relevantPlayer == player.id">
+              <ion-item class="less-label-margin">
+                <div>
+                  <div class="itemPlayerLeft">
+                    <img src="{{player.picUrl}}" class="player-item-image picture-click"
+                         (click)="this.Utilities.openProfile(player, this.navCtrl)"
+                         onError="this.src='assets/images/user-shape-64.png'"/>
                   </div>
-                  <div class="secondaryDetails">
-                    {{player.team | teams}} <br/>
-                    {{player.birthday | birthday}}
+                  <div class="itemPlayerRight">
+                    <div class="mainDetails">
+                      {{ player.lastname }}, {{player.firstname}}
+                      <button *ngIf="editMode"
+                              class="player-item-button" ion-button round outline icon-only color="danger"
+                              (click)="removePlayer(player)">
+                        <ion-icon name="remove"></ion-icon>
+                      </button>
+                    </div>
+                    <div class="secondaryDetails">
+                      {{player.team | teams}} <br/>
+                      {{player.birthday | birthday}}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ion-item>
+              </ion-item>
+            </div>
           </div>
         </div>
+      </div>
+      <div *ngIf="acceptedCounter == 0">
+        <ion-label class="align-center no-items">Keine Spieler eingetragen</ion-label>
       </div>
     </ion-list>
     <ion-list class="players-list" *ngSwitchCase="'pending'">
-      <div *ngFor="let relevantPlayer of gameItem.pendingPlayers">
+      <div *ngFor="let relevantPlayer of pendingArray">
         <div *ngFor="let player of playerArray">
-          <div *ngIf="relevantPlayer == player.id">
-            <ion-item (click)="openProfile(player)">
-              <div>
-                <div class="itemPlayerLeft">
-                  <img src="{{player.picUrl}}" class="player-item-image"
-                       onError="this.src='assets/images/user-shape-64.png'"/>
-                </div>
-                <div class="itemPlayerRight">
-                  <div class="mainDetails">
-                    {{ player.lastname }}, {{player.firstname}}
+          <div *ngIf="player.deleted==false">
+            <div *ngIf="relevantPlayer == player.id">
+              <ion-item class="less-label-margin">
+                <div>
+                  <div class="itemPlayerLeft">
+                    <img src="{{player.picUrl}}" class="player-item-image picture-click"
+                         (click)="this.Utilities.openProfile(player, this.navCtrl)"
+                         onError="this.src='assets/images/user-shape-64.png'"/>
                   </div>
-                  <div class="secondaryDetails">
-                    {{player.team | teams}} <br/>
-                    {{player.birthday | birthday}}
+                  <div class="itemPlayerRight">
+                    <div class="mainDetails">
+                      {{ player.lastname }}, {{player.firstname}}
+                      <button *ngIf="editMode"
+                              class="player-item-button" ion-button round outline icon-only color="danger"
+                              (click)="removePlayer(player)">
+                        <ion-icon name="remove"></ion-icon>
+                      </button>
+                    </div>
+                    <div class="secondaryDetails">
+                      {{player.team | teams}} <br/>
+                      {{player.birthday | birthday}}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ion-item>
+              </ion-item>
+            </div>
           </div>
         </div>
       </div>
+      <div *ngIf="pendingCounter == 0">
+        <ion-label class="align-center no-items">Keine Spieler eingetragen</ion-label>
+      </div>
     </ion-list>
     <ion-list class="players-list" *ngSwitchCase="'declined'">
-      <div *ngFor="let relevantPlayer of gameItem.declinedPlayers">
+      <div *ngFor="let relevantPlayer of declinedArray">
         <div *ngFor="let player of playerArray">
-          <div *ngIf="relevantPlayer == player.id">
-            <ion-item (click)="openProfile(player)">
-              <div>
-                <div class="itemPlayerLeft">
-                  <img src="{{player.picUrl}}" class="player-item-image"
-                       onError="this.src='assets/images/user-shape-64.png'"/>
-                </div>
-                <div class="itemPlayerRight">
-                  <div class="mainDetails">
-                    {{ player.lastname }}, {{player.firstname}}
+          <div *ngIf="player.deleted==false">
+            <div *ngIf="relevantPlayer == player.id">
+              <ion-item class="less-label-margin">
+                <div>
+                  <div class="itemPlayerLeft">
+                    <img src="{{player.picUrl}}" class="player-item-image picture-click"
+                         (click)="this.Utilities.openProfile(player, this.navCtrl)"
+                         onError="this.src='assets/images/user-shape-64.png'"/>
                   </div>
-                  <div class="secondaryDetails">
-                    {{player.team | teams}} <br/>
-                    {{player.birthday | birthday}}
+                  <div class="itemPlayerRight">
+                    <div class="mainDetails">
+                      {{ player.lastname }}, {{player.firstname}}
+                      <button *ngIf="editMode"
+                              class="player-item-button" ion-button round outline icon-only color="danger"
+                              (click)="removePlayer(player)">
+                        <ion-icon name="remove"></ion-icon>
+                      </button>
+                    </div>
+                    <div class="secondaryDetails">
+                      {{player.team | teams}} <br/>
+                      {{player.birthday | birthday}}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </ion-item>
+              </ion-item>
+            </div>
           </div>
         </div>
+      </div>
+      <div *ngIf="declinedCounter == 0">
+        <ion-label class="align-center no-items">Keine Spieler eingetragen</ion-label>
       </div>
     </ion-list>
   </div>
 
-  <div class="edit-players-button-container">
+  <div *ngIf="(editMode && isAdmin)" class="edit-players-button-container">
     <button class="button-width" ion-button outline round color="secondary" icon-left (click)="addPlayers()">
       <ion-icon name="add"></ion-icon>
       Spieler einladen
+    </button>
+    <button class="button-width" ion-button outline round color="danger" icon-left
+            (click)="deleteGame()">
+      <ion-icon name="close"></ion-icon>
+      Spiel löschen
     </button>
   </div>
 

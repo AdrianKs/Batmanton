@@ -1,5 +1,5 @@
 //todo
-//keine spiele vorhanden
+//bilder
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';
@@ -29,17 +29,20 @@ export class MatchdayComponent implements OnInit {
   dataInvites: any;
   loading: any;
   currentUser: any;
-  isAdmin: boolean;
-  
+  isAdmin: boolean = false;
+  counter: any;
+
   constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
-    
+
   }
 
   isTrainer() {
         this.currentUser = this.Utilities.user;
         firebase.database().ref('/clubs/12/players/' + this.currentUser.uid + '/').once('value', snapshot => {
             let data = snapshot.val();
-            this.isAdmin = data.isTrainer;
+            if(data){
+              this.isAdmin = data.isTrainer;
+            }
         });
     }
 
@@ -49,11 +52,11 @@ export class MatchdayComponent implements OnInit {
     }
     firebase.database().ref('clubs/12/matches').once('value', snapshot => {
       let gamesArray = [];
-      let counter = 0;
+      this.counter = 0;
       for (let i in snapshot.val()) {
-        gamesArray[counter] = snapshot.val()[i];
-        gamesArray[counter].id = i;
-        counter++;
+        gamesArray[this.counter] = snapshot.val()[i];
+        gamesArray[this.counter].id = i;
+        this.counter++;
       }
       this.dataGames = gamesArray;
       this.dataGames = _.sortBy(this.dataGames, "time").reverse();
@@ -82,8 +85,7 @@ export class MatchdayComponent implements OnInit {
 
   createAndShowLoading() {
     this.loading = this.loadingCtrl.create({
-      spinner: 'ios',
-      content: 'Lade Daten'
+      spinner: 'ios'
     })
     this.loading.present();
   }
@@ -92,7 +94,7 @@ export class MatchdayComponent implements OnInit {
     let urlArray = [];
     let counter = 0;
     for (let i of this.dataInvites) {
-      if (i.match == match.id && i.sender == this.Utilities.user.uid && counter < 4){
+      if (i.match == match.id && counter < 4){
           for(let j of this.Utilities.allPlayers){
             if(i.recipient == j.id){
               urlArray[counter] = j.picUrl;
@@ -103,18 +105,57 @@ export class MatchdayComponent implements OnInit {
     }
     return urlArray;
   }
-  
+
   openDetails(ev, value) {
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 
-  doRefresh(refresher) {
-    this.loadData(false, refresher);
-  }
-
-
   createGame(){
     this.navCtrl.push(CreateMatchdayComponent);
+  }
+
+  deleteGame(gameItem){
+    let confirm = this.alertCtrl.create({
+      title: 'Warnung',
+      message: 'Daten können nach Löschvorgang nicht wiederhergestellt werden. Fortfahren?',
+      buttons: [
+        {
+          text: 'Nein',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Ja',
+          handler: () => {
+            firebase.database().ref('clubs/12/players').once('value', snapshot => {
+              for (let i in snapshot.val()){
+                for (let j in gameItem.acceptedPlayers){
+                  if (gameItem.acceptedPlayers[j] == i && snapshot.val()[i].team != gameItem.team){
+                    let newHelpCounter = snapshot.val()[i].helpCounter;
+                    newHelpCounter--;
+                    firebase.database().ref('clubs/12/players/' + i).update({
+                      helpCounter: newHelpCounter
+                    });
+                  }
+                }
+              }
+            });
+            firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+              for (let i in snapshot.val()) {
+                if (snapshot.val()[i].match == gameItem.id){
+                  firebase.database().ref('clubs/12/invites/' + i).remove();
+                }
+              }
+            });
+            firebase.database().ref('clubs/12/matches/' + gameItem.id).remove()
+              .then(() => {
+                this.loadData(true, null);
+              });
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }
 
