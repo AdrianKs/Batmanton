@@ -1,21 +1,16 @@
 //todo
 //bilder
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, ToastController } from 'ionic-angular';
+import { EditTemplateComponent } from './editTemplate.component';
 import firebase from 'firebase';
-import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'page-template',
   templateUrl: 'template.component.html',
 })
 
-export class TemplateComponent implements OnInit {
-
-  ngOnInit() {
-
-  }
+export class TemplateComponent {
 
   ionViewWillEnter() {
     this.loadData(true, null);
@@ -24,11 +19,14 @@ export class TemplateComponent implements OnInit {
   dataTemplate: any;
   loading: any;
   counter: any;
-  
-  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
-    
+
+  constructor(public navCtrl: NavController, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+
   }
 
+  openDetails(value) {
+    this.navCtrl.push(EditTemplateComponent, { templateItem: value , createNew: false});
+  }
 
   loadData(showLoading: boolean, event): void {
     if (showLoading) {
@@ -85,110 +83,40 @@ export class TemplateComponent implements OnInit {
 
       return text;
   }
-  
+
   doRefresh(refresher) {
     this.loadData(false, refresher);
   }
 
-  deleteTemplate(templateItem){
-    templateItem.deleted = true;
-    firebase.database().ref('clubs/12/templates/'+templateItem.id).remove();
-    let toast = this.toastCtrl.create({
-      message: 'Adressvorlage wurde gelöscht',
-      duration: 1000,
-      position: 'top'
-    });
-    toast.present();
-  }
+  deleteTemplate(templateItem) {
+    var that = this;
 
-  editTemplate(templateItem){
-    let prompt = this.alertCtrl.create({
-      title: 'Adresse bearbeiten',
-      message: "Bitte Felder ausfüllen:",
-      inputs: [
-        {
-          name: 'club',
-          placeholder: templateItem.club
-        },
-        {
-          name: 'street',
-          placeholder: templateItem.street
-        },
-        {
-          name: 'zipcode',
-          placeholder: templateItem.zipcode
-        },
-      ],
+    let myAlert = this.alertCtrl.create({
+      title: 'Adressvorlage löschen',
+      message: 'Wollen Sie die Adressvorlage wirklich löschen?',
       buttons: [
         {
           text: 'Abbrechen',
-          handler: data => {
-          }
+          role: 'cancel'
         },
         {
-          text: 'Absenden',
-          handler: data => {
-            if (data.club == ""){
-              data.club = templateItem.club;
-            }
-            if (data.street == ""){
-              data.street = templateItem.street;
-            }
-            if (data.zipcode == ""){
-              data.zipcode = templateItem.zipcode;
-            }
-            firebase.database().ref('clubs/12/templates/'+templateItem.id).set({
-              club: data.club,
-              street: data.street,
-              zipcode: data.zipcode
+          text: 'Löschen',
+          handler: () => {
+            firebase.database().ref('clubs/12/templates/' + templateItem.id).remove().then(function () {
+              that.loadData(false, null);
+            }, function (error) {
+              alert(error.message);
             });
-            this.loadData(false, null);
           }
         }
       ]
     });
-    prompt.present();
+    myAlert.present();
   }
 
   createTemplate(){
-    let prompt = this.alertCtrl.create({
-      title: 'Adresse hinzufügen',
-      message: "Bitte Felder ausfüllen:",
-      inputs: [
-        {
-          name: 'club',
-          placeholder: 'Vereinsname'
-        },
-        {
-          name: 'street',
-          placeholder: 'Adresse'
-        },
-        {
-          name: 'zipcode',
-          placeholder: 'PLZ'
-        },
-      ],
-      buttons: [
-        {
-          text: 'Abbrechen',
-          handler: data => {
-          }
-        },
-        {
-          text: 'Absenden',
-          handler: data => {
-            let id = this.makeid();
-            firebase.database().ref('clubs/12/templates/').child(id).set({
-              club: data.club,
-              street: data.street,
-              zipcode: data.zipcode
-            });
-            this.loadData(false, null);
-          }
-        }
-      ]
-    });
-    prompt.present();
+    let emptyTemplateObject = {club: "", street: "", zipcode: ""};
+    this.navCtrl.push(EditTemplateComponent, { templateItem: emptyTemplateObject, createNew: true});
   }
 
   goBack(){

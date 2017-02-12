@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-navbar hideBackButton="true">
+    <button ion-button menuToggle *ngIf="(!editMode)">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-buttons left>
+      <button ion-button (click)="goBack()">Abbrechen</button>
+    </ion-buttons>
+    <ion-title *ngIf="!createNew">Vorlage bearbeiten</ion-title>
+    <ion-title *ngIf="createNew">Vorlage erstellen</ion-title>
+    <ion-buttons right>
+      <button
+        [disabled]="(!clubChanged && !streetChanged && !zipcodeChanged) || !templateForm.controls.club.valid"
+        ion-button (click)="finish()">Fertig
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div>
+    <form class="center-form right-form-inputs" [formGroup]="templateForm" novalidate>
+      <ion-item>
+        <ion-label color="primary">Gegner:</ion-label>
+        <ion-input class="form-value" #club formControlName="club" [(ngModel)]="templateItem.club"
+                   (input)="elementChanged(club)"
+                   [class.invalid]="!templateForm.controls.club.valid && clubChanged"></ion-input>
+      </ion-item>
+      <ion-item class="error-message" *ngIf="(!templateForm.controls.club.valid && clubChanged) || (createNew && !clubChanged)">
+        <p>Bitte geben einen Gegner ein.</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary">Straße:</ion-label>
+        <ion-input class="form-value" #street formControlName="street" [(ngModel)]="templateItem.street"
+                   (input)="elementChanged(street)"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="primary">PLZ, Ort:</ion-label>
+        <ion-input class="form-value" #zipcode formControlName="zipcode" [(ngModel)]="templateItem.zipcode"
+                   (input)="elementChanged(zipcode)"></ion-input>
+      </ion-item>
+    </form>
+
+    <div *ngIf="!createNew" class="align-center">
+      <button class="button-width" ion-button round color="danger" icon-left outline (click)="deleteTemplate()">
+        <ion-icon name="close"></ion-icon>
+        Vorlage löschen
+      </button>
+    </div>
+
+  </div>
+</ion-content>

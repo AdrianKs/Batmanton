@@ -4,7 +4,7 @@
 //check createMatchday
 //Alarm bei Zeitänderung
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, ActionSheetController, ToastController, ModalController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component';
 import { TemplateComponent } from '../templates/template.component'
 import firebase from 'firebase';
@@ -70,7 +70,7 @@ export class GameDetailsComponent implements OnInit{
     }
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public modalCtrl: ModalController) {
     this.gameItem = navP.get('gameItem');
   }
 
@@ -722,29 +722,39 @@ export class GameDetailsComponent implements OnInit{
   }
 
   showTemplates(){
+    let templatesAvailable = false;
     let alert = this.alertCtrl.create();
-    let dataAvailable = false;
     alert.setTitle('Vorlage auswählen');
 
     for (let i in this.dataTemplate){
-      alert.addInput({
-        type: 'radio',
-        label: this.dataTemplate[i].club + ": " + this.dataTemplate[i].street + ", " + this.dataTemplate[i].zipcode,
-        value: this.dataTemplate[i].id,
-        checked: false
-      });
-      dataAvailable = true;
+      if(this.dataTemplate[i].street == "" || this.dataTemplate[i].street == ""){
+        alert.addInput({
+          type: 'radio',
+          label: this.dataTemplate[i].club + ": " + this.dataTemplate[i].street + this.dataTemplate[i].zipcode,
+          value: this.dataTemplate[i].id,
+          checked: false
+        });
+      }else{
+        alert.addInput({
+          type: 'radio',
+          label: this.dataTemplate[i].club + ": " + this.dataTemplate[i].street + " | " + this.dataTemplate[i].zipcode,
+          value: this.dataTemplate[i].id,
+          checked: false
+        });
+      }
+
+      templatesAvailable = true;
     }
-    if(this.counter == 0){
+    if(!templatesAvailable){
       alert.setMessage('Keine Adressvorlage vorhanden.');
+    }else{
+      alert.setCssClass('templates-alert');
+      alert.addButton('Abbrechen');
     }
-    alert.addButton('Abbrechen');
     alert.addButton({
       text: 'OK',
       handler: data => {
-        if (data == null){
-
-        } else {
+        if (data != null){
           this.updateTemplate(data);
           this.streetChanged = true;
           this.zipcodeChanged = true;

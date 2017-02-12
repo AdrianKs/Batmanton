@@ -13,20 +13,16 @@
   <div>
     <ion-list>
       <div *ngFor="let item of dataTemplate">
-        <div *ngIf="item.deleted==false">
+        <div>
           <ion-item-sliding>
-            <ion-item>
-                <div>
-                  <div class="mainDetails">{{item.club}}</div>
-                  <p>{{item.street}}<p>
-                  <p>{{item.zipcode}}
-                </div>
+            <ion-item (click)="openDetails(item)" class="less-label-margin">
+              <div class="mainDetails">{{item.club}}</div>
+              <div class="secondaryDetails">
+                {{item.street}}<br/>
+                {{item.zipcode}}
+              </div>
             </ion-item>
             <ion-item-options side="right">
-              <button ion-button color="secondary" (click)="editTemplate(item)">
-                <ion-icon name="settings"></ion-icon>
-                Bearbeiten
-              </button>
               <button ion-button color="danger" (click)="deleteTemplate(item)">
                 <ion-icon name="trash"></ion-icon>
                 Löschen
