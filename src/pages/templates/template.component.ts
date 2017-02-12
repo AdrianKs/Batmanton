@@ -1,7 +1,7 @@
 //todo
 //bilder
 import { Component } from '@angular/core';
-import { NavController, AlertController, LoadingController, ToastController } from 'ionic-angular';
+import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { EditTemplateComponent } from './editTemplate.component';
 import firebase from 'firebase';
 import * as _ from 'lodash';
@@ -20,12 +20,18 @@ export class TemplateComponent {
   loading: any;
   counter: any;
 
-  constructor(public navCtrl: NavController, private alertCtrl: AlertController, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
 
   }
 
   openDetails(value) {
-    this.navCtrl.push(EditTemplateComponent, { templateItem: value , createNew: false});
+    let templateCopy = {club: value.club, street: value.street, zipcode: value.zipcode, id: value.id};
+    this.navCtrl.push(EditTemplateComponent, { templateItem: templateCopy, createNew: false, allTemplates: this.dataTemplate});
+  }
+
+  createTemplate(){
+    let emptyTemplateObject = {club: "", street: "", zipcode: ""};
+    this.navCtrl.push(EditTemplateComponent, { templateItem: emptyTemplateObject, createNew: true, allTemplates: this.dataTemplate});
   }
 
   loadData(showLoading: boolean, event): void {
@@ -112,11 +118,6 @@ export class TemplateComponent {
       ]
     });
     myAlert.present();
-  }
-
-  createTemplate(){
-    let emptyTemplateObject = {club: "", street: "", zipcode: ""};
-    this.navCtrl.push(EditTemplateComponent, { templateItem: emptyTemplateObject, createNew: true});
   }
 
   goBack(){

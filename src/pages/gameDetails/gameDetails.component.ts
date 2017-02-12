@@ -737,7 +737,7 @@ export class GameDetailsComponent implements OnInit{
       }else{
         alert.addInput({
           type: 'radio',
-          label: this.dataTemplate[i].club + ": " + this.dataTemplate[i].street + " | " + this.dataTemplate[i].zipcode,
+          label: this.dataTemplate[i].club + ": " + this.dataTemplate[i].street + " - " + this.dataTemplate[i].zipcode,
           value: this.dataTemplate[i].id,
           checked: false
         });

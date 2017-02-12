@@ -14,6 +14,7 @@ export class EditTemplateComponent implements OnInit {
   public templateForm;
   templateItem: any;
   createNew: boolean = false;
+  allTemplates: any;
 
   clubOld: string;
   streetOld: string;
@@ -33,6 +34,7 @@ export class EditTemplateComponent implements OnInit {
   constructor(public navCtrl: NavController, private navP: NavParams, private alertCtrl: AlertController, public formBuilder: FormBuilder) {
     this.templateItem = navP.get('templateItem');
     this.createNew = navP.get('createNew');
+    this.allTemplates = navP.get('allTemplates');
     this.templateForm = formBuilder.group({
       club: ['', Validators.compose([Validators.required])],
       street: [],
@@ -50,31 +52,97 @@ export class EditTemplateComponent implements OnInit {
   }
 
   finish() {
-    var that = this;
+    // let that = this;
     if ((this.clubChanged || this.streetChanged || this.zipcodeChanged) && this.templateForm.controls.club.valid) {
-      if (this.createNew) {
-        let id = this.makeid();
-        firebase.database().ref('clubs/12/templates/').child(id).set({
-          club: this.templateItem.club,
-          street: this.templateItem.street,
-          zipcode: this.templateItem.zipcode
-        }).then(function () {
-          that.navCtrl.pop();
-        }, function (error) {
-          alert(error.message);
-        });
-      } else {
-        firebase.database().ref('clubs/12/templates/' + this.templateItem.id).update({
-          club: this.templateItem.club,
-          street: this.templateItem.street,
-          zipcode: this.templateItem.zipcode
-        }).then(function () {
-          that.navCtrl.pop();
-        }, function (error) {
-          alert(error.message);
-        });
+      // if the club has been changed, check whether a template for this club already exists
+      if(this.clubChanged){
+        let templateExists = false;
+        let templateId;
+
+        for(let i in this.allTemplates){
+          if(this.allTemplates[i].club == this.templateItem.club){
+            templateId = this.allTemplates[i].id;
+            templateExists = true;
+            break;
+          }
+        }
+
+        // if template already exists, ask user whether the template should be overwritten, a new template should be created, or the action should be cancelled
+        if(templateExists){
+          let myAlert = this.alertCtrl.create({
+            title: 'Adressvorlage für diesen Gegner existiert bereits',
+            message: 'Die Adressvorlage für diesen Gegner existiert bereits. Möchten Sie sie überschreiben oder eine zusätzliche Adressvorlage für diesen Gegner erstellen?',
+            buttons: [
+              {
+                text: 'Abbrechen',
+                role: 'cancel'
+              },
+              {
+                text: 'Überschreiben',
+                handler: () => {
+                  this.updateTemplate(this.templateItem.id);
+                  firebase.database().ref('clubs/12/templates/' + templateId).remove().then(function () {
+                  }, function (error) {
+                    alert(error.message);
+                  });
+                }
+              },
+              {
+                text: 'Zusätzliche Vorlage',
+                handler: () => {
+                  if (this.createNew) {
+                    this.createNewTemplate(" (2)");
+                  } else {
+                    this.updateTemplate(this.templateItem.id);
+                  }
+                }
+              }
+            ]
+          });
+          myAlert.present();
+        }else{
+          if (this.createNew) {
+            this.createNewTemplate("");
+          } else {
+            this.updateTemplate(this.templateItem.id);
+          }
+        }
+
+      }else{
+        if (this.createNew) {
+          this.createNewTemplate("");
+        } else {
+          this.updateTemplate(this.templateItem.id);
+        }
       }
     }
+  }
+
+  updateTemplate(id){
+    var that = this;
+    firebase.database().ref('clubs/12/templates/' + id).update({
+      club: this.templateItem.club,
+      street: this.templateItem.street,
+      zipcode: this.templateItem.zipcode
+    }).then(function () {
+      that.navCtrl.pop();
+    }, function (error) {
+      alert(error.message);
+    });
+  }
+
+  createNewTemplate(suffix){
+    var that = this;
+    let id = this.makeid();
+    firebase.database().ref('clubs/12/templates/').child(id).set({
+      club: this.templateItem.club + suffix,
+      street: this.templateItem.street,
+      zipcode: this.templateItem.zipcode
+    }).then(function () {
+      that.navCtrl.pop();
+    }, function (error) {
+      alert(error.message);
+    });
   }
 
   makeid() {
