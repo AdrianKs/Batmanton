@@ -152,7 +152,7 @@ export class RegisterComponent {
       }, (error) => {
         this.loading.dismiss();
         let alert = this.alertCtrl.create({
-          message: error.message,
+          message: this.authData.getErrorMessage(error),
           buttons: [
             {
               text: "Ok",

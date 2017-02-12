@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import firebase from 'firebase';
-// import {setUserID} from "../app/globalVars";
-//import myGlobals from '../app/globalVars';
 import {Utilities} from '../app/utilities';
 import {MenuController} from "ionic-angular";
 /*
@@ -91,6 +89,25 @@ export class AuthData {
   logoutUser(): any {
     this.menuCtrl.close('mainMenu');
     return this.fireAuth.signOut();
+  }
+
+  getErrorMessage(error): string {
+    let code: string = error.code;
+    if(code === "auth/invalid-email"){
+      return "Die eingegebene E-Mail Adresse ist ungültig."
+    }
+    else if(code === "auth/wrong-password"){
+      return "Ihr eingegebenes Passwort ist falsch."
+    }
+    else if(code === "auth/user-not-found"){
+      return "Unter dieser E-Mail Adresse ist kein User registriert."
+    }
+    else if(code === "auth/internal-error"){
+      return "Es scheint etwas schief gelaufen zu sein. Bitte versuchen Sie es erneut."
+    }
+    else {
+      return error.message;
+    }
   }
 
 }

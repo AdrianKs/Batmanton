@@ -40,7 +40,7 @@ export class ResetPasswordComponent {
     if (!this.resetPasswordForm.valid){
       console.log(this.resetPasswordForm.value);
     } else {
-      this.authData.resetPassword(this.resetPasswordForm.value.email).then((user) => {
+      this.authData.resetPassword(this.resetPasswordForm.value.email).then(() => {
         let alert = this.alertCtrl.create({
           message: "We just sent you a reset link to your email",
           buttons: [
@@ -56,9 +56,9 @@ export class ResetPasswordComponent {
         alert.present();
 
       }, (error) => {
-        var errorMessage: string = error.message;
+        console.log(error);
         let errorAlert = this.alertCtrl.create({
-          message: errorMessage,
+          message: this.authData.getErrorMessage(error),
           buttons: [
             {
               text: "Ok",
@@ -71,5 +71,4 @@ export class ResetPasswordComponent {
       });
     }
   }
-
 }

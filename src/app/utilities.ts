@@ -41,6 +41,7 @@ export class Utilities {
   setUserData(): void {
     firebase.database().ref('clubs/12/players/' + this.user.uid).once('value', snapshot => {
       if (snapshot.val() != null) {
+        console.log("in snapshot");
         this.userData = snapshot.val();
         this.userLoaded = true;
       }
@@ -176,6 +177,15 @@ export class Utilities {
         });
       });*/
     }
+  }
+
+  getPlayer(userID: any): any {
+    return firebase.database().ref('clubs/12/players/' + userID).once('value')
+      .then(user => {console.log("in utilities then"); return user});
+  }
+
+  updatePlayer(userID: any, data: any): any {
+    return firebase.database().ref('clubs/12/players/' + userID).update(data);
   }
 
   removePlayerFromTeam(teamID, userID) {

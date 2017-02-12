@@ -31,12 +31,12 @@ export class MyApp {
   aboutPage: any = {
     title: "About",
     component: AboutComponent
-  }
+  };
 
   myProfilePage: any = {
     title: "Mein Profil",
     component: ProfileComponent
-  }
+  };
 
   pages: Array<{ title: string, component: any, icon: string, visible: boolean }>;
 
@@ -53,7 +53,6 @@ export class MyApp {
         utilities.setUserData();
         utilities.setPlayers();
         this.checkIfUserDeleted(user.uid);
-        this.checkPlatform(user.uid);
       }
       if (!user) {
         utilities.loggedIn = false;
@@ -125,9 +124,7 @@ export class MyApp {
       tempPlat = "web";
     }
 
-    firebase.database().ref('clubs/12/players/' + userID).update({
-      platform: tempPlat
-    });
+    this.utilities.updatePlayer(userID, {platform: tempPlat});
 
     /*for (let i = 0; i <= this.utilities.allPlayers.length - 1; i++) {
       console.log(userID + ' ' + this.utilities.allPlayers[i].id)
@@ -150,12 +147,16 @@ export class MyApp {
    * @param userID userID of the user trying to log in.
    */
   checkIfUserDeleted(userID: any): any {
-    firebase.database().ref('clubs/12/players/' + userID).once('value')
+    this.utilities.getPlayer(userID)
       .then(user => {
+        console.log("in then");
+        console.log(user);
+        console.log(user.val());
         if (user.val() != null) {
           if (!this.utilities.inRegister) {
             this.checkForVerification();
           }
+          this.checkPlatform(userID);
           this.utilities.loggedIn = true;
         } else {
           this.logout();

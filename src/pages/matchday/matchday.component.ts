@@ -29,7 +29,7 @@ export class MatchdayComponent implements OnInit {
   dataInvites: any;
   loading: any;
   currentUser: any;
-  isAdmin: boolean;
+  isAdmin: boolean = false;
   counter: any;
 
   constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
@@ -40,7 +40,9 @@ export class MatchdayComponent implements OnInit {
         this.currentUser = this.Utilities.user;
         firebase.database().ref('/clubs/12/players/' + this.currentUser.uid + '/').once('value', snapshot => {
             let data = snapshot.val();
-            this.isAdmin = data.isTrainer;
+            if(data){
+              this.isAdmin = data.isTrainer;
+            }
         });
     }
 
