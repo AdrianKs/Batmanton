@@ -66,7 +66,7 @@ export class EditPlayerComponent implements OnInit {
         this.teamsProvider.addPlayerToTeam(p, this.teamId).then(() => {
             this.teamsProvider.setTeams();
             this.allPlayers = this.teamsProvider.allPlayersEdit;
-            this.presentToast("Spieler zum Team hinzugefügt");
+            this.presentToast("Spieler hinzugefügt");
         });
     }
 
@@ -74,7 +74,7 @@ export class EditPlayerComponent implements OnInit {
         this.teamsProvider.removePlayerFromTeam(p, this.teamId).then(() => {
             this.teamsProvider.setTeams();
             this.allPlayers = this.teamsProvider.allPlayersEdit;
-            this.presentToast("Spieler vom Team entfernt");
+            this.presentToast("Spieler entfernt");
         });
     }
 
@@ -82,7 +82,7 @@ export class EditPlayerComponent implements OnInit {
     presentToast(customMessage: string) {
         let toast = this.toastCtrl.create({
             message: customMessage,
-            duration: 2000,
+            duration: 1000,
             position: "top"
         });
         toast.present();

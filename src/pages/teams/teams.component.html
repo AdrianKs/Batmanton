@@ -32,15 +32,11 @@
             <!<img src="assets/images/ic_account_circle_black_24dp_2x.png" />-->
           <!--</div>-->
           <div class="itemRight">
-            <div class="mainDetails">
-              {{item.name}} <br>
-            </div>
-            <div *ngIf="item.ageLimit==0">
-              Altersklasse: Erwachsen
-            </div>
-            <div *ngIf="item.ageLimit!=0">
-              Altersklasse: U {{item.ageLimit}}
-            </div>
+            <div *ngIf="item.ageLimit==0">Erwachsen</div>
+            <div *ngIf="item.ageLimit!=0">U {{item.ageLimit}}</div>
+            <div class="mainDetails">{{item.name}}</div>
+            <div>{{item.type}}</div>
+            <div>S-Klasse {{item.sclass}}</div>
           </div>
         </div>
       </ion-item>

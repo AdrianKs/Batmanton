@@ -143,7 +143,7 @@
               <div class="itemPlayerRight">
                 <div class="mainDetails">
                   {{ p.lastname }}, {{p.firstname}}
-                  <button *ngIf="(editMode)" class="player-item-button" ion-button round outline icon-only color="danger" (click)="presentConfirm(p, 'delP')">
+                  <button *ngIf="(editMode)" class="player-item-button" ion-button round outline icon-only color="danger" (click)="removePlayer(p)">
                     <ion-icon name="remove"></ion-icon>
                   </button>
                 </div>

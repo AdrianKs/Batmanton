@@ -25,7 +25,7 @@ export class ViewTeamComponent implements OnInit {
     playerModel: any;
     justPlayers: any = [];
     justPlayersPlaceholder: any;
-   
+
     editMode: boolean = false;
     isChanged: boolean = false;
     teamId: any;
@@ -69,7 +69,7 @@ export class ViewTeamComponent implements OnInit {
      * Diese Methode wird beim erstmaligen Initialisieren der Komponente aufgerufen.
      */
     ngOnInit(): void {
-      
+
     }
 
     /**
@@ -182,7 +182,7 @@ export class ViewTeamComponent implements OnInit {
 
     }
 
-   
+
 
 
     createAndPresentLoading() {
@@ -281,7 +281,7 @@ export class ViewTeamComponent implements OnInit {
                     })
                 })
             }
-            
+
         });
     }
 
@@ -305,29 +305,7 @@ export class ViewTeamComponent implements OnInit {
     }
 
     presentConfirm(p: any, action: string) {
-
-        if (action == "delP") {
-            let alert = this.alertCtrl.create({
-                title: 'Spieler aus Mannschaft entfernen',
-                message: 'Wollen Sie den Spieler wirklich löschen?',
-                buttons: [
-                    {
-                        text: 'Abbrechen',
-                        role: 'cancel',
-                        handler: () => {
-                            console.log('Cancel clicked');
-                        }
-                    },
-                    {
-                        text: 'Löschen',
-                        handler: () => {
-                            this.removePlayer(p);
-                        }
-                    }
-                ]
-            });
-            alert.present();
-        } else if (action == "delT") {
+        if (action == "delT") {
             let alert = this.alertCtrl.create({
                 title: 'Mannschaft löschen',
                 message: 'Wollen Sie die Mannschaft wirklich löschen?',
@@ -349,10 +327,6 @@ export class ViewTeamComponent implements OnInit {
             });
             alert.present();
         }
-
-
-
-
     }
 
     getFirstFourPicUrls() {

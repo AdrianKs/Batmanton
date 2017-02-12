@@ -1,10 +1,9 @@
 //todo
 //teams nicht aktuell
 import { Component, OnInit } from '@angular/core';
-import { NavController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
-import { PlayerComponent } from '../gameDetails/player.component';
 import * as _ from 'lodash';
 
 @Component({
@@ -72,7 +71,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
     }
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController, public toastCtrl: ToastController) {
     this.match = navP.get('matchItem');
     this.allPlayers = navP.get('playerArray');
     this.statusArray = navP.get('statusArray');
@@ -193,7 +192,6 @@ export class AddTeamToMatchdayComponent implements OnInit{
             this.allPlayers[i].helpCounter++;
           }
         }
-        console.log(this.allPlayers)
       }
       if (player.helpCounter == 3){
         let alert = this.alertCtrl.create({
@@ -236,6 +234,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
         this.deletedArray[i] = null;
       }
     }
+    this.presentToast("Spieler hinzugefügt");
   }
 
   removePlayer(player){
@@ -300,6 +299,16 @@ export class AddTeamToMatchdayComponent implements OnInit{
       console.log(this.declinedArray);
     }
     player.deleted = true;
+    this.presentToast("Spieler entfernt");
+  }
+
+  presentToast(customMessage: string) {
+    let toast = this.toastCtrl.create({
+      message: customMessage,
+      duration: 1000,
+      position: "top"
+    });
+    toast.present();
   }
 
   makeid() {
@@ -407,16 +416,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
       }
     });
 
-    this.navCtrl.popToRoot();
-  }
-
-  goBack(){
-    if (this.editMode != true){
-      this.navCtrl.popToRoot();
-    } else {
-      console.log(this.allPlayers);
-      this.navCtrl.pop();
-    }
+    this.navCtrl.pop();
   }
 }
 

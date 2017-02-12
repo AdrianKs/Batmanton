@@ -1,14 +1,11 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
-    <ion-title>Verfügbare Spieler</ion-title>
-    <ion-buttons right>
-      <button ion-button *ngIf="toRoot=='yes'" (click)="nav.popToRoot()">
-        Fertig
-      </button>
-      <button ion-button *ngIf="toRoot=='no'" (click)="backToEditMode()">
-        Fertig
+    <ion-buttons left>
+      <button ion-button (click)="backToEditMode()" icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
       </button>
     </ion-buttons>
+    <ion-title>Verfügbare Spieler</ion-title>
   </ion-navbar>
 </ion-header>
 

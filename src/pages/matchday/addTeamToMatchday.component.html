@@ -1,12 +1,8 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
     <ion-buttons left>
-      <button ion-button (click)="goBack()" icon-only>
+      <button ion-button (click)="confirmPlayer()" icon-only>
         <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
-      </button>
-    </ion-buttons>
-    <ion-buttons right>
-      <button *ngIf="!editMode" ion-button (click)="confirmPlayer()">Fertig
       </button>
     </ion-buttons>
     <ion-title>Spieler hinzufügen</ion-title>
