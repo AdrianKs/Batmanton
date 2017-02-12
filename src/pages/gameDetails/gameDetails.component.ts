@@ -421,7 +421,7 @@ export class GameDetailsComponent implements OnInit{
   }
 
   timeSelectChanged(input) {
-    if (this.timeOld != input) {
+    if (this.timeOld != input && input != undefined) {
       if (this.timeChanged == false){
         let alert = this.alertCtrl.create({
           title: 'Achtung!',
@@ -552,6 +552,13 @@ export class GameDetailsComponent implements OnInit{
         for (let j in this.playerArray){
           if (this.acceptedArray[i] == this.playerArray[j].id && this.playerArray[j].isDefault == false){
             this.pendingArray.push(this.acceptedArray[i]);
+            this.acceptedCounter--;
+            if (this.playerArray[j].gender == "m"){
+              this.acceptedMaleCounter--;
+            }
+            if (this.playerArray[j].gender == "F"){
+              this.acceptedFemaleCounter--;
+            }
             if (this.playerArray[j].isMainTeam == false){
               this.playerArray[j].helpCounter--;
             }
@@ -564,6 +571,7 @@ export class GameDetailsComponent implements OnInit{
       }
       for (let i in this.declinedArray){
         this.pendingArray.push(this.declinedArray[i]);
+        this.declinedCounter--;
       }
       this.declinedArray = [];
       console.log(this.acceptedArray);
