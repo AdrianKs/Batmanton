@@ -15,6 +15,54 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 
+@media (max-width: 320px) {
+  /* CSS that should be displayed if width is equal to or less than 800px goes here */
+.platform-android .menuHeaderPic{
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $yellow-shade;
+  padding: 2px;
+}
+
+.platform-ios .menuHeaderPic {
+  position: absolute;
+  top: 26px;
+  left: 15px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: $yellow-shade;
+  padding: 2px;
+  }
+}
+
+@media (min-width: 321px){
+.platform-android .menuHeaderPic{
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: $yellow-shade;
+  padding: 2px;
+}
+
+ .platform-ios .menuHeaderPic {
+  position: absolute;
+  top: 26px;
+  left: 15px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: $yellow-shade;
+  padding: 2px;
+  }
+}
 
 form {
   margin-bottom: 32px;
@@ -23,18 +71,9 @@ form {
   }
 }
 
-p {
-  font-size: 0.8em;
-  color: #d2d2d2;
-}
-
-ion-label {
-  margin-left: 5px;
-}
-
 .menuHeader {
   background-color: #cccccc;
-  height: 15%;
+  height: 19%;
 }
 
 .menuHeaderContent{
@@ -43,7 +82,7 @@ ion-label {
 }
 
 .menuToolbar{
-  height: 100%;
+  height: 100% !important;
 }
 
 .menuBottom {
@@ -53,26 +92,20 @@ ion-label {
 }
 
 .menuBtnAbout .item-inner {
-  border-top: 1px solid #cccccc;
+  border-top: 1px solid $yellow-shade;
 }
 
 .menuIcons {
   margin-right: 10px;
+  color: $yellow-shade;
 }
 
 .menuBtnLogout {
   position: absolute;
   right: 0px;
   bottom: 2px;
-}
-
-.menuHeaderPic {
-  position: absolute;
-  top: 5px;
-  left: 15px;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
+  margin-right: 6px;
+  color: $orange-shade;
 }
 
 .menuBtnHeader {
@@ -82,42 +115,320 @@ ion-label {
 }
 
 .mainPlayerContent {
-  font-size: 12px;
+  font-size: 15px;
+  color: white !important;
 }
 
 .secPlayerContent {
-  font-size: 10px;
-  color: lightslategray;
+  font-size: 11px;
+  color: $third-dark-shade;
 }
 
-.thumbnail-matchday-top-left {
+.thumbnail-pictures{
+  background-color: $yellow-shade;
+  border-radius: 50%;
+  padding: 2px;
+}
+
+.thumbnail-pictures-big{
+  background-color: $yellow-shade;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.thumbnail-top-left {
     width: 30px;
     height: 30px;
     border-top-left-radius: 100%;
     padding: 0;
     margin-bottom: -4px;
     margin-right: -4px;
+    background-color: black;
 }
 
-.thumbnail-matchday-top-right {
+.thumbnail-top-right {
     width: 30px;
     height: 30px;
     border-top-right-radius: 100%;
     padding: 0;
     margin-bottom: -4px;
+    background-color: black;
 }
 
-.thumbnail-matchday-bottom-right {
+.thumbnail-bottom-right {
     width: 30px;
     height: 30px;
     border-bottom-right-radius: 100%;
     padding: 0;
     margin-left: -4px;
+    background-color: black;
 }
 
-.thumbnail-matchday-bottom-left {
+.thumbnail-bottom-left {
     width: 30px;
     height: 30px;
     border-bottom-left-radius: 100%;
     padding: 0;
+    background-color: black;
+}
+
+
+.thumbnail-top-left-big {
+  width: 55px;
+  height: 55px;
+  border-top-left-radius: 100%;
+  padding: 0;
+  margin-bottom: 0px;
+  margin-right: 0px;
+  background-color: black;
+}
+
+.thumbnail-top-right-big {
+  width: 55px;
+  height: 55px;
+  border-top-right-radius: 100%;
+  padding: 0;
+  margin-bottom: 0px;
+  background-color: black;
+}
+
+.thumbnail-bottom-right-big {
+  width: 55px;
+  height: 55px;
+  border-bottom-right-radius: 100%;
+  padding: 0;
+  margin-left: 0px;
+  background-color: black;
+}
+
+.thumbnail-bottom-left-big {
+  width: 55px;
+  height: 55px;
+  border-bottom-left-radius: 100%;
+  padding: 0;
+  background-color: black;
+}
+
+.bottom-thumbnail-row{
+  height: 30px;
+}
+
+.bottom-thumbnail-row-big{
+  height: 55px;
+}
+
+.player-item-image {
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  background-color: $yellow-shade;
+  padding: 2px;
+}
+
+.profile-image{
+  border-radius: 10rem;
+  width: 12em;
+  height: 12em;
+}
+
+.picture-click:active {
+  opacity: 0.5;
+}
+
+.info-button-size{
+  font-size: 1.4rem;
+}
+
+.itemPlayerLeft {
+  width: 15%;
+  float: left;
+  padding-top: 7px;
+  padding-left: 3px;
+}
+
+.itemPlayerRight{
+  width: 85%;
+  color: $third-dark-shade;
+  float: right;
+  padding: 8px 8px 8px 15px;
+}
+
+.itemLeft {
+  float: left;
+  margin-top: 4px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 3px;
+}
+
+.itemRight{
+  color: $third-dark-shade;
+  padding: 12px 8px 8px 15px;
+  margin-left: 77px;
+  font-size: 14px;
+}
+
+.mainDetails {
+  color: white;
+  font-size: 16px;
+}
+
+.secondaryDetails{
+  color: $third-dark-shade;
+  font-size: 14px;
+}
+
+.white-font{
+  color: white;
+}
+
+.center-form {
+  text-align: center;
+}
+
+.right-form-inputs input {
+  text-align: right;
+}
+
+.fab{
+  background-color: $orange-shade !important;
+}
+
+.picture-border{
+  background-color: $yellow-shade;
+  padding: 3px;
+}
+
+.input-ios .text-input{
+  padding-right: 0px;
+}
+
+.label-ios {
+  margin: 5px 8px 5px 0;
+}
+
+.picture-container{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.player-item-button{
+  float: right;
+  width: 25px;
+  height: 25px;
+  margin-top: 8px;
+}
+
+.align-center{
+  text-align: center;
+}
+
+.inline{
+  display: inline-block;
+}
+
+.invalid .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner{
+  border-bottom: 1px solid #FF6153;
+}
+
+.error-message .item-inner {
+  border-bottom: 0 !important;
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.form-value {
+  font-size: 14px;
+}
+
+.edit-players-button-container{
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.delete-button-container{
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.players-list{
+  margin-bottom: 15px;
+}
+
+.bottomContainer {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.button-width{
+  width: 205px;
+}
+
+.no-items{
+  color: $third-dark-shade;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.less-label-margin .label-md{
+  margin-top: 5px;
+  margin-bottom: 8px;
+}
+
+.badge-counter{
+  //badge
+  //color: black;
+  //background-color: $yellow-shade;
+  //border-radius: 50%;
+  //width: 14px;
+  //height: 14px;
+  //font-size: 0.8rem;
+  //padding: 0px;
+  //margin-left: 3px;
+  //line-height: 14px;
+  //position: inherit;
+  //top: -1px;
+  //text-align: center;
+
+  //span
+  color: black;
+  background-color: #FFF200;
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 3px;
+  margin-left: 3px;
+  line-height: 10px;
+  position: absolute;
+  top: 3px;
+  text-align: center;
+}
+
+.badge-counter-menu{
+  margin-top: 3px;
+}
+
+//changes of ion styles
+ion-select{
+  max-width: 100%;
+}
+
+ion-label {
+  margin-left: 5px;
+}
+
+.searchbar-md .searchbar-input{
+  background-color: $dark-shade;
+}
+
+.searchbar-ios .searchbar-input{
+  background-color: $secondary-dark-shade;
+}
+
+.picker-opt{
+  color: white;
 }

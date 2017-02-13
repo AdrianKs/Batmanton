@@ -22,8 +22,6 @@ export class RegisterComponent {
   team: string = '';
   teams: any = [];
   relevantTeams = this.utilities.allTeams;
-  firstnameWithCapital: boolean = false;
-  lastnameWithCapital: boolean = false;
   firstnameChanged: boolean = false;
   lastnameChanged: boolean = false;
   birthdayChanged: boolean = false;
@@ -57,7 +55,6 @@ export class RegisterComponent {
   matchPassword(group) {
     let password = group.controls.password;
     let confirm = group.controls.passwordConfirm;
-    console.log(group);
     if (!(password.value === confirm.value)) {
       return {"incorrectConfirm": true};
     }
@@ -71,7 +68,6 @@ export class RegisterComponent {
   elementChanged(input) {
     let field = input.inputControl.name;
     this[field + "Changed"] = true;
-    console.log(this.signupForm.controls);
   }
 
   birthdaySelectChanged() {
@@ -107,8 +103,6 @@ export class RegisterComponent {
     if (!NAME_REGEXP.test(c.value.charAt(0))) {
       return {"incorrectNameFormat": true}
     }
-    console.log("in starts With a Capital");
-    console.log(c);
     let field = "firstname";
     return null;
   }
@@ -137,14 +131,14 @@ export class RegisterComponent {
   signupUser() {
     this.submitAttempt = true;
 
-    if (!this.signupForm.valid) {
+    if (!this.signupForm.valid || !this.gender || !this.team) {
       console.log(this.signupForm.value);
       console.log("gender: " + this.gender);
       console.log("team: " + this.team);
     } else {
       window["plugins"].OneSignal.getIds(ids => {
         console.log('getIds: ' + JSON.stringify(ids));
-        alert("userId = " + ids.userId + ", pushToken = " + ids.pushToken);
+        this.utilities.setInRegister();
         this.authData.signupUser(
           this.signupForm.value.email,
           this.passwordGroup.value.password,
@@ -156,11 +150,11 @@ export class RegisterComponent {
           ids.userId
         ).then(() => {
           this.utilities.addPlayerToTeam(this.team, this.utilities.user.uid);
-          this.navCtrl.setRoot(SelectProfilePictureComponent);
+          this.showVerificationAlert();
         }, (error) => {
           this.loading.dismiss();
           let alert = this.alertCtrl.create({
-            message: error.message,
+            message: this.authData.getErrorMessage(error),
             buttons: [
               {
                 text: "Ok",
@@ -179,6 +173,23 @@ export class RegisterComponent {
       });
       this.loading.present();
     }
+  }
+
+  private showVerificationAlert() {
+      let confirm = this.alertCtrl.create({
+        title: 'Bitte bestätigen Sie Ihre Email Adresse',
+        message: 'Ihnen wurde eine Bestäigunsmail zugesandt. Bitte bestätigen Sie Ihre Mail-Adresse.',
+        buttons: [
+          {
+            text: 'Okay',
+            handler: () => {
+              this.navCtrl.setRoot(SelectProfilePictureComponent);
+              this.utilities.setInRegister();
+            }
+          }
+        ]
+      });
+      confirm.present();
   }
 
 }

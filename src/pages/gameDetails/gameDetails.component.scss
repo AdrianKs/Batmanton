@@ -1,37 +1,12 @@
-page-gameDetails{
-    .gameDetails-inputs input{
-        text-align: right;
-    }
+page-gameDetails {
+  .game-details-form {
+    margin-bottom: 32px;
+  }
+  .picture-click:active {
+    opacity: 0.5;
+  }
+}
 
-    .thumbnail-matchday-top-left-l {
-        width: 55px;
-        height: 55px;
-        border-top-left-radius: 100%;
-        padding: 0;
-        margin-bottom: 0px;
-        margin-right: 0px;
-    }
-
-    .thumbnail-matchday-top-right-l {
-        width: 55px;
-        height: 55px;
-        border-top-right-radius: 100%;
-        padding: 0;
-        margin-bottom: 0px;
-    }
-
-    .thumbnail-matchday-bottom-right-l {
-        width: 55px;
-        height: 55px;
-        border-bottom-right-radius: 100%;
-        padding: 0;
-        margin-left: 0px;
-    }
-
-    .thumbnail-matchday-bottom-left-l {
-        width: 55px;
-        height: 55px;
-        border-bottom-left-radius: 100%;
-        padding: 0;
-    }
+.templates-alert .alert-wrapper {
+  max-width: initial;
 }

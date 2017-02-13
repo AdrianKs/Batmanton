@@ -1,10 +1,12 @@
-<ion-menu [content]="content" id="mainMenu">
+<ion-menu (ionOpen)="onMenuOpen()" [content]="content" id="mainMenu">
   <ion-header class="menuHeader">
     <ion-toolbar class="menuToolbar">
       <div class="menuHeaderContent">
         <div>
           <div menuClose (click)="openPage(myProfilePage)">
-            <img src="{{utilities.userData.picUrl}}" class="menuHeaderPic" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
+            <div>
+              <img src="{{utilities.userData.picUrl}}" class="menuHeaderPic picture-click" onError="this.src='assets/images/user-shape-64.png'"/>
+            </div>
             <div class="menuBtnHeader">
               <div class="mainPlayerContent">
                 {{utilities.userData.firstname}} {{utilities.userData.lastname}}
@@ -16,7 +18,7 @@
           </div>
         </div>
         <button ion-button (click)="logout()" class="menuBtnLogout" clear icon-only>
-          <ion-icon name="log-out" class="menuIcons"></ion-icon>
+          <ion-icon name="log-out"></ion-icon>
         </button>
       </div>
     </ion-toolbar>
@@ -28,6 +30,7 @@
         <button *ngIf="p.visible == true || utilities.userData.isTrainer" menuClose ion-item (click)="openPage(p)">
           <ion-icon name="{{p.icon}}" md="md-{{p.icon}}" class="menuIcons"></ion-icon>
           {{p.title}}
+          <span *ngIf="p.title == 'Meine Spiele' && this.utilities.counterOpen > 0" class="badge-counter badge-counter-menu">{{this.utilities.counterOpen}}</span>
         </button>
       </div>
       <div class="menuBottom">

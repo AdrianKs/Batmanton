@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import 'rxjs/add/operator/map';
 import firebase from 'firebase';
-// import {setUserID} from "../app/globalVars";
-//import myGlobals from '../app/globalVars';
 import {Utilities} from '../app/utilities';
+import {MenuController} from "ionic-angular";
 /*
   Generated class for the AuthData provider.
 
@@ -15,7 +14,7 @@ export class AuthData {
   public fireAuth: any;
   public userProfile: any;
 
-  constructor(public utilities: Utilities) {
+  constructor(public utilities: Utilities, public menuCtrl: MenuController) {
     this.fireAuth = firebase.auth();
     this.userProfile = firebase.database().ref('clubs/12/players');
   }
@@ -38,12 +37,15 @@ export class AuthData {
           isPlayer: true,
           isTrainer: false,
           picUrl: "",
-          pushid: {}
+          pushid: {},
+          isDefault: false,
+          helpCounter: 0
           });
           firebase.database().ref('clubs/12/players/' + newUser.uid + '/pushid/' + pushid).set(
             true
           );
         this.utilities.user = newUser;
+        newUser.sendEmailVerification();
       });
   }
 
@@ -51,11 +53,39 @@ export class AuthData {
     return this.fireAuth.sendPasswordResetEmail(email);
   }
 
+  changePassword(newPassword: string, passwordOld: string): any{
+    let that = this;
+    let credentials = firebase.auth.EmailAuthProvider.credential(
+      this.utilities.userData.email,
+      passwordOld
+    );
+
+    return this.fireAuth.currentUser.reauthenticate(credentials).then(function() {
+      that.fireAuth.currentUser.updatePassword(newPassword);
+    });
+  }
+
   changeEmail(email: string): any {
     return this.fireAuth.currentUser.updateEmail(email).then(function() {
       // Update successful.
     }, function(error) {
-      // An error happened.
+      alert(error.message);
+    });
+  }
+
+  deleteUser(password: string): any{
+    let that = this;
+    let credentials = firebase.auth.EmailAuthProvider.credential(
+      this.utilities.userData.email,
+      password
+    );
+
+    return this.fireAuth.currentUser.reauthenticate(credentials).then(function() {
+      that.fireAuth.currentUser.delete().then(function() {
+        // User deleted.
+      }, function(error) {
+        alert(error.message);
+      });
     });
   }
 
@@ -74,9 +104,29 @@ export class AuthData {
     window["plugins"].OneSignal.getIds(ids => {
       console.log('getIds: ' + JSON.stringify(ids));
       firebase.database().ref('clubs/12/players/' + this.utilities.user.uid + '/pushid').child(ids.userId).remove().then(() => {
+          this.menuCtrl.close('mainMenu');
           return this.fireAuth.signOut();
       })
     })
+  }
+
+  getErrorMessage(error): string {
+    let code: string = error.code;
+    if(code === "auth/invalid-email"){
+      return "Die eingegebene E-Mail Adresse ist ungültig."
+    }
+    else if(code === "auth/wrong-password"){
+      return "Ihr eingegebenes Passwort ist falsch."
+    }
+    else if(code === "auth/user-not-found"){
+      return "Unter dieser E-Mail Adresse ist kein User registriert."
+    }
+    else if(code === "auth/internal-error"){
+      return "Es scheint etwas schief gelaufen zu sein. Bitte versuchen Sie es erneut."
+    }
+    else {
+      return error.message;
+    }
   }
 
 }

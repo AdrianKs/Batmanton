@@ -2,13 +2,25 @@
  * Created by kochsiek on 08.12.2016.
  */
 // todo:
-// Enter App Screen
-// Change Passwort
-// Delete Profile
+// handle error wenn keine internetverbindung besteht
+// ViewTeam: "Fertig" Button ausgrauen, wenn keine Changes gemacht wurden
+// unnötige css klassen löschen
+// Invites: Label wenn keine Einladungen verfügbar sind
+// Mannschaften: Remove player image from thumbnails, when user leaves team
+// countingBadges iOS zentrieren
+// Adressvorlagen: Bei Umbenennung von Adressvorlage überprüfen, ob Vorlage schon existiert (Mit Gegnernamen prüfen). Wenn ja, fragen, ob überschrieben werden soll oder ob neu angelegt werden soll ("(2)" anhängen)
+// Profile: ActionSheet verzögert sich, wenn man in iOS auf das Bild klickt
+// Farbe der Statusleisttexte in iOS ändern
+// remove console logs
+// Feature: Wenn man beim Spiel erstellen "Heim" auswählt, soll direkt die Heimadresse eingetragen werden
+// Matchday: Ort zu PLZ hinzufügen
+// Bug: ich kann beim spiel-bearbeiten screen den gegner löschen und dann speichern
+// gameDetails Bug: Wenn man einen Spieler direkt aus der Liste löscht und danach auf Abbrechen klicht, ist der Spieler zwei mal in der Liste
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
-import {NavController, ActionSheetController, LoadingController} from 'ionic-angular';
+import {ChangePasswordComponent} from "./changePassword.component";
+import {NavController, ActionSheetController, LoadingController, AlertController} from 'ionic-angular';
 import firebase from 'firebase';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import {AuthData} from '../../providers/auth-data';
@@ -16,7 +28,6 @@ import {Camera} from 'ionic-native';
 import {Utilities} from '../../app/utilities';
 
 @Component({
-  selector: 'page-profile',
   templateUrl: 'profile.component.html',
   providers: [AuthData]
 })
@@ -62,7 +73,7 @@ export class ProfileComponent implements OnInit {
   public base64String: string;
 
 
-  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, public authData: AuthData, public actionSheetCtrl: ActionSheetController, public utilities: Utilities, public loadingCtrl: LoadingController,) {
+  constructor(public navCtrl: NavController, public formBuilder: FormBuilder, public authData: AuthData, public actionSheetCtrl: ActionSheetController, public utilities: Utilities, public loadingCtrl: LoadingController, public alertCtrl: AlertController) {
     this.profileForm = formBuilder.group({
       firstname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
       lastname: ['', Validators.compose([Validators.required, Validators.minLength(2), this.startsWithACapital])],
@@ -74,7 +85,7 @@ export class ProfileComponent implements OnInit {
   }
 
   setActionSheetOptions() {
-    if (this.utilities.userData.picUrl === "" || this.utilities.userData.picUrl == undefined) {
+    if (this.utilities.userData.picUrl == "" || this.utilities.userData.picUrl == undefined) {
       this.actionSheetOptions = {
         title: 'Profilbild ändern',
         buttons: [
@@ -136,7 +147,7 @@ export class ProfileComponent implements OnInit {
 
   finishEditProfile() {
     if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.genderChanged || this.teamChanged) && this.formValid) {
-      firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).set({
+      firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).update({
         birthday: this.utilities.userData.birthday,
         email: this.utilities.userData.email,
         firstname: this.utilities.userData.firstname,
@@ -153,8 +164,6 @@ export class ProfileComponent implements OnInit {
       this.authData.changeEmail(this.utilities.userData.email);
     }
     if (this.teamChanged) {
-      console.log("TeamOld" + this.teamOld)
-      console.log("TeamNew" + this.utilities.userData.team)
       this.utilities.removePlayerFromTeam(this.teamOld, this.utilities.user.uid);
       this.utilities.addPlayerToTeam(this.utilities.userData.team, this.utilities.user.uid);
     }
@@ -285,13 +294,14 @@ export class ProfileComponent implements OnInit {
       that.loading.present();
 
     }, function (error) {
+      that.loading.dismiss();
       alert(error.message);
     }, function () {
       that.utilities.userData.picUrl = uploadTask.snapshot.downloadURL;
       firebase.database().ref('clubs/12/players/' + that.utilities.user.uid).update({
         picUrl: that.utilities.userData.picUrl
       });
-
+      that.loading.dismiss();
       // Depending on whether an image is uploaded or not, display the delete image option in the action sheet or not
       that.setActionSheetOptions()
     });
@@ -342,6 +352,56 @@ export class ProfileComponent implements OnInit {
     }
 
     return null;
+  }
+
+  deleteProfile() {
+    let alert = this.alertCtrl.create({
+      title: 'Profil löschen',
+      message: 'Wollen Sie Ihr Profil wirklich löschen? Der Vorgang kann nicht rückgängig gemacht werden.' +
+      'Bitte geben Sie Ihr Passwort ein, um fortzufahren.',
+      buttons: [
+        {
+          text: 'Abbrechen',
+          role: 'cancel'
+        },
+        {
+          text: 'Löschen',
+          handler: data => {
+            this.utilities.setInRegister();
+            var that = this;
+            this.authData.deleteUser(data.password).then(() => {
+              firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).remove();
+              this.logout();
+              this.utilities.setInRegister();
+            }, function () {
+              let alert = that.alertCtrl.create({
+                message: "Passwort ist inkorrekt.",
+                buttons: [
+                  {
+                    text: "Ok",
+                    role: 'cancel'
+                  }
+                ]
+              });
+              alert.present();
+            });
+          }
+        }
+      ],
+      inputs: [
+        {
+          id: 'passwordConfirmInput',
+          name: 'password',
+          placeholder: 'Password',
+          type: 'password'
+        }
+      ]
+    });
+    alert.present();
+  }
+
+  changePassword() {
+    this.navCtrl.push(ChangePasswordComponent);
   }
 }
 

@@ -27,7 +27,6 @@ export class LoginComponent {
               public loadingCtrl: LoadingController, public menuCtrl: MenuController) {
 
 
-    this.menuCtrl.close('mainMenu');
     this.menuCtrl.enable(false, 'mainMenu');
 
     this.loginForm = formBuilder.group({
@@ -55,7 +54,7 @@ export class LoginComponent {
       }, error => {
         this.loading.dismiss().then( () => {
           let alert = this.alertCtrl.create({
-            message: error.message,
+            message: this.authData.getErrorMessage(error),
             buttons: [
               {
                 text: "Ok",

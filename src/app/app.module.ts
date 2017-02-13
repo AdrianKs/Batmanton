@@ -7,11 +7,14 @@ import {InvitesMatchdayComponent} from '../pages/invites/invitesmatchday.compone
 import {LoginComponent} from '../pages/login/login.component';
 import {MatchdayComponent} from '../pages/matchday/matchday.component';
 import {CreateMatchdayComponent} from '../pages/matchday/createMatchday.component';
+import {TemplateComponent} from '../pages/templates/template.component';
+import {EditTemplateComponent} from '../pages/templates/editTemplate.component';
 import {AddTeamToMatchdayComponent} from '../pages/matchday/addTeamToMatchday.component';
 import {MyGamesComponent} from '../pages/myGames/myGames.component';
 import {GameDetailsComponent} from '../pages/gameDetails/gameDetails.component';
 import {PlayerComponent} from '../pages/gameDetails/player.component'
 import {ProfileComponent} from '../pages/profile/profile.component';
+import {ChangePasswordComponent} from '../pages/profile/changePassword.component';
 import {RegisterComponent} from '../pages/register/register.component';
 import {UserManagementComponent} from '../pages/userManagement/userManagement.component';
 import {ResetPasswordComponent} from '../pages/resetPassword/resetPassword.component';
@@ -19,8 +22,6 @@ import {EditRoleComponent} from '../pages/editRole/editRole.component';
 import {TeamsComponent} from '../pages/teams/teams.component';
 import {SelectProfilePictureComponent} from "../pages/selectProfilePicture/selectProfilePicture.component";
 import {ViewTeamComponent} from '../pages/teams/viewTeam.component';
-//import {PopoverPage} from '../pages/teams/popover.component'; VERALTET UND NICHT MEHR GEBRAUCHT
-//import {EditTeamComponent} from '../pages/teams/editTeam.component'; VERALTET UND NICHT MEHR GEBRAUCHT
 import {EditPlayerComponent} from '../pages/teams/editPlayers.component';
 import {CreateTeamComponent} from '../pages/teams/createNewTeam.component';
 import {Birthday} from './pipes/birthday';
@@ -28,6 +29,8 @@ import {Gender} from './pipes/gender';
 import {Player} from './pipes/player';
 import {Teams} from './pipes/teams';
 import {MatchTime} from './pipes/matchTime';
+import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
+import {CreatePlayerComponent} from "../pages/userManagement/createPlayer.component";
 
 @NgModule({
   declarations: [
@@ -38,11 +41,14 @@ import {MatchTime} from './pipes/matchTime';
     LoginComponent,
     MatchdayComponent,
     CreateMatchdayComponent,
+    TemplateComponent,
+    EditTemplateComponent,
     AddTeamToMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
     PlayerComponent,
     ProfileComponent,
+    ChangePasswordComponent,
     RegisterComponent,
     UserManagementComponent,
     ResetPasswordComponent,
@@ -59,7 +65,9 @@ import {MatchTime} from './pipes/matchTime';
     Gender,
     Player,
     Teams,
-    MatchTime
+    MatchTime,
+    ClubPasswordComponent,
+    CreatePlayerComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -73,11 +81,14 @@ import {MatchTime} from './pipes/matchTime';
     LoginComponent,
     MatchdayComponent,
     CreateMatchdayComponent,
+    TemplateComponent,
+    EditTemplateComponent,
     AddTeamToMatchdayComponent,
     MyGamesComponent,
     GameDetailsComponent,
     PlayerComponent,
     ProfileComponent,
+    ChangePasswordComponent,
     RegisterComponent,
     UserManagementComponent,
     ResetPasswordComponent,
@@ -88,7 +99,9 @@ import {MatchTime} from './pipes/matchTime';
     //PopoverPage,
     //EditTeamComponent,
     EditPlayerComponent,
-    CreateTeamComponent
+    CreateTeamComponent,
+    ClubPasswordComponent,
+    CreatePlayerComponent
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

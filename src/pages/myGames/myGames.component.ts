@@ -1,6 +1,6 @@
 //todo
 //Notification (bzw. in Menüleiste)
-//Keine Spiele vorhanden
+//counter für utilities
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
@@ -24,10 +24,15 @@ export class MyGamesComponent implements OnInit {
   }
 
 
-  gameStatus: string = "vergangene";
+  gameStatus: string = "offene";
   loggedInUserID: string = this.Utilities.user.uid;
   dataGames: any;
   dataInvites: any;
+  dataPlayer: any;
+  counterPast: any;
+  counterFuture: any;
+  counterOpen: any;
+  helpCounter: any;
   testRadioOpen: boolean;
   testRadioResult;
   declined: boolean;
@@ -44,6 +49,9 @@ export class MyGamesComponent implements OnInit {
     if (showLoading) {
       this.createAndShowLoading();
     }
+    this.counterPast = 0;
+    this.counterFuture = 0;
+    this.counterOpen = 0;
     firebase.database().ref('clubs/12/matches').once('value', snapshot => {
       let gamesArray = [];
       let counter = 0;
@@ -75,6 +83,29 @@ export class MyGamesComponent implements OnInit {
         counter++;
       }
       this.dataInvites = inviteArray;
+      this.count();
+    }).then((data) => {
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
+      }
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
+      let playerArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        playerArray[counter] = snapshot.val()[i];
+        playerArray[counter].id = i;
+        counter++;
+      }
+      this.dataPlayer = playerArray;
+      this.dataPlayer = _.sortBy(this.dataPlayer, "lastname");
     }).then((data) => {
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
@@ -88,7 +119,6 @@ export class MyGamesComponent implements OnInit {
       }
     });
   }
-
 
   createAndShowErrorAlert(error) {
       let alert = this.alertCtrl.create({
@@ -107,11 +137,33 @@ export class MyGamesComponent implements OnInit {
     this.loading.present();
   }
 
+  count(){
+    for (let j in this.dataInvites){
+      if(this.dataInvites[j].recipient == this.loggedInUserID){
+        if(this.dataInvites[j].state == 0){
+          this.counterOpen++;
+        }
+        if(this.dataInvites[j].state == 1){
+          for (let i in this.dataGames){
+            if (this.dataGames[i].id == this.dataInvites[j].match){
+              if(this.dataGames[i].time < this.today && this.dataGames[i].time != '0'){
+                this.counterPast++;
+              } else {
+                this.counterFuture++;
+              }
+            }
+          }
+
+        }
+      }
+    }
+  }
+
    getFirstFourPicUrls(match) {
     let urlArray = [];
     let counter = 0;
     for (let i of this.Utilities.allInvites) {
-      if (i.match == match.id && i.sender == this.Utilities.user.uid && counter < 4){
+      if (i.match == match.id && counter < 4){
           for(let j of this.Utilities.allPlayers){
             if(i.recipient == j.id){
               urlArray[counter] = j.picUrl;
@@ -128,17 +180,41 @@ export class MyGamesComponent implements OnInit {
   }
 
   verifyAccept(inviteItem){
+    this.counterOpen--;
+    for (let i in this.dataGames){
+      if (this.dataGames[i].id == inviteItem.match){
+        if(this.dataGames[i].time < this.today && this.dataGames[i].time != '0'){
+          this.counterPast++;
+        } else {
+          this.counterFuture++;
+        }
+      }
+    }
     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
       state: 1
-    });
+    }).then(() => {
+      this.Utilities.countOpen();
+    });;
+    if (inviteItem.assist == true){
+      for (let i in this.dataPlayer){
+        if (this.dataPlayer[i].id == this.loggedInUserID){
+          this.helpCounter = this.dataPlayer[i].helpCounter;
+          this.helpCounter++;
+          firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+            helpCounter: this.helpCounter
+          });
+        }
+      }
+    }
     inviteItem.state = 1;
     this.pendingToAccepted(inviteItem.match, this.loggedInUserID);
     let alert = this.alertCtrl.create({
       title: 'Zugesagt',
-      message: 'Du wirst diesem Spieltag zugeteilt!',
+      message: 'Du wirst diesem Spieltag zugeteilt.',
       buttons: ['Ok']
     });
     alert.present()
+    this.loadData(false, null);
   }
 
   doRadio(inviteItem, value) {
@@ -176,7 +252,7 @@ export class MyGamesComponent implements OnInit {
       value: 'miscellaneous'
     });
 
-    alert.addButton('Abbruch');
+    alert.addButton('Abbrechen');
     alert.addButton({
       text: 'Absenden',
       handler: data => {
@@ -189,10 +265,26 @@ export class MyGamesComponent implements OnInit {
             this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
           } else {
             this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+            if (inviteItem.assist == true){
+              for (let i in this.dataPlayer){
+                if (this.dataPlayer[i].id == this.loggedInUserID){
+                  this.helpCounter = this.dataPlayer[i].helpCounter;
+                  this.helpCounter--;
+                  firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+                    helpCounter: this.helpCounter
+                  });
+                }
+              }
+            }
           }
+          this.counterOpen--;
           firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
+            excuse: this.testRadioResult,
             state: 2
+          }).then(() => {
+            this.Utilities.countOpen();
           });
+          this.loadData(false, null);
         }
         if(this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous'){
             let prompt = this.alertCtrl.create({
@@ -206,7 +298,7 @@ export class MyGamesComponent implements OnInit {
               ],
               buttons: [
                 {
-                  text: 'Abbruch',
+                  text: 'Abbrechen',
                   handler: data => {
                     console.log('Cancel clicked');
                   }
@@ -220,11 +312,26 @@ export class MyGamesComponent implements OnInit {
                       this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
                     } else {
                       this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+                    if (inviteItem.assist == true){
+                      for (let i in this.dataPlayer){
+                        if (this.dataPlayer[i].id == this.loggedInUserID){
+                          this.helpCounter = this.dataPlayer[i].helpCounter;
+                          this.helpCounter--;
+                          firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+                            helpCounter: this.helpCounter
+                          });
+                        }
+                      }
                     }
+                    }
+                    this.counterOpen--;
                     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
                       excuse: this.testRadioResult + ': ' +data.extra,
                       state: 2
+                    }).then(() => {
+                      this.Utilities.countOpen();
                     });
+                    this.loadData(false, null);
                   }
                 }
               ]

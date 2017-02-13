@@ -1,108 +1,64 @@
-.img_large{
+page-viewTeam {
+  .img_large {
     display: block;
     margin: 0 auto;
     width: 150px;
-}
+  }
 
-.card-title{
+  .card-title {
     text-align: center;
-}
+  }
 
-.section_details{
+  .section_details {
     padding-left: 20px;
     font-size: 15px;
-}
+  }
 
-.playerListContentRight{
+  .playerListContentRight {
     width: 75%;
     float: right;
     padding: 8px;
-}
+  }
 
-.playerListContentLeft{
+  .playerListContentLeft {
     width: 25%;
     float: left;
-}
+  }
 
-.editPlayerButton{
-    text-align: center;
-}
-
-.firstName-lastName{
+  .firstName-lastName {
     font-weight: bold;
-}
+  }
 
-.birthday-details{
+  .birthday-details {
     font-size: 16px;
     color: grey;
-}
+  }
 
-.profileImage {
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
-}
-
-.team-image {
+  .team-image {
     border-radius: 10rem;
     width: 12em;
     height: 12em;
   }
 
-.playerItem-left{
+  .playerItem-left {
     width: 20%;
     float: left;
-}
+  }
 
-.playerItem-right{   
+  .playerItem-right {
 
     width: 80%;
     color: black;
     float: right;
     padding: 8px;
-}
-
-.thumbnail-matchday-top-left-v {
-    width: 55px;
-    height: 55px;
-    border-top-left-radius: 100%;
-    padding: 0;
-    margin-bottom: 0px;
-    margin-right: 0px;
-}
-
-.thumbnail-matchday-top-right-v {
-    width: 55px;
-    height: 55px;
-    border-top-right-radius: 100%;
-    padding: 0;
-    margin-bottom: 0px;
-}
-
-.thumbnail-matchday-bottom-right-v {
-    width: 55px;
-    height: 55px;
-    border-bottom-right-radius: 100%;
-    padding: 0;
-    margin-left: 0px;
-}
-
-.thumbnail-matchday-bottom-left-v {
-    width: 55px;
-    height: 55px;
-    border-bottom-left-radius: 100%;
-    padding: 0;
-}
-
- .create-label{
-     font-weight: bold;
-      color:gray;
   }
 
-  .data-label{
-      text-align: right;
+  .create-label {
+    font-weight: bold;
+    color: gray;
   }
 
-  .team-inputs input{
-      text-align: right;
+  .data-label {
+    text-align: right;
   }
+}

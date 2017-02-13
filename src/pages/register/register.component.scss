@@ -1,23 +1,6 @@
 page-register {
-  .invalid {
-    border-bottom: 1px solid #FF6153;
-  }
-
-  .error-message .item-inner {
-    border-bottom: 0 !important;
-  }
-
-  .button-center {
-    text-align: center;
-  }
-
-  .center-form {
-    text-align: center;
-  }
-
   .datetime-text:empty:not(:focus):before{
     content: "Geburtstag";
     color: #999;
   }
-
 }

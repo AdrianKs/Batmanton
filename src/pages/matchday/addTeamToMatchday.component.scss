@@ -1,14 +1,3 @@
-.pictureContainer{
-    text-align: center;
-    margin-top: 20px;
-}
-
-
-.bottomContainer{
-    margin-top: 30px;
-    text-align: center;
-}
-
 .labelRoleContainer{
     text-align: center;
     border-top: 1px solid black;
@@ -33,10 +22,6 @@
     margin-left: 10px;
 }
 
-.saveButtonContainer{
-    margin-top: 30px;
-}
-
 .playerValue {
     font-size: 14px;
 }
@@ -45,25 +30,8 @@
     font-weight: bold;
 }
 
-.pictureContainer{
-    text-align: center;
-    margin-top: 20px;
-}
-
 .datetime-text:empty:not(:focus):before{
     content: "Datum und Uhrzeit";
     color: #999;
-}
-
-.itemPlayerLeft {
-    width: 40%;
-    float: left;
-}
-
-.itemPlayerRight{
-    width: 60%;
-    color: lightslategrey;
-    float: right;
-    padding: 8px;
 }
 

@@ -1,61 +1,82 @@
-page-createMatchday{
-    .centerContainer{
-        text-align: center;
-    }
+//head
+//page-createMatchday{
+//    .centerContainer{
+//        text-align: center;
+//    }
+//
+//    .checkBoxContainer{
+//        text-align: right;
+//    }
+//
+//    .bottomContainer{
+//        margin-top: 30px;
+//        text-align: center;
+//    }
+//
+//    .labelRoleContainer{
+//        text-align: center;
+//        border-top: 1px solid black;
+//        border-bottom: 1px solid black;
+//        background: #cccccc;
+//        font-weight: bold;
+//        font-size: 18px;
+//    }
+//
+//    .label.label-md.myLabel{
+//        margin: 8px 3px 8px 0px;
+//    }
+//
+//    .changeRoleContainer{
+//        text-align: center;
+//        padding: 8px;
+//        margin-top: 30px;
+//    }
+//
+//    .myChk{
+//        margin-right: 10px;
+//        margin-left: 10px;
+//    }
+//
+//    .playerValue {
+//        font-size: 14px;
+//    }
+//
+//    .playerLabel {
+//        font-weight: bold;
+//    }
+//
+//    .datetime-text:empty:not(:focus):before{
+//        content: "Datum und Uhrzeit";
+//        color: #999;
+//    }
+//}
 
-    .checkBoxContainer{
-        text-align: right;
-    }
-
-    .bottomContainer{
-        margin-top: 30px;
-        text-align: center;
-    }
-
-    .labelRoleContainer{
-        text-align: center;
-        border-top: 1px solid black;
-        border-bottom: 1px solid black;
-        background: #cccccc;
-        font-weight: bold;
-        font-size: 18px;
-    }
-
-    .label.label-md.myLabel{
-        margin: 8px 3px 8px 0px;
-    }
-
-    .changeRoleContainer{
-        text-align: center;
-        padding: 8px;
-        margin-top: 30px;
-    }
-
-    .myChk{
-        margin-right: 10px;
-        margin-left: 10px;
-    }
-
-    .saveButtonContainer{
-        margin-top: 30px;
-    }
-
-    .playerValue {
-        font-size: 14px;
-    }
-
-    .playerLabel {
-        font-weight: bold;
-    }
-
-    .pictureContainer{
-        text-align: center;
-        margin-top: 20px;
-    }
-
-    .datetime-text:empty:not(:focus):before{
-        content: "Datum und Uhrzeit";
-        color: #999;
-    }
-}
-
+//style branch (second style)
+//.labelRoleContainer{
+//    text-align: center;
+//    border-top: 1px solid black;
+//    border-bottom: 1px solid black;
+//    background: #cccccc;
+//    font-weight: bold;
+//    font-size: 18px;
+//}
+//
+//.label.label-md.myLabel{
+//    margin: 8px 3px 8px 0px;
+//}
+//
+//.changeRoleContainer{
+//    text-align: center;
+//    padding: 8px;
+//    margin-top: 30px;
+//}
+//
+//.myChk{
+//    margin-right: 10px;
+//    margin-left: 10px;
+//}
+//
+//.datetime-text:empty:not(:focus):before{
+//    content: "Datum und Uhrzeit";
+//    color: #999;
+//}

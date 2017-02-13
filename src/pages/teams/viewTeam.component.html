@@ -1,174 +1,202 @@
 <ion-header>
-    <ion-navbar hideBackButton="true">
-        <ion-buttons left>
-            <button *ngIf="(editMode)" ion-button (click)="toggleEditMode()">
-        Abbruch
-    </button>
-            <button *ngIf="(!editMode)" ion-button (click)="popToRoot()">
-            Zurück
-        </button>
-        </ion-buttons>
-        <ion-title>Mannschaftsdetails</ion-title>
-        <ion-buttons right *ngIf="(isAdmin)">
-            <button *ngIf="(!editMode)" ion-button (click)="editTeam()">Bearbeiten</button>
-            <button ion-button *ngIf="(editMode)" (click)="getFormData()">
-         Fertig
+  <ion-navbar hideBackButton="true">
+    <ion-buttons left>
+      <button *ngIf="(editMode)" ion-button (click)="toggleEditMode()">
+        Abbrechen
       </button>
-        </ion-buttons>
-        
-    </ion-navbar>
+      <button *ngIf="(!editMode)" ion-button (click)="popToRoot()" icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Mannschaftsdetails</ion-title>
+    <ion-buttons right *ngIf="(isAdmin)">
+      <button *ngIf="(!editMode)" ion-button (click)="editTeam()">Bearbeiten</button>
+      <button ion-button *ngIf="(editMode)" (click)="getFormData()">
+        Fertig
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    <div class="topContainer">
-        <div class="list pictureContainer">
-
-            <div class="row">
-                <div class="col">
-                    <img class="thumbnail-matchday-top-left-v" src="{{getFirstFourPicUrls()[0]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-<img class="thumbnail-matchday-top-right-v" src="{{getFirstFourPicUrls()[1]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-</div>
-<div class="col">
-    <img class="thumbnail-matchday-bottom-left-v" src="{{getFirstFourPicUrls()[2]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-<img class="thumbnail-matchday-bottom-right-v" src="{{getFirstFourPicUrls()[3]}}" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
-</div>
-</div>
-</div>
-
-<form class="center-form team-inputs" [formGroup]="teamForm" novalidate>
-    <div class="playerDataContainer">
-        <ion-list>
-            <ion-list-header>Mannschaftsdetails</ion-list-header>
-            <ion-item *ngIf="(!editMode)">
-                <ion-label class="playerLabel">Teamname:</ion-label>
-                <ion-label class="playerValue">{{team.name}}</ion-label>
-            </ion-item>
-            <ion-item *ngIf="(!editMode)">
-                <ion-label class="playerLabel">Alterklasse:</ion-label>
-                <ion-label *ngIf="team.ageLimit==0" class="playerValue">Erwachsen</ion-label>
-                <ion-label *ngIf="team.ageLimit!=0" class="playerValue">U {{team.ageLimit}}</ion-label>
-            </ion-item>
-            <ion-item *ngIf="(!editMode)">
-                <ion-label class="playerLabel">Art:</ion-label>
-                <ion-label class="playerValue">{{teamArt}}</ion-label>
-                <!--<ion-label *ngIf="team.type==1" class="playerValue">Schüler</ion-label>
-                <ion-label *ngIf="team.type==0" class="playerValue">Jugend</ion-label>
-                <ion-label *ngIf="team.type==2" class="playerValue">Erwachsen</ion-label>-->
-            </ion-item>
-            <ion-item *ngIf="(editMode)">
-                <ion-label class="playerLabel">Teamname:</ion-label>
-                <ion-input #teamName formControlName="teamName" class="data-input" value="{{team.name}}"></ion-input>
-            </ion-item>
-            <ion-item *ngIf="(editMode)">
-                <ion-label class="playerLabel">Altersklasse:</ion-label>
-                <ion-select [(ngModel)]="altersklasse" [ngModelOptions]="{standalone: true}">
-                    <ion-option value="9">U 09</ion-option>
-                    <ion-option value="11">U 11</ion-option>
-                    <ion-option value="13">U 13</ion-option>
-                    <ion-option value="15">U 15</ion-option>
-                    <ion-option value="17">U 17</ion-option>
-                    <ion-option value="19">U 19</ion-option>
-                    <ion-option value="0">Erwachsen</ion-option>
-                </ion-select>
-            </ion-item>
-            <ion-item *ngIf="(editMode)">
-                <ion-label class="playerLabel">Art:</ion-label>
-                <ion-select [(ngModel)]="teamArt" [ngModelOptions]="{standalone: true}">
-                    <ion-option value="Normal">Normal</ion-option>
-                    <ion-option value="Mini">Mini</ion-option>
-                </ion-select>
-                <!--<ion-label *ngIf="altersklasse ==9" class="data-label">Schüler</ion-label>
-                <ion-label *ngIf="altersklasse ==11" class="data-label">Schüler</ion-label>
-                <ion-label *ngIf="altersklasse ==13" class="data-label">Schüler</ion-label>
-                <ion-label *ngIf="altersklasse ==15" class="data-label">Schüler</ion-label>
-                <ion-label *ngIf="altersklasse ==17" class="data-label">Jugend</ion-label>
-                <ion-label *ngIf="altersklasse ==19" class="data-label">Jugend</ion-label>
-                <ion-label *ngIf="altersklasse==0" class="data-label">Erwachsen</ion-label>-->
-            </ion-item>
-           
-        </ion-list>
+  <div>
+    <div class="align-center">
+      <div class="picture-container inline">
+        <div class="thumbnail-pictures-big">
+          <div>
+            <img class="thumbnail-top-left-big" src="{{getFirstFourPicUrls()[0]}}"
+                 onError="this.src='assets/images/user-shape-64.png'"/>
+            <img class="thumbnail-top-right-big" src="{{getFirstFourPicUrls()[1]}}"
+                 onError="this.src='assets/images/user-shape-64.png'"/>
+          </div>
+          <div class="bottom-thumbnail-row-big">
+            <img class="thumbnail-bottom-left-big" src="{{getFirstFourPicUrls()[2]}}"
+                 onError="this.src='assets/images/user-shape-64.png'"/>
+            <img class="thumbnail-bottom-right-big" src="{{getFirstFourPicUrls()[3]}}"
+                 onError="this.src='assets/images/user-shape-64.png'"/>
+          </div>
+        </div>
+      </div>
     </div>
-</form>
-</div>
-<ion-grid *ngIf="(editMode)">
-    <ion-row>
-        <button class="editPlayerButton" ion-button block outline round (click)="editPlayers()" color="secondary">Spieler hinzufügen</button>
-    </ion-row>
-    <ion-row>
-        <button class="editPlayerButton" ion-button block outline round (click)="presentConfirm(null, 'delT')" color="danger">Mannschaft löschen</button>
-    </ion-row>
-</ion-grid>
-<ion-toolbar no-border-top>
-    <ion-segment [(ngModel)]="geschlecht">
-        <ion-segment-button value="maenner">
-            Männer
-        </ion-segment-button>
-        <ion-segment-button value="frauen">
-            Frauen
-        </ion-segment-button>
-    </ion-segment>
-</ion-toolbar>
-<div [ngSwitch]="geschlecht">
-    <ion-list *ngSwitchCase="'maenner'">
-        <div *ngIf="!teamHasPlayers">
-            <p class="no-Players-p">Keine Spieler vorhanden</p>
-        </div>
-        <div *ngFor="let p of allPlayers">
-            <div *ngIf="p.gender=='m'">
-                <ion-item *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
-                    <div class="playerItem-left">
-                        <img id="profileImage" src="{{p.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
-                    </div>
+    <!--<div class="pictureContainer inline">-->
 
-                        <div class="playerItem-right">
-                            <div class="firstName-lastName">
-                                {{ p.lastname }}, {{p.firstname}} <br/>
-                            </div>
-                            <div class="birthday-details">
-                                Geburtstag: {{p.birthday | birthday}}
-                            </div>
-                            <div class="birthday-details">
-                                E-Mail: {{p.email}}
-                            </div>
-                        </div>
-
-                <button ion-button outline item-right *ngIf="(editMode)" color="danger" (click)="presentConfirm(p, 'delP')">Entfernen</button>
-
+    <!--<div class="thumbnail-pictures-big">-->
+    <!--<div>-->
+    <!--<img class="thumbnail-top-left-big" src="{{getFirstFourPicUrls()[0]}}"-->
+    <!--onError="this.src='assets/images/user-shape-64.png'"/>-->
+    <!--<img class="thumbnail-top-right-big" src="{{getFirstFourPicUrls()[1]}}"-->
+    <!--onError="this.src='assets/images/user-shape-64.png'"/>-->
+    <!--</div>-->
+    <!--<div class="bottom-thumbnail-row-big">-->
+    <!--<img class="thumbnail-bottom-left-big" src="{{getFirstFourPicUrls()[2]}}"-->
+    <!--onError="this.src='assets/images/user-shape-64.png'"/>-->
+    <!--<img class="thumbnail-bottom-right-big" src="{{getFirstFourPicUrls()[3]}}"-->
+    <!--onError="this.src='assets/images/user-shape-64.png'"/>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <div class="playerDataContainer">
+      <form class="center-form right-form-inputs" [formGroup]="teamForm" novalidate>
+          <ion-item *ngIf="(!editMode)">
+            <ion-label class="form-label">Teamname:</ion-label>
+            <ion-label class="form-value">{{team.name}}</ion-label>
+          </ion-item>
+          <ion-item *ngIf="(!editMode)">
+            <ion-label class="form-label">Alterklasse:</ion-label>
+            <ion-label *ngIf="team.ageLimit==0" class="form-value">Erwachsen</ion-label>
+            <ion-label *ngIf="team.ageLimit!=0" class="form-value">U {{team.ageLimit}}</ion-label>
+          </ion-item>
+          <ion-item *ngIf="(!editMode)">
+            <ion-label class="form-label">Art:</ion-label>
+            <ion-label class="form-value">{{teamArt}}</ion-label>
+            <!--<ion-label *ngIf="team.type==1" class="form-value">Schüler</ion-label>
+            <ion-label *ngIf="team.type==0" class="form-value">Jugend</ion-label>
+            <ion-label *ngIf="team.type==2" class="form-value">Erwachsen</ion-label>-->
+          </ion-item>
+          <ion-item *ngIf="(!editMode)">
+            <ion-label class="form-label">S-Klasse:</ion-label>
+            <ion-label class="form-value">{{sKlasse}}</ion-label>
+          </ion-item>
+          <ion-item *ngIf="(editMode)">
+            <ion-label color="primary">Teamname:</ion-label>
+            <ion-input #teamName class="form-value" formControlName="teamName" value="{{team.name}}"></ion-input>
+          </ion-item>
+          <ion-item *ngIf="(editMode)">
+            <ion-label color="primary">Altersklasse:</ion-label>
+            <ion-select class="form-value" [(ngModel)]="altersklasse" [ngModelOptions]="{standalone: true}">
+              <ion-option value="9">U 09</ion-option>
+              <ion-option value="11">U 11</ion-option>
+              <ion-option value="13">U 13</ion-option>
+              <ion-option value="15">U 15</ion-option>
+              <ion-option value="17">U 17</ion-option>
+              <ion-option value="19">U 19</ion-option>
+              <ion-option value="0">Erwachsen</ion-option>
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="(editMode)">
+            <ion-label color="primary">Art:</ion-label>
+            <ion-select class="form-value" [(ngModel)]="teamArt" [ngModelOptions]="{standalone: true}">
+              <ion-option value="Normal">Normal</ion-option>
+              <ion-option value="Mini">Mini</ion-option>
+            </ion-select>
+            <!--<ion-label *ngIf="altersklasse ==9" class="data-label">Schüler</ion-label>
+            <ion-label *ngIf="altersklasse ==11" class="data-label">Schüler</ion-label>
+            <ion-label *ngIf="altersklasse ==13" class="data-label">Schüler</ion-label>
+            <ion-label *ngIf="altersklasse ==15" class="data-label">Schüler</ion-label>
+            <ion-label *ngIf="altersklasse ==17" class="data-label">Jugend</ion-label>
+            <ion-label *ngIf="altersklasse ==19" class="data-label">Jugend</ion-label>
+            <ion-label *ngIf="altersklasse==0" class="data-label">Erwachsen</ion-label>-->
+          </ion-item>
+           <ion-item *ngIf="(editMode)">
+              <ion-label color="primary">S-Klasse:</ion-label>
+              <ion-select class="form-value" [(ngModel)]="sKlasse" [ngModelOptions]="{standalone: true}">
+                <ion-option value="1">1</ion-option>
+                <ion-option value="2">2</ion-option>
+                <ion-option value="3">3</ion-option>
+              </ion-select>
             </ion-item>
+      </form>
+    </div>
+  </div>
 
+  <ion-list-header class="align-center">Spieler</ion-list-header>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="geschlecht">
+      <ion-segment-button value="maenner">
+        Männer
+      </ion-segment-button>
+      <ion-segment-button value="frauen">
+        Frauen
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+  <div [ngSwitch]="geschlecht">
+    <ion-list class="players-list" *ngSwitchCase="'maenner'">
+      <div *ngFor="let p of allPlayers">
+        <div *ngIf="p.gender=='m'">
+          <ion-item class="less-label-margin" *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
+            <div>
+              <div class="itemPlayerLeft">
+                <img src="{{p.picUrl}}" class="player-item-image picture-click" (click)="this.utils.openProfile(p, this.navCtrl)" onError="this.src='assets/images/user-shape-64.png'" />
+              </div>
+              <div class="itemPlayerRight">
+                <div class="mainDetails">
+                  {{ p.lastname }}, {{p.firstname}}
+                  <button *ngIf="(editMode)" class="player-item-button" ion-button round outline icon-only color="danger" (click)="removePlayer(p)">
+                    <ion-icon name="remove"></ion-icon>
+                  </button>
+                </div>
+                <div class="secondaryDetails">
+                  {{p.birthday | birthday}}
+                </div>
+              </div>
             </div>
+          </ion-item>
         </div>
+      </div>
+      <ion-label *ngIf="!teamHasPlayers" class="align-center no-items">Keine Spieler vorhanden</ion-label>
+      <ion-label *ngIf="manCounter==0 && teamHasPlayers" class="align-center no-items">Keine männlichen Spieler vorhanden</ion-label>
     </ion-list>
-    <ion-list *ngSwitchCase="'frauen'">
-        <div *ngIf="!teamHasPlayers">
-            <p class="no-Players-p">Keine Spieler vorhanden</p>
-        </div>
-        <div *ngFor="let p of allPlayers">
-            <div *ngIf="p.gender=='f'">
-                <ion-item *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
-
-                            <div class="playerItem-left">
-                                <img id="profileImage" src="{{p.picUrl}}" class="profileImage" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
-                            </div>
-
-                            <div class="playerItem-right">
-                                <div class="firstName-lastName">
-                                    {{ p.lastname }}, {{p.firstname}} <br/>
-                                </div>
-                                <div class="birthday-details">
-                                    Geburtstag: {{p.birthday | birthday}}
-                                </div>
-                                <div class="birthday-details">
-                                    E-Mail: {{p.email}}
-                                </div>
-                            </div>
-
-                        <button ion-button outline item-right *ngIf="(editMode)" color="danger" (click)="presentConfirm(p, 'delP')">Entfernen</button>
-
-                </ion-item>
-
+    <ion-list class="players-list" *ngSwitchCase="'frauen'">
+      <div *ngFor="let p of allPlayers">
+        <div *ngIf="p.gender=='f'">
+          <ion-item class="less-label-margin" *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
+            <div>
+              <div class="itemPlayerLeft">
+                <img src="{{p.picUrl}}" class="player-item-image picture-click" (click)="this.utils.openProfile(p, this.navCtrl)" onError="this.src='assets/images/user-shape-64.png'" />
+              </div>
+              <div class="itemPlayerRight">
+                <div class="mainDetails">
+                  {{ p.lastname }}, {{p.firstname}}
+                  <button *ngIf="(editMode)" class="player-item-button" ion-button round outline icon-only color="danger" (click)="presentConfirm(p, 'delP')">
+                  <ion-icon name="remove"></ion-icon>
+                  </button>
+                </div>
+                <div class="secondaryDetails">
+                  {{p.birthday | birthday}}
+                </div>
+              </div>
             </div>
+          </ion-item>
         </div>
+      </div>
+      <ion-label *ngIf="!teamHasPlayers" class="align-center no-items">Keine Spieler vorhanden</ion-label>
+      <ion-label *ngIf="womanCounter==0 && teamHasPlayers" class="align-center no-items">Keine weiblichen Spieler vorhanden</ion-label>
     </ion-list>
-</div>
+  </div>
+
+  <div class="edit-players-button-container" *ngIf="(isAdmin && editMode)">
+    <button class="button-width" ion-button outline round color="secondary" icon-left (click)="editPlayers()">
+      <ion-icon name="create"></ion-icon>
+      Spieler bearbeiten
+    </button>
+    <button class="button-width" ion-button outline round color="danger" icon-left (click)="presentConfirm(null, 'delT')">
+      <ion-icon name="close"></ion-icon>
+      Mannschaft löschen
+    </button>
+  </div>
+<ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
 </ion-content>
