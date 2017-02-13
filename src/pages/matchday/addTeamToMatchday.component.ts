@@ -2,6 +2,7 @@
 //teams nicht aktuell
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
+import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -9,6 +10,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-addTeamToMatchday',
   templateUrl: 'addTeamToMatchday.component.html',
+  providers: [CreateMatchdayProvider]
 })
 
 export class AddTeamToMatchdayComponent implements OnInit{
@@ -71,7 +73,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
     }
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController, public toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController, public createMatchdayProvider: CreateMatchdayProvider, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController, public toastCtrl: ToastController) {
     this.match = navP.get('matchItem');
     this.allPlayers = navP.get('playerArray');
     this.statusArray = navP.get('statusArray');
@@ -84,47 +86,8 @@ export class AddTeamToMatchdayComponent implements OnInit{
     if (showLoading) {
       this.createAndShowLoading();
     }
-    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
-      let playerArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        playerArray[counter] = snapshot.val()[i];
-        playerArray[counter].id = i;
-        playerArray[counter].accepted = false;
-        playerArray[counter].pending = false;
-        playerArray[counter].declined = false;
-        playerArray[counter].deleted = false;
-        if (playerArray[counter].team == this.match.team){
-          playerArray[counter].isMainTeam = true;
-        } else {
-          playerArray[counter].isMainTeam = false;
-        }
-        if (this.match.acceptedPlayers){
-          for (let i in this.acceptedArray){
-            if (this.match.acceptedPlayers[i] == playerArray[counter].id){
-              playerArray[counter].accepted = true;
-            }
-          }
-        }
-        if (this.match.pendingPlayers){
-          for (let i in this.pendingArray){
-            if (this.match.pendingPlayers[i] == playerArray[counter].id){
-              playerArray[counter].pending = true;
-            }
-          }
-        }
-        if (this.match.declinedPlayers){
-          for (let i in this.declinedArray){
-            if (this.match.declinedPlayers[i] == playerArray[counter].id){
-              playerArray[counter].declined = true;
-            }
-          }
-        }
-        counter++;
-      }
-      this.allPlayers = playerArray;
-      this.allPlayers = _.sortBy(this.allPlayers, "lastname");
-    }).then((data) => {
+    this.createMatchdayProvider.setPlayer(this.Utilities, this.match, this.acceptedArray, this.pendingArray, this.declinedArray).then((data) => {
+      this.allPlayers = this.createMatchdayProvider.playerArray;
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
       }
