@@ -4,6 +4,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
+import { MyGamesProvider } from '../../providers/myGames-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -11,6 +12,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-myGames',
   templateUrl: 'myGames.component.html',
+  providers: [MyGamesProvider]
 })
 
 export class MyGamesComponent implements OnInit {
@@ -19,8 +21,9 @@ export class MyGamesComponent implements OnInit {
 
   }
 
-  ionViewWillEnter() {
+  ionViewWillEnter(){
     this.loadData(true, null);
+    console.log("Load dismissed.");
   }
 
 
@@ -41,7 +44,7 @@ export class MyGamesComponent implements OnInit {
   loading: any;
   today: String = new Date().toISOString();
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private Utilities: Utilities, private loadingCtrl: LoadingController) {
+  constructor(public myGamesProvider: MyGamesProvider, public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private Utilities: Utilities, private loadingCtrl: LoadingController) {
 
   }
 
@@ -52,17 +55,8 @@ export class MyGamesComponent implements OnInit {
     this.counterPast = 0;
     this.counterFuture = 0;
     this.counterOpen = 0;
-    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-      let gamesArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        gamesArray[counter] = snapshot.val()[i];
-        gamesArray[counter].id = i;
-        counter++;
-      }
-      this.dataGames = gamesArray;
-      this.dataGames = _.sortBy(this.dataGames, "time").reverse();
-    }).then((data) => {
+    this.myGamesProvider.setGames().then((data) => {
+      this.dataGames = this.myGamesProvider.dataGames;
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
       }
@@ -74,39 +68,16 @@ export class MyGamesComponent implements OnInit {
         this.createAndShowErrorAlert(error);
       }
     });
-    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-      let inviteArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        inviteArray[counter] = snapshot.val()[i];
-        inviteArray[counter].id = i;
-        counter++;
-      }
-      this.dataInvites = inviteArray;
+    this.myGamesProvider.setInvites().then((data) => {
+      this.dataInvites = this.myGamesProvider.dataInvites;
       this.count();
-    }).then((data) => {
-      if (showLoading) {
-      this.loading.dismiss().catch((error) => console.log("error caught"));
-      }
-      if(event!=null){
-        event.complete();
-      }
     }).catch(function (error) {
       if (showLoading) {
         this.createAndShowErrorAlert(error);
       }
     });
-    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
-      let playerArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        playerArray[counter] = snapshot.val()[i];
-        playerArray[counter].id = i;
-        counter++;
-      }
-      this.dataPlayer = playerArray;
-      this.dataPlayer = _.sortBy(this.dataPlayer, "lastname");
-    }).then((data) => {
+    this.myGamesProvider.setPlayers().then((data) => {
+      this.dataPlayer = this.myGamesProvider.dataPlayer;
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
       }
@@ -130,6 +101,14 @@ export class MyGamesComponent implements OnInit {
     }
 
   createAndShowLoading() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
+    })
+    this.loading.present();
+  }
+
+  showLoadingElement() {
     this.loading = this.loadingCtrl.create({
       spinner: 'ios',
       content: 'Lade Daten'

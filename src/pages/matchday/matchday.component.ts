@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';
 import { CreateMatchdayComponent } from './createMatchday.component';
+import { MyGamesProvider } from '../../providers/myGames-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -11,6 +12,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-matchday',
   templateUrl: 'matchday.component.html',
+  providers: [MyGamesProvider]
 })
 
 export class MatchdayComponent implements OnInit {
@@ -21,7 +23,6 @@ export class MatchdayComponent implements OnInit {
 
   ionViewWillEnter() {
     this.isTrainer();
-    this.dataInvites = this.Utilities.allInvites;
     this.loadData(true, null);
   }
 
@@ -32,7 +33,7 @@ export class MatchdayComponent implements OnInit {
   isAdmin: boolean = false;
   counter: any;
 
-  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public myGamesProvider: MyGamesProvider, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
 
   }
 
@@ -50,17 +51,21 @@ export class MatchdayComponent implements OnInit {
     if (showLoading) {
       this.createAndShowLoading();
     }
-    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-      let gamesArray = [];
-      this.counter = 0;
-      for (let i in snapshot.val()) {
-        gamesArray[this.counter] = snapshot.val()[i];
-        gamesArray[this.counter].id = i;
-        this.counter++;
+    this.myGamesProvider.setInvites().then((data) => {
+      this.dataInvites = this.myGamesProvider.dataInvites;
+      if (showLoading) {
+      this.loading.dismiss().catch((error) => console.log("error caught"));
       }
-      this.dataGames = gamesArray;
-      this.dataGames = _.sortBy(this.dataGames, "time").reverse();
-    }).then((data) => {
+      if(event!=null){
+        event.complete();
+      }
+    }).catch(function (error) {
+      if (showLoading) {
+        this.createAndShowErrorAlert(error);
+      }
+    });
+    this.myGamesProvider.setGames().then((data) => {
+      this.dataGames = this.myGamesProvider.dataGames;
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
       }

@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, ActionSheetController, ToastController, ModalController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.component';
 import { TemplateComponent } from '../templates/template.component'
+import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
 import * as _ from 'lodash';
@@ -14,6 +15,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-gameDetails',
   templateUrl: 'gameDetails.component.html',
+  providers: [CreateMatchdayProvider]
 })
 export class GameDetailsComponent implements OnInit{
 
@@ -70,7 +72,7 @@ export class GameDetailsComponent implements OnInit{
     }
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public modalCtrl: ModalController) {
+  constructor(private navCtrl: NavController, public createMatchdayProvider: CreateMatchdayProvider, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public modalCtrl: ModalController) {
     this.gameItem = navP.get('gameItem');
   }
 
@@ -91,99 +93,34 @@ export class GameDetailsComponent implements OnInit{
       this.createAndShowLoading();
     }
     if(this.editMode==false){
-    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
-      let playerArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        playerArray[counter] = snapshot.val()[i];
-        playerArray[counter].id = i;
-        playerArray[counter].age = this.Utilities.calculateAge(snapshot.val()[i].birthday);
-        playerArray[counter].accepted = false;
-        playerArray[counter].pending = false;
-        playerArray[counter].declined = false;
-        playerArray[counter].deleted = false;
-        if (playerArray[counter].team == this.gameItem.team){
-          playerArray[counter].isMainTeam = true;
-        } else {
-          playerArray[counter].isMainTeam = false;
+      this.createMatchdayProvider.setPlayer(this.Utilities, this.gameItem, this.acceptedArray, this.pendingArray, this.declinedArray).then((data) => {
+        this.playerArray = this.createMatchdayProvider.playerArray;
+        this.setCounter();
+        this.dataLoaded = true;
+        console.log(this.acceptedCounter);
+        console.log(this.pendingCounter);
+        console.log(this.declinedCounter);
+        console.log(this.acceptedMaleCounter);
+        console.log(this.acceptedFemaleCounter);
+        console.log('pending:');
+        console.log(this.pendingArray);
+        if (showLoading) {
+        this.loading.dismiss().catch((error) => console.log("error caught"));
         }
-        if (this.gameItem.acceptedPlayers){
-          for (let i in this.gameItem.acceptedPlayers){
-            if (this.gameItem.acceptedPlayers[i] == playerArray[counter].id){
-              playerArray[counter].accepted = true;
-            }
-          }
+        if(event!=null){
+          event.complete();
         }
-        if (this.gameItem.pendingPlayers){
-          for (let i in this.gameItem.pendingPlayers){
-            if (this.gameItem.pendingPlayers[i] == playerArray[counter].id){
-              playerArray[counter].pending = true;
-            }
-          }
+      }).catch(function (error) {
+        if (showLoading) {
+          this.createAndShowErrorAlert(error);
         }
-        if (this.gameItem.declinedPlayers){
-          for (let i in this.gameItem.declinedPlayers){
-            if (this.gameItem.declinedPlayers[i] == playerArray[counter].id){
-              playerArray[counter].declined = true;
-            }
-          }
-        }
-        counter++;
-      }
-      this.playerArray = playerArray;
-      this.playerArray = _.sortBy(this.playerArray, "lastname");
-      console.log("Player loaded");
-      if (this.gameItem.acceptedPlayers){
-        for (let i in this.gameItem.acceptedPlayers){
-          this.acceptedArray[i]=this.gameItem.acceptedPlayers[i];
-        }
-      }
-      if (this.gameItem.pendingPlayers){
-        for (let i in this.gameItem.pendingPlayers){
-          this.pendingArray[i]=this.gameItem.pendingPlayers[i];
-        }
-      }
-      if (this.gameItem.declinedPlayers){
-        for (let i in this.gameItem.declinedPlayers){
-          this.declinedArray[i]=this.gameItem.declinedPlayers[i];
-        }
-      }
-      this.setCounter();
-      this.dataLoaded = true;
-      console.log(this.acceptedCounter);
-      console.log(this.pendingCounter);
-      console.log(this.declinedCounter);
-      console.log(this.acceptedMaleCounter);
-      console.log(this.acceptedFemaleCounter);
-      console.log('pending:');
-      console.log(this.pendingArray);
-    }).then((data) => {
-      if (showLoading) {
-      this.loading.dismiss().catch((error) => console.log("error caught"));
-      }
-      if(event!=null){
-        event.complete();
-      }
-    }).catch(function (error) {
-      if (showLoading) {
-        this.createAndShowErrorAlert(error);
-      }
-    });
+      });
     }
 
     this.loadTemplateData(showLoading, event);
 
-    firebase.database().ref('clubs/12/teams').once('value', snapshot => {
-      let teamArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        teamArray[counter] = snapshot.val()[i];
-        teamArray[counter].id = i;
-        counter++;
-      }
-      this.teamArray = teamArray;
-      this.teamArray = teamArray;
-    }).then((data) => {
+    this.createMatchdayProvider.setTeams().then((data) => {
+      this.teamArray = this.createMatchdayProvider.dataTeam;
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
       }
@@ -198,17 +135,8 @@ export class GameDetailsComponent implements OnInit{
   }
 
   loadTemplateData(showLoading: boolean, event){
-    firebase.database().ref('clubs/12/templates').once('value', snapshot => {
-      let templateArray = [];
-      this.counter = 0;
-      for (let i in snapshot.val()) {
-        templateArray[this.counter] = snapshot.val()[i];
-        templateArray[this.counter].id = i;
-        this.counter++;
-      }
-      this.dataTemplate = templateArray;
-      this.dataTemplate = _.sortBy(this.dataTemplate, "club");
-    }).then((data) => {
+    this.createMatchdayProvider.setTemplates().then((data) => {
+      this.dataTemplate = this.createMatchdayProvider.dataTemplate;
       if (showLoading) {
         this.loading.dismiss().catch((error) => console.log("error caught"));
       }
