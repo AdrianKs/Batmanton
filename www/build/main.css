@@ -26947,6 +26947,18 @@ ion-label {
   color: white;
 }
 
+page-about .aboutDetails {
+  padding: 20px;
+}
+
+page-about .about-icon {
+  width: 94px;
+  height: 95px;
+  margin-bottom: 15px;
+  background-color: #FFF200;
+  border-radius: 50%;
+}
+
 page-clubPassword .description-text {
   color: white;
   white-space: normal;
