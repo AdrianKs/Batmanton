@@ -5,6 +5,7 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component';
 import { TemplateComponent } from '../templates/template.component';
+import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
@@ -13,6 +14,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-createMatchday',
   templateUrl: 'createMatchday.component.html',
+  providers: [CreateMatchdayProvider]
 })
 
 export class CreateMatchdayComponent implements OnInit {
@@ -55,7 +57,7 @@ export class CreateMatchdayComponent implements OnInit {
   }
 
 
-  constructor(public navCtrl: NavController, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController, public createMatchdayProvider: CreateMatchdayProvider, private Utilities: Utilities, private alertCtrl: AlertController, public formBuilder: FormBuilder, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController) {
     this.createMatchdayForm = formBuilder.group({
       opponent: [],
       team: [],
@@ -73,17 +75,8 @@ export class CreateMatchdayComponent implements OnInit {
 
     this.loadTemplateData(showLoading, event);
 
-    firebase.database().ref('clubs/12/teams').once('value', snapshot => {
-      let teamArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        teamArray[counter] = snapshot.val()[i];
-        teamArray[counter].id = i;
-        counter++;
-      }
-      this.relevantTeams = teamArray;
-      this.relevantTeams = teamArray;
-    }).then((data) => {
+    this.createMatchdayProvider.setTeams().then((data) => {
+      this.relevantTeams = this.createMatchdayProvider.dataTeam;
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
       }
@@ -98,17 +91,9 @@ export class CreateMatchdayComponent implements OnInit {
   }
 
   loadTemplateData(showLoading: boolean, event){
-    firebase.database().ref('clubs/12/templates').once('value', snapshot => {
-      let templateArray = [];
-      this.counter = 0;
-      for (let i in snapshot.val()) {
-        templateArray[this.counter] = snapshot.val()[i];
-        templateArray[this.counter].id = i;
-        this.counter++;
-      }
-      this.dataTemplate = templateArray;
-      this.dataTemplate = _.sortBy(this.dataTemplate, "club");
-    }).then((data) => {
+    this.createMatchdayProvider.setTemplates().then((data) => {
+      this.dataTemplate = this.createMatchdayProvider.dataTemplate;
+      this.counter = this.createMatchdayProvider.counter;
       if (showLoading) {
         this.loading.dismiss().catch((error) => console.log("error caught"));
       }
