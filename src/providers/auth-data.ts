@@ -92,7 +92,7 @@ export class AuthData {
   changePushid(userid: string): any {
     window["plugins"].OneSignal.getIds(ids => {
       console.log('getIds: ' + JSON.stringify(ids));
-      alert("userId = " + ids.userId + ", pushToken = " + ids.pushToken);
+      //alert("userId = " + ids.userId + ", pushToken = " + ids.pushToken);
       return firebase.database().ref('clubs/12/players/' + userid + '/pushid/' + ids.userId).set(
         true
       );
