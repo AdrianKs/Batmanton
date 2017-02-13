@@ -207,6 +207,11 @@ export class MyApp {
     }
   }
 
+  /**
+   * This function checks, if the user entered the club password
+   * The local token gets loaded and checked, if it contains the right password
+   * @returns {boolean}
+   */
   loadUserCredentials() {
   let token = window.localStorage.getItem(this.utilities.LOCAL_TOKEN_KEY);
   if(token){
