@@ -12,8 +12,8 @@ export class Utilities {
   public fireAuth: any;
   user: any;
   userData: any = {};
-  allTeams: Array<any>;
-  allTeamsVal: Array<any>;
+  allTeams: Array<any> = [];
+  allTeamsVal: Array<any> = [];
   teamsLoaded: boolean = false;
   userLoaded: boolean = false;
   allInvites: Array<any>;
@@ -58,7 +58,9 @@ export class Utilities {
         teamArray[counter].id = i;
         counter++;
       }
-      this.allTeamsVal = snapshot.val();
+      if (snapshot.val()){
+        this.allTeamsVal = snapshot.val();
+      }
       this.allTeams = teamArray;
       this.teamsLoaded = true;
     });

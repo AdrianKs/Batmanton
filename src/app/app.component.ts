@@ -156,7 +156,9 @@ export class MyApp {
           if (!this.utilities.inRegister) {
             this.checkForVerification();
           }
-          this.checkPlatform(userID);
+          if(user.val().email){
+            this.checkPlatform(userID);
+          }
           this.utilities.loggedIn = true;
         } else {
           this.logout();
