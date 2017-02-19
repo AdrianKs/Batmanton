@@ -343,6 +343,7 @@ export class CreateMatchdayComponent implements OnInit {
         this.match.location.street = snapshot.val().street;
         this.match.location.zipcode = snapshot.val().zipcode;
       });
+      this.opponentChanged = true;
     }else{
       firebase.database().ref('clubs/12/templates/'+clubID).once('value', snapshot => {
         this.match.location.street = snapshot.val().street;
