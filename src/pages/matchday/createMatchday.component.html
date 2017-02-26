@@ -48,9 +48,9 @@
                     [class.invalid]="!createMatchdayForm.controls.street.valid && streetChanged"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label stacked>PLZ</ion-label>
+          <ion-label stacked>PLZ, Stadt</ion-label>
           <ion-input #zipcode formControlName="zipcode" [(ngModel)]="match.location.zipcode"
-                    (input)="zipcodeSelectChanged()" placeholder="PLZ"></ion-input>
+                    (input)="zipcodeSelectChanged()" placeholder="PLZ, Stadt"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label stacked>Datum & Uhrzeit</ion-label>
