@@ -31,6 +31,7 @@ export class MatchdayComponent implements OnInit {
   loading: any;
   currentUser: any;
   isAdmin: boolean = false;
+  gamesAvailable: boolean = false;
   counter: any;
 
   constructor(public navCtrl: NavController, public myGamesProvider: MyGamesProvider, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
@@ -66,6 +67,10 @@ export class MatchdayComponent implements OnInit {
     });
     this.myGamesProvider.setGames().then((data) => {
       this.dataGames = this.myGamesProvider.dataGames;
+      this.gamesAvailable = true;
+      if (this.dataGames.length == 0){
+        this.gamesAvailable = false;
+      }
       if (showLoading) {
       this.loading.dismiss().catch((error) => console.log("error caught"));
       }
