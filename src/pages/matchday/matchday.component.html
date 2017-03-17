@@ -44,6 +44,7 @@
       </ion-item-options>
     </ion-item-sliding>
   </div>
+  <ion-label *ngIf="gamesAvailable == false" class="align-center no-items">Keine Spiele vorhanden</ion-label>
   </ion-list>
   <div *ngIf="counter == 0">
     <ion-label class="align-center no-items">Keine Spiele vorhanden</ion-label>
