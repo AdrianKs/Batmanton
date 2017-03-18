@@ -22,7 +22,7 @@ export class Utilities {
   inRegister: boolean = false;
   loggedIn: boolean = false;
   LOCAL_TOKEN_KEY: string = 'Batmanton';
-  hashedPassword = 19045090;
+  hashedPassword = -1719170103;
   counterOpen: any;
 
   constructor(public alertCtrl: AlertController) {
