@@ -1,20 +1,21 @@
-import {Component, ViewChild} from '@angular/core';
-import {Nav, Platform, AlertController} from 'ionic-angular';
-import {StatusBar, Splashscreen} from 'ionic-native';
+import { Component, ViewChild } from '@angular/core';
+import { Nav, Platform, AlertController } from 'ionic-angular';
+import { StatusBar, Splashscreen } from 'ionic-native';
 
-import {AboutComponent} from '../pages/about/about.component';
-import {InvitesComponent} from '../pages/invites/invites.component';
-import {MatchdayComponent} from '../pages/matchday/matchday.component';
-import {MyGamesComponent} from '../pages/myGames/myGames.component';
-import {ProfileComponent} from '../pages/profile/profile.component';
-import {UserManagementComponent} from '../pages/userManagement/userManagement.component';
+import { AboutComponent } from '../pages/about/about.component';
+import { InvitesComponent } from '../pages/invites/invites.component';
+import { MatchdayComponent } from '../pages/matchday/matchday.component';
+import { MyGamesComponent } from '../pages/myGames/myGames.component';
+import { ProfileComponent } from '../pages/profile/profile.component';
+import { UserManagementComponent } from '../pages/userManagement/userManagement.component';
 import { LoginComponent } from "../pages/login/login.component";
-import {TeamsComponent} from "../pages/teams/teams.component";
+import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
 import { firebaseConfig } from "./firebaseAppData";
 import { setUser } from "./globalVars";
 import { AuthData } from '../providers/auth-data';
-import {Utilities} from './utilities';
+import { Utilities } from './utilities';
+import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
 
 firebase.initializeApp(firebaseConfig);
 
@@ -30,18 +31,19 @@ export class MyApp {
   aboutPage: any = {
     title: "About",
     component: AboutComponent
-  }
+  };
 
   myProfilePage: any = {
     title: "Mein Profil",
     component: ProfileComponent
-  }
+  };
 
   pages: Array<{ title: string, component: any, icon: string, visible: boolean }>;
 
   constructor(public platform: Platform, public authData: AuthData, public utilities: Utilities, public alertCtrl: AlertController) {
 
     this.initializeApp();
+
 
     firebase.auth().onAuthStateChanged((user) => {
       //utilities.user = user;
@@ -53,13 +55,23 @@ export class MyApp {
         this.checkIfUserDeleted(user.uid);
       }
       if (!user) {
+        utilities.loggedIn = false;
         utilities.user = {};
-        this.rootPage = LoginComponent;
+        if (this.loadUserCredentials()) {
+          this.rootPage = LoginComponent;
+        } else {
+          this.rootPage = ClubPasswordComponent;
+        }
       } else {
-        if(this.nav.getActive() == undefined){
-          this.rootPage = MatchdayComponent;
+        if (this.nav.getActive() == undefined) {
+          if (this.loadUserCredentials()) {
+            this.rootPage = MatchdayComponent;
+          } else {
+            this.rootPage = ClubPasswordComponent;
+          }
         }
       }
+      this.utilities.countOpen();
     });
 
     utilities.setTeams();
@@ -67,10 +79,10 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Spieltage', component: MatchdayComponent, icon: "clipboard", visible: true },
-      { title: 'Einladungen', component: InvitesComponent, icon: "mail", visible: false},
+      { title: 'Einladungen', component: InvitesComponent, icon: "mail", visible: false },
       { title: 'Mannschaften', component: TeamsComponent, icon: "people", visible: true },
       { title: 'Meine Spiele', component: MyGamesComponent, icon: "ribbon", visible: true },
-      { title: 'Benutzerverwaltung', component: UserManagementComponent, icon: "settings", visible: false}
+      { title: 'Benutzerverwaltung', component: UserManagementComponent, icon: "settings", visible: false }
     ];
   }
 
@@ -96,6 +108,36 @@ export class MyApp {
     this.nav.setRoot(LoginComponent);
   }
 
+  onMenuOpen(){
+    this.utilities.countOpen();
+  }
+
+  checkPlatform(userID) {
+    let flag = false;
+    let tempPlat = "";
+
+    if (this.platform.is('ios')) {
+      tempPlat = "ios";
+    } else if (this.platform.is('android')) {
+      tempPlat = "android";
+    } else {
+      tempPlat = "web";
+    }
+
+    this.utilities.updatePlayer(userID, {platform: tempPlat});
+
+    /*for (let i = 0; i <= this.utilities.allPlayers.length - 1; i++) {
+      console.log(userID + ' ' + this.utilities.allPlayers[i].id)
+      if (userID == this.utilities.allPlayers[i].id) {
+        if (this.utilities.allPlayers[i].platform != tempPlat) {
+          firebase.database().ref('clubs/12/players/' + userID).update({
+            platform: tempPlat
+          });
+        }
+      }
+    }*/
+  }
+
   /**
    * This function checks if the user is deleted in the database.
    * If the user is deleted, it will logout the user and show an alert.
@@ -105,12 +147,19 @@ export class MyApp {
    * @param userID userID of the user trying to log in.
    */
   checkIfUserDeleted(userID: any): any {
-    firebase.database().ref('clubs/12/players/' + userID).once('value')
-      .then( user => {
-        if(user.val() != null){
-          if(!this.utilities.inRegister){
+    this.utilities.getPlayer(userID)
+      .then(user => {
+        console.log("in then");
+        console.log(user);
+        console.log(user.val());
+        if (user.val() != null) {
+          if (!this.utilities.inRegister) {
             this.checkForVerification();
           }
+          if(user.val().email){
+            this.checkPlatform(userID);
+          }
+          this.utilities.loggedIn = true;
         } else {
           this.logout();
           let alert = this.alertCtrl.create({
@@ -138,7 +187,7 @@ export class MyApp {
    * @param user logged-in user, to check if the mail is verified
    */
   checkForVerification() {
-    if (!this.utilities.user.emailVerified){
+    if (!this.utilities.user.emailVerified) {
       let confirm = this.alertCtrl.create({
         title: 'Bitte bestätigen Sie Ihre Email Adresse',
         message: 'Bestätigunsmail erneut senden?',
@@ -159,4 +208,23 @@ export class MyApp {
       confirm.present();
     }
   }
+
+  /**
+   * This function checks, if the user entered the club password
+   * The local token gets loaded and checked, if it contains the right password
+   * @returns {boolean}
+   */
+  loadUserCredentials() {
+  let token = window.localStorage.getItem(this.utilities.LOCAL_TOKEN_KEY);
+  if(token){
+    if (this.utilities.hashPassword(token) == this.utilities.hashedPassword) {
+      return true;
+    } else{
+      return false;
+    }
+  } else {
+    return false;
+  }
+
+}
 }

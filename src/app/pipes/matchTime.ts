@@ -10,7 +10,7 @@ export class MatchTime {
             time = time.replace("T","-");
             time = time.replace(/:/g,"-");
             return time.split("-")[2] + "." + time.split("-")[1] + "." + time.split("-")[0]
-                + " " + time.split("-")[3] + ":" + time.split("-")[4];
+                + " - " + time.split("-")[3] + ":" + time.split("-")[4];
         }
     }
 }

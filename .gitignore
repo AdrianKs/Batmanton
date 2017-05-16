@@ -37,3 +37,6 @@ ionic.config.json
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+src/app/main.dev.ts
+src/app/main.prod.ts
+

@@ -8,9 +8,10 @@
 </ion-header>
 
 <ion-content padding>
+  <ion-list>
   <div *ngFor="let item of dataGames">
-    <ion-item (click)="openDetails($event, item)">
-      <div>
+    <ion-item-sliding>
+    <ion-item (click)="openDetails($event, item)" class="less-label-margin">
         <div class="itemLeft">
           <div class="thumbnail-pictures">
             <div>
@@ -24,22 +25,36 @@
           </div>
         </div>
         <div class="itemRight">
-          <div *ngIf="item.time == 0"><p>TBA</p></div>
-          <div *ngIf="item.time != 0"><p>{{ item.time | matchTime }}</p></div>
+          <div *ngIf="item.time == 0">TBA</div>
+          <div *ngIf="item.time != 0">{{ item.time | matchTime }}</div>
           <div class="mainDetails">{{ item.opponent }}</div>
-          <div *ngIf="item.home == true"><p>Heim</p></div>
-          <div *ngIf="item.home == false && item.home != 'unknown'"><p>Auswärts</p></div>
-          <div *ngIf="item.home == 'unknown'"><p>TBA</p></div>
+          <div *ngIf="item.team == 0">keine Mannschaft</div>
+          <div *ngIf="item.team != 0">{{ item.team | teams}}</div>
+          <div *ngIf="item.home == true">Heim</div>
+          <div *ngIf="item.home == false && item.home != 'unknown'">Auswärts</div>
+          <div *ngIf="item.home == 'unknown'">TBA</div>
         </div>
-      </div>
     </ion-item>
+
+      <ion-item-options side="right">
+        <button ion-button color="danger" (click)="deleteGame(item)">
+          <ion-icon name='trash'></ion-icon>
+          Löschen
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </div>
+  <ion-label *ngIf="gamesAvailable == false" class="align-center no-items">Keine Spiele vorhanden</ion-label>
+  </ion-list>
+  <div *ngIf="counter == 0">
+    <ion-label class="align-center no-items">Keine Spiele vorhanden</ion-label>
   </div>
   <ion-fab right bottom *ngIf="(isAdmin)">
     <button ion-fab icon-only (click)="createGame()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher (ionRefresh)="loadData(true, $event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 </ion-content>

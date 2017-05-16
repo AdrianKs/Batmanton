@@ -76,9 +76,9 @@
     </ion-item>
 
     <ion-item>
-      <ion-label stacked>Email</ion-label>
+      <ion-label stacked>E-Mail</ion-label>
       <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
-                 placeholder="Ihre Email-Adresse"
+                 placeholder="Ihre E-Mail-Adresse"
                  [class.invalid]="!signupForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!signupForm.controls.email.valid  && (emailChanged || submitAttempt)">
@@ -93,7 +93,7 @@
                    [class.invalid]="!passwordGroup.controls.password.valid && (passwordChanged || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!passwordGroup.controls.password.valid  && (passwordChanged || submitAttempt)">
-        <p>Ihr Passwort muss mindestens 6 Zeichen haben.</p>
+        <p>Ihr Passwort muss mindestens 6 Zeichen lang sein.</p>
       </ion-item>
 
       <ion-item>
@@ -104,7 +104,7 @@
       </ion-item>
       <ion-item class="error-message" *ngIf="!passwordGroup.valid  && passwordGroup._errors && !signupForm.controls.passwords.controls.passwordConfirm._errors &&
                                               (passwordConfirmChanged || passwordChanged || submitAttempt)">
-        <p>Ihre Passwörter stimmen nicht überein.</p>
+        <p>Die Passwörter stimmen nicht überein.</p>
       </ion-item>
       <ion-item class="error-message" *ngIf="!passwordGroup.valid  && signupForm.controls.passwords.controls.passwordConfirm._errors && (passwordConfirmChanged || submitAttempt)">
         <p>Bitte bestätigen Sie Ihr Passwort.</p>

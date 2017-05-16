@@ -12,12 +12,13 @@ import { NavParamsMock } from '../../mocks/navParamsMock';
 import { UtilitiesMock } from '../../mocks/utilitiesMock';
 
 let player = {
+    id: "12345",
     birthday: "",
     email: "",
     firstname: "",
     gender: "",
-    isPlayer: "",
-    isTrainer: "",
+    isPlayer: true,
+    isTrainer: false,
     lastname: "",
     picUrl: "",
     pushId: "",
@@ -49,6 +50,30 @@ describe("EditRoleComponentTest", () => {
         expect(fixture).toBeTruthy();
         expect(component).toBeTruthy();
     });
+
+    it('is same user', () => {
+        expect(component.sameUser).toBeTruthy();
+    });
+
+    it('changed value trainer', () => {
+        component.player.isTrainer = true;
+        component.changeValue(null);
+        expect(component.isChanged).toBeTruthy();
+    });
+
+    it('changed value player', () => {
+        component.player.isPlayer = false;
+        component.player.isTrainer = false;
+        component.changeValue(null);
+        expect(component.isChanged).toBeFalsy();
+    });
+
+    it('changed value player and trainer', () => {
+        component.player.isPlayer = false;
+        component.player.isTrainer = true;
+        component.changeValue(null);
+        expect(component.isChanged).toBeTruthy();
+    })
 
     afterEach(() => {
         fixture.destroy();

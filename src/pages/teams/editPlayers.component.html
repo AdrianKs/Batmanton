@@ -1,14 +1,11 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
-    <ion-title>Verfügbare Spieler</ion-title>
-    <ion-buttons right>
-      <button ion-button *ngIf="toRoot=='yes'" (click)="nav.popToRoot()">
-        Fertig
-      </button>
-      <button ion-button *ngIf="toRoot=='no'" (click)="backToEditMode()">
-        Fertig
+    <ion-buttons left>
+      <button ion-button (click)="backToEditMode()" icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
       </button>
     </ion-buttons>
+    <ion-title>Verfügbare Spieler</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -92,16 +89,19 @@
         <div *ngFor="let item of allPlayers">
           <!--<div *ngFor="let item of group.players">-->
           <div *ngIf="item.gender=='m'">
-            <ion-item *ngIf="!item.isAdded">
+            <ion-item class="less-label-margin">
               <div>
                 <div class="itemPlayerLeft">
-                  <img src="{{item.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
+                  <img src="{{item.picUrl}}" class="player-item-image picture-click" (click)="this.utilities.openProfile(item, this.nav)" onError="this.src='assets/images/user-shape-64.png'" />
                 </div>
                 <div class="itemPlayerRight">
                   <div class="mainDetails">
                     {{ item.lastname }}, {{item.firstname}}
-                    <button class="player-item-button" ion-button round outline icon-only color="secondary" (click)="addPlayer(item)">
+                    <button class="player-item-button" *ngIf="!item.isAdded" ion-button round outline icon-only color="secondary" (click)="addPlayer(item)">
                       <ion-icon name="add"></ion-icon>
+                    </button>
+                    <button class="player-item-button" *ngIf="item.isAdded" ion-button round outline icon-only color="danger" (click)="removePlayer(item)">
+                      <ion-icon name="remove"></ion-icon>
                     </button>
                   </div>
                   <div class="secondaryDetails">
@@ -112,20 +112,24 @@
             </ion-item>
           </div>
         </div>
+        <ion-label *ngIf="manCounter==0" class="align-center no-items">Keine männlichen Spieler verfügbar</ion-label>
       </ion-list>
       <ion-list *ngSwitchCase="'frauen'">
         <div *ngFor="let item of allPlayers">
           <div *ngIf="item.gender=='f'">
-            <ion-item *ngIf="!item.isAdded">
+            <ion-item class="less-label-margin">
               <div>
                 <div class="itemPlayerLeft">
-                  <img src="{{item.picUrl}}" class="player-item-image" onError="this.src='assets/images/user-shape-64.png'" />
+                  <img src="{{item.picUrl}}" class="player-item-image picture-click" (click)="this.utilities.openProfile(item, this.nav)" onError="this.src='assets/images/user-shape-64.png'" />
                 </div>
                 <div class="itemPlayerRight">
                   <div class="mainDetails">
                     {{ item.lastname }}, {{item.firstname}}
-                    <button class="player-item-button" ion-button round outline icon-only color="secondary" (click)="addPlayer(item)">
+                    <button class="player-item-button" *ngIf="!item.isAdded" ion-button round outline icon-only color="secondary" (click)="addPlayer(item)">
                       <ion-icon name="add"></ion-icon>
+                    </button>
+                    <button class="player-item-button" *ngIf="item.isAdded" ion-button round outline icon-only color="danger" (click)="removePlayer(item)">
+                      <ion-icon name="remove"></ion-icon>
                     </button>
                   </div>
                   <div class="secondaryDetails">
@@ -136,6 +140,7 @@
             </ion-item>
           </div>
         </div>
+        <ion-label *ngIf="womanCounter==0" class="align-center no-items">Keine weiblichen Spieler verfügbar</ion-label>
       </ion-list>
     </div>
   </ion-list>

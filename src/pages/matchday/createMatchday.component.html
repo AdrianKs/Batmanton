@@ -1,8 +1,8 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
     <ion-buttons left>
-      <button ion-button clear (click)="goBack()">
-        Zurück
+      <button ion-button (click)="goBack()" icon-only>
+        <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title center>Erstelle Spiel</ion-title>
@@ -25,7 +25,12 @@
                       placeholder="Mannschaft"
                       (ionChange)="teamSelectChanged()" doneText="Ok" cancelText="Abbrechen">
           <ion-option value=0>keine Mannschaft</ion-option>
-          <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
+          <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">
+            {{item.name}}
+            <div *ngIf="item.ageLimit==0">(Erw.,</div>
+            <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
+            S{{item.sclass}})
+          </ion-option>
         </ion-select>
         </ion-item>
         <ion-item>
@@ -43,9 +48,9 @@
                     [class.invalid]="!createMatchdayForm.controls.street.valid && streetChanged"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label stacked>PLZ</ion-label>
+          <ion-label stacked>PLZ, Stadt</ion-label>
           <ion-input #zipcode formControlName="zipcode" [(ngModel)]="match.location.zipcode"
-                    (input)="zipcodeSelectChanged()" placeholder="PLZ"></ion-input>
+                    (input)="zipcodeSelectChanged()" placeholder="PLZ, Stadt"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label stacked>Datum & Uhrzeit</ion-label>
@@ -55,25 +60,20 @@
                         doneText="Ok" cancelText="Abbrechen"></ion-datetime>
         </ion-item>
       </form>
-      <div class ="centerContainer">
-        <button ion-button small outline color="secondary" (click)="showTemplates()" icon-left item-right>
-          <ion-icon name="arrow-dropright"></ion-icon>
+
+      <div class="edit-players-button-container">
+        <button ion-button small outline color="primary" (click)="openTemplatesActionSheet()" icon-left item-right>
+          <ion-icon name="map"></ion-icon>
           Adressvorlagen
         </button>
       </div>
-      <ion-item class="createGameButtonContainer">
-        <ion-checkbox  [(ngModel)]="templateChecked" color="secondary"></ion-checkbox>
-        <ion-label>Adresse als Vorlage speichern</ion-label>
-      </ion-item>
     </div>
   </div>
 
   <div class="bottomContainer">
-    <div class="saveButtonContainer">
-      <button ion-button outline icon-left round color="secondary" (click)="createGame()">
-        <ion-icon name="add"></ion-icon>
-        Spiel erstellen
-      </button>
-    </div>
+    <button ion-button outline icon-left round color="secondary" (click)="createGame()">
+      <ion-icon name="add"></ion-icon>
+      Spiel erstellen
+    </button>
   </div>
 </ion-content>
