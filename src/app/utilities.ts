@@ -215,7 +215,16 @@ export class Utilities {
   }
 
   sendPushNotification(pushIds: Array<any>, content: String) {
-    let notificationObj = { contents: {en: content},
+    let notificationObj = {
+      contents: {en: content},
+      buttons: [
+        {
+          action: "like-button",
+          title: "Like",
+          icon: "http://i.imgur.com/N8SN8ZS.png",
+          url: "https://example.com"
+        }
+      ],
       include_player_ids: pushIds};
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
