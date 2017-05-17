@@ -11,7 +11,7 @@
     <ion-title>Benutzerverwaltung</ion-title>
     <ion-buttons right>
       <button ion-button [disabled]="!isChanged" (click)="changeRole($event, player)">
-         Fertig
+        Fertig
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -20,44 +20,45 @@
 <ion-content padding>
   <div class="topContainer">
     <div class="picture-container">
-      <img src="{{player.picUrl}}" class="profile-image picture-border" onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'" />
-</div>
-<div class="playerDataContainer">
-  <ion-item>
-    <ion-label class="form-label">Name:</ion-label>
-    <ion-label class="form-value">{{player.firstname}} {{player.lastname}}</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label class="form-label">E-Mail:</ion-label>
-    <ion-label class="form-value">{{player.email}}</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label class="form-label">Geburtstag:</ion-label>
-    <ion-label class="form-value">{{player.birthday | birthday}}</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label class="form-label">Mannschaft:</ion-label>
-    <ion-label class="form-value">{{player.team | teams}}</ion-label>
-  </ion-item>
-</div>
-</div>
-<div class="bottomContainer">
-  <div class="changeRoleContainer">
-    <ion-item>
-      <ion-checkbox [(ngModel)]="player.isPlayer" class="myChk" (ionChange)="changeValue($event)"></ion-checkbox>
-      <ion-label>Spieler</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-checkbox [(ngModel)]="player.isTrainer" class="myChk" (ionChange)="changeValue($event)"></ion-checkbox>
-      <ion-label>Trainer</ion-label>
-    </ion-item>
+      <img src="{{player.picUrl}}" class="profile-image picture-border"
+           onError="this.src='assets/images/ic_account_circle_black_48dp_2x.png'"/>
+    </div>
+    <div class="playerDataContainer">
+      <ion-item>
+        <ion-label class="form-label">Name:</ion-label>
+        <ion-label class="form-value">{{player.firstname}} {{player.lastname}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label class="form-label">E-Mail:</ion-label>
+        <ion-label class="form-value">{{player.email}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label class="form-label">Geburtstag:</ion-label>
+        <ion-label class="form-value">{{player.birthday | birthday}}</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-label class="form-label">Mannschaft:</ion-label>
+        <ion-label class="form-value">{{player.team | teams}}</ion-label>
+      </ion-item>
+    </div>
   </div>
-  <div class="bottomContainer" *ngIf="!sameUser">
-    <button icon-left ion-button outline round color="danger" (click)="showConfirm($event, player)">
+  <div class="bottomContainer">
+    <div class="changeRoleContainer">
+      <ion-item>
+        <ion-checkbox [(ngModel)]="player.isPlayer" class="myChk" (ionChange)="changeValue($event)"></ion-checkbox>
+        <ion-label>Spieler</ion-label>
+      </ion-item>
+      <ion-item>
+        <ion-checkbox [(ngModel)]="player.isTrainer" class="myChk" (ionChange)="changeValue($event)"></ion-checkbox>
+        <ion-label>Trainer</ion-label>
+      </ion-item>
+    </div>
+    <div class="bottomContainer" *ngIf="!sameUser">
+      <button icon-left ion-button outline round color="danger" (click)="showConfirm($event, player)">
         <ion-icon name="close" md="md-close"></ion-icon>
         Benutzer löschen
       </button>
+    </div>
   </div>
-</div>
 
 </ion-content>
