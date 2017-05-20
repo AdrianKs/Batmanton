@@ -63,12 +63,12 @@ describe("UserManagementComponentTest", () => {
 
     it('count players', () => {
         component.checkPlayers();
-        expect(component.countMan == 1 && component.countWoman == 1).toBeTruthy()
+        expect(component.countMan == 3 && component.countWoman == 3).toBeTruthy()
     });
 
     it('count platform', ()=>{
         component.checkPlatform();
-        expect(component.countIos == 2 && component.countAndroid == 0).toBeTruthy();
+        expect(component.countIos == 4 && component.countAndroid == 2).toBeTruthy();
     })
 
     afterEach(() => {
