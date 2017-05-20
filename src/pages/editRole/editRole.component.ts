@@ -86,10 +86,14 @@ export class EditRoleComponent {
         if (successFlag) {
             if (this.sameUser) {
                 this.utilities.setUserData();
-                this.presentToast("Rolle wurde erfolgreich bearbeitet");
-                this.navCtrl.setRoot(MatchdayComponent);
+                this.presentToast("Änderungen wurden gespeichert");
+                if(this.player.isTrainer == true){
+                  this.navigateBackToList();
+                }else{
+                  this.navCtrl.setRoot(MatchdayComponent);
+                }
             } else {
-                this.presentToast("Rolle wurde erfolgreich bearbeitet");
+                this.presentToast("Änderungen wurden gespeichert");
                 this.navigateBackToList();
             }
         } else {
