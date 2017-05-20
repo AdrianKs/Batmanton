@@ -58,21 +58,21 @@ describe("EditRoleComponentTest", () => {
     it('changed value trainer', () => {
         component.player.isTrainer = true;
         component.changeValue(null);
-        expect(component.isChanged).toBeTruthy();
+        expect(component.roleChanged).toBeTruthy();
     });
 
     it('changed value player', () => {
         component.player.isPlayer = false;
         component.player.isTrainer = false;
         component.changeValue(null);
-        expect(component.isChanged).toBeFalsy();
+        expect(component.roleChanged).toBeFalsy();
     });
 
     it('changed value player and trainer', () => {
         component.player.isPlayer = false;
         component.player.isTrainer = true;
         component.changeValue(null);
-        expect(component.isChanged).toBeTruthy();
+        expect(component.roleChanged).toBeTruthy();
     })
 
     afterEach(() => {

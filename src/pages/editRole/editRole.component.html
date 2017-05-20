@@ -1,16 +1,16 @@
 <ion-header>
   <ion-navbar hideBackButton="true">
     <ion-buttons left>
-      <button *ngIf="(isChanged)" ion-button (click)="navigateBackToList()">
+      <button *ngIf="(roleChanged || teamChanged)" ion-button (click)="navigateBackToList()">
         Abbrechen
       </button>
-      <button *ngIf="(!isChanged)" ion-button (click)="navigateBackToList()" icon-only>
+      <button *ngIf="(!roleChanged && !teamChanged)" ion-button (click)="navigateBackToList()" icon-only>
         <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
       </button>
     </ion-buttons>
     <ion-title>Benutzerverwaltung</ion-title>
     <ion-buttons right>
-      <button ion-button [disabled]="!isChanged" (click)="changeRole($event, player)">
+      <button ion-button [disabled]="!roleChanged && !teamChanged" (click)="onDonePress(player)">
         Fertig
       </button>
     </ion-buttons>
@@ -36,14 +36,23 @@
         <ion-label class="form-label">Geburtstag:</ion-label>
         <ion-label class="form-value">{{player.birthday | birthday}}</ion-label>
       </ion-item>
-      <ion-item>
-        <ion-label class="form-label">Mannschaft:</ion-label>
-        <ion-label class="form-value">{{player.team | teams}}</ion-label>
-      </ion-item>
+      <!--<ion-item>-->
+        <!--<ion-label class="form-label">Mannschaft:</ion-label>-->
+        <!--<ion-label class="form-value">{{player.team | teams}}</ion-label>-->
+      <!--</ion-item>-->
     </div>
   </div>
   <div class="bottomContainer">
     <div class="changeRoleContainer">
+      <ion-item>
+        <ion-label class="form-label" color="primary">Mannschaft:</ion-label>
+        <ion-select class="form-value item-select" placeholder="Mannschaft"
+                    [(ngModel)]="player.team"
+                    (ionChange)="teamSelectChanged(player.team)" doneText="Ok" cancelText="Abbrechen">
+          <ion-option value=0>keine Mannschaft</ion-option>
+          <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
+        </ion-select>
+      </ion-item>
       <ion-item>
         <ion-checkbox [(ngModel)]="player.isPlayer" class="myChk" (ionChange)="changeValue($event)"></ion-checkbox>
         <ion-label>Spieler</ion-label>
