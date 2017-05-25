@@ -21,7 +21,7 @@ export class UtilitiesMock {
             isPlayer : true,
             isTrainer : true,
             lastname : "Mustermann",
-            picUrl : "www.picUrl.com",
+            picUrl : "www.picUrlMax.com",
             platform : "ios",
             state : 0,
             team : "2"
