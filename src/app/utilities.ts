@@ -190,6 +190,10 @@ export class Utilities {
     return firebase.database().ref('clubs/12/players/' + userID).update(data);
   }
 
+  updateMatch(matchID: any, data: any): any {
+    return firebase.database().ref('clubs/12/matches/' + matchID).update(data);
+  }
+
   removePlayerFromTeam(teamID, userID) {
     if (teamID != undefined && teamID != "0") {
       firebase.database().ref('clubs/12/teams/' + teamID + '/players').once('value', snapshot => {
@@ -230,7 +234,7 @@ export class Utilities {
     )
   }
 
-  sendGameReminderDayBefore(pushIds: Array<any>, content: String, timeOfMatch: string) {
+  sendGameReminderDayBefore(pushIds: Array<any>, content: String, timeOfMatch: string, matchID: String) {
     let reminderTime = new Date(timeOfMatch);
     reminderTime.setDate(reminderTime.getDate() - 1);
     let notificationObj = {
@@ -241,12 +245,17 @@ export class Utilities {
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
         console.log("Notification Post Success:", successResponse);
+        firebase.database().ref('clubs/12/matches/' + matchID).update({delayedNotificationID: successResponse.id});
       },
       function (failedResponse) {
         console.log("Notification Post Failed: ", failedResponse);
         //alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
       }
     )
+  }
+
+  cancelPushNotification(notificationID: any) {
+    window["plugins"].OneSignal.cancelNotification(notificationID);
   }
 
   hashPassword(password): any {

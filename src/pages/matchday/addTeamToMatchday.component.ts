@@ -384,9 +384,13 @@ export class AddTeamToMatchdayComponent implements OnInit{
       console.log(pushIDs);
       if(pushIDs.length != 0){
         console.log("ruft pushfunction");
-        let informationString = "am " + this.Utilities.transformTime(this.match.time) + " in " + this.match.location.street + ", " + this.match.location.zipcode + ", gegen " + this.match.opponent
-        this.Utilities.sendPushNotification(pushIDs, 'Sie haben eine Einladung zu einem Spiel ' + informationString + ' erhalten');
-        this.Utilities.sendGameReminderDayBefore(pushIDs, "Denken Sie an Ihr Spiel am " + informationString, this.match.time);
+        console.log(this.match.id);
+        let matchInformationString = "am " + this.Utilities.transformTime(this.match.time) + " in " + this.match.location.street + ", " + this.match.location.zipcode + ", gegen " + this.match.opponent
+        this.Utilities.sendPushNotification(pushIDs, 'Sie haben eine Einladung zu einem Spiel ' + matchInformationString + ' erhalten');
+        if(this.match.delayedNotificationID != undefined){
+          this.Utilities.cancelPushNotification(this.match.delayedNotificationID);
+        }
+        this.Utilities.sendGameReminderDayBefore(pushIDs, "Denken Sie an Ihr Spiel am " + matchInformationString, this.match.time, this.match.id);
       }
     });
     this.navCtrl.popToRoot();
