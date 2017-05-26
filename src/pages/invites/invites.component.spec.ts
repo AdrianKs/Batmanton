@@ -21,6 +21,10 @@ let fixture: ComponentFixture<InvitesComponent>;
 let de: DebugElement;
 let el: HTMLElement;
 
+/**
+ * test file for invites.component.ts. Creates the possibility to run unit tests. 
+ */
+
 describe("InvitesComponentTesting", () => {
     let mockLoadingController;
     beforeEach(async(() => {

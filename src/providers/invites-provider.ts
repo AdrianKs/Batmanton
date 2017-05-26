@@ -9,10 +9,16 @@ export class InvitesProvider {
     allInvites: Array<any>;
     allMatchdays: Array<any>;
 
+    /**
+     * Constructor. Initializes player information.   
+     */
     constructor() {
         this.setPlayers();
     }
 
+    /**
+     * Reads the latest matchday data from the database and makes it available for use within the app.
+     */
     setMatchdays() {
         return firebase.database().ref('clubs/12/matches').once('value', snapshot => {
             let matchdayArray = [];
@@ -26,6 +32,9 @@ export class InvitesProvider {
         })
     }
 
+    /**
+     * Reads the latest player data from the database and makes it available for use within the app.
+     */
     setPlayers() {
         return firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
             let playerArray = [];
@@ -40,6 +49,9 @@ export class InvitesProvider {
         });
     }
 
+    /**
+     * Reads the latest invite data from the database and makes it available for use within the app.
+     */
     setInvites() {
         return firebase.database().ref('clubs/12/invites').once('value', snapshot => {
             let inviteArray = [];
