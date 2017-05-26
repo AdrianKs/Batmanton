@@ -154,11 +154,13 @@ export class MyGamesComponent implements OnInit {
     return urlArray;
   }
 
-  openDetails(ev, value) {
+  openDetails(event, value) {
+    event.stopPropagation();
     this.navCtrl.push(GameDetailsComponent, { gameItem: value });
   }
 
-  verifyAccept(inviteItem){
+  verifyAccept(event, inviteItem){
+    event.stopPropagation();
     this.counterOpen--;
     for (let i in this.dataGames){
       if (this.dataGames[i].id == inviteItem.match){
@@ -196,7 +198,8 @@ export class MyGamesComponent implements OnInit {
     this.loadData(false, null);
   }
 
-  doRadio(inviteItem, value) {
+  doRadio(event, inviteItem, value) {
+    event.stopPropagation();
     let alert = this.alertCtrl.create();
     alert.setTitle('Grund der Abwesenheit:');
 

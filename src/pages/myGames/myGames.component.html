@@ -59,7 +59,6 @@
                     <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
                     <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
                   </div>
-                  <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
                 </ion-item>
               </div>
             </div>
@@ -77,7 +76,6 @@
           <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 1">
             <div *ngIf="inviteItem.match == gameItem.id">
               <div *ngIf="gameItem.time > today || gameItem.time == '0'">
-                <ion-item-sliding #item>
                   <ion-item (click)="openDetails($event, gameItem)" class="less-label-margin">
                     <div class="itemLeft">
                       <div class="thumbnail-pictures">
@@ -105,21 +103,8 @@
                       <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
                       <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
                     </div>
-                    <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
+                    <button ion-button class="cubic-button" color="danger" outline (click)="doRadio($event, inviteItem, 1)" icon-only item-right large><ion-icon name="close"></ion-icon></button>
                   </ion-item>
-                  <ion-item-options side="right">
-                    <button ion-button color="danger" (click)="doRadio(inviteItem, 1)">
-                      <ion-icon name='close'></ion-icon>
-                      Absagen
-                    </button>
-                  </ion-item-options>
-                </ion-item-sliding>
-                <!--<ion-item>-->
-                <!--<button ion-button color="danger" icon-left (click)="doRadio(inviteItem, 1)" item-right>-->
-                <!--<ion-icon name='close'></ion-icon>-->
-                <!--Absagen-->
-                <!--</button>-->
-                <!--</ion-item>-->
               </div>
             </div>
           </div>
@@ -135,7 +120,6 @@
         <div *ngFor="let inviteItem of dataInvites">
           <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 0">
             <div *ngIf="inviteItem.match == gameItem.id">
-              <ion-item-sliding #item>
                 <ion-item (click)="openDetails($event, gameItem)" class="less-label-margin">
                   <div class="itemLeft">
                     <div class="thumbnail-pictures">
@@ -163,30 +147,9 @@
                     <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
                     <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
                   </div>
-                  <ion-icon name="ios-arrow-forward-outline" clear item-right></ion-icon>
+                  <button ion-button class="cubic-button" color="danger" outline (click)="doRadio($event, inviteItem, 0)" icon-only item-right large><ion-icon name="close"></ion-icon></button>
+                  <button ion-button class="cubic-button" color="secondary" outline (click)="verifyAccept($event, inviteItem)" icon-only item-right large><ion-icon name="checkmark"></ion-icon></button>
                 </ion-item>
-
-                <ion-item-options side="right">
-                  <button ion-button color="secondary" (click)="verifyAccept(inviteItem)">
-                    <ion-icon name="checkmark"></ion-icon>
-                    Zusagen
-                  </button>
-                  <button ion-button color="danger" (click)="doRadio(inviteItem, 0)">
-                    <ion-icon name='close'></ion-icon>
-                    Absagen
-                  </button>
-                </ion-item-options>
-              </ion-item-sliding>
-              <!--<ion-item>-->
-              <!--<button ion-button color="secondary" icon-left (click)="verifyAccept(inviteItem)" item-right>-->
-              <!--<ion-icon name='checkmark'></ion-icon>-->
-              <!--Zusagen-->
-              <!--</button>-->
-              <!--<button ion-button color="danger" icon-left (click)="doRadio(inviteItem, 0)" item-right>-->
-              <!--<ion-icon name='close'></ion-icon>-->
-              <!--Absagen-->
-              <!--</button>-->
-              <!--</ion-item>-->
             </div>
           </div>
         </div>
@@ -194,6 +157,7 @@
       <ion-label *ngIf="counterOpen == 0" class="align-center no-items">Keine Spiele vorhanden</ion-label>
     </ion-list>
   </div>
+
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
