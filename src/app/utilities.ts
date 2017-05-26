@@ -217,15 +217,27 @@ export class Utilities {
   sendPushNotification(pushIds: Array<any>, content: String) {
     let notificationObj = {
       contents: {en: content},
-      buttons: [
-        {
-          action: "like-button",
-          title: "Like",
-          icon: "http://i.imgur.com/N8SN8ZS.png",
-          url: "https://example.com"
-        }
-      ],
-      include_player_ids: pushIds};
+      include_player_ids: pushIds
+    };
+    window["plugins"].OneSignal.postNotification(notificationObj,
+      function(successResponse) {
+        console.log("Notification Post Success:", successResponse);
+      },
+      function (failedResponse) {
+        console.log("Notification Post Failed: ", failedResponse);
+        //alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
+      }
+    )
+  }
+
+  sendGameReminderDayBefore(pushIds: Array<any>, content: String, timeOfMatch: string) {
+    let reminderTime = new Date(timeOfMatch);
+    reminderTime.setDate(reminderTime.getDate() - 1);
+    let notificationObj = {
+      contents: {en: content},
+      send_after: reminderTime,
+      include_player_ids: pushIds
+    };
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
         console.log("Notification Post Success:", successResponse);
@@ -263,5 +275,12 @@ export class Utilities {
 
   openProfile(item, navCtrl){
     navCtrl.push(PlayerComponent, { player: item});
+  }
+
+  transformTime(time: String) {
+    if(time != undefined){
+      console.log(time.split("T")[0] + ", um " + time.split("T")[1].split("Z")[0]);
+      return time.split("T")[0] + ", um " + time.split("T")[1].split("Z")[0];
+    }
   }
 }
