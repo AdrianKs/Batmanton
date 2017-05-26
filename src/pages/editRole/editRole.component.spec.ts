@@ -12,18 +12,20 @@ import { NavParamsMock } from '../../mocks/navParamsMock';
 import { UtilitiesMock } from '../../mocks/utilitiesMock';
 
 let player = {
-    id: "12345",
-    birthday: "",
-    email: "",
-    firstname: "",
-    gender: "",
-    isPlayer: true,
-    isTrainer: false,
-    lastname: "",
-    picUrl: "",
-    pushId: "",
-    state: 0,
-    team: "16"
+    id: "1",
+    birthday : "1999-01-01",
+    email : "max.mustermann@mail.com",
+    firstname : "Max",
+    gender : "m",
+    helpCounter : 0,
+    isDefault : false,
+    isPlayer : true,
+    isTrainer : true,
+    lastname : "Mustermann",
+    picUrl : "www.picUrl.com",
+    platform : "ios",
+    state : 0,
+    team : "2"
 }
 
 let component: EditRoleComponent;
@@ -56,23 +58,23 @@ describe("EditRoleComponentTest", () => {
     });
 
     it('changed value trainer', () => {
-        component.player.isTrainer = true;
+        component.player.isTrainer = false;
         component.changeValue(null);
-        expect(component.isChanged).toBeTruthy();
+        expect(component.roleChanged).toBeTruthy();
     });
 
     it('changed value player', () => {
         component.player.isPlayer = false;
         component.player.isTrainer = false;
         component.changeValue(null);
-        expect(component.isChanged).toBeFalsy();
+        expect(component.roleChanged).toBeFalsy();
     });
 
     it('changed value player and trainer', () => {
-        component.player.isPlayer = false;
+        component.player.isPlayer = true;
         component.player.isTrainer = true;
         component.changeValue(null);
-        expect(component.isChanged).toBeTruthy();
+        expect(component.roleChanged).toBeTruthy();
     })
 
     afterEach(() => {

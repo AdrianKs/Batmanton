@@ -12,7 +12,6 @@
 // Profile: ActionSheet verzögert sich, wenn man in iOS auf das Bild klickt
 // Farbe der Statusleisttexte in iOS ändern
 // remove console logs
-// Feature: Wenn man beim Spiel erstellen "Heim" auswählt, soll direkt die Heimadresse eingetragen werden
 // Matchday: Ort zu PLZ hinzufügen
 // Bug: ich kann beim spiel-bearbeiten screen den gegner löschen und dann speichern
 // gameDetails Bug: Wenn man einen Spieler direkt aus der Liste löscht und danach auf Abbrechen klicht, ist der Spieler zwei mal in der Liste
