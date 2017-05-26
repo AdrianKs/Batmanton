@@ -22,6 +22,11 @@ let fixture: ComponentFixture<InvitesMatchdayComponent>;
 let de: DebugElement;
 let el: HTMLElement;
 
+/**
+ * Testfile for invitesmatchday.component.spec.ts 
+ * Provides the possibility to run unit tests. 
+ */
+
 describe("InvitesMatchdayComponentTesting", () => {
     let mockLoadingController;
     beforeEach(async(() => {
