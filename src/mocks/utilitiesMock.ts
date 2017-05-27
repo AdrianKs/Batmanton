@@ -3,6 +3,7 @@ export class UtilitiesMock {
     userData:any;
     allPlayers: any[];
     allTeams: Array<any>;
+    allTeamsVal: any;
 
     constructor() {
         this.user = {
@@ -29,20 +30,20 @@ export class UtilitiesMock {
 
         this.allPlayers = [
             {
-                id: "1",
-                birthday : "1999-01-01",
-                email : "max.mustermann@mail.com",
-                firstname : "Max",
-                gender : "m",
-                helpCounter : 0,
-                isDefault : false,
-                isPlayer : true,
-                isTrainer : true,
-                lastname : "Mustermann",
-                picUrl : "www.picUrlMax.com",
-                platform : "ios",
-                state : 0,
-                team : "2"
+              id: "1",
+              birthday : "1999-01-01",
+              email : "max.mustermann@mail.com",
+              firstname : "Max",
+              gender : "m",
+              helpCounter : 0,
+              isDefault : false,
+              isPlayer : true,
+              isTrainer : true,
+              lastname : "Mustermann",
+              picUrl : "www.picUrlMax.com",
+              platform : "ios",
+              state : 0,
+              team : "2"
             },
             {
               id: "2",
@@ -168,7 +169,45 @@ export class UtilitiesMock {
             type : "Normal"
           }
         ]
-    }
+
+    this.allTeamsVal = {
+        1: {
+          ageLimit: "0",
+          name: "Wunderschöneres Team",
+          players: ["3"],
+          sclass: "1",
+          type: "Normal"
+        },
+        2: {
+          ageLimit: "19",
+          name: "Neues Team",
+          players: ["1"],
+          sclass: "1",
+          type: "Normal"
+        },
+        3: {
+          ageLimit: "17",
+          name: "U17 S2 Team Normal",
+          players: ["4"],
+          sclass: "2",
+          type: "Normal"
+        },
+        4: {
+          ageLimit: "15",
+          name: "U15 S1 Team Normal",
+          players: ["5"],
+          sclass: "1",
+          type: "Normal"
+        },
+        5: {
+          ageLimit: "13",
+          name: "U15 S3 Team Normal",
+          players: ["6"],
+          sclass: "3",
+          type: "Normal"
+        }
+      }
+    };
 
   calculateAge(birthdayString) {
     if (birthdayString != undefined) {
