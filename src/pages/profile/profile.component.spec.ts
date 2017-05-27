@@ -159,30 +159,6 @@ describe("ProfileComponentTest", () => {
     expect(component.isAMail(formControlMock)).toBeNull();
   });
 
-  // it('is same user', () => {
-  //   expect(component.sameUser).toBeTruthy();
-  // });
-  //
-  // it('changed value trainer', () => {
-  //   component.player.isTrainer = true;
-  //   component.changeValue(null);
-  //   expect(component.roleChanged).toBeTruthy();
-  // });
-  //
-  // it('changed value player', () => {
-  //   component.player.isPlayer = false;
-  //   component.player.isTrainer = false;
-  //   component.changeValue(null);
-  //   expect(component.roleChanged).toBeFalsy();
-  // });
-  //
-  // it('changed value player and trainer', () => {
-  //   component.player.isPlayer = false;
-  //   component.player.isTrainer = true;
-  //   component.changeValue(null);
-  //   expect(component.roleChanged).toBeTruthy();
-  // })
-
   afterEach(() => {
     fixture.destroy();
     component = null;
