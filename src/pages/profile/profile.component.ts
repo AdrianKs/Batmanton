@@ -221,10 +221,10 @@ export class ProfileComponent implements OnInit {
     } else {
       this.birthdayChanged = false;
     }
-    this.relevantTeams = this.utilities.getRelevantTeams(this.utilities.userData.birthday);
+    this.relevantTeams = this.utilities.getRelevantTeams(input);
     if (this.utilities.userData.team != undefined && this.utilities.allTeamsVal[this.utilities.userData.team] != undefined) {
       if (this.utilities.userData.team != "0" && this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit != 0) {
-        if (this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit < this.utilities.calculateAge(this.utilities.userData.birthday)) {
+        if (this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit < this.utilities.calculateAge(input)) {
           this.utilities.userData.team = "0";
         }
       }
