@@ -78,7 +78,7 @@
             <div *ngIf="inviteItem.match == gameItem.id">
               <div *ngIf="gameItem.time > today || gameItem.time == '0'">
                 <ion-item-sliding #item>
-                  <ion-item (click)="openDetails($event, gameItem)" class="less-label-margin">
+                  <ion-item (click)="openDetails($event, gameItem, 2, inviteItem)" class="less-label-margin">
                     <div class="itemLeft">
                       <div class="thumbnail-pictures">
                         <div>
@@ -136,7 +136,7 @@
           <div *ngIf="inviteItem.recipient == loggedInUserID && inviteItem.state == 0">
             <div *ngIf="inviteItem.match == gameItem.id">
               <ion-item-sliding #item>
-                <ion-item (click)="openDetails($event, gameItem)" class="less-label-margin">
+                <ion-item (click)="openDetails($event, gameItem, 1, inviteItem)" class="less-label-margin">
                   <div class="itemLeft">
                     <div class="thumbnail-pictures">
                       <div>

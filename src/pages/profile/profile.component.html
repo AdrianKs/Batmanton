@@ -11,7 +11,7 @@
       <button *ngIf="(!editMode && utilities.userLoaded)" ion-button (click)="editProfile()">Bearbeiten
       </button>
       <button
-        [disabled]="(!firstnameChanged && !lastnameChanged && !emailChanged && !birthdayChanged && !genderChanged && !teamChanged) || !formValid"
+        [disabled]="(!firstnameChanged && !lastnameChanged && !emailChanged && !birthdayChanged && !genderChanged && !teamChanged && !helpCounterChanged) || !formValid"
         *ngIf="(editMode)" ion-button (click)="finishEditProfile()">Fertig
       </button>
     </ion-buttons>
@@ -110,6 +110,18 @@
           <ion-option value=0>keine Mannschaft</ion-option>
           <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
         </ion-select>
+      </ion-item>
+
+      <ion-item *ngIf="(!editMode)">
+        <ion-label class="form-label">Anzahl Aushilfen:</ion-label>
+        <ion-label class="form-value">{{utilities.userData.helpCounter}}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="(editMode)">
+        <ion-label color="primary">Anzahl Aushilfen:</ion-label>
+        <ion-input type="number" #helpCounter formControlName="helpCounter"
+                   [(ngModel)]="utilities.userData.helpCounter"
+                   (input)="elementChanged(helpCounter)"
+                   [class.invalid]="!profileForm.controls.helpCounter.valid && helpCounterChanged"></ion-input>
       </ion-item>
     </form>
 

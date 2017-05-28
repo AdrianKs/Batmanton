@@ -22,13 +22,17 @@ export class GameDetailsComponent implements OnInit{
   editMode: boolean = false;
   playerStatus: string = 'accepted';
   isAdmin: boolean;
+  loggedInUserID: string = this.Utilities.user.uid;
   currentUser: any;
   loading: any;
   gameItem: any;
+  inviteItem: any;
+  option: any;
   playerArray: any;
   teamArray: any;
   dataTemplate: any;
   counter: any;
+  helpCounter: any;
   statusArray: any;
   counterArray: any;
   acceptedArray = [];
@@ -40,6 +44,8 @@ export class GameDetailsComponent implements OnInit{
   acceptedFemaleCounter: any;
   pendingCounter: any;
   declinedCounter: any;
+  testRadioOpen: boolean;
+  testRadioResult;
 
 
   opponentOld: string;
@@ -54,7 +60,7 @@ export class GameDetailsComponent implements OnInit{
   homeChanged: boolean;
   streetChanged: boolean;
   zipcodeChanged: boolean;
-  timeChanged: boolean;
+  timeChanged: boolean = false;
   templateChecked: boolean = false;
   dataLoaded: boolean = false;
   playersEdited: boolean;
@@ -74,6 +80,10 @@ export class GameDetailsComponent implements OnInit{
 
   constructor(private navCtrl: NavController, public createMatchdayProvider: CreateMatchdayProvider, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public modalCtrl: ModalController) {
     this.gameItem = navP.get('gameItem');
+    this.option = navP.get('option');
+    this.inviteItem = navP.get('inviteItem');
+    console.log(this.option);
+    console.log(this.inviteItem);
   }
 
   isTrainer() {
@@ -539,26 +549,28 @@ export class GameDetailsComponent implements OnInit{
       }
     });
 
-    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-      for (let k in this.pendingArray){
-        for (let j in this.playerArray){
-          if (this.playerArray[j].id == this.pendingArray[k] && this.playerArray[j].isDefault == false){
-            let inviteExists = false;
-            for (let i in snapshot.val()) {
-              if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.pendingArray[k]){
-                console.log("inviteExists now true");
-                console.log(this.playerArray[j]);
-                console.log(this.playerArray[j].isMainTeam);
-                if (this.playerArray[j].isMainTeam == false){
-                  firebase.database().ref('clubs/12/invites/').child(i).update({
-                    assist: true
-                  });
-                } else {
-                  firebase.database().ref('clubs/12/invites/').child(i).update({
-                    assist: false
-                  });
-                }
-                if (snapshot.val()[i].state != 0){
+    console.log("timeChanged: "+ this.timeChanged);
+    if(this.timeChanged == true){
+      firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+        for (let k in this.pendingArray){
+          for (let j in this.playerArray){
+            if (this.playerArray[j].id == this.pendingArray[k] && this.playerArray[j].isDefault == false){
+              let inviteExists = false;
+              for (let i in snapshot.val()) {
+                if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.pendingArray[k]){
+                  console.log("inviteExists now true");
+                  console.log(this.playerArray[j]);
+                  console.log(this.playerArray[j].isMainTeam);
+                  if (this.playerArray[j].isMainTeam == false){
+                    firebase.database().ref('clubs/12/invites/').child(i).update({
+                      assist: true
+                    });
+                  } else {
+                    firebase.database().ref('clubs/12/invites/').child(i).update({
+                      assist: false
+                    });
+                  }
+                  console.log("push-benachrichtigung an: "+snapshot.val()[i].recipient);
                   //push-Benachrichtigung an snapshot.val()[i].recipient
                   //Zugriff auf Spielerobjekt
                   /*for (let j in this.allPlayers){
@@ -567,41 +579,108 @@ export class GameDetailsComponent implements OnInit{
                       player = this.allPlayers[j];
                     }
                   }*/
+                  firebase.database().ref('clubs/12/invites/' + i).update({
+                    state: 0
+                  });
+                  inviteExists = true;
                 }
-                firebase.database().ref('clubs/12/invites/' + i).update({
+              }
+              if (inviteExists == false){
+                let id = this.makeid();
+                firebase.database().ref('clubs/12/invites/').child(id).set({
+                  assist: false,
+                  match: this.gameItem.id.toString(),
+                  recipient: this.pendingArray[k],
+                  sender: this.Utilities.user.uid,
                   state: 0
                 });
-                inviteExists = true;
-              }
-            }
-            if (inviteExists == false){
-              let id = this.makeid();
-              firebase.database().ref('clubs/12/invites/').child(id).set({
-                assist: false,
-                match: this.gameItem.id.toString(),
-                recipient: this.pendingArray[k],
-                sender: this.Utilities.user.uid,
-                state: 0
-              });
-              if (this.playerArray[j].isMainTeam == false){
-                firebase.database().ref('clubs/12/invites/').child(id).update({
-                  assist: true
-                });
-              }
-              //push-Benachrichtigung an this.pendingArray[k]
-              //Zugriff auf Spielerobjekt
-              /*for (let l in this.allPlayers){
-                let player;
-                if (this.allPlayers[l].id == this.pendingArray[k]){
-                  player = this.allPlayers[l];
-                  console.log(player);
+                if (this.playerArray[j].isMainTeam == false){
+                  firebase.database().ref('clubs/12/invites/').child(id).update({
+                    assist: true
+                  });
                 }
-              }*/
+                console.log("push-benachrichtigung an: "+this.pendingArray[k]);
+                //push-Benachrichtigung an this.pendingArray[k]
+                //Zugriff auf Spielerobjekt
+                /*for (let l in this.allPlayers){
+                  let player;
+                  if (this.allPlayers[l].id == this.pendingArray[k]){
+                    player = this.allPlayers[l];
+                    console.log(player);
+                  }
+                }*/
+              }
             }
           }
         }
-      }
-    });
+      });
+    } else {
+      firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+        for (let k in this.pendingArray){
+          for (let j in this.playerArray){
+            if (this.playerArray[j].id == this.pendingArray[k] && this.playerArray[j].isDefault == false){
+              let inviteExists = false;
+              for (let i in snapshot.val()) {
+                if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.pendingArray[k]){
+                  console.log("inviteExists now true");
+                  console.log(this.playerArray[j]);
+                  console.log(this.playerArray[j].isMainTeam);
+                  if (this.playerArray[j].isMainTeam == false){
+                    firebase.database().ref('clubs/12/invites/').child(i).update({
+                      assist: true
+                    });
+                  } else {
+                    firebase.database().ref('clubs/12/invites/').child(i).update({
+                      assist: false
+                    });
+                  }
+                  if (snapshot.val()[i].state != 0 || this.timeChanged == true){
+                    console.log("push-benachrichtigung an: "+snapshot.val()[i].recipient);
+                    //push-Benachrichtigung an snapshot.val()[i].recipient
+                    //Zugriff auf Spielerobjekt
+                    /*for (let j in this.allPlayers){
+                      let player;
+                      if (this.allPlayers[j].id == snapshot.val()[i].recipient){
+                        player = this.allPlayers[j];
+                      }
+                    }*/
+                  }
+                  firebase.database().ref('clubs/12/invites/' + i).update({
+                    state: 0
+                  });
+                  inviteExists = true;
+                }
+              }
+              if (inviteExists == false){
+                let id = this.makeid();
+                firebase.database().ref('clubs/12/invites/').child(id).set({
+                  assist: false,
+                  match: this.gameItem.id.toString(),
+                  recipient: this.pendingArray[k],
+                  sender: this.Utilities.user.uid,
+                  state: 0
+                });
+                if (this.playerArray[j].isMainTeam == false){
+                  firebase.database().ref('clubs/12/invites/').child(id).update({
+                    assist: true
+                  });
+                }
+                console.log("push-benachrichtigung an: "+this.pendingArray[k]);
+                //push-Benachrichtigung an this.pendingArray[k]
+                //Zugriff auf Spielerobjekt
+                /*for (let l in this.allPlayers){
+                  let player;
+                  if (this.allPlayers[l].id == this.pendingArray[k]){
+                    player = this.allPlayers[l];
+                    console.log(player);
+                  }
+                }*/
+              }
+            }
+          }
+        }
+      });
+    }
   }
 
   deleteGame(){
@@ -814,6 +893,301 @@ export class GameDetailsComponent implements OnInit{
   }
   editTemplates(){
     this.navCtrl.push(TemplateComponent);
+  }
+
+  verifyAccept(inviteItem){
+    this.option = 2;
+    firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
+      state: 1
+    }).then(() => {
+      this.Utilities.countOpen();
+    });;
+    if (inviteItem.assist == true){
+      for (let i in this.playerArray){
+        if (this.playerArray[i].id == this.loggedInUserID){
+          this.helpCounter = this.playerArray[i].helpCounter;
+          this.helpCounter++;
+          firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+            helpCounter: this.helpCounter
+          });
+        }
+      }
+    }
+    inviteItem.state = 1;
+    this.pendingToAccepted(inviteItem.match, this.loggedInUserID);
+    let alert = this.alertCtrl.create({
+      title: 'Zugesagt',
+      message: 'Du wirst diesem Spieltag zugeteilt.',
+      buttons: ['Ok']
+    });
+    alert.present();
+    //push-Benachrichtigung an alle Admins
+    //Zugriff auf Spielerobjekt
+    /*for (let j in this.allPlayers){
+      let player;
+      if (this.allPlayers[j].isAdmin == true){
+        player = this.allPlayers[j];
+      }
+    }*/
+    this.loadData(false, null);
+  }
+
+  doRadio(inviteItem, value) {
+    this.option = null;
+    let alert = this.alertCtrl.create();
+    alert.setTitle('Grund der Abwesenheit:');
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Erkältet',
+      value: 'sick',
+      checked: true
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Verletzt',
+      value: 'injured'
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Schule/Studium/Beruf',
+      value: 'education'
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Privat',
+      value: 'private'
+    });
+
+    alert.addInput({
+      type: 'radio',
+      label: 'Sonstige',
+      value: 'miscellaneous'
+    });
+
+    alert.addButton('Abbrechen');
+    alert.addButton({
+      text: 'Absenden',
+      handler: data => {
+        this.testRadioOpen = false;
+        this.testRadioResult = data;
+        if(this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private'){
+          console.log('Radio data:', data);
+          inviteItem.state = 2;
+          if (value == 0){
+            this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
+          } else {
+            this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+            if (inviteItem.assist == true){
+              for (let i in this.playerArray){
+                if (this.playerArray[i].id == this.loggedInUserID){
+                  this.helpCounter = this.playerArray[i].helpCounter;
+                  this.helpCounter--;
+                  firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+                    helpCounter: this.helpCounter
+                  });
+                }
+              }
+            }
+          }
+          firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
+            excuse: this.testRadioResult,
+            state: 2
+          }).then(() => {
+            this.Utilities.countOpen();
+          });
+          //push-Benachrichtigung an alle Admins
+          //Zugriff auf Spielerobjekt
+          /*for (let j in this.allPlayers){
+            let player;
+            if (this.allPlayers[j].isAdmin == true){
+              player = this.allPlayers[j];
+            }
+          }*/
+          this.loadData(false, null);
+        }
+        if(this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous'){
+            let prompt = this.alertCtrl.create({
+              title: 'Verletzt/Sonstige',
+              message: "Bitte näher ausführen:",
+              inputs: [
+                {
+                  name: 'extra',
+                  placeholder: 'Wie lange wirst du ausfallen?'
+                },
+              ],
+              buttons: [
+                {
+                  text: 'Abbrechen',
+                  handler: data => {
+                    console.log('Cancel clicked');
+                  }
+                },
+                {
+                  text: 'Absenden',
+                  handler: data => {
+                    console.log('Radio data:', this.testRadioResult + ': ' +data.extra);
+                    inviteItem.state = 2;
+                    if (value == 0){
+                      this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
+                    } else {
+                      this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+                    if (inviteItem.assist == true){
+                      for (let i in this.playerArray){
+                        if (this.playerArray[i].id == this.loggedInUserID){
+                          this.helpCounter = this.playerArray[i].helpCounter;
+                          this.helpCounter--;
+                          firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
+                            helpCounter: this.helpCounter
+                          });
+                        }
+                      }
+                    }
+                    }
+                    firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
+                      excuse: this.testRadioResult + ': ' +data.extra,
+                      state: 2
+                    }).then(() => {
+                      this.Utilities.countOpen();
+                    });
+                    //push-Benachrichtigung an alle Admins
+                    //Zugriff auf Spielerobjekt
+                    /*for (let j in this.allPlayers){
+                      let player;
+                      if (this.allPlayers[j].isAdmin == true){
+                        player = this.allPlayers[j];
+                      }
+                    }*/
+                    this.loadData(false, null);
+                  }
+                }
+              ]
+            });
+            prompt.present();
+          }
+       }
+     });
+
+    alert.present().then(() => {
+      this.testRadioOpen = true;
+    });
+  }
+  pendingToAccepted(matchID, userID){
+    if (matchID != undefined && matchID != "0") {
+      firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
+        let playerArray = [];
+        let counter = 0;
+        let userPosition;
+        for (var i = 0; i < snapshot.val().length; i++) {
+          playerArray[counter] = snapshot.val()[i];
+          if (snapshot.val()[i] != undefined) {
+            if (snapshot.val()[i] === userID) {
+              userPosition = i;
+              playerArray[counter] = null;
+              counter--;
+            }
+          counter++;
+          }
+        }
+        if (userPosition != undefined) {
+          firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers/' + userPosition).remove();
+        }
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          pendingPlayers: playerArray
+        });
+      });
+      firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
+        let playersArray = [];
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          playersArray[counter] = snapshot.val()[i];
+          counter++;
+        }
+        playersArray.push(userID);
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          acceptedPlayers: playersArray
+        });
+      });
+    }
+  }
+
+  pendingToDeclined(matchID, userID){
+    if (matchID != undefined && matchID != "0") {
+      firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
+        let playerArray = [];
+        let counter = 0;
+        let userPosition;
+        for (var i = 0; i < snapshot.val().length; i++) {
+          playerArray[counter] = snapshot.val()[i];
+          if (snapshot.val()[i] != undefined) {
+            if (snapshot.val()[i] === userID) {
+              userPosition = i;
+              playerArray[counter] = null;
+              counter--;
+            }
+          counter++;
+          }
+        }
+        if (userPosition != undefined) {
+          firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers/' + userPosition).remove();
+        }
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          pendingPlayers: playerArray
+        });
+      });
+      firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
+        let playersArray = [];
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          playersArray[counter] = snapshot.val()[i];
+          counter++;
+        }
+        playersArray.push(userID);
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          declinedPlayers: playersArray
+        });
+      });
+    }
+  }
+
+  acceptedToDeclined(matchID, userID){
+      firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
+        let playerArray = [];
+        let counter = 0;
+        let userPosition;
+        for (var i = 0; i < snapshot.val().length; i++) {
+          playerArray[counter] = snapshot.val()[i];
+          if (snapshot.val()[i] != undefined) {
+            if (snapshot.val()[i] === userID) {
+              userPosition = i;
+              playerArray[counter] = null;
+              counter--;
+            }
+          counter++;
+          }
+        }
+        if (userPosition != undefined) {
+          firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers/' + userPosition).remove();
+        }
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          acceptedPlayers: playerArray
+        });
+      });
+      firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
+        let playersArray = [];
+        let counter = 0;
+        for (let i in snapshot.val()) {
+          playersArray[counter] = snapshot.val()[i];
+          counter++;
+        }
+        playersArray.push(userID);
+        firebase.database().ref('clubs/12/matches/' + matchID).update({
+          declinedPlayers: playersArray
+        });
+      });
   }
 }
 
