@@ -65,8 +65,8 @@ describe("InvitesMatchdayComponentTesting", () => {
 
     it('fetches the invites', () => {
         component.invitesProvider.setInvites().then(() => {
-            component.invites = component.invitesProvider.allInvites;
-            expect(component.invites).toBeDefined();
+            component.allInvites = component.invitesProvider.allInvites;
+            expect(component.allInvites).toBeDefined();
         }).catch(error => {
             console.log(error.message);
         })
@@ -74,8 +74,8 @@ describe("InvitesMatchdayComponentTesting", () => {
 
     it('fetches the players', () => {
         component.invitesProvider.setPlayers().then(() => {
-            component.players = component.invitesProvider.allPlayers;
-            expect(component.players).toBeDefined();
+            component.allPlayers = component.invitesProvider.allPlayers;
+            expect(component.allPlayers).toBeDefined();
         }).catch(error => {
             console.log(error.message);
         })

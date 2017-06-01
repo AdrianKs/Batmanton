@@ -14,6 +14,7 @@ import 'rxjs/add/operator/toPromise';
 export class Utilities {
   public fireAuth: any;
   user: any;
+  pushIDsAdmins: any;
   userData: any = {};
   allTeams: Array<any> = [];
   allTeamsVal: Array<any> = [];
@@ -32,6 +33,15 @@ export class Utilities {
     this.fireAuth = firebase.auth();
     this.setInvites();
     // this.setPlayers();
+  }
+
+  setPushIDsAdmins(){
+     for (let i in this.allPlayers) {
+      if (this.allPlayers[i].isAdmin) {
+        this.pushIDsAdmins.push(this.allPlayers[i].pushID)
+      }
+    }
+    return this.pushIDsAdmins;
   }
 
   setInRegister(): void {
