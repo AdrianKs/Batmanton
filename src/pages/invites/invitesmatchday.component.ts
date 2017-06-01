@@ -94,14 +94,15 @@ export class InvitesMatchdayComponent {
           handler: () => {
             let pushIds = [];
             console.log(player);
-            console.log("under console log");
+            console.log("--------------------------");
             for (let i in player.pushid) {
               pushIds.push(i);
             }
 
             console.log(pushIds);
 
-            this.utilities.sendPushNotification(pushIds, "Sie haben einen neue Einladung.");
+            let notificationMessage = "Erinnerung: Sie haben eine unbeantwortete Einladung:\n\n" + this.utilities.transformTime(this.matchday.time) + "\ngegen " + this.matchday.opponent +"\n" + this.matchday.location.street + ", " + this.matchday.location.zipcode;
+            this.utilities.sendPushNotification(pushIds, notificationMessage);
             this.showMessage();
           }
         }
@@ -136,8 +137,8 @@ export class InvitesMatchdayComponent {
   doRefresh(refresher) {
     this.showLoadingElement();
     this.invitesProvider.setInvites().then(() => {
-       this.invites = this.invitesProvider.allInvites;
-       this.counts = this.countStates(this.matchday);
+      this.invites = this.invitesProvider.allInvites;
+      this.counts = this.countStates(this.matchday);
     });
     this.invitesProvider.setPlayers().then(() => {
       this.players = this.invitesProvider.allPlayers;

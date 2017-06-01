@@ -39,6 +39,16 @@
         </div>
       </div>
     </div>
+    <div *ngIf="((option == 1) || (option == 2)) && (!editMode)" class="align-center">
+      <button *ngIf="(option == 1)" ion-button color="secondary" icon-left (click)="verifyAccept(inviteItem)" item-right>
+        <ion-icon name='checkmark'></ion-icon>
+          Zusagen
+        </button>
+      <button *ngIf="(option == 1) || (option == 2)" ion-button color="danger" (click)="doRadio(inviteItem, 1)">
+          <ion-icon name='close'></ion-icon>
+          Absagen
+      </button>
+    </div>
     <div class="game-details-form right-form-inputs">
       <ion-item *ngIf="(!editMode)">
         <ion-label class="form-label">Gegner:</ion-label>
@@ -61,9 +71,9 @@
           <ion-option value=0>keine Mannschaft</ion-option>
           <ion-option *ngFor="let item of teamArray" value="{{item.id}}">
             {{item.name}}
-            <div *ngIf="item.ageLimit==0">(Erw.</div>
+            <div *ngIf="item.ageLimit==0">(Erw.,</div>
             <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
-            S{{item.sclass}})
+             {{item.rank}})
           </ion-option>
         </ion-select>
       </ion-item>

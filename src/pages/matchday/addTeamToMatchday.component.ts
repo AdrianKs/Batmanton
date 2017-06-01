@@ -69,7 +69,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
     if (this.match.team == 0){
       this.relevantTeams = this.getRelevantTeams(0, 1);
     } else {
-      this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit, this.allTeams[this.teamPosition].sclass);
+      this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit, this.allTeams[this.teamPosition].rank);
     }
   }
 
@@ -118,10 +118,10 @@ export class AddTeamToMatchdayComponent implements OnInit{
     this.loading.present();
   }
 
-  getRelevantTeams(ageLimit, sclass) {
+  getRelevantTeams(ageLimit, rank) {
     let relevantTeams: Array<any> = [];
     this.allTeams.forEach(function (team) {
-      if (team.ageLimit <= ageLimit && team.ageLimit != 0 && team.sclass >= sclass || ageLimit == 0 && team.sclass >= sclass) {
+      if (team.ageLimit <= ageLimit && team.ageLimit != 0 && team.rank >= rank || ageLimit == 0 && team.rank >= rank) {
         relevantTeams.push(team);
       }
     });
@@ -368,6 +368,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
                   assist: true
                 });
               }
+              console.log("push-benachrichtigung an: "+this.pendingArray[k]);
               //push-Benachrichtigung an this.pendingArray[k]
               //Zugriff auf Spielerobjekt
               for (let l in this.allPlayers) {
@@ -394,7 +395,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
         this.Utilities.sendGameReminderDayBefore(pushIDs, "Denken Sie an Ihr Spiel am " + matchInformationString, this.match.time, this.match.id);
       }
     });
-    this.navCtrl.popToRoot();
+    this.navCtrl.pop();
   }
 
 }
