@@ -347,7 +347,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
                     assist: false
                   });
                 }
-                
+
                 firebase.database().ref('clubs/12/invites/' + i).update({
                   state: 0
                 });
@@ -394,7 +394,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
         this.Utilities.sendGameReminderDayBefore(pushIDs, "Denken Sie an Ihr Spiel am " + matchInformationString, this.match.time, this.match.id);
       }
     });
-    this.navCtrl.popToRoot();
+    this.navCtrl.pop();
   }
 
 }
