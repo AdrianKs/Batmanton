@@ -6,6 +6,9 @@ import firebase from 'firebase';
 import * as _ from 'lodash';
 import { AlertController } from "ionic-angular";
 import { PlayerComponent } from '../pages/gameDetails/player.component';
+import {Http, Response, Headers, RequestOptions} from "@angular/http";
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class Utilities {
@@ -25,7 +28,7 @@ export class Utilities {
   hashedPassword = -1719170103;
   counterOpen: any;
 
-  constructor(public alertCtrl: AlertController) {
+  constructor(public alertCtrl: AlertController, public http:Http) {
     this.fireAuth = firebase.auth();
     this.setInvites();
     // this.setPlayers();
@@ -255,7 +258,25 @@ export class Utilities {
   }
 
   cancelPushNotification(notificationID: any) {
-    window["plugins"].OneSignal.cancelNotification(notificationID);
+    //window["plugins"].OneSignal.cancelNotification(notificationID);
+    let url = 'https://onesignal.com/api/v1/notifications/' + notificationID + '?app_id=c72ec221-4425-4844-83fe-288ffd22a55a';
+    console.log("in method cancelPushNotification");
+    // let headers = new Headers({'Authorization': 'Basic'});
+    let headers = new Headers({'Authorization': 'Basic NjhmYzZkZmQtZWNiMC00NjU5LWE4ZjEtZjA3ZWI4OTEwMzM3'});
+    let options = new RequestOptions({
+      headers: headers
+    });
+
+    this.http
+      .delete(url, options)
+      .toPromise()
+      .then((res:Response) => console.log(res))
+      .catch(this.handleError);
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error);
+    return Promise.reject(error.message || error);
   }
 
   hashPassword(password): any {
