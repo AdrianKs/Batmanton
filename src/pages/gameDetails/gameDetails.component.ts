@@ -475,6 +475,7 @@ export class GameDetailsComponent implements OnInit{
   }
 
   confirmPlayer(){
+    let pushIDs = [];
     if (this.timeChanged == true){
       for (let i in this.acceptedArray){
         for (let j in this.playerArray){
@@ -561,12 +562,13 @@ export class GameDetailsComponent implements OnInit{
                 if (snapshot.val()[i].state != 0){
                   //push-Benachrichtigung an snapshot.val()[i].recipient
                   //Zugriff auf Spielerobjekt
-                  /*for (let j in this.allPlayers){
-                    let player;
-                    if (this.allPlayers[j].id == snapshot.val()[i].recipient){
-                      player = this.allPlayers[j];
+                   for (let j in this.playerArray) {
+                    if (this.playerArray[j].id == snapshot.val()[i].recipient) {
+                      for (let pushID in this.playerArray[j].pushid) {
+                        pushIDs.push(pushID);
+                      }
                     }
-                  }*/
+                  }
                 }
                 firebase.database().ref('clubs/12/invites/' + i).update({
                   state: 0
@@ -590,13 +592,14 @@ export class GameDetailsComponent implements OnInit{
               }
               //push-Benachrichtigung an this.pendingArray[k]
               //Zugriff auf Spielerobjekt
-              /*for (let l in this.allPlayers){
-                let player;
-                if (this.allPlayers[l].id == this.pendingArray[k]){
-                  player = this.allPlayers[l];
-                  console.log(player);
+              for (let l in this.playerArray) {
+                if (this.playerArray[l].id == this.pendingArray[k]) {
+                  for (let pushID in this.playerArray[l].pushid) {
+                    pushIDs.push(pushID);
+                  }
                 }
-              }*/
+              }
+
             }
           }
         }
