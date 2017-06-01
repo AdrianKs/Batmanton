@@ -26922,13 +26922,13 @@ form button {
   color: black;
   background-color: #FFF200;
   border-radius: 50%;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   font-size: 0.8rem;
   font-weight: bold;
   padding: 3px;
   margin-left: 3px;
-  line-height: 10px;
+  line-height: 8px;
   position: absolute;
   top: 3px;
   text-align: center;
@@ -27073,6 +27073,12 @@ page-login .center-form {
 .datetime-text:empty:not(:focus):before {
   content: "Datum und Uhrzeit";
   color: #999;
+}
+
+page-myGames .cubic-button {
+  height: 40px;
+  width: 40px;
+  margin-left: 0px !important;
 }
 
 page-changePassword .text-input {

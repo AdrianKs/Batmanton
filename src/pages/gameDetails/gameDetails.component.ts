@@ -9,7 +9,7 @@ import { AddTeamToMatchdayComponent } from '../matchday/addTeamToMatchday.compon
 import { TemplateComponent } from '../templates/template.component'
 import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
 import firebase from 'firebase';
-import {Utilities} from '../../app/utilities';
+import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
 
 @Component({
@@ -17,12 +17,14 @@ import * as _ from 'lodash';
   templateUrl: 'gameDetails.component.html',
   providers: [CreateMatchdayProvider]
 })
-export class GameDetailsComponent implements OnInit{
+export class GameDetailsComponent implements OnInit {
 
   editMode: boolean = false;
   playerStatus: string = 'accepted';
   isAdmin: boolean;
   loggedInUserID: string = this.Utilities.user.uid;
+  pushIDsAdmins: Array<any> = [];
+  dataUser: any;
   currentUser: any;
   loading: any;
   gameItem: any;
@@ -71,14 +73,15 @@ export class GameDetailsComponent implements OnInit{
   }
 
   ionViewWillEnter() {
+    this.dataUser = this.Utilities.userData;
     this.isTrainer();
     this.loadData(true, null);
-    if (this.dataLoaded == true){
+    if (this.dataLoaded == true) {
       this.setCounter();
     }
   }
 
-  constructor(private navCtrl: NavController, public createMatchdayProvider: CreateMatchdayProvider, private navP: NavParams, private Utilities: Utilities,  private alertCtrl: AlertController, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public modalCtrl: ModalController) {
+  constructor(private navCtrl: NavController, public createMatchdayProvider: CreateMatchdayProvider, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public modalCtrl: ModalController) {
     this.gameItem = navP.get('gameItem');
     this.option = navP.get('option');
     this.inviteItem = navP.get('inviteItem');
@@ -87,24 +90,32 @@ export class GameDetailsComponent implements OnInit{
   }
 
   isTrainer() {
-      this.currentUser = this.Utilities.user;
-      firebase.database().ref("/clubs/12/players/" + this.currentUser.uid + "/").once('value', snapshot => {
-          let data = snapshot.val();
-          if (this.isAdmin = data.isTrainer){
-            this.isAdmin = true;
-          } else {
-            this.isAdmin = false;
-          }
-      })
+    this.currentUser = this.Utilities.user;
+    firebase.database().ref("/clubs/12/players/" + this.currentUser.uid + "/").once('value', snapshot => {
+      let data = snapshot.val();
+      if (this.isAdmin = data.isTrainer) {
+        this.isAdmin = true;
+      } else {
+        this.isAdmin = false;
+      }
+    })
   }
 
-  loadData(showLoading: boolean, event) :void{
+  loadData(showLoading: boolean, event): void {
     if (showLoading) {
       this.createAndShowLoading();
     }
-    if(this.editMode==false){
+    if (this.editMode == false) {
       this.createMatchdayProvider.setPlayer(this.Utilities, this.gameItem, this.acceptedArray, this.pendingArray, this.declinedArray).then((data) => {
         this.playerArray = this.createMatchdayProvider.playerArray;
+        for (let i of this.playerArray) {
+          if (i.isTrainer) {
+            for (let pushID in i.pushid) {
+              console.log(pushID);
+              this.pushIDsAdmins.push(pushID);
+            }
+          }
+        }
         this.setCounter();
         this.dataLoaded = true;
         console.log(this.acceptedCounter);
@@ -115,9 +126,9 @@ export class GameDetailsComponent implements OnInit{
         console.log('pending:');
         console.log(this.pendingArray);
         if (showLoading) {
-        this.loading.dismiss().catch((error) => console.log("error caught"));
+          this.loading.dismiss().catch((error) => console.log("error caught"));
         }
-        if(event!=null){
+        if (event != null) {
           event.complete();
         }
       }).catch(function (error) {
@@ -132,9 +143,9 @@ export class GameDetailsComponent implements OnInit{
     this.createMatchdayProvider.setTeams().then((data) => {
       this.teamArray = this.createMatchdayProvider.dataTeam;
       if (showLoading) {
-      this.loading.dismiss().catch((error) => console.log("error caught"));
+        this.loading.dismiss().catch((error) => console.log("error caught"));
       }
-      if(event!=null){
+      if (event != null) {
         event.complete();
       }
     }).catch(function (error) {
@@ -144,13 +155,13 @@ export class GameDetailsComponent implements OnInit{
     });
   }
 
-  loadTemplateData(showLoading: boolean, event){
+  loadTemplateData(showLoading: boolean, event) {
     this.createMatchdayProvider.setTemplates().then((data) => {
       this.dataTemplate = this.createMatchdayProvider.dataTemplate;
       if (showLoading) {
         this.loading.dismiss().catch((error) => console.log("error caught"));
       }
-      if(event!=null){
+      if (event != null) {
         event.complete();
       }
     }).catch(function (error) {
@@ -181,51 +192,51 @@ export class GameDetailsComponent implements OnInit{
     let urlArray = [];
     let counter = 0;
     for (let i of this.Utilities.allInvites) {
-      if (i.match == match.id && counter < 4){
-          for(let j of this.Utilities.allPlayers){
-            if(i.recipient == j.id){
-              urlArray[counter] = j.picUrl;
-              counter ++;
-            }
+      if (i.match == match.id && counter < 4) {
+        for (let j of this.Utilities.allPlayers) {
+          if (i.recipient == j.id) {
+            urlArray[counter] = j.picUrl;
+            counter++;
           }
+        }
       }
     }
     return urlArray;
   }
 
-  setCounter(){
+  setCounter() {
     this.acceptedCounter = 0;
     this.acceptedMaleCounter = 0;
     this.acceptedFemaleCounter = 0;
     this.pendingCounter = 0;
     this.declinedCounter = 0;
-    for (let i in this.acceptedArray){
-      for (let j in this.playerArray){
-        if (this.acceptedArray[i]==this.playerArray[j].id && this.playerArray[j].gender == "m"){
+    for (let i in this.acceptedArray) {
+      for (let j in this.playerArray) {
+        if (this.acceptedArray[i] == this.playerArray[j].id && this.playerArray[j].gender == "m") {
           this.acceptedMaleCounter++;
         }
-        if (this.acceptedArray[i]==this.playerArray[j].id && this.playerArray[j].gender == "f"){
+        if (this.acceptedArray[i] == this.playerArray[j].id && this.playerArray[j].gender == "f") {
           this.acceptedFemaleCounter++;
         }
       }
       this.acceptedCounter++;
     }
-    for (let i in this.pendingArray){
+    for (let i in this.pendingArray) {
       this.pendingCounter++;
     }
-    for (let i in this.declinedArray){
+    for (let i in this.declinedArray) {
       this.declinedCounter++;
     }
   }
 
   makeid() {
-      var text = "";
-      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-      for (var i = 0; i < 26; i++)
-          text += possible.charAt(Math.floor(Math.random() * possible.length));
+    for (var i = 0; i < 26; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-      return text;
+    return text;
   }
 
   editProfile() {
@@ -239,7 +250,7 @@ export class GameDetailsComponent implements OnInit{
   }
 
   finishEditProfile() {
-    if (this.gameItem.opponent == ""){
+    if (this.gameItem.opponent == "") {
       let alert = this.alertCtrl.create({
         title: 'Achtung!',
         message: 'Bitte das Feld für die gegnerische Mannschaft ausfüllen.',
@@ -248,10 +259,10 @@ export class GameDetailsComponent implements OnInit{
       alert.present();
     } else {
       if (this.opponentChanged || this.teamChanged || this.homeChanged || this.streetChanged || this.zipcodeChanged || this.timeChanged || this.playersEdited) {
-        if (this.gameItem.home == "true"){
+        if (this.gameItem.home == "true") {
           this.gameItem.home = true;
         }
-        if (this.gameItem.home == "false"){
+        if (this.gameItem.home == "false") {
           this.gameItem.home = false;
         }
         firebase.database().ref('clubs/12/matches/' + this.gameItem.id).set({
@@ -260,17 +271,17 @@ export class GameDetailsComponent implements OnInit{
           home: this.gameItem.home,
           time: this.gameItem.time
         });
-        if(this.gameItem.acceptedPlayers){
+        if (this.gameItem.acceptedPlayers) {
           firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
             acceptedPlayers: this.gameItem.acceptedPlayers
           });
         }
-        if(this.gameItem.pendingPlayers){
+        if (this.gameItem.pendingPlayers) {
           firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
             pendingPlayers: this.gameItem.pendingPlayers
           });
         }
-        if(this.gameItem.declinedPlayers){
+        if (this.gameItem.declinedPlayers) {
           firebase.database().ref('clubs/12/matches/' + this.gameItem.id + '/').update({
             declinedPlayers: this.gameItem.declinedPlayers
           });
@@ -310,7 +321,7 @@ export class GameDetailsComponent implements OnInit{
 
   teamSelectChanged(input) {
     if (this.teamOld != input) {
-      if (this.teamChanged == false){
+      if (this.teamChanged == false) {
         let alert = this.alertCtrl.create({
           title: 'Achtung!',
           message: 'Durch die Änderung des Teams werden die Zahlen für die Aushilfen beeinflusst.',
@@ -319,19 +330,19 @@ export class GameDetailsComponent implements OnInit{
         alert.present();
       }
       this.teamChanged = true;
-      for (let i in this.playerArray){
-        if (this.playerArray[i].team == this.gameItem.team){
+      for (let i in this.playerArray) {
+        if (this.playerArray[i].team == this.gameItem.team) {
           this.playerArray[i].isMainTeam = true;
         } else {
           this.playerArray[i].isMainTeam = false;
         }
-        for (let j in this.acceptedArray){
-          if (this.acceptedArray[j] == this.playerArray[i].id){
+        for (let j in this.acceptedArray) {
+          if (this.acceptedArray[j] == this.playerArray[i].id) {
             console.log("Helpcounter changed.");
-            if (this.playerArray[i].isMainTeam == true){
+            if (this.playerArray[i].isMainTeam == true) {
               this.playerArray[i].helpCounter--;
             }
-            if (this.playerArray[i].isMainTeam == false){
+            if (this.playerArray[i].isMainTeam == false) {
               this.playerArray[i].helpCounter++;
             }
           }
@@ -350,7 +361,7 @@ export class GameDetailsComponent implements OnInit{
     }
   }
 
-  zipcodeSelectChanged(input){
+  zipcodeSelectChanged(input) {
     if (this.zipcodeOld != input) {
       this.zipcodeChanged = true;
     } else {
@@ -360,7 +371,7 @@ export class GameDetailsComponent implements OnInit{
 
   timeSelectChanged(input) {
     if (this.timeOld != input && input != undefined) {
-      if (this.timeChanged == false){
+      if (this.timeChanged == false) {
         let alert = this.alertCtrl.create({
           title: 'Achtung!',
           message: 'Durch die Änderung der Zeit werden alle Einladungen nochmal versendet.',
@@ -399,27 +410,27 @@ export class GameDetailsComponent implements OnInit{
     console.log('declined: ' + this.declinedArray);
   }
 
-  goBack(){
+  goBack() {
     this.navCtrl.pop();
   }
 
-  addPlayers(){
+  addPlayers() {
     this.playersEdited = true;
-    this.statusArray = {acceptedArray: this.acceptedArray, pendingArray: this.pendingArray, declinedArray: this.declinedArray, deletedArray:this.deletedArray};
-    this.counterArray = {acceptedCounter: this.acceptedCounter, acceptedMaleCounter: this.acceptedMaleCounter, acceptedFemaleCounter: this.acceptedFemaleCounter, pendingCounter: this.pendingCounter, declinedCounter: this.declinedCounter};
-    this.navCtrl.push(AddTeamToMatchdayComponent, {matchItem: this.gameItem, statusArray: this.statusArray, counterArray: this.counterArray, playerArray: this.playerArray, relevantTeamsItem: this.teamArray, editMode: true});
+    this.statusArray = { acceptedArray: this.acceptedArray, pendingArray: this.pendingArray, declinedArray: this.declinedArray, deletedArray: this.deletedArray };
+    this.counterArray = { acceptedCounter: this.acceptedCounter, acceptedMaleCounter: this.acceptedMaleCounter, acceptedFemaleCounter: this.acceptedFemaleCounter, pendingCounter: this.pendingCounter, declinedCounter: this.declinedCounter };
+    this.navCtrl.push(AddTeamToMatchdayComponent, { matchItem: this.gameItem, statusArray: this.statusArray, counterArray: this.counterArray, playerArray: this.playerArray, relevantTeamsItem: this.teamArray, editMode: true });
   }
 
-  removePlayer(player){
+  removePlayer(player) {
     let counter = 0;
-    if(player.pending == true){
+    if (player.pending == true) {
       for (let i in this.pendingArray) {
-        if (this.pendingArray[i] == player.id){
+        if (this.pendingArray[i] == player.id) {
           this.pendingArray.splice(counter, 1);
           this.deletedArray.push(player.id);
           this.pendingCounter--;
         }
-        counter ++;
+        counter++;
       }
       player.pending = false;
       console.log('pending: ');
@@ -428,17 +439,17 @@ export class GameDetailsComponent implements OnInit{
       console.log(this.deletedArray);
     }
     counter = 0;
-    if(player.accepted == true){
+    if (player.accepted == true) {
       for (let i in this.acceptedArray) {
-        if (this.acceptedArray[i] == player.id){
+        if (this.acceptedArray[i] == player.id) {
           this.acceptedArray.splice(counter, 1);
           this.deletedArray.push(player.id);
-          for (let j in this.playerArray){
-            if (player.id==this.playerArray[j].id && this.playerArray[j].gender == "m"){
+          for (let j in this.playerArray) {
+            if (player.id == this.playerArray[j].id && this.playerArray[j].gender == "m") {
               this.acceptedMaleCounter--;
               break
             }
-            if (player.id==this.playerArray[j].id && this.playerArray[j].gender == "f"){
+            if (player.id == this.playerArray[j].id && this.playerArray[j].gender == "f") {
               this.acceptedFemaleCounter--;
               break
             }
@@ -451,9 +462,9 @@ export class GameDetailsComponent implements OnInit{
         }
         counter++;
       }
-      if (player.isMainTeam == false){
-        for (let i in this.playerArray){
-          if(player.id == this.playerArray[i].id){
+      if (player.isMainTeam == false) {
+        for (let i in this.playerArray) {
+          if (player.id == this.playerArray[i].id) {
             this.playerArray[i].helpCounter--;
           }
         }
@@ -465,14 +476,14 @@ export class GameDetailsComponent implements OnInit{
       console.log(this.deletedArray);
     }
     counter = 0;
-    if(player.declined == true){
+    if (player.declined == true) {
       for (let i in this.declinedArray) {
-        if (this.declinedArray[i] == player.id){
+        if (this.declinedArray[i] == player.id) {
           this.declinedArray.splice(counter, 1);
           this.deletedArray.push(player.id);
           this.declinedCounter--;
         }
-        counter ++;
+        counter++;
       }
       player.declined = false;
       console.log('declined: ');
@@ -484,31 +495,31 @@ export class GameDetailsComponent implements OnInit{
     this.playersEdited = true;
   }
 
-  confirmPlayer(){
+  confirmPlayer() {
     let pushIDs = [];
-    if (this.timeChanged == true){
-      for (let i in this.acceptedArray){
-        for (let j in this.playerArray){
-          if (this.acceptedArray[i] == this.playerArray[j].id && this.playerArray[j].isDefault == false){
+    if (this.timeChanged == true) {
+      for (let i in this.acceptedArray) {
+        for (let j in this.playerArray) {
+          if (this.acceptedArray[i] == this.playerArray[j].id && this.playerArray[j].isDefault == false) {
             this.pendingArray.push(this.acceptedArray[i]);
             this.acceptedCounter--;
-            if (this.playerArray[j].gender == "m"){
+            if (this.playerArray[j].gender == "m") {
               this.acceptedMaleCounter--;
             }
-            if (this.playerArray[j].gender == "F"){
+            if (this.playerArray[j].gender == "F") {
               this.acceptedFemaleCounter--;
             }
-            if (this.playerArray[j].isMainTeam == false){
+            if (this.playerArray[j].isMainTeam == false) {
               this.playerArray[j].helpCounter--;
             }
             this.acceptedArray[i] = null;
           }
         }
       }
-      for (let i in this.acceptedArray){
-        this.acceptedArray[i]=this.acceptedArray[i];
+      for (let i in this.acceptedArray) {
+        this.acceptedArray[i] = this.acceptedArray[i];
       }
-      for (let i in this.declinedArray){
+      for (let i in this.declinedArray) {
         this.pendingArray.push(this.declinedArray[i]);
         this.declinedCounter--;
       }
@@ -526,11 +537,11 @@ export class GameDetailsComponent implements OnInit{
 
     firebase.database().ref('clubs/12/players').once('value', snapshot => {
       console.log(this.playerArray);
-      for (let i in snapshot.val()){
-        for (let j in this.playerArray){
-          if (this.playerArray[j].id == i){
+      for (let i in snapshot.val()) {
+        for (let j in this.playerArray) {
+          if (this.playerArray[j].id == i) {
             console.log(this.playerArray[j].helpCounter);
-            firebase.database().ref('clubs/12/players/' + i ).update({
+            firebase.database().ref('clubs/12/players/' + i).update({
               helpCounter: this.playerArray[j].helpCounter
             });
           }
@@ -540,8 +551,8 @@ export class GameDetailsComponent implements OnInit{
 
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       for (let i in snapshot.val()) {
-        for (let j in this.deletedArray){
-          if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.deletedArray[j]){
+        for (let j in this.deletedArray) {
+          if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.deletedArray[j]) {
             console.log("gefunden");
             console.log(i);
             firebase.database().ref('clubs/12/invites/' + i).remove();
@@ -550,19 +561,19 @@ export class GameDetailsComponent implements OnInit{
       }
     });
 
-    console.log("timeChanged: "+ this.timeChanged);
-    if(this.timeChanged == true){
+    console.log("timeChanged: " + this.timeChanged);
+    if (this.timeChanged == true) {
       firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-        for (let k in this.pendingArray){
-          for (let j in this.playerArray){
-            if (this.playerArray[j].id == this.pendingArray[k] && this.playerArray[j].isDefault == false){
+        for (let k in this.pendingArray) {
+          for (let j in this.playerArray) {
+            if (this.playerArray[j].id == this.pendingArray[k] && this.playerArray[j].isDefault == false) {
               let inviteExists = false;
               for (let i in snapshot.val()) {
-                if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.pendingArray[k]){
+                if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.pendingArray[k]) {
                   console.log("inviteExists now true");
                   console.log(this.playerArray[j]);
                   console.log(this.playerArray[j].isMainTeam);
-                  if (this.playerArray[j].isMainTeam == false){
+                  if (this.playerArray[j].isMainTeam == false) {
                     firebase.database().ref('clubs/12/invites/').child(i).update({
                       assist: true
                     });
@@ -571,10 +582,10 @@ export class GameDetailsComponent implements OnInit{
                       assist: false
                     });
                   }
-                  console.log("push-benachrichtigung an: "+snapshot.val()[i].recipient);
+                  console.log("push-benachrichtigung an: " + snapshot.val()[i].recipient);
                   //push-Benachrichtigung an snapshot.val()[i].recipient
                   //Zugriff auf Spielerobjekt
-                   for (let j in this.playerArray) {
+                  for (let j in this.playerArray) {
                     if (this.playerArray[j].id == snapshot.val()[i].recipient) {
                       for (let pushID in this.playerArray[j].pushid) {
                         pushIDs.push(pushID);
@@ -587,7 +598,7 @@ export class GameDetailsComponent implements OnInit{
                   inviteExists = true;
                 }
               }
-              if (inviteExists == false){
+              if (inviteExists == false) {
                 let id = this.makeid();
                 firebase.database().ref('clubs/12/invites/').child(id).set({
                   assist: false,
@@ -596,21 +607,21 @@ export class GameDetailsComponent implements OnInit{
                   sender: this.Utilities.user.uid,
                   state: 0
                 });
-                if (this.playerArray[j].isMainTeam == false){
+                if (this.playerArray[j].isMainTeam == false) {
                   firebase.database().ref('clubs/12/invites/').child(id).update({
                     assist: true
                   });
                 }
-                console.log("push-benachrichtigung an: "+this.pendingArray[k]);
+                console.log("push-benachrichtigung an: " + this.pendingArray[k]);
                 //push-Benachrichtigung an this.pendingArray[k]
                 //Zugriff auf Spielerobjekt
-                /*for (let l in this.allPlayers){
-                  let player;
-                  if (this.allPlayers[l].id == this.pendingArray[k]){
-                    player = this.allPlayers[l];
-                    console.log(player);
+                for (let l in this.playerArray) {
+                  if (this.playerArray[l].id == this.pendingArray[k]) {
+                    for (let pushID in this.playerArray[l].pushid) {
+                      pushIDs.push(pushID);
+                    }
                   }
-                }*/
+                }
               }
             }
           }
@@ -618,16 +629,16 @@ export class GameDetailsComponent implements OnInit{
       });
     } else {
       firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-        for (let k in this.pendingArray){
-          for (let j in this.playerArray){
-            if (this.playerArray[j].id == this.pendingArray[k] && this.playerArray[j].isDefault == false){
+        for (let k in this.pendingArray) {
+          for (let j in this.playerArray) {
+            if (this.playerArray[j].id == this.pendingArray[k] && this.playerArray[j].isDefault == false) {
               let inviteExists = false;
               for (let i in snapshot.val()) {
-                if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.pendingArray[k]){
+                if (snapshot.val()[i].match == this.gameItem.id && snapshot.val()[i].recipient == this.pendingArray[k]) {
                   console.log("inviteExists now true");
                   console.log(this.playerArray[j]);
                   console.log(this.playerArray[j].isMainTeam);
-                  if (this.playerArray[j].isMainTeam == false){
+                  if (this.playerArray[j].isMainTeam == false) {
                     firebase.database().ref('clubs/12/invites/').child(i).update({
                       assist: true
                     });
@@ -636,16 +647,17 @@ export class GameDetailsComponent implements OnInit{
                       assist: false
                     });
                   }
-                  if (snapshot.val()[i].state != 0 || this.timeChanged == true){
-                    console.log("push-benachrichtigung an: "+snapshot.val()[i].recipient);
+                  if (snapshot.val()[i].state != 0 || this.timeChanged == true) {
+                    console.log("push-benachrichtigung an: " + snapshot.val()[i].recipient);
                     //push-Benachrichtigung an snapshot.val()[i].recipient
                     //Zugriff auf Spielerobjekt
-                    /*for (let j in this.allPlayers){
-                      let player;
-                      if (this.allPlayers[j].id == snapshot.val()[i].recipient){
-                        player = this.allPlayers[j];
+                    for (let j in this.playerArray) {
+                      if (this.playerArray[j].id == snapshot.val()[i].recipient) {
+                        for (let pushID in this.playerArray[j].pushid) {
+                          pushIDs.push(pushID);
+                        }
                       }
-                    }*/
+                    }
                   }
                   firebase.database().ref('clubs/12/invites/' + i).update({
                     state: 0
@@ -663,7 +675,7 @@ export class GameDetailsComponent implements OnInit{
                 }
               }
 
-              if (inviteExists == false){
+              if (inviteExists == false) {
                 let id = this.makeid();
                 firebase.database().ref('clubs/12/invites/').child(id).set({
                   assist: false,
@@ -672,30 +684,41 @@ export class GameDetailsComponent implements OnInit{
                   sender: this.Utilities.user.uid,
                   state: 0
                 });
-                if (this.playerArray[j].isMainTeam == false){
+                if (this.playerArray[j].isMainTeam == false) {
                   firebase.database().ref('clubs/12/invites/').child(id).update({
                     assist: true
                   });
                 }
-                console.log("push-benachrichtigung an: "+this.pendingArray[k]);
+                console.log("push-benachrichtigung an: " + this.pendingArray[k]);
                 //push-Benachrichtigung an this.pendingArray[k]
                 //Zugriff auf Spielerobjekt
-                /*for (let l in this.allPlayers){
-                  let player;
-                  if (this.allPlayers[l].id == this.pendingArray[k]){
-                    player = this.allPlayers[l];
-                    console.log(player);
+                for (let l in this.playerArray) {
+                  if (this.playerArray[l].id == this.pendingArray[k]) {
+                    for (let pushID in this.playerArray[l].pushid) {
+                      pushIDs.push(pushID);
+                    }
                   }
-                }*/
+                }
               }
             }
           }
+        }
+        console.log(pushIDs);
+        if (pushIDs.length != 0) {
+          console.log("ruft pushfunction");
+          console.log(this.gameItem.id);
+          let matchInformationString = "am " + this.Utilities.transformTime(this.gameItem.time) + " in " + this.gameItem.location.street + ", " + this.gameItem.location.zipcode + ", gegen " + this.gameItem.opponent
+          this.Utilities.sendPushNotification(pushIDs, 'Sie haben eine Einladung zu einem Spiel ' + matchInformationString + ' erhalten');
+          if (this.gameItem.delayedNotificationID != undefined) {
+            this.Utilities.cancelPushNotification(this.gameItem.delayedNotificationID);
+          }
+          this.Utilities.sendGameReminderDayBefore(pushIDs, "Denken Sie an Ihr Spiel am " + matchInformationString, this.gameItem.time, this.gameItem.id);
         }
       });
     }
   }
 
-  deleteGame(){
+  deleteGame() {
     let confirm = this.alertCtrl.create({
       title: 'Warnung',
       message: 'Daten können nach Löschvorgang nicht wiederhergestellt werden. Fortfahren?',
@@ -709,9 +732,9 @@ export class GameDetailsComponent implements OnInit{
           text: 'Ja',
           handler: () => {
             firebase.database().ref('clubs/12/players').once('value', snapshot => {
-              for (let i in snapshot.val()){
-                for (let j in this.gameItem.acceptedPlayers){
-                  if (this.gameItem.acceptedPlayers[j] == i && snapshot.val()[i].team != this.gameItem.team){
+              for (let i in snapshot.val()) {
+                for (let j in this.gameItem.acceptedPlayers) {
+                  if (this.gameItem.acceptedPlayers[j] == i && snapshot.val()[i].team != this.gameItem.team) {
                     let newHelpCounter = snapshot.val()[i].helpCounter;
                     newHelpCounter--;
                     firebase.database().ref('clubs/12/players/' + i).update({
@@ -723,7 +746,7 @@ export class GameDetailsComponent implements OnInit{
             });
             firebase.database().ref('clubs/12/invites').once('value', snapshot => {
               for (let i in snapshot.val()) {
-                if (snapshot.val()[i].match == this.gameItem.id){
+                if (snapshot.val()[i].match == this.gameItem.id) {
                   firebase.database().ref('clubs/12/invites/' + i).remove();
                 }
               }
@@ -737,7 +760,7 @@ export class GameDetailsComponent implements OnInit{
     confirm.present();
   }
 
-  openTemplatesActionSheet(){
+  openTemplatesActionSheet() {
     let actionSheet = this.actionSheetCtrl.create({
       buttons: [
         {
@@ -765,20 +788,20 @@ export class GameDetailsComponent implements OnInit{
     actionSheet.present();
   }
 
-  showTemplates(){
+  showTemplates() {
     let templatesAvailable = false;
     let alert = this.alertCtrl.create();
     alert.setTitle('Vorlage auswählen');
 
-    for (let i in this.dataTemplate){
-      if(this.dataTemplate[i].street == "" || this.dataTemplate[i].street == ""){
+    for (let i in this.dataTemplate) {
+      if (this.dataTemplate[i].street == "" || this.dataTemplate[i].street == "") {
         alert.addInput({
           type: 'radio',
           label: this.dataTemplate[i].club + ": " + this.dataTemplate[i].street + this.dataTemplate[i].zipcode,
           value: this.dataTemplate[i].id,
           checked: false
         });
-      }else{
+      } else {
         alert.addInput({
           type: 'radio',
           label: this.dataTemplate[i].club + ": " + this.dataTemplate[i].street + " - " + this.dataTemplate[i].zipcode,
@@ -789,16 +812,16 @@ export class GameDetailsComponent implements OnInit{
 
       templatesAvailable = true;
     }
-    if(!templatesAvailable){
+    if (!templatesAvailable) {
       alert.setMessage('Keine Adressvorlage vorhanden.');
-    }else{
+    } else {
       alert.setCssClass('templates-alert');
       alert.addButton('Abbrechen');
     }
     alert.addButton({
       text: 'OK',
       handler: data => {
-        if (data != null){
+        if (data != null) {
           this.updateTemplate(data);
           this.streetChanged = true;
           this.zipcodeChanged = true;
@@ -808,15 +831,15 @@ export class GameDetailsComponent implements OnInit{
     alert.present();
   }
 
-  updateTemplate(clubID){
-    if(this.gameItem.opponent == "" || this.gameItem.opponent == undefined){
-      firebase.database().ref('clubs/12/templates/'+clubID).once('value', snapshot => {
+  updateTemplate(clubID) {
+    if (this.gameItem.opponent == "" || this.gameItem.opponent == undefined) {
+      firebase.database().ref('clubs/12/templates/' + clubID).once('value', snapshot => {
         this.gameItem.opponent = snapshot.val().club;
         this.gameItem.location.street = snapshot.val().street;
         this.gameItem.location.zipcode = snapshot.val().zipcode;
       });
-    }else{
-      firebase.database().ref('clubs/12/templates/'+clubID).once('value', snapshot => {
+    } else {
+      firebase.database().ref('clubs/12/templates/' + clubID).once('value', snapshot => {
         this.gameItem.location.street = snapshot.val().street;
         this.gameItem.location.zipcode = snapshot.val().zipcode;
       });
@@ -828,8 +851,8 @@ export class GameDetailsComponent implements OnInit{
     let templateExists = false;
     let templateId;
 
-    for(let i in this.dataTemplate){
-      if(this.dataTemplate[i].club == that.gameItem.opponent){
+    for (let i in this.dataTemplate) {
+      if (this.dataTemplate[i].club == that.gameItem.opponent) {
         templateId = this.dataTemplate[i].id;
         templateExists = true;
         break;
@@ -837,7 +860,7 @@ export class GameDetailsComponent implements OnInit{
     }
 
     // if template already exists, ask user whether the template should be overwritten, a new template should be created, or the action should be cancelled
-    if(templateExists){
+    if (templateExists) {
       let alert = that.alertCtrl.create({
         title: 'Adressvorlage für diesen Gegner existiert bereits',
         message: 'Die Adressvorlage für diesen Gegner existiert bereits. Möchten Sie sie überschreiben oder eine zusätzliche Adressvorlage für diesen Gegner erstellen?',
@@ -853,7 +876,7 @@ export class GameDetailsComponent implements OnInit{
                 club: that.gameItem.opponent,
                 street: that.gameItem.location.street,
                 zipcode: that.gameItem.location.zipcode
-              }).then(function() {
+              }).then(function () {
                 let toast = that.toastCtrl.create({
                   message: "Adressvorlage überschrieben",
                   duration: 2000,
@@ -872,7 +895,7 @@ export class GameDetailsComponent implements OnInit{
                 club: that.gameItem.opponent + "(2)",
                 street: that.gameItem.location.street,
                 zipcode: that.gameItem.location.zipcode
-              }).then(function() {
+              }).then(function () {
                 let toast = that.toastCtrl.create({
                   message: "Adressvorlage gespeichert",
                   duration: 2000,
@@ -886,13 +909,13 @@ export class GameDetailsComponent implements OnInit{
         ]
       });
       alert.present();
-    }else{
+    } else {
       let id = that.makeid();
       firebase.database().ref('clubs/12/templates/').child(id).set({
         club: that.gameItem.opponent,
         street: that.gameItem.location.street,
         zipcode: that.gameItem.location.zipcode
-      }).then(function() {
+      }).then(function () {
         let toast = that.toastCtrl.create({
           message: "Adressvorlage gespeichert",
           duration: 2000,
@@ -903,20 +926,20 @@ export class GameDetailsComponent implements OnInit{
       })
     }
   }
-  editTemplates(){
+  editTemplates() {
     this.navCtrl.push(TemplateComponent);
   }
 
-  verifyAccept(inviteItem){
+  verifyAccept(inviteItem) {
     this.option = 2;
     firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
       state: 1
     }).then(() => {
       this.Utilities.countOpen();
     });;
-    if (inviteItem.assist == true){
-      for (let i in this.playerArray){
-        if (this.playerArray[i].id == this.loggedInUserID){
+    if (inviteItem.assist == true) {
+      for (let i in this.playerArray) {
+        if (this.playerArray[i].id == this.loggedInUserID) {
           this.helpCounter = this.playerArray[i].helpCounter;
           this.helpCounter++;
           firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
@@ -933,14 +956,14 @@ export class GameDetailsComponent implements OnInit{
       buttons: ['Ok']
     });
     alert.present();
-    //push-Benachrichtigung an alle Admins
-    //Zugriff auf Spielerobjekt
-    /*for (let j in this.allPlayers){
-      let player;
-      if (this.allPlayers[j].isAdmin == true){
-        player = this.allPlayers[j];
-      }
-    }*/
+    console.log(this.pushIDsAdmins);
+    if (this.pushIDsAdmins.length != 0) {
+      console.log("ruft pushfunction");
+      console.log(inviteItem.match);
+      let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird am Spiel am " + this.Utilities.transformTime(this.gameItem.time) + " gegen " + this.gameItem.opponent + " teilnehmen.";
+      this.Utilities.sendPushNotification(this.pushIDsAdmins
+        , matchInformationString);
+    }
     this.loadData(false, null);
   }
 
@@ -986,16 +1009,16 @@ export class GameDetailsComponent implements OnInit{
       handler: data => {
         this.testRadioOpen = false;
         this.testRadioResult = data;
-        if(this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private'){
+        if (this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private') {
           console.log('Radio data:', data);
           inviteItem.state = 2;
-          if (value == 0){
+          if (value == 0) {
             this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
           } else {
             this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
-            if (inviteItem.assist == true){
-              for (let i in this.playerArray){
-                if (this.playerArray[i].id == this.loggedInUserID){
+            if (inviteItem.assist == true) {
+              for (let i in this.playerArray) {
+                if (this.playerArray[i].id == this.loggedInUserID) {
                   this.helpCounter = this.playerArray[i].helpCounter;
                   this.helpCounter--;
                   firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
@@ -1013,43 +1036,55 @@ export class GameDetailsComponent implements OnInit{
           });
           //push-Benachrichtigung an alle Admins
           //Zugriff auf Spielerobjekt
-          /*for (let j in this.allPlayers){
-            let player;
-            if (this.allPlayers[j].isAdmin == true){
-              player = this.allPlayers[j];
+          console.log(this.pushIDsAdmins);
+          if (this.pushIDsAdmins.length != 0) {
+            console.log("ruft pushfunction");
+            console.log(inviteItem.match);
+            let excuseInfo;
+            if (this.testRadioResult == "sick") {
+              excuseInfo = "Krankheit";
             }
-          }*/
+            else if (this.testRadioResult == "education") {
+              excuseInfo = "Schule / Uni / Job";
+            }
+            else if (this.testRadioResult == "private") {
+              excuseInfo = "Privater Termin";
+            }
+            let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird nicht am Spiel am " + this.Utilities.transformTime(this.gameItem.time) + " gegen " + this.gameItem.opponent + " teilnehmen.\nGrund: " + excuseInfo;
+            this.Utilities.sendPushNotification(this.pushIDsAdmins
+              , matchInformationString);
+          }
           this.loadData(false, null);
         }
-        if(this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous'){
-            let prompt = this.alertCtrl.create({
-              title: 'Verletzt/Sonstige',
-              message: "Bitte näher ausführen:",
-              inputs: [
-                {
-                  name: 'extra',
-                  placeholder: 'Wie lange wirst du ausfallen?'
-                },
-              ],
-              buttons: [
-                {
-                  text: 'Abbrechen',
-                  handler: data => {
-                    console.log('Cancel clicked');
-                  }
-                },
-                {
-                  text: 'Absenden',
-                  handler: data => {
-                    console.log('Radio data:', this.testRadioResult + ': ' +data.extra);
-                    inviteItem.state = 2;
-                    if (value == 0){
-                      this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
-                    } else {
-                      this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
-                    if (inviteItem.assist == true){
-                      for (let i in this.playerArray){
-                        if (this.playerArray[i].id == this.loggedInUserID){
+        if (this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous') {
+          let prompt = this.alertCtrl.create({
+            title: 'Verletzt/Sonstige',
+            message: "Bitte näher ausführen:",
+            inputs: [
+              {
+                name: 'extra',
+                placeholder: 'Wie lange wirst du ausfallen?'
+              },
+            ],
+            buttons: [
+              {
+                text: 'Abbrechen',
+                handler: data => {
+                  console.log('Cancel clicked');
+                }
+              },
+              {
+                text: 'Absenden',
+                handler: data => {
+                  console.log('Radio data:', this.testRadioResult + ': ' + data.extra);
+                  inviteItem.state = 2;
+                  if (value == 0) {
+                    this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
+                  } else {
+                    this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+                    if (inviteItem.assist == true) {
+                      for (let i in this.playerArray) {
+                        if (this.playerArray[i].id == this.loggedInUserID) {
                           this.helpCounter = this.playerArray[i].helpCounter;
                           this.helpCounter--;
                           firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
@@ -1058,36 +1093,45 @@ export class GameDetailsComponent implements OnInit{
                         }
                       }
                     }
-                    }
-                    firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
-                      excuse: this.testRadioResult + ': ' +data.extra,
-                      state: 2
-                    }).then(() => {
-                      this.Utilities.countOpen();
-                    });
-                    //push-Benachrichtigung an alle Admins
-                    //Zugriff auf Spielerobjekt
-                    /*for (let j in this.allPlayers){
-                      let player;
-                      if (this.allPlayers[j].isAdmin == true){
-                        player = this.allPlayers[j];
-                      }
-                    }*/
-                    this.loadData(false, null);
                   }
+                  firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
+                    excuse: this.testRadioResult + ': ' + data.extra,
+                    state: 2
+                  }).then(() => {
+                    this.Utilities.countOpen();
+                  });
+                  //push-Benachrichtigung an alle Admins
+                  //Zugriff auf Spielerobjekt
+                  console.log(this.pushIDsAdmins);
+                  if (this.pushIDsAdmins.length != 0) {
+                    console.log("ruft pushfunction");
+                    console.log(inviteItem.match);
+                    let excuseInfo;
+                    if (this.testRadioResult == "injured") {
+                      excuseInfo = "Verletzung";
+                    }
+                    else if (this.testRadioResult == "miscellaneous") {
+                      excuseInfo = "Sonstiges";
+                    }
+                    let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird nicht am Spiel am " + this.Utilities.transformTime(this.gameItem.time) + " gegen " + this.gameItem.opponent + " teilnehmen.\nGrund: " + excuseInfo;
+                    this.Utilities.sendPushNotification(this.pushIDsAdmins
+                      , matchInformationString);
+                  }
+                  this.loadData(false, null);
                 }
-              ]
-            });
-            prompt.present();
-          }
-       }
-     });
+              }
+            ]
+          });
+          prompt.present();
+        }
+      }
+    });
 
     alert.present().then(() => {
       this.testRadioOpen = true;
     });
   }
-  pendingToAccepted(matchID, userID){
+  pendingToAccepted(matchID, userID) {
     if (matchID != undefined && matchID != "0") {
       firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
         let playerArray = [];
@@ -1101,7 +1145,7 @@ export class GameDetailsComponent implements OnInit{
               playerArray[counter] = null;
               counter--;
             }
-          counter++;
+            counter++;
           }
         }
         if (userPosition != undefined) {
@@ -1126,7 +1170,7 @@ export class GameDetailsComponent implements OnInit{
     }
   }
 
-  pendingToDeclined(matchID, userID){
+  pendingToDeclined(matchID, userID) {
     if (matchID != undefined && matchID != "0") {
       firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
         let playerArray = [];
@@ -1140,7 +1184,7 @@ export class GameDetailsComponent implements OnInit{
               playerArray[counter] = null;
               counter--;
             }
-          counter++;
+            counter++;
           }
         }
         if (userPosition != undefined) {
@@ -1165,41 +1209,41 @@ export class GameDetailsComponent implements OnInit{
     }
   }
 
-  acceptedToDeclined(matchID, userID){
-      firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
-        let playerArray = [];
-        let counter = 0;
-        let userPosition;
-        for (var i = 0; i < snapshot.val().length; i++) {
-          playerArray[counter] = snapshot.val()[i];
-          if (snapshot.val()[i] != undefined) {
-            if (snapshot.val()[i] === userID) {
-              userPosition = i;
-              playerArray[counter] = null;
-              counter--;
-            }
-          counter++;
+  acceptedToDeclined(matchID, userID) {
+    firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
+      let playerArray = [];
+      let counter = 0;
+      let userPosition;
+      for (var i = 0; i < snapshot.val().length; i++) {
+        playerArray[counter] = snapshot.val()[i];
+        if (snapshot.val()[i] != undefined) {
+          if (snapshot.val()[i] === userID) {
+            userPosition = i;
+            playerArray[counter] = null;
+            counter--;
           }
-        }
-        if (userPosition != undefined) {
-          firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers/' + userPosition).remove();
-        }
-        firebase.database().ref('clubs/12/matches/' + matchID).update({
-          acceptedPlayers: playerArray
-        });
-      });
-      firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
-        let playersArray = [];
-        let counter = 0;
-        for (let i in snapshot.val()) {
-          playersArray[counter] = snapshot.val()[i];
           counter++;
         }
-        playersArray.push(userID);
-        firebase.database().ref('clubs/12/matches/' + matchID).update({
-          declinedPlayers: playersArray
-        });
+      }
+      if (userPosition != undefined) {
+        firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers/' + userPosition).remove();
+      }
+      firebase.database().ref('clubs/12/matches/' + matchID).update({
+        acceptedPlayers: playerArray
       });
+    });
+    firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
+      let playersArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        playersArray[counter] = snapshot.val()[i];
+        counter++;
+      }
+      playersArray.push(userID);
+      firebase.database().ref('clubs/12/matches/' + matchID).update({
+        declinedPlayers: playersArray
+      });
+    });
   }
 }
 

@@ -37,9 +37,9 @@
 
   <div [ngSwitch]="playerStatus">
     <ion-list *ngSwitchCase="'accepted'">
-      <div *ngFor="let item of invites">
+      <div *ngFor="let item of allInvites">
         <div *ngIf="item.match == matchday.id">
-          <div *ngFor="let player of players">
+          <div *ngFor="let player of allPlayers">
             <div *ngIf="(item.sender == utilities.user.uid) && (player.id == item.recipient) && (item.state == '1')">
               <ion-item class="less-label-margin">
                 <div>
@@ -65,9 +65,9 @@
       <ion-label *ngIf="counts[1] == 0" class="align-center no-items">Kein Spieler hat bis jetzt zugesagt</ion-label>
     </ion-list>
     <ion-list *ngSwitchCase="'declined'">
-      <div *ngFor="let item of invites">
+      <div *ngFor="let item of allInvites">
         <div *ngIf="item.match == matchday.id">
-          <div *ngFor="let player of players">
+          <div *ngFor="let player of allPlayers">
             <div *ngIf="(item.sender == utilities.user.uid) && (player.id == item.recipient) && (item.state == '2')">
               <ion-item class="less-label-margin">
                 <div>
@@ -99,9 +99,9 @@
       <ion-label *ngIf="counts[2] == 0" class="align-center no-items">Kein Spieler hat bis jetzt abgesagt</ion-label>
     </ion-list>
     <ion-list *ngSwitchCase="'pending'">
-      <div *ngFor="let item of invites">
+      <div *ngFor="let item of allInvites">
         <div *ngIf="item.match == matchday.id">
-          <div *ngFor="let player of players">
+          <div *ngFor="let player of allPlayers">
             <div *ngIf="(item.sender == utilities.user.uid) && (player.id == item.recipient) && (item.state == '0')">
               <ion-item class="less-label-margin">
                 <div>
