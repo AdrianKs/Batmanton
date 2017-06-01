@@ -30,7 +30,7 @@ export class TeamsProvider {
   altersKOld: any;
   altersklasse: any;
   teamArt: any;
-  sKlasse: any;
+  rank: any;
   allPlayers: any;
   teamHasPlayers: any;
   manCounter: any = 0;
@@ -71,7 +71,7 @@ export class TeamsProvider {
       this.altersKOld = this.team.ageLimit;
       this.altersklasse = this.team.ageLimit;
       this.teamArt = this.team.type;
-      this.sKlasse = this.team.sclass;
+      this.rank = this.team.rank;
     })
   }
 
@@ -121,16 +121,16 @@ export class TeamsProvider {
     })
   }
 
-  updateTeamInfos(ageLimit: string, name: string, type: string, sclass: string) {
+  updateTeamInfos(ageLimit: string, name: string, type: string, rank: number) {
     this.team.ageLimit = ageLimit;
     this.team.name = name;
     this.team.type = type;
-    this.team.sclass = sclass;
+    this.team.rank = rank;
     return firebase.database().ref('clubs/12/teams/' + this.teamId).update({
       ageLimit: ageLimit,
       name: name,
       type: type,
-      sclass: sclass
+      rank: rank
     });
   }
 
@@ -347,12 +347,12 @@ export class TeamsProvider {
     }
   }
 
-  addNewTeam(id: string, ageLimit: string, name: string, type: string, sclass: string){
+  addNewTeam(id: string, ageLimit: string, name: string, type: string, rank: number){
     return firebase.database().ref('clubs/12/teams').child(id).set({
       ageLimit: ageLimit,
       name: name,
       type: type,
-      sclass: sclass
+      rank: rank
     })
   }
 }

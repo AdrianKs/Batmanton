@@ -45,7 +45,7 @@ export class ViewTeamComponent implements OnInit {
     teamHasPlayers: boolean = true;
     originalPlayers: any;
     originalMatches: any;
-    sKlasse: any;
+    rank: any;
     manCounter: any = 0;
     womanCounter: any = 0;
     /**
@@ -105,7 +105,7 @@ export class ViewTeamComponent implements OnInit {
                             this.altersKOld = this.team.ageLimit;
                             this.altersklasse = this.team.ageLimit;
                             this.teamArt = this.team.type;
-                            this.sKlasse = this.team.sclass;
+                            this.rank = this.team.rank;
                             this.allPlayers = this.teamsProvider.allPlayers;
                             this.teamHasPlayers = this.teamsProvider.teamHasPlayers;
                             this.manCounter = this.teamsProvider.manCounter;
@@ -143,7 +143,7 @@ export class ViewTeamComponent implements OnInit {
                             this.altersKOld = this.team.ageLimit;
                             this.altersklasse = this.team.ageLimit;
                             this.teamArt = this.team.type;
-                            this.sKlasse = this.team.sclass;
+                            this.rank = this.team.rank;
                             this.allPlayers = this.teamsProvider.allPlayers;
                             this.teamHasPlayers = this.teamsProvider.teamHasPlayers;
                             this.manCounter = this.teamsProvider.manCounter;
@@ -204,7 +204,7 @@ export class ViewTeamComponent implements OnInit {
 
     updateTeamInfos(infosChanged: boolean) {
         if (infosChanged) {
-            this.teamsProvider.updateTeamInfos(this.altersK, this.teamName, this.teamArt, this.sKlasse).then(()=>{
+            this.teamsProvider.updateTeamInfos(this.altersK, this.teamName, this.teamArt, this.rank).then(()=>{
                 this.team = this.teamsProvider.team;
             })
         }
