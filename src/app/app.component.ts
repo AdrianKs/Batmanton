@@ -39,6 +39,8 @@ export class MyApp {
   };
 
   pages: Array<{ title: string, component: any, icon: string, visible: boolean }>;
+  notificationPressed: boolean = false;
+  authenticated: boolean = false;
 
   constructor(public platform: Platform, public authData: AuthData, public utilities: Utilities, public alertCtrl: AlertController) {
 
@@ -65,13 +67,19 @@ export class MyApp {
       } else {
         if (this.nav.getActive() == undefined) {
           if (this.loadUserCredentials()) {
-            this.rootPage = MatchdayComponent;
+            if(this.notificationPressed){
+              this.rootPage = MyGamesComponent;
+            } else {
+              this.rootPage = MatchdayComponent;
+              this.authenticated = true;
+            }
           } else {
             this.rootPage = ClubPasswordComponent;
           }
         }
       }
       this.utilities.countOpen();
+      this.notificationPressed = false;
     });
 
     utilities.setTeams();
@@ -100,7 +108,12 @@ export class MyApp {
 
       let notificationOpenedCallback = (jsonData) => {
         console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-        this.nav.push(MyGamesComponent);
+        if(this.authenticated){
+          this.nav.push(MyGamesComponent);
+        }
+        else{
+          this.notificationPressed = true;
+        }
       };
 
       window["plugins"].OneSignal
