@@ -154,11 +154,13 @@ export class MyGamesComponent implements OnInit {
     return urlArray;
   }
 
-  openDetails(ev, value) {
-    this.navCtrl.push(GameDetailsComponent, { gameItem: value });
+  openDetails(ev, value, option, inviteItem) {
+    console.log(inviteItem);
+    this.navCtrl.push(GameDetailsComponent, { gameItem: value, option: option, inviteItem: inviteItem });
   }
 
-  verifyAccept(inviteItem){
+  verifyAccept(event, inviteItem){
+    event.stopPropagation();
     this.counterOpen--;
     for (let i in this.dataGames){
       if (this.dataGames[i].id == inviteItem.match){
@@ -192,11 +194,20 @@ export class MyGamesComponent implements OnInit {
       message: 'Du wirst diesem Spieltag zugeteilt.',
       buttons: ['Ok']
     });
-    alert.present()
+    alert.present();
+    //push-Benachrichtigung an alle Admins
+    //Zugriff auf Spielerobjekt
+    /*for (let j in this.allPlayers){
+      let player;
+      if (this.allPlayers[j].isAdmin == true){
+        player = this.allPlayers[j];
+      }
+    }*/
     this.loadData(false, null);
   }
 
-  doRadio(inviteItem, value) {
+  doRadio(event, inviteItem, value) {
+    event.stopPropagation();
     let alert = this.alertCtrl.create();
     alert.setTitle('Grund der Abwesenheit:');
 
@@ -263,6 +274,14 @@ export class MyGamesComponent implements OnInit {
           }).then(() => {
             this.Utilities.countOpen();
           });
+          //push-Benachrichtigung an alle Admins
+          //Zugriff auf Spielerobjekt
+          /*for (let j in this.allPlayers){
+            let player;
+            if (this.allPlayers[j].isAdmin == true){
+              player = this.allPlayers[j];
+            }
+          }*/
           this.loadData(false, null);
         }
         if(this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous'){
@@ -310,6 +329,14 @@ export class MyGamesComponent implements OnInit {
                     }).then(() => {
                       this.Utilities.countOpen();
                     });
+                    //push-Benachrichtigung an alle Admins
+                    //Zugriff auf Spielerobjekt
+                    /*for (let j in this.allPlayers){
+                      let player;
+                      if (this.allPlayers[j].isAdmin == true){
+                        player = this.allPlayers[j];
+                      }
+                    }*/
                     this.loadData(false, null);
                   }
                 }

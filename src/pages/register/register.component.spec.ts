@@ -75,7 +75,7 @@ describe("RegisterComponentTest", () => {
     expect(component.isAMail(emailControl)).toBeNull();
 
     emailControl._value = "testmail.com";
-    expect(component.startsWithACapital(emailControl)).toBeTruthy();
+    expect(component.isAMail(emailControl)).toBeTruthy();
   });
 
   afterEach(() => {
