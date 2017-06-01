@@ -347,20 +347,6 @@ export class AddTeamToMatchdayComponent implements OnInit {
                     assist: false
                   });
                 }
-
-                /*            if (snapshot.val()[i].state != 0){
-                              console.log("push-benachrichtigung an: "+snapshot.val()[i].recipient);
-                              //push-Benachrichtigung an snapshot.val()[i].recipient
-                              //Zugriff auf Spielerobjekt
-                              for (let j in this.allPlayers) {
-                                if (this.allPlayers[j].id == snapshot.val()[i].recipient) {
-                                  for (let pushID in this.allPlayers[j].pushid) {
-                                    pushIDs.push(pushID);
-                                  }
-                                }
-                              }
-                            }*/
-
                 firebase.database().ref('clubs/12/invites/' + i).update({
                   state: 0
                 });
@@ -407,7 +393,7 @@ export class AddTeamToMatchdayComponent implements OnInit {
         this.Utilities.sendGameReminderDayBefore(pushIDs, "Denken Sie an Ihr Spiel am " + matchInformationString, this.match.time, this.match.id);
       }
     });
-    this.navCtrl.popToRoot();
+    this.navCtrl.pop();
   }
 
 }

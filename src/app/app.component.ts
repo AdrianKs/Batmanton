@@ -98,8 +98,9 @@ export class MyApp {
       // Enable to debug issues.
       // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
 
-      var notificationOpenedCallback = function(jsonData) {
+      let notificationOpenedCallback = (jsonData) => {
         console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+        this.nav.push(MyGamesComponent);
       };
 
       window["plugins"].OneSignal
