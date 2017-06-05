@@ -147,8 +147,8 @@
                   <div *ngIf="gameItem.home == false && gameItem.home != 'unknown'"><p>Auswärts</p></div>
                   <div *ngIf="gameItem.home == 'unknown'"><p>TBA</p></div>
                 </div>
-                <button ion-button class="cubic-button" color="danger" outline (click)="doRadio($event, inviteItem, 0)" icon-only item-right large><ion-icon name="close"></ion-icon></button>
                 <button ion-button class="cubic-button" color="secondary" outline (click)="verifyAccept($event, inviteItem)" icon-only item-right large><ion-icon name="checkmark"></ion-icon></button>
+                <button ion-button class="cubic-button" color="danger" outline (click)="doRadio($event, inviteItem, 0)" icon-only item-right large><ion-icon name="close"></ion-icon></button>
               </ion-item>
             </div>
           </div>
