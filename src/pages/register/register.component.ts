@@ -174,10 +174,10 @@ export class RegisterComponent {
   private showVerificationAlert() {
       let confirm = this.alertCtrl.create({
         title: 'Bitte bestätigen Sie Ihre Email Adresse',
-        message: 'Ihnen wurde eine Bestäigunsmail zugesandt. Bitte bestätigen Sie Ihre Mail-Adresse.',
+        message: 'Ihnen wurde eine Bestäigungsmail zugesandt. Bitte bestätigen Sie Ihre Mail-Adresse.',
         buttons: [
           {
-            text: 'Okay',
+            text: 'Ok',
             handler: () => {
               this.navCtrl.setRoot(SelectProfilePictureComponent);
               this.utilities.setInRegister();
