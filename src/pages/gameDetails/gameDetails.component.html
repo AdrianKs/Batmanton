@@ -39,14 +39,14 @@
         </div>
       </div>
     </div>
-    <div *ngIf="((option == 1) || (option == 2)) && (!editMode)" class="align-center">
-      <button *ngIf="(option == 1)" ion-button color="secondary" icon-left (click)="verifyAccept(inviteItem)" item-right>
+    <div *ngIf="((option == 1) || (option == 2)) && (!editMode)" class="align-center accept-decline-container">
+      <button *ngIf="(option == 1)" ion-button round outline color="secondary" icon-left (click)="verifyAccept(inviteItem)" item-right>
         <ion-icon name='checkmark'></ion-icon>
           Zusagen
-        </button>
-      <button *ngIf="(option == 1) || (option == 2)" ion-button color="danger" (click)="doRadio(inviteItem, 1)">
-          <ion-icon name='close'></ion-icon>
-          Absagen
+      </button>
+      <button *ngIf="((option == 1) || (option == 2)) && (!editMode)" ion-button round outline color="danger" (click)="doRadio(inviteItem, 1)">
+        <ion-icon name='close'></ion-icon>
+          <p class="decline-button">Absagen</p>
       </button>
     </div>
     <div class="game-details-form right-form-inputs">

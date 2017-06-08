@@ -60,8 +60,8 @@ export class GameDetailsComponent implements OnInit {
   opponentChanged: boolean;
   teamChanged: boolean;
   homeChanged: boolean;
-  streetChanged: boolean;
-  zipcodeChanged: boolean;
+  streetChanged: boolean = false;
+  zipcodeChanged: boolean = false;
   timeChanged: boolean = false;
   templateChecked: boolean = false;
   dataLoaded: boolean = false;
@@ -313,6 +313,14 @@ export class GameDetailsComponent implements OnInit {
 
   streetEnteredChanged(input) {
     if (this.streetOld != input) {
+      if (this.streetChanged == false){
+        let alert = this.alertCtrl.create({
+          title: 'Achtung!',
+          message: 'Durch die Änderung der Adresse werden alle Einladungen nochmal versendet.',
+          buttons: ['OK']
+        });
+        alert.present();
+      }
       this.streetChanged = true;
     } else {
       this.streetChanged = false;
@@ -363,6 +371,14 @@ export class GameDetailsComponent implements OnInit {
 
   zipcodeSelectChanged(input) {
     if (this.zipcodeOld != input) {
+      if (this.zipcodeChanged == false){
+        let alert = this.alertCtrl.create({
+          title: 'Achtung!',
+          message: 'Durch die Änderung der PLZ werden alle Einladungen nochmal versendet.',
+          buttons: ['OK']
+        });
+        alert.present();
+      }
       this.zipcodeChanged = true;
     } else {
       this.zipcodeChanged = false;
@@ -495,12 +511,13 @@ export class GameDetailsComponent implements OnInit {
     this.playersEdited = true;
   }
 
-  confirmPlayer() {
+
+  confirmPlayer(){
     let pushIDs = [];
-    if (this.timeChanged == true) {
-      for (let i in this.acceptedArray) {
-        for (let j in this.playerArray) {
-          if (this.acceptedArray[i] == this.playerArray[j].id && this.playerArray[j].isDefault == false) {
+    if (this.timeChanged == true || this.streetChanged == true || this.zipcodeChanged == true){
+      for (let i in this.acceptedArray){
+        for (let j in this.playerArray){
+          if (this.acceptedArray[i] == this.playerArray[j].id && this.playerArray[j].isDefault == false){
             this.pendingArray.push(this.acceptedArray[i]);
             this.acceptedCounter--;
             if (this.playerArray[j].gender == "m") {
@@ -561,8 +578,9 @@ export class GameDetailsComponent implements OnInit {
       }
     });
 
-    console.log("timeChanged: " + this.timeChanged);
-    if (this.timeChanged == true) {
+
+    console.log("timeChanged: "+ this.timeChanged);
+    if(this.timeChanged == true || this.streetChanged == true || this.zipcodeChanged == true){
       firebase.database().ref('clubs/12/invites').once('value', snapshot => {
         for (let k in this.pendingArray) {
           for (let j in this.playerArray) {
@@ -647,8 +665,9 @@ export class GameDetailsComponent implements OnInit {
                       assist: false
                     });
                   }
-                  if (snapshot.val()[i].state != 0 || this.timeChanged == true) {
-                    console.log("push-benachrichtigung an: " + snapshot.val()[i].recipient);
+
+                  if (snapshot.val()[i].state != 0){
+                    console.log("push-benachrichtigung an: "+snapshot.val()[i].recipient);
                     //push-Benachrichtigung an snapshot.val()[i].recipient
                     //Zugriff auf Spielerobjekt
                     for (let j in this.playerArray) {
@@ -961,8 +980,7 @@ export class GameDetailsComponent implements OnInit {
       console.log("ruft pushfunction");
       console.log(inviteItem.match);
       let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird am Spiel am " + this.Utilities.transformTime(this.gameItem.time) + " gegen " + this.gameItem.opponent + " teilnehmen.";
-      this.Utilities.sendPushNotification(this.pushIDsAdmins
-        , matchInformationString);
+      this.Utilities.sendPushNotification(this.pushIDsAdmins, matchInformationString);
     }
     this.loadData(false, null);
   }
