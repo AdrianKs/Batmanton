@@ -12,9 +12,7 @@
 
     <ion-item>
       <ion-label stacked>Vorname</ion-label>
-      <ion-input #firstname formControlName="firstname" (change)="elementChanged(firstname)"
-                 placeholder="Vorname"
-                [class.invalid]="!signupForm.controls.firstname.valid  && (firstnameChanged || submitAttempt)"></ion-input>
+      <ion-input #firstname formControlName="firstname" (change)="elementChanged(firstname)" placeholder="Vorname" [class.invalid]="!signupForm.controls.firstname.valid  && (firstnameChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!signupForm.controls.firstname.valid  && signupForm.controls.firstname._errors.required && (firstnameChanged || submitAttempt)">
       <p>Bitte geben Sie Ihren Vorname ein.</p>
@@ -23,12 +21,14 @@
                                             && !signupForm.controls.firstname._errors.required">
       <p>Ihr Vorname muss mit einem Großbuchstaben beginnen.</p>
     </ion-item>
+    <ion-item class="error-message" *ngIf="!signupForm.controls.firstname.valid && signupForm.controls.firstname._errors.minlength && (firstnameChanged || submitAttempt)
+                                            && !signupForm.controls.firstname._errors.required">
+      <p>Der Vorname entspricht nicht der Mindestlänge</p>
+    </ion-item>
 
     <ion-item>
       <ion-label stacked>Nachname</ion-label>
-      <ion-input #lastname formControlName="lastname" (change)="elementChanged(lastname)"
-                 placeholder="Nachname"
-                 [class.invalid]="!signupForm.controls.lastname.valid  && (lastnameChanged || submitAttempt)"></ion-input>
+      <ion-input #lastname formControlName="lastname" (change)="elementChanged(lastname)" placeholder="Nachname" [class.invalid]="!signupForm.controls.lastname.valid  && (lastnameChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!signupForm.controls.lastname.valid  && signupForm.controls.lastname._errors.required && (lastnameChanged || submitAttempt)">
       <p>Bitte geben Sie Ihren Nachnamen ein.</p>
@@ -37,19 +37,22 @@
                                            && !signupForm.controls.lastname._errors.required">
       <p>Ihr Nachname muss mit einem Großbuchstaben beginnen.</p>
     </ion-item>
+    <ion-item class="error-message" *ngIf="!signupForm.controls.lastname.valid && signupForm.controls.lastname._errors.minlength && (firstnameChanged || submitAttempt)
+                                            && !signupForm.controls.lastname._errors.required">
+      <p>Der Nachname entspricht nicht der Mindestlänge</p>
+    </ion-item>
 
     <!--<ion-item>-->
-      <!--<ion-label stacked>Geburtstag</ion-label>-->
-      <!--<ion-datetime #birthday formControlName="birthday" class="datetime-text" displayFormat="DD.MM.YYYY " pickerFormat="DD MM YYYY"-->
-                    <!--(ionChange)="birthdaySelectChanged()"-->
-                <!--placeholder="Geburtstag"-->
-                <!--[class.invalid]="!signupForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)"></ion-datetime>-->
+    <!--<ion-label stacked>Geburtstag</ion-label>-->
+    <!--<ion-datetime #birthday formControlName="birthday" class="datetime-text" displayFormat="DD.MM.YYYY " pickerFormat="DD MM YYYY"-->
+    <!--(ionChange)="birthdaySelectChanged()"-->
+    <!--placeholder="Geburtstag"-->
+    <!--[class.invalid]="!signupForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)"></ion-datetime>-->
     <!--</ion-item> -->
     <ion-item>
       <ion-label stacked>Geburtstag</ion-label>
       <ion-datetime #birthday formControlName="birthday" class="datetime-text" displayFormat="DD.MM.YYYY " pickerFormat="DD MM YYYY"
-                placeholder="Geburtstag"
-                [class.invalid]="!signupForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)"></ion-datetime>
+        placeholder="Geburtstag" [class.invalid]="!signupForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)"></ion-datetime>
     </ion-item>
     <ion-item class="error-message" *ngIf="!signupForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)">
       <p>Bitte geben Sie Ihr Geburtsdatum ein.</p>
@@ -57,9 +60,8 @@
 
     <ion-item>
       <ion-label stacked>Geschlecht</ion-label>
-      <ion-select [(ngModel)]="gender" (ionChange)="genderSelectChanged(gender)" [ngModelOptions]="{standalone: true}"
-                  placeholder="Geschlecht"
-                  [class.invalid]="(!genderChanged && submitAttempt)">
+      <ion-select [(ngModel)]="gender" (ionChange)="genderSelectChanged(gender)" [ngModelOptions]="{standalone: true}" placeholder="Geschlecht"
+        [class.invalid]="(!genderChanged && submitAttempt)">
         <ion-option value="m">männlich</ion-option>
         <ion-option value="f">weiblich</ion-option>
       </ion-select>
@@ -69,23 +71,22 @@
     </ion-item>
 
     <!--<ion-item>-->
-      <!--<ion-label stacked>Mannschaft</ion-label>-->
-      <!--<ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"-->
-                  <!--placeholder="Mannschaft"-->
-                  <!--[class.invalid]="(!teamChanged && submitAttempt)">-->
-        <!--<ion-option value=0>keine Mannschaft</ion-option>-->
-        <!--<ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>-->
-      <!--</ion-select>-->
+    <!--<ion-label stacked>Mannschaft</ion-label>-->
+    <!--<ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"-->
+    <!--placeholder="Mannschaft"-->
+    <!--[class.invalid]="(!teamChanged && submitAttempt)">-->
+    <!--<ion-option value=0>keine Mannschaft</ion-option>-->
+    <!--<ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>-->
+    <!--</ion-select>-->
     <!--</ion-item>-->
     <!--<ion-item class="error-message" *ngIf="(!teamChanged && submitAttempt)">-->
-      <!--<p>Bitte geben Sie Ihr Team an.</p>-->
+    <!--<p>Bitte geben Sie Ihr Team an.</p>-->
     <!--</ion-item>-->
 
     <ion-item>
       <ion-label stacked>E-Mail</ion-label>
-      <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)"
-                 placeholder="Ihre E-Mail-Adresse"
-                 [class.invalid]="!signupForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
+      <ion-input #email formControlName="email" type="email" (change)="elementChanged(email)" placeholder="Ihre E-Mail-Adresse"
+        [class.invalid]="!signupForm.controls.email.valid && (emailChanged || submitAttempt)"></ion-input>
     </ion-item>
     <ion-item class="error-message" *ngIf="!signupForm.controls.email.valid  && (emailChanged || submitAttempt)">
       <p>Bitte geben Sie eine gültige Email-Adresse ein.</p>
@@ -94,9 +95,8 @@
     <div [formGroup]="passwordGroup">
       <ion-item>
         <ion-label stacked>Passwort</ion-label>
-        <ion-input #password formControlName="password" type="password" (change)="elementChanged(password)"
-                   placeholder="Ihr sicheres Passwort"
-                   [class.invalid]="!passwordGroup.controls.password.valid && (passwordChanged || submitAttempt)"></ion-input>
+        <ion-input #password formControlName="password" type="password" (change)="elementChanged(password)" placeholder="Ihr sicheres Passwort"
+          [class.invalid]="!passwordGroup.controls.password.valid && (passwordChanged || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!passwordGroup.controls.password.valid  && (passwordChanged || submitAttempt)">
         <p>Ihr Passwort muss mindestens 6 Zeichen lang sein.</p>
@@ -104,9 +104,8 @@
 
       <ion-item>
         <ion-label stacked>Passwort bestätigen</ion-label>
-        <ion-input #passwordConfirm  formControlName="passwordConfirm" type="password" (change)="elementChanged(passwordConfirm)"
-                   placeholder="Bestätigen Sie Ihr Passwort"
-                   [class.invalid]="!passwordGroup.valid && (passwordConfirmChanged || submitAttempt)"></ion-input>
+        <ion-input #passwordConfirm formControlName="passwordConfirm" type="password" (change)="elementChanged(passwordConfirm)"
+          placeholder="Bestätigen Sie Ihr Passwort" [class.invalid]="!passwordGroup.valid && (passwordConfirmChanged || submitAttempt)"></ion-input>
       </ion-item>
       <ion-item class="error-message" *ngIf="!passwordGroup.valid  && passwordGroup._errors && !signupForm.controls.passwords.controls.passwordConfirm._errors &&
                                               (passwordConfirmChanged || passwordChanged || submitAttempt)">
