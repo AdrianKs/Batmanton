@@ -24,6 +24,7 @@ export class GameDetailsComponent implements OnInit {
   isAdmin: boolean;
   loggedInUserID: string = this.Utilities.user.uid;
   currentUser: any;
+  maxYear: any;
   loading: any;
   gameItem: any;
   inviteItem: any;
@@ -72,6 +73,7 @@ export class GameDetailsComponent implements OnInit {
 
   ionViewWillEnter() {
     this.isTrainer();
+    this.maxYear = (parseInt(new Date().toISOString().slice(0,4))+1).toString();
     this.loadData(true, null);
     if (this.dataLoaded == true) {
       this.setCounter();

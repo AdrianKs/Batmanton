@@ -110,11 +110,7 @@
           </ion-item>
            <ion-item *ngIf="(editMode)">
               <ion-label color="primary">Rang:</ion-label>
-              <ion-select class="form-value" [(ngModel)]="rank" [ngModelOptions]="{standalone: true}">
-                <ion-option value="1">1</ion-option>
-                <ion-option value="2">2</ion-option>
-                <ion-option value="3">3</ion-option>
-              </ion-select>
+              <ion-input type="number" #TeamName placeholder="Rangnummer eingeben" [(ngModel)]="rank" [ngModelOptions]="{standalone: true}"></ion-input>
             </ion-item>
       </form>
     </div>

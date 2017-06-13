@@ -18,7 +18,8 @@
             {{item.name}}
             <div *ngIf="item.ageLimit==0">(Erw.,</div>
             <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
-            {{item.rank}})
+            {{item.rank}},
+            {{item.type}})
           </ion-option>
     </ion-select>
   </ion-item>

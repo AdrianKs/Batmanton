@@ -4,17 +4,13 @@
 // todo:
 // handle error wenn keine internetverbindung besteht
 // ViewTeam: "Fertig" Button ausgrauen, wenn keine Changes gemacht wurden
-// unnötige css klassen löschen
-// Invites: Label wenn keine Einladungen verfügbar sind
 // Mannschaften: Remove player image from thumbnails, when user leaves team
-// countingBadges iOS zentrieren
 // Adressvorlagen: Bei Umbenennung von Adressvorlage überprüfen, ob Vorlage schon existiert (Mit Gegnernamen prüfen). Wenn ja, fragen, ob überschrieben werden soll oder ob neu angelegt werden soll ("(2)" anhängen)
-// Profile: ActionSheet verzögert sich, wenn man in iOS auf das Bild klickt
 // Farbe der Statusleisttexte in iOS ändern
 // remove console logs
-// Matchday: Ort zu PLZ hinzufügen
 // Bug: ich kann beim spiel-bearbeiten screen den gegner löschen und dann speichern
 // gameDetails Bug: Wenn man einen Spieler direkt aus der Liste löscht und danach auf Abbrechen klicht, ist der Spieler zwei mal in der Liste
+// Style für 4er-Profile-Pics bearbeiten
 
 import {Component, OnInit} from '@angular/core';
 import {LoginComponent} from "../login/login.component";
@@ -365,7 +361,7 @@ export class ProfileComponent implements OnInit {
     let alert = this.alertCtrl.create({
       title: 'Profil löschen',
       message: 'Wollen Sie Ihr Profil wirklich löschen? Der Vorgang kann nicht rückgängig gemacht werden.' +
-      'Bitte geben Sie Ihr Passwort ein, um fortzufahren.',
+      'Bitte geben Sie Ihr Passwort ein um fortzufahren.',
       buttons: [
         {
           text: 'Abbrechen',
@@ -374,12 +370,14 @@ export class ProfileComponent implements OnInit {
         {
           text: 'Löschen',
           handler: data => {
-            this.utilities.setInRegister();
+            this.deleteInvites(this.utilities.user.uid);
             var that = this;
+            this.utilities.inRegister= true;
             this.authData.deleteUser(data.password).then(() => {
               firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).remove();
-              this.logout();
-              this.utilities.setInRegister();
+              firebase.storage().ref().child('profilePictures/' + this.utilities.user.uid + "/" + this.utilities.user.uid + '.jpg').delete();
+              this.removePlayerFromTeam(this.utilities.userData.team, this.utilities.user.uid);
+              this.navCtrl.setRoot(LoginComponent);
             }, function () {
               let alert = that.alertCtrl.create({
                 message: "Passwort ist inkorrekt.",
@@ -405,6 +403,71 @@ export class ProfileComponent implements OnInit {
       ]
     });
     alert.present();
+  }
+
+  /**
+   * Deletes player from Team
+   * @param teamId to get specific team
+   * @param playerId to delete the right player from the team
+   */
+  removePlayerFromTeam(teamId, playerId) {
+    if (teamId != undefined && teamId != "0") {
+      firebase.database().ref('clubs/12/teams/' + teamId).once('value', snapshot => {
+        for (let i in snapshot.val().players) {
+          if (playerId == snapshot.val().players[i]) {
+            return firebase.database().ref('clubs/12/teams/' + teamId + '/players/' + i);
+          }
+        }
+      });
+    }
+  }
+
+  /**
+   * Deletes all invites belonging to the player
+   * @param playerId to delete the right invites
+   */
+  deleteInvites(playerId) {
+    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+      for (let i in snapshot.val()) {
+        if (snapshot.val()[i].recipient == playerId) {
+          this.deletePlayerFromMatches(playerId, snapshot.val()[i].match, snapshot.val()[i].state);
+          firebase.database().ref('clubs/12/invites/' + i).remove();
+        }
+      }
+    });
+  }
+
+  /**
+   * Deletes the player from all matches
+   * @param playerId to check if the player is part of the match
+   * @param matchId to get the specific game
+   * @param inviteState get the specific match
+   */
+  deletePlayerFromMatches(playerId, matchId, inviteState) {
+    firebase.database().ref('clubs/12/matches/' + matchId).once('value', snapshot => {
+      //pending state
+      if (inviteState == 0) {
+        for (let i in snapshot.val().pendingPlayers) {
+          if (playerId == snapshot.val().pendingPlayers[i]) {
+            firebase.database().ref('clubs/12/matches/' + matchId + '/pendingPlayers/' + i).remove();
+          }
+        }
+        //accepted state
+      } else if (inviteState == 1) {
+        for (let i in snapshot.val().acceptedPlayers) {
+          if (playerId == snapshot.val().acceptedPlayers[i]) {
+            firebase.database().ref('clubs/12/matches/' + matchId + '/acceptedPlayers/' + i).remove();
+          }
+        }
+        //declined state
+      } else if (inviteState == 2) {
+        for (let i in snapshot.val().declinedPlayers) {
+          if (playerId == snapshot.val().declinedPlayers[i]) {
+            firebase.database().ref('clubs/12/matches/' + matchId + '/declinedPlayers/' + i).remove();
+          }
+        }
+      }
+    });
   }
 
   changePassword() {

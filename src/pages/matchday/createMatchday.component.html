@@ -24,12 +24,12 @@
         <ion-select #team formControlName="team" placeholder="Mannschaft" [(ngModel)]="match.team"
                       placeholder="Mannschaft"
                       (ionChange)="teamSelectChanged()" doneText="Ok" cancelText="Abbrechen">
-          <ion-option value=0>keine Mannschaft</ion-option>
           <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">
             {{item.name}}
             <div *ngIf="item.ageLimit==0">(Erw.,</div>
             <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
-            {{item.rank}})
+            {{item.rank}},
+            {{item.type}})
           </ion-option>
         </ion-select>
         </ion-item>
@@ -54,7 +54,7 @@
         </ion-item>
         <ion-item>
           <ion-label stacked>Datum & Uhrzeit</ion-label>
-          <ion-datetime #time formControlName="time" displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
+          <ion-datetime #time formControlName="time" displayFormat="DD.MM.YYYY, HH:mm" max={{maxYear}} pickerFormat="DD MM YYYY HH mm"
                         [(ngModel)]="match.time"
                         (ionChange)="timeSelectChanged()"
                         doneText="Ok" cancelText="Abbrechen"></ion-datetime>
