@@ -119,7 +119,7 @@ export class CreateTeamComponent implements OnInit {
 
     addPlayers() {
         this.navCtrl.push(EditPlayerComponent, {
-            toRoot: 'yes',
+            toRoot: true,
             teamId: this.newTeamId,
             maxAge: this.maxAlt
         });

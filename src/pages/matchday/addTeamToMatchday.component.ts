@@ -382,7 +382,7 @@ export class AddTeamToMatchdayComponent implements OnInit {
         }
       }
       console.log(pushIDs);
-      if (pushIDs.length != 0) {
+      if (pushIDs.length != 0 && this.editMode != true) {
         console.log("ruft pushfunction");
         console.log(this.match.id);
         let matchInformationString = "am " + this.Utilities.transformTime(this.match.time) + " in " + this.match.location.street + ", " + this.match.location.zipcode + ", gegen " + this.match.opponent
@@ -393,7 +393,11 @@ export class AddTeamToMatchdayComponent implements OnInit {
         this.Utilities.sendGameReminderDayBefore(pushIDs, "Denken Sie an Ihr Spiel am " + matchInformationString, this.match.time, this.match.id);
       }
     });
-    this.navCtrl.pop();
+    if (this.editMode == true) {
+      this.navCtrl.pop();
+    } else {
+      this.navCtrl.popToRoot();
+    }
   }
 
 }

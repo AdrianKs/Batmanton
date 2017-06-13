@@ -131,6 +131,7 @@ export class EditRoleComponent {
             this.deleteDefaultPlayerFromMatches(player.id)
         } else {
             this.deleteInvites(player.id);
+            firebase.storage().ref().child('profilePictures/' + player.id + "/" + player.id + '.jpg').delete();
         }
         this.removePlayerFromTeam(player.team, player.id);
         this.navigateBackToList();
@@ -155,7 +156,7 @@ export class EditRoleComponent {
      * Deletes the player from all matches
      * @param playerId to check if the player is part of the match
      * @param matchId to get the specific game
-     * @param inviteState get the specifi match
+     * @param inviteState get the specific match
      */
     deletePlayerFromMatches(playerId, matchId, inviteState) {
         firebase.database().ref('clubs/12/matches/' + matchId).once('value', snapshot => {
@@ -203,18 +204,20 @@ export class EditRoleComponent {
     }
 
     /**
-     * Deletes player from Team 
+     * Deletes player from Team
      * @param teamId to get specific team
      * @param playerId to delete the right player from the team
      */
     removePlayerFromTeam(teamId, playerId) {
+      if (teamId != undefined && teamId != "0") {
         firebase.database().ref('clubs/12/teams/' + teamId).once('value', snapshot => {
-            for (let i in snapshot.val().players) {
-                if (playerId == snapshot.val().players[i]) {
-                    return firebase.database().ref('clubs/12/teams/' + teamId + '/players/' + i).remove();
-                }
+          for (let i in snapshot.val().players) {
+            if (playerId == snapshot.val().players[i]) {
+              return firebase.database().ref('clubs/12/teams/' + teamId + '/players/' + i).remove();
             }
+          }
         });
+      }
     }
 
     /**

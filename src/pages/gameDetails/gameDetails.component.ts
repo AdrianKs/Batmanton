@@ -26,6 +26,7 @@ export class GameDetailsComponent implements OnInit {
   pushIDsAdmins: Array<any> = [];
   dataUser: any;
   currentUser: any;
+  maxYear: any;
   loading: any;
   gameItem: any;
   inviteItem: any;
@@ -75,6 +76,7 @@ export class GameDetailsComponent implements OnInit {
   ionViewWillEnter() {
     this.dataUser = this.Utilities.userData;
     this.isTrainer();
+    this.maxYear = (parseInt(new Date().toISOString().slice(0,4))+1).toString();
     this.loadData(true, null);
     if (this.dataLoaded == true) {
       this.setCounter();
@@ -313,7 +315,7 @@ export class GameDetailsComponent implements OnInit {
 
   streetEnteredChanged(input) {
     if (this.streetOld != input) {
-      if (this.streetChanged == false){
+      if (this.streetChanged == false) {
         let alert = this.alertCtrl.create({
           title: 'Achtung!',
           message: 'Durch die Änderung der Adresse werden alle Einladungen nochmal versendet.',
@@ -371,7 +373,7 @@ export class GameDetailsComponent implements OnInit {
 
   zipcodeSelectChanged(input) {
     if (this.zipcodeOld != input) {
-      if (this.zipcodeChanged == false){
+      if (this.zipcodeChanged == false) {
         let alert = this.alertCtrl.create({
           title: 'Achtung!',
           message: 'Durch die Änderung der PLZ werden alle Einladungen nochmal versendet.',
@@ -511,7 +513,6 @@ export class GameDetailsComponent implements OnInit {
     this.playersEdited = true;
   }
 
-
   confirmPlayer(){
     let pushIDs = [];
     if (this.timeChanged == true || this.streetChanged == true || this.zipcodeChanged == true){
@@ -577,7 +578,6 @@ export class GameDetailsComponent implements OnInit {
         }
       }
     });
-
 
     console.log("timeChanged: "+ this.timeChanged);
     if(this.timeChanged == true || this.streetChanged == true || this.zipcodeChanged == true){
@@ -666,8 +666,8 @@ export class GameDetailsComponent implements OnInit {
                     });
                   }
 
-                  if (snapshot.val()[i].state != 0){
-                    console.log("push-benachrichtigung an: "+snapshot.val()[i].recipient);
+                  if (snapshot.val()[i].state != 0) {
+                    console.log("push-benachrichtigung an: " + snapshot.val()[i].recipient);
                     //push-Benachrichtigung an snapshot.val()[i].recipient
                     //Zugriff auf Spielerobjekt
                     for (let j in this.playerArray) {
@@ -693,7 +693,6 @@ export class GameDetailsComponent implements OnInit {
                   }
                 }
               }
-
               if (inviteExists == false) {
                 let id = this.makeid();
                 firebase.database().ref('clubs/12/invites/').child(id).set({
