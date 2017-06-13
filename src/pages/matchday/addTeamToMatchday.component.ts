@@ -380,8 +380,11 @@ export class AddTeamToMatchdayComponent implements OnInit{
         }
       }
     });
-
-    this.navCtrl.pop();
+    if (this.editMode == true){
+      this.navCtrl.pop();
+    } else {
+      this.navCtrl.popToRoot();
+    }   
   }
 }
 

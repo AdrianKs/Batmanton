@@ -71,7 +71,13 @@
           <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}" placeholder="Mannschaft"
             [class.invalid]="(!teamChanged && submitAttempt)">
             <ion-option value=0>keine Mannschaft</ion-option>
-            <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
+            <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">
+              {{item.name}}
+              <div *ngIf="item.ageLimit==0">(Erw.,</div>
+              <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
+              {{item.rank}},
+              {{item.type}})
+            </ion-option>
           </ion-select>
         </ion-item>
         <ion-item class="error-message" *ngIf="(!teamChanged && submitAttempt)">

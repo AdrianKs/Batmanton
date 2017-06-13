@@ -21,7 +21,7 @@ export class CreateMatchdayComponent implements OnInit {
   public createMatchdayForm;
   templateChecked: boolean;
   dataTemplate: any;
-  match = {id: this.id, opponent: this.opponent, team: this.team, home: this.home, location: {street: this.street, zipcode: this.zipcode}, time: this.time, pendingPlayers: this.pendingPlayersArray};
+  match = {id: this.id, opponent: this.opponent, team: this.team, home: this.home, location: {street: this.street, zipcode: this.zipcode}, time: this.time = new Date().toISOString(), pendingPlayers: this.pendingPlayersArray};
   id: any;
   opponent: string;
   team: any;
@@ -29,6 +29,7 @@ export class CreateMatchdayComponent implements OnInit {
   street: string;
   zipcode: string;
   time: String;
+  maxYear: any;
   pendingPlayersArray = [];
   relevantTeams: any;
   formValid: boolean = true;
@@ -54,6 +55,7 @@ export class CreateMatchdayComponent implements OnInit {
     this.zipcodeChanged = false;
     this.timeChanged = false;
     this.templateChecked = false;
+    this.maxYear = (parseInt(new Date().toISOString().slice(0,4))+1).toString();
   }
 
 
