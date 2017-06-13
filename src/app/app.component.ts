@@ -11,13 +11,13 @@ import { UserManagementComponent } from '../pages/userManagement/userManagement.
 import { LoginComponent } from "../pages/login/login.component";
 import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
-import { firebaseConfig } from "./firebaseAppData";
+import { firebaseConfigTest } from "./firebaseAppData";
 import { setUser } from "./globalVars";
 import { AuthData } from '../providers/auth-data';
 import { Utilities } from './utilities';
 import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfigTest);
 
 @Component({
   templateUrl: 'app.html',
@@ -39,6 +39,8 @@ export class MyApp {
   };
 
   pages: Array<{ title: string, component: any, icon: string, visible: boolean }>;
+  notificationPressed: boolean = false;
+  authenticated: boolean = false;
 
   constructor(public platform: Platform, public authData: AuthData, public utilities: Utilities, public alertCtrl: AlertController) {
 
@@ -65,13 +67,19 @@ export class MyApp {
       } else {
         if (this.nav.getActive() == undefined) {
           if (this.loadUserCredentials()) {
-            this.rootPage = MatchdayComponent;
+            if(this.notificationPressed){
+              this.rootPage = MyGamesComponent;
+            } else {
+              this.rootPage = MatchdayComponent;
+              this.authenticated = true;
+            }
           } else {
             this.rootPage = ClubPasswordComponent;
           }
         }
       }
       this.utilities.countOpen();
+      this.notificationPressed = false;
     });
 
     utilities.setTeams();
@@ -98,8 +106,14 @@ export class MyApp {
       // Enable to debug issues.
       // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
 
-      var notificationOpenedCallback = function(jsonData) {
+      let notificationOpenedCallback = (jsonData) => {
         console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+        if(this.authenticated){
+          this.nav.push(MyGamesComponent);
+        }
+        else{
+          this.notificationPressed = true;
+        }
       };
 
       window["plugins"].OneSignal
@@ -168,7 +182,9 @@ export class MyApp {
           if (!this.utilities.inRegister) {
             this.checkForVerification();
           }
-          this.checkPlatform(userID);
+          if(user.val().email){
+            this.checkPlatform(userID);
+          }
           this.utilities.loggedIn = true;
         } else {
           this.logout();

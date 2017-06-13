@@ -15,7 +15,7 @@ import { TeamsProvider } from '../../providers/teams-provider';
 })
 export class TeamsComponent implements OnInit {
 
-  teams: any[];
+  teams: any = [];
   teamsSearch: any[];
   playerArray: any[];
   error: boolean = false;

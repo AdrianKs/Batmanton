@@ -73,12 +73,12 @@ describe("ViewTeamComponentTesting", () => {
             component.teamNameOld = component.team.name;
             component.altersklasse = component.team.ageLimit;
             component.teamArt = component.team.type;
-            component.sKlasse = component.team.sclass;
+            component.rank = component.team.rank;
             expect(component.team).toBeDefined();
             expect(component.teamNameOld).toEqual("Team 1");
             expect(component.altersklasse).toEqual("15");
             expect(component.teamArt).toEqual("1");
-            expect(component.sKlasse).toEqual("S1");
+            expect(component.rank).toEqual(1);
         })
     })
 

@@ -19,14 +19,14 @@ export class RegisterComponent {
   public signupForm;
   public passwordGroup;
   gender: string = '';
-  team: string = '';
-  teams: any = [];
-  relevantTeams = this.utilities.allTeams;
+  // team: string = '';
+  // teams: any = [];
+  // relevantTeams = this.utilities.allTeams;
   firstnameChanged: boolean = false;
   lastnameChanged: boolean = false;
   birthdayChanged: boolean = false;
   genderChanged: boolean = false;
-  teamChanged: boolean = false;
+  // teamChanged: boolean = false;
   emailChanged: boolean = false;
   passwordChanged: boolean = false;
   passwordConfirmChanged: boolean = false;
@@ -70,16 +70,16 @@ export class RegisterComponent {
     this[field + "Changed"] = true;
   }
 
-  birthdaySelectChanged() {
-    this.relevantTeams = this.utilities.getRelevantTeams(this.signupForm.value.birthday);
-    if(this.team != undefined && this.utilities.allTeamsVal[this.team] != undefined) {
-      if (this.team != "0" && this.utilities.allTeamsVal[this.team].ageLimit != 0) {
-        if (this.utilities.allTeamsVal[this.team].ageLimit < this.utilities.calculateAge(this.signupForm.value.birthday)) {
-          this.team = "0";
-        }
-      }
-    }
-  }
+  // birthdaySelectChanged() {
+    // this.relevantTeams = this.utilities.getRelevantTeams(this.signupForm.value.birthday);
+    // if(this.team != undefined && this.utilities.allTeamsVal[this.team] != undefined) {
+    //   if (this.team != "0" && this.utilities.allTeamsVal[this.team].ageLimit != 0) {
+    //     if (this.utilities.allTeamsVal[this.team].ageLimit < this.utilities.calculateAge(this.signupForm.value.birthday)) {
+    //       this.team = "0";
+    //     }
+    //   }
+    // }
+  // }
 
   /**
    * This function is needed, since the select box can for some reason not be validated in formcontrol,
@@ -90,10 +90,10 @@ export class RegisterComponent {
     this.genderChanged = true;
   }
 
-  teamSelectChanged(input) {
-    this.team = input;
-    this.teamChanged = true;
-  }
+  // teamSelectChanged(input) {
+  //   this.team = input;
+  //   this.teamChanged = true;
+  // }
 
   /**
    * This function checks, if the input field starts with a capital letter
@@ -131,10 +131,11 @@ export class RegisterComponent {
   signupUser() {
     this.submitAttempt = true;
 
-    if (!this.signupForm.valid || !this.gender || !this.team) {
+    // if (!this.signupForm.valid || !this.gender || !this.team) {
+    if (!this.signupForm.valid || !this.gender) {
       console.log(this.signupForm.value);
       console.log("gender: " + this.gender);
-      console.log("team: " + this.team);
+      // console.log("team: " + this.team);
     } else {
       window["plugins"].OneSignal.getIds(ids => {
         console.log('getIds: ' + JSON.stringify(ids));
@@ -146,10 +147,10 @@ export class RegisterComponent {
           this.signupForm.value.lastname,
           this.signupForm.value.birthday,
           this.gender,
-          this.team,
+          "0",
           ids.userId
         ).then(() => {
-          this.utilities.addPlayerToTeam(this.team, this.utilities.user.uid);
+          //this.utilities.addPlayerToTeam(this.team, this.utilities.user.uid);
           this.showVerificationAlert();
         }, (error) => {
           this.loading.dismiss();
@@ -165,9 +166,6 @@ export class RegisterComponent {
           alert.present();
         });
       });
-
-      window["plugins"].OneSignal.sendTag("teams", this.team);
-
       this.loading = this.loadingCtrl.create({
         dismissOnPageChange: true,
       });

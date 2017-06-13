@@ -12,7 +12,6 @@
 // Profile: ActionSheet verzögert sich, wenn man in iOS auf das Bild klickt
 // Farbe der Statusleisttexte in iOS ändern
 // remove console logs
-// Feature: Wenn man beim Spiel erstellen "Heim" auswählt, soll direkt die Heimadresse eingetragen werden
 // Matchday: Ort zu PLZ hinzufügen
 // Bug: ich kann beim spiel-bearbeiten screen den gegner löschen und dann speichern
 // gameDetails Bug: Wenn man einen Spieler direkt aus der Liste löscht und danach auf Abbrechen klicht, ist der Spieler zwei mal in der Liste
@@ -55,6 +54,7 @@ export class ProfileComponent implements OnInit {
   birthdayOld: string;
   genderOld: string;
   teamOld: string;
+  helpCounterOld: number;
 
   /**
    *  Flags to check whether a field has been changed or not
@@ -65,6 +65,7 @@ export class ProfileComponent implements OnInit {
   birthdayChanged: boolean = false;
   genderChanged: boolean = false;
   teamChanged: boolean = false;
+  helpCounterChanged: boolean = false;
 
   /**
    * Variables to change and save profile image
@@ -80,7 +81,8 @@ export class ProfileComponent implements OnInit {
       email: ['', Validators.compose([Validators.required, this.isAMail])],
       birthday: [],
       gender: [],
-      team: []
+      team: [],
+      helpCounter: []
     })
   }
 
@@ -141,12 +143,13 @@ export class ProfileComponent implements OnInit {
     this.birthdayOld = this.utilities.userData.birthday;
     this.teamOld = this.utilities.userData.team;
     this.genderOld = this.utilities.userData.gender;
+    this.helpCounterOld = this.utilities.userData.helpCounter;
     this.editMode = true;
     this.relevantTeams = this.utilities.getRelevantTeams(this.utilities.userData.birthday);
   }
 
   finishEditProfile() {
-    if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.genderChanged || this.teamChanged) && this.formValid) {
+    if ((this.firstnameChanged || this.lastnameChanged || this.emailChanged || this.birthdayChanged || this.genderChanged || this.teamChanged || this.helpCounterChanged ) && this.formValid) {
       firebase.database().ref('clubs/12/players/' + this.utilities.user.uid).update({
         birthday: this.utilities.userData.birthday,
         email: this.utilities.userData.email,
@@ -157,7 +160,8 @@ export class ProfileComponent implements OnInit {
         lastname: this.utilities.userData.lastname,
         pushid: this.utilities.userData.pushid,
         state: this.utilities.userData.state,
-        team: this.utilities.userData.team
+        team: this.utilities.userData.team,
+        helpCounter: this.utilities.userData.helpCounter
       });
     }
     if (this.emailChanged) {
@@ -174,6 +178,7 @@ export class ProfileComponent implements OnInit {
     this.birthdayChanged = false;
     this.teamChanged = false;
     this.genderChanged = false;
+    this.helpCounterChanged = false;
     this.editMode = false;
   }
 
@@ -184,6 +189,7 @@ export class ProfileComponent implements OnInit {
     this.utilities.userData.birthday = this.birthdayOld;
     this.utilities.userData.team = this.teamOld;
     this.utilities.userData.gender = this.genderOld;
+    this.utilities.userData.helpCounter = this.helpCounterOld;
 
     this.firstnameChanged = false;
     this.lastnameChanged = false;
@@ -191,6 +197,7 @@ export class ProfileComponent implements OnInit {
     this.birthdayChanged = false;
     this.teamChanged = false;
     this.genderChanged = false;
+    this.helpCounterChanged = false;
     this.editMode = false;
   }
 
@@ -201,7 +208,7 @@ export class ProfileComponent implements OnInit {
     } else {
       this[field + "Changed"] = false;
     }
-    if (this.profileForm.controls.firstname.valid && this.profileForm.controls.lastname.valid && this.profileForm.controls.email.valid) {
+    if (this.profileForm.controls.firstname.valid && this.profileForm.controls.lastname.valid && this.profileForm.controls.email.valid && this.profileForm.controls.helpCounter.valid) {
       this.formValid = true;
     } else {
       this.formValid = false;
@@ -214,10 +221,10 @@ export class ProfileComponent implements OnInit {
     } else {
       this.birthdayChanged = false;
     }
-    this.relevantTeams = this.utilities.getRelevantTeams(this.utilities.userData.birthday);
+    this.relevantTeams = this.utilities.getRelevantTeams(input);
     if (this.utilities.userData.team != undefined && this.utilities.allTeamsVal[this.utilities.userData.team] != undefined) {
       if (this.utilities.userData.team != "0" && this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit != 0) {
-        if (this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit < this.utilities.calculateAge(this.utilities.userData.birthday)) {
+        if (this.utilities.allTeamsVal[this.utilities.userData.team].ageLimit < this.utilities.calculateAge(input)) {
           this.utilities.userData.team = "0";
         }
       }

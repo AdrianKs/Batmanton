@@ -38,10 +38,16 @@
       <p>Ihr Nachname muss mit einem Großbuchstaben beginnen.</p>
     </ion-item>
 
+    <!--<ion-item>-->
+      <!--<ion-label stacked>Geburtstag</ion-label>-->
+      <!--<ion-datetime #birthday formControlName="birthday" class="datetime-text" displayFormat="DD.MM.YYYY " pickerFormat="DD MM YYYY"-->
+                    <!--(ionChange)="birthdaySelectChanged()"-->
+                <!--placeholder="Geburtstag"-->
+                <!--[class.invalid]="!signupForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)"></ion-datetime>-->
+    <!--</ion-item> -->
     <ion-item>
       <ion-label stacked>Geburtstag</ion-label>
       <ion-datetime #birthday formControlName="birthday" class="datetime-text" displayFormat="DD.MM.YYYY " pickerFormat="DD MM YYYY"
-                    (ionChange)="birthdaySelectChanged()"
                 placeholder="Geburtstag"
                 [class.invalid]="!signupForm.controls.birthday.valid  && (birthdayChanged || submitAttempt)"></ion-datetime>
     </ion-item>
@@ -62,18 +68,18 @@
       <p>Bitte geben Sie Ihr Geschlecht an.</p>
     </ion-item>
 
-    <ion-item>
-      <ion-label stacked>Mannschaft</ion-label>
-      <ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"
-                  placeholder="Mannschaft"
-                  [class.invalid]="(!teamChanged && submitAttempt)">
-        <ion-option value=0>keine Mannschaft</ion-option>
-        <ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>
-      </ion-select>
-    </ion-item>
-    <ion-item class="error-message" *ngIf="(!teamChanged && submitAttempt)">
-      <p>Bitte geben Sie Ihr Team an.</p>
-    </ion-item>
+    <!--<ion-item>-->
+      <!--<ion-label stacked>Mannschaft</ion-label>-->
+      <!--<ion-select [(ngModel)]="team" (ionChange)="teamSelectChanged(team)" [ngModelOptions]="{standalone: true}"-->
+                  <!--placeholder="Mannschaft"-->
+                  <!--[class.invalid]="(!teamChanged && submitAttempt)">-->
+        <!--<ion-option value=0>keine Mannschaft</ion-option>-->
+        <!--<ion-option *ngFor="let item of relevantTeams" value="{{item.id}}">{{item.name}}</ion-option>-->
+      <!--</ion-select>-->
+    <!--</ion-item>-->
+    <!--<ion-item class="error-message" *ngIf="(!teamChanged && submitAttempt)">-->
+      <!--<p>Bitte geben Sie Ihr Team an.</p>-->
+    <!--</ion-item>-->
 
     <ion-item>
       <ion-label stacked>E-Mail</ion-label>

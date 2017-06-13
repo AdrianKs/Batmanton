@@ -2,6 +2,7 @@
 //teams nicht aktuell
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
+import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -9,9 +10,10 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-addTeamToMatchday',
   templateUrl: 'addTeamToMatchday.component.html',
+  providers: [CreateMatchdayProvider]
 })
 
-export class AddTeamToMatchdayComponent implements OnInit{
+export class AddTeamToMatchdayComponent implements OnInit {
   geschlecht: string = 'maenner';
   match: any;
   loading: any;
@@ -37,7 +39,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
   buttonDisabled: Array<boolean>;
   editMode: any;
 
-  ngOnInit(){
+  ngOnInit() {
 
   }
 
@@ -52,26 +54,26 @@ export class AddTeamToMatchdayComponent implements OnInit{
     this.pendingCounter = this.counterArray.pendingCounter;
     this.declinedCounter = this.counterArray.declinedCounter;
     console.log(this.pendingArray);
-    if (this.editMode != true){
+    if (this.editMode != true) {
       this.loadData(true, null);
     }
     this.teamSelection = this.match.team;
     let counter = 0;
     for (let i in this.allTeams) {
-        if (this.match.team == this.allTeams[i].id){
-          this.teamPosition = counter;
-          break;
-        }
-        counter ++;
+      if (this.match.team == this.allTeams[i].id) {
+        this.teamPosition = counter;
+        break;
       }
-    if (this.match.team == 0){
+      counter++;
+    }
+    if (this.match.team == 0) {
       this.relevantTeams = this.getRelevantTeams(0, 1);
     } else {
-      this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit, this.allTeams[this.teamPosition].sclass);
+      this.relevantTeams = this.getRelevantTeams(this.allTeams[this.teamPosition].ageLimit, this.allTeams[this.teamPosition].rank);
     }
   }
 
-  constructor(private navCtrl: NavController, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController, public toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController, public createMatchdayProvider: CreateMatchdayProvider, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController, public toastCtrl: ToastController) {
     this.match = navP.get('matchItem');
     this.allPlayers = navP.get('playerArray');
     this.statusArray = navP.get('statusArray');
@@ -84,51 +86,12 @@ export class AddTeamToMatchdayComponent implements OnInit{
     if (showLoading) {
       this.createAndShowLoading();
     }
-    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
-      let playerArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        playerArray[counter] = snapshot.val()[i];
-        playerArray[counter].id = i;
-        playerArray[counter].accepted = false;
-        playerArray[counter].pending = false;
-        playerArray[counter].declined = false;
-        playerArray[counter].deleted = false;
-        if (playerArray[counter].team == this.match.team){
-          playerArray[counter].isMainTeam = true;
-        } else {
-          playerArray[counter].isMainTeam = false;
-        }
-        if (this.match.acceptedPlayers){
-          for (let i in this.acceptedArray){
-            if (this.match.acceptedPlayers[i] == playerArray[counter].id){
-              playerArray[counter].accepted = true;
-            }
-          }
-        }
-        if (this.match.pendingPlayers){
-          for (let i in this.pendingArray){
-            if (this.match.pendingPlayers[i] == playerArray[counter].id){
-              playerArray[counter].pending = true;
-            }
-          }
-        }
-        if (this.match.declinedPlayers){
-          for (let i in this.declinedArray){
-            if (this.match.declinedPlayers[i] == playerArray[counter].id){
-              playerArray[counter].declined = true;
-            }
-          }
-        }
-        counter++;
-      }
-      this.allPlayers = playerArray;
-      this.allPlayers = _.sortBy(this.allPlayers, "lastname");
-    }).then((data) => {
+    this.createMatchdayProvider.setPlayer(this.Utilities, this.match, this.acceptedArray, this.pendingArray, this.declinedArray).then((data) => {
+      this.allPlayers = this.createMatchdayProvider.playerArray;
       if (showLoading) {
-      this.loading.dismiss().catch((error) => console.log("error caught"));
+        this.loading.dismiss().catch((error) => console.log("error caught"));
       }
-      if(event!=null){
+      if (event != null) {
         event.complete();
       }
     }).catch(function (error) {
@@ -139,13 +102,13 @@ export class AddTeamToMatchdayComponent implements OnInit{
   }
 
   createAndShowErrorAlert(error) {
-      let alert = this.alertCtrl.create({
-        title: 'Fehler beim Empfangen der Daten',
-        message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
-        buttons: ['OK']
-      });
-      alert.present();
-    }
+    let alert = this.alertCtrl.create({
+      title: 'Fehler beim Empfangen der Daten',
+      message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
 
   createAndShowLoading() {
     this.loading = this.loadingCtrl.create({
@@ -155,30 +118,30 @@ export class AddTeamToMatchdayComponent implements OnInit{
     this.loading.present();
   }
 
-  getRelevantTeams(ageLimit, sclass) {
+  getRelevantTeams(ageLimit, rank) {
     let relevantTeams: Array<any> = [];
     this.allTeams.forEach(function (team) {
-      if (team.ageLimit <= ageLimit && team.ageLimit != 0 && team.sclass >= sclass || ageLimit == 0 && team.sclass >= sclass) {
+      if (team.ageLimit <= ageLimit && team.ageLimit != 0 && team.rank >= rank || ageLimit == 0 && team.rank >= rank) {
         relevantTeams.push(team);
       }
     });
     return relevantTeams;
   }
 
-  addPlayer(player){
+  addPlayer(player) {
     let counter = 0;
     console.log(this.allPlayers);
-    if (player.isDefault == true){
+    if (player.isDefault == true) {
       for (let i in this.acceptedArray) {
         counter++;
       }
-      this.acceptedArray[counter]= player.id;
-      for (let j in this.allPlayers){
-        if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "m"){
+      this.acceptedArray[counter] = player.id;
+      for (let j in this.allPlayers) {
+        if (player.id == this.allPlayers[j].id && this.allPlayers[j].gender == "m") {
           this.acceptedMaleCounter++;
           break;
         }
-        if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "f"){
+        if (player.id == this.allPlayers[j].id && this.allPlayers[j].gender == "f") {
           this.acceptedFemaleCounter++;
           break;
         }
@@ -186,14 +149,14 @@ export class AddTeamToMatchdayComponent implements OnInit{
       this.acceptedCounter++;
       player.accepted = true;
       player.deleted = false;
-      if (player.isMainTeam == false){
-        for (let i in this.allPlayers){
-          if (this.allPlayers[i].id == player.id){
+      if (player.isMainTeam == false) {
+        for (let i in this.allPlayers) {
+          if (this.allPlayers[i].id == player.id) {
             this.allPlayers[i].helpCounter++;
           }
         }
       }
-      if (player.helpCounter == 3){
+      if (player.helpCounter == 3) {
         let alert = this.alertCtrl.create({
           title: 'Achtung!',
           message: 'Dieser Spieler hat schon bereits bei 2 Spielen ausgeholfen.',
@@ -210,13 +173,13 @@ export class AddTeamToMatchdayComponent implements OnInit{
         counter++;
       }
       console.log('have');
-      this.pendingArray[counter]= player.id;
+      this.pendingArray[counter] = player.id;
       this.pendingCounter++;
       console.log('mercy');
       player.pending = true;
       player.deleted = false;
-      if (player.isMainTeam == false){
-        if (player.helpCounter == 2){
+      if (player.isMainTeam == false) {
+        if (player.helpCounter == 2) {
           let alert = this.alertCtrl.create({
             title: 'Achtung!',
             message: 'Dieser Spieler hat schon bereits bei 2 Spielen ausgeholfen.',
@@ -229,23 +192,23 @@ export class AddTeamToMatchdayComponent implements OnInit{
       console.log(this.pendingArray);
       console.log(this.pendingCounter);
     }
-    for (let i in this.deletedArray){
-      if (this.deletedArray[i] == player.id){
+    for (let i in this.deletedArray) {
+      if (this.deletedArray[i] == player.id) {
         this.deletedArray[i] = null;
       }
     }
     this.presentToast("Spieler hinzugefügt");
   }
 
-  removePlayer(player){
+  removePlayer(player) {
     let counter = 0;
-    if(player.pending == true){
+    if (player.pending == true) {
       for (let i in this.pendingArray) {
-        if (this.pendingArray[i] == player.id){
+        if (this.pendingArray[i] == player.id) {
           this.pendingArray.splice(counter, 1);
           this.deletedArray.push(player.id);
         }
-        counter ++;
+        counter++;
         this.pendingCounter--;
       }
       player.pending = false;
@@ -253,28 +216,28 @@ export class AddTeamToMatchdayComponent implements OnInit{
       console.log(this.pendingArray);
     }
     counter = 0;
-    if(player.accepted == true){
+    if (player.accepted == true) {
       for (let i in this.acceptedArray) {
-        if (this.acceptedArray[i] == player.id){
+        if (this.acceptedArray[i] == player.id) {
           this.acceptedArray.splice(counter, 1);
           this.deletedArray.push(player.id);
-          for (let j in this.allPlayers){
-            if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "m"){
+          for (let j in this.allPlayers) {
+            if (player.id == this.allPlayers[j].id && this.allPlayers[j].gender == "m") {
               this.acceptedMaleCounter--;
               break;
             }
-            if (player.id==this.allPlayers[j].id && this.allPlayers[j].gender == "f"){
+            if (player.id == this.allPlayers[j].id && this.allPlayers[j].gender == "f") {
               this.acceptedFemaleCounter--;
               break;
             }
           }
           this.acceptedCounter--;
         }
-        counter ++;
+        counter++;
       }
-      if (player.isMainTeam == false){
-        for (let i in this.allPlayers){
-          if(player.id == this.allPlayers[i].id){
+      if (player.isMainTeam == false) {
+        for (let i in this.allPlayers) {
+          if (player.id == this.allPlayers[i].id) {
             this.allPlayers[i].helpCounter--;
           }
         }
@@ -286,12 +249,12 @@ export class AddTeamToMatchdayComponent implements OnInit{
       console.log(this.deletedArray);
     }
     counter = 0;
-    if(player.declined == true){
+    if (player.declined == true) {
       for (let i in this.declinedArray) {
-        if (this.declinedArray[i] == player.id){
+        if (this.declinedArray[i] == player.id) {
           this.declinedArray.splice(counter, 1);
         }
-        counter ++;
+        counter++;
         this.declinedCounter--;
       }
       player.declined = false;
@@ -312,16 +275,16 @@ export class AddTeamToMatchdayComponent implements OnInit{
   }
 
   makeid() {
-      var text = "";
-      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-      for (var i = 0; i < 26; i++)
-          text += possible.charAt(Math.floor(Math.random() * possible.length));
+    for (var i = 0; i < 26; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-      return text;
+    return text;
   }
 
-  confirmPlayer(){
+  confirmPlayer() {
     let pushIDs = [];
     firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
       pendingPlayers: this.pendingArray,
@@ -331,11 +294,11 @@ export class AddTeamToMatchdayComponent implements OnInit{
 
     firebase.database().ref('clubs/12/players').once('value', snapshot => {
       console.log(this.allPlayers);
-      for (let i in snapshot.val()){
-        for (let j in this.allPlayers){
-          if (this.allPlayers[j].id == i){
+      for (let i in snapshot.val()) {
+        for (let j in this.allPlayers) {
+          if (this.allPlayers[j].id == i) {
             console.log(this.allPlayers[j].helpCounter);
-            firebase.database().ref('clubs/12/players/' + i ).update({
+            firebase.database().ref('clubs/12/players/' + i).update({
               helpCounter: this.allPlayers[j].helpCounter
             });
           }
@@ -345,8 +308,8 @@ export class AddTeamToMatchdayComponent implements OnInit{
 
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       for (let i in snapshot.val()) {
-        for (let j in this.deletedArray){
-          if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.deletedArray[j]){
+        for (let j in this.deletedArray) {
+          if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.deletedArray[j]) {
             console.log("gefunden");
             console.log(i);
             firebase.database().ref('clubs/12/invites/' + i).remove();
@@ -363,7 +326,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
             for (let i in snapshot.val()) {
               if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.pendingArray[k]) {
                 console.log("inviteExists now true");
-                if (snapshot.val()[i].state != 0 || (this.allPlayers[j].isMainTeam == false && snapshot.val()[i].assist == false)  || (this.allPlayers[j].isMainTeam == true && snapshot.val()[i].assist == false)) {
+                if (snapshot.val()[i].state != 0 || (this.allPlayers[j].isMainTeam == false && snapshot.val()[i].assist == false) || (this.allPlayers[j].isMainTeam == true && snapshot.val()[i].assist == false)) {
                   //push-Benachrichtigung an snapshot.val()[i].recipient
                   //Zugriff auf Spielerobjekt
                   for (let j in this.allPlayers) {
@@ -384,7 +347,6 @@ export class AddTeamToMatchdayComponent implements OnInit{
                     assist: false
                   });
                 }
-
                 firebase.database().ref('clubs/12/invites/' + i).update({
                   state: 0
                 });
@@ -405,6 +367,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
                   assist: true
                 });
               }
+              console.log("push-benachrichtigung an: " + this.pendingArray[k]);
               //push-Benachrichtigung an this.pendingArray[k]
               //Zugriff auf Spielerobjekt
               for (let l in this.allPlayers) {
@@ -419,12 +382,18 @@ export class AddTeamToMatchdayComponent implements OnInit{
         }
       }
       console.log(pushIDs);
-      if(pushIDs.length != 0){
+      if (pushIDs.length != 0) {
         console.log("ruft pushfunction");
-        this.Utilities.sendPushNotification(pushIDs, 'Sie haben eine Einladung zu einem Spiel erhalten');
+        console.log(this.match.id);
+        let matchInformationString = "am " + this.Utilities.transformTime(this.match.time) + " in " + this.match.location.street + ", " + this.match.location.zipcode + ", gegen " + this.match.opponent
+        this.Utilities.sendPushNotification(pushIDs, 'Sie haben eine Einladung zu einem Spiel ' + matchInformationString + ' erhalten');
+        if (this.match.delayedNotificationID != undefined) {
+          this.Utilities.cancelPushNotification(this.match.delayedNotificationID);
+        }
+        this.Utilities.sendGameReminderDayBefore(pushIDs, "Denken Sie an Ihr Spiel am " + matchInformationString, this.match.time, this.match.id);
       }
     });
-    this.navCtrl.popToRoot();
+    this.navCtrl.pop();
   }
 
 }

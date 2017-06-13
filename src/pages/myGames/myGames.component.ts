@@ -4,6 +4,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
+import { MyGamesProvider } from '../../providers/myGames-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 import * as _ from 'lodash';
@@ -11,6 +12,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'page-myGames',
   templateUrl: 'myGames.component.html',
+  providers: [MyGamesProvider]
 })
 
 export class MyGamesComponent implements OnInit {
@@ -20,13 +22,18 @@ export class MyGamesComponent implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.dataUser = this.Utilities.userData;
+    //this.pushIDsAdmins = this.Utilities.setPushIDsAdmins();
     this.loadData(true, null);
+    console.log("Load dismissed.");
   }
 
 
   gameStatus: string = "offene";
   loggedInUserID: string = this.Utilities.user.uid;
+  pushIDsAdmins: Array<any> = [];
   dataGames: any;
+  dataUser: any;
   dataInvites: any;
   dataPlayer: any;
   counterPast: any;
@@ -41,7 +48,7 @@ export class MyGamesComponent implements OnInit {
   loading: any;
   today: String = new Date().toISOString();
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private Utilities: Utilities, private loadingCtrl: LoadingController) {
+  constructor(public myGamesProvider: MyGamesProvider, public navCtrl: NavController, public alertCtrl: AlertController, private navP: NavParams, private Utilities: Utilities, private loadingCtrl: LoadingController) {
 
   }
 
@@ -52,21 +59,12 @@ export class MyGamesComponent implements OnInit {
     this.counterPast = 0;
     this.counterFuture = 0;
     this.counterOpen = 0;
-    firebase.database().ref('clubs/12/matches').once('value', snapshot => {
-      let gamesArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        gamesArray[counter] = snapshot.val()[i];
-        gamesArray[counter].id = i;
-        counter++;
-      }
-      this.dataGames = gamesArray;
-      this.dataGames = _.sortBy(this.dataGames, "time").reverse();
-    }).then((data) => {
+    this.myGamesProvider.setGames().then((data) => {
+      this.dataGames = this.myGamesProvider.dataGames;
       if (showLoading) {
-      this.loading.dismiss().catch((error) => console.log("error caught"));
+        this.loading.dismiss().catch((error) => console.log("error caught"));
       }
-      if(event!=null){
+      if (event != null) {
         event.complete();
       }
     }).catch(function (error) {
@@ -74,43 +72,28 @@ export class MyGamesComponent implements OnInit {
         this.createAndShowErrorAlert(error);
       }
     });
-    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-      let inviteArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        inviteArray[counter] = snapshot.val()[i];
-        inviteArray[counter].id = i;
-        counter++;
-      }
-      this.dataInvites = inviteArray;
+    this.myGamesProvider.setInvites().then((data) => {
+      this.dataInvites = this.myGamesProvider.dataInvites;
       this.count();
-    }).then((data) => {
-      if (showLoading) {
-      this.loading.dismiss().catch((error) => console.log("error caught"));
-      }
-      if(event!=null){
-        event.complete();
-      }
     }).catch(function (error) {
       if (showLoading) {
         this.createAndShowErrorAlert(error);
       }
     });
-    firebase.database().ref('clubs/12/players').once('value').then((snapshot) => {
-      let playerArray = [];
-      let counter = 0;
-      for (let i in snapshot.val()) {
-        playerArray[counter] = snapshot.val()[i];
-        playerArray[counter].id = i;
-        counter++;
+    this.myGamesProvider.setPlayers().then((data) => {
+      this.dataPlayer = this.myGamesProvider.dataPlayer;
+      for (let i of this.dataPlayer) {
+        if (i.isTrainer) {
+          for (let pushID in i.pushid) {
+            console.log(pushID);
+            this.pushIDsAdmins.push(pushID);
+          }
+        }
       }
-      this.dataPlayer = playerArray;
-      this.dataPlayer = _.sortBy(this.dataPlayer, "lastname");
-    }).then((data) => {
       if (showLoading) {
-      this.loading.dismiss().catch((error) => console.log("error caught"));
+        this.loading.dismiss().catch((error) => console.log("error caught"));
       }
-      if(event!=null){
+      if (event != null) {
         event.complete();
       }
     }).catch(function (error) {
@@ -121,13 +104,13 @@ export class MyGamesComponent implements OnInit {
   }
 
   createAndShowErrorAlert(error) {
-      let alert = this.alertCtrl.create({
-        title: 'Fehler beim Empfangen der Daten',
-        message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
-        buttons: ['OK']
-      });
-      alert.present();
-    }
+    let alert = this.alertCtrl.create({
+      title: 'Fehler beim Empfangen der Daten',
+      message: 'Beim Empfangen der Daten ist ein Fehler aufgetreten :-(',
+      buttons: ['OK']
+    });
+    alert.present();
+  }
 
   createAndShowLoading() {
     this.loading = this.loadingCtrl.create({
@@ -137,16 +120,24 @@ export class MyGamesComponent implements OnInit {
     this.loading.present();
   }
 
-  count(){
-    for (let j in this.dataInvites){
-      if(this.dataInvites[j].recipient == this.loggedInUserID){
-        if(this.dataInvites[j].state == 0){
+  showLoadingElement() {
+    this.loading = this.loadingCtrl.create({
+      spinner: 'ios',
+      content: 'Lade Daten'
+    })
+    this.loading.present();
+  }
+
+  count() {
+    for (let j in this.dataInvites) {
+      if (this.dataInvites[j].recipient == this.loggedInUserID) {
+        if (this.dataInvites[j].state == 0) {
           this.counterOpen++;
         }
-        if(this.dataInvites[j].state == 1){
-          for (let i in this.dataGames){
-            if (this.dataGames[i].id == this.dataInvites[j].match){
-              if(this.dataGames[i].time < this.today && this.dataGames[i].time != '0'){
+        if (this.dataInvites[j].state == 1) {
+          for (let i in this.dataGames) {
+            if (this.dataGames[i].id == this.dataInvites[j].match) {
+              if (this.dataGames[i].time < this.today && this.dataGames[i].time != '0') {
                 this.counterPast++;
               } else {
                 this.counterFuture++;
@@ -159,31 +150,33 @@ export class MyGamesComponent implements OnInit {
     }
   }
 
-   getFirstFourPicUrls(match) {
+  getFirstFourPicUrls(match) {
     let urlArray = [];
     let counter = 0;
     for (let i of this.Utilities.allInvites) {
-      if (i.match == match.id && counter < 4){
-          for(let j of this.Utilities.allPlayers){
-            if(i.recipient == j.id){
-              urlArray[counter] = j.picUrl;
-              counter ++;
-            }
+      if (i.match == match.id && counter < 4) {
+        for (let j of this.Utilities.allPlayers) {
+          if (i.recipient == j.id) {
+            urlArray[counter] = j.picUrl;
+            counter++;
           }
+        }
       }
     }
     return urlArray;
   }
 
-  openDetails(ev, value) {
-    this.navCtrl.push(GameDetailsComponent, { gameItem: value });
+  openDetails(ev, value, option, inviteItem) {
+    console.log(inviteItem);
+    this.navCtrl.push(GameDetailsComponent, { gameItem: value, option: option, inviteItem: inviteItem });
   }
 
-  verifyAccept(inviteItem){
+  verifyAccept(event, inviteItem) {
+    event.stopPropagation();
     this.counterOpen--;
-    for (let i in this.dataGames){
-      if (this.dataGames[i].id == inviteItem.match){
-        if(this.dataGames[i].time < this.today && this.dataGames[i].time != '0'){
+    for (let i in this.dataGames) {
+      if (this.dataGames[i].id == inviteItem.match) {
+        if (this.dataGames[i].time < this.today && this.dataGames[i].time != '0') {
           this.counterPast++;
         } else {
           this.counterFuture++;
@@ -195,9 +188,9 @@ export class MyGamesComponent implements OnInit {
     }).then(() => {
       this.Utilities.countOpen();
     });;
-    if (inviteItem.assist == true){
-      for (let i in this.dataPlayer){
-        if (this.dataPlayer[i].id == this.loggedInUserID){
+    if (inviteItem.assist == true) {
+      for (let i in this.dataPlayer) {
+        if (this.dataPlayer[i].id == this.loggedInUserID) {
           this.helpCounter = this.dataPlayer[i].helpCounter;
           this.helpCounter++;
           firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
@@ -213,11 +206,30 @@ export class MyGamesComponent implements OnInit {
       message: 'Du wirst diesem Spieltag zugeteilt.',
       buttons: ['Ok']
     });
-    alert.present()
+    alert.present();
+    //push-Benachrichtigung an alle Admins
+    //Zugriff auf Spielerobjekt
+    let match;
+    for (let i in this.dataGames) {
+      if (this.dataGames.id = inviteItem.match) {
+        match = this.dataGames[i];
+      }
+    }
+
+    console.log(this.pushIDsAdmins);
+    console.log("unter pushIDsAdmins");
+    if (this.pushIDsAdmins.length != 0) {
+      console.log("ruft pushfunction");
+      console.log(inviteItem.match);
+      let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird am Spiel am " + this.Utilities.transformTime(match.time) + " gegen " + match.opponent + " teilnehmen.";
+      this.Utilities.sendPushNotification(this.pushIDsAdmins
+        , matchInformationString);
+    }
     this.loadData(false, null);
   }
 
-  doRadio(inviteItem, value) {
+  doRadio(event, inviteItem, value) {
+    event.stopPropagation();
     let alert = this.alertCtrl.create();
     alert.setTitle('Grund der Abwesenheit:');
 
@@ -258,16 +270,16 @@ export class MyGamesComponent implements OnInit {
       handler: data => {
         this.testRadioOpen = false;
         this.testRadioResult = data;
-        if(this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private'){
+        if (this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private') {
           console.log('Radio data:', data);
           inviteItem.state = 2;
-          if (value == 0){
+          if (value == 0) {
             this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
           } else {
             this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
-            if (inviteItem.assist == true){
-              for (let i in this.dataPlayer){
-                if (this.dataPlayer[i].id == this.loggedInUserID){
+            if (inviteItem.assist == true) {
+              for (let i in this.dataPlayer) {
+                if (this.dataPlayer[i].id == this.loggedInUserID) {
                   this.helpCounter = this.dataPlayer[i].helpCounter;
                   this.helpCounter--;
                   firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
@@ -284,37 +296,63 @@ export class MyGamesComponent implements OnInit {
           }).then(() => {
             this.Utilities.countOpen();
           });
+          //push-Benachrichtigung an alle Admins
+          //Zugriff auf Spielerobjekt
+          let match;
+          for (let i in this.dataGames) {
+            if (this.dataGames.id = inviteItem.match) {
+              match = this.dataGames[i];
+            }
+          }
+          console.log(this.pushIDsAdmins);
+          if (this.pushIDsAdmins.length != 0) {
+            console.log("ruft pushfunction");
+            console.log(inviteItem.match);
+            let excuseInfo;
+            if (this.testRadioResult == "sick") {
+              excuseInfo = "Krankheit";
+            }
+            else if (this.testRadioResult == "education") {
+              excuseInfo = "Schule / Uni / Job";
+            }
+            else if (this.testRadioResult == "private") {
+              excuseInfo = "Privater Termin";
+            }
+            let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird nicht am Spiel am " + this.Utilities.transformTime(match.time) + " gegen " + match.opponent + " teilnehmen.\nGrund: " + excuseInfo;
+            this.Utilities.sendPushNotification(this.pushIDsAdmins
+              , matchInformationString);
+          }
           this.loadData(false, null);
         }
-        if(this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous'){
-            let prompt = this.alertCtrl.create({
-              title: 'Verletzt/Sonstige',
-              message: "Bitte näher ausführen:",
-              inputs: [
-                {
-                  name: 'extra',
-                  placeholder: 'Wie lange wirst du ausfallen?'
-                },
-              ],
-              buttons: [
-                {
-                  text: 'Abbrechen',
-                  handler: data => {
-                    console.log('Cancel clicked');
-                  }
-                },
-                {
-                  text: 'Absenden',
-                  handler: data => {
-                    console.log('Radio data:', this.testRadioResult + ': ' +data.extra);
-                    inviteItem.state = 2;
-                    if (value == 0){
-                      this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
-                    } else {
-                      this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
-                    if (inviteItem.assist == true){
-                      for (let i in this.dataPlayer){
-                        if (this.dataPlayer[i].id == this.loggedInUserID){
+        if (this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous') {
+          let prompt = this.alertCtrl.create({
+            title: 'Verletzt/Sonstige',
+            message: "Bitte näher ausführen:",
+            inputs: [
+              {
+                name: 'extra',
+                placeholder: 'Wie lange wirst du ausfallen?'
+              },
+            ],
+            buttons: [
+              {
+                text: 'Abbrechen',
+                handler: data => {
+                  console.log('Cancel clicked');
+                }
+              },
+              {
+                text: 'Absenden',
+                handler: data => {
+                  console.log('Radio data:', this.testRadioResult + ': ' + data.extra);
+                  inviteItem.state = 2;
+                  if (value == 0) {
+                    this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
+                  } else {
+                    this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+                    if (inviteItem.assist == true) {
+                      for (let i in this.dataPlayer) {
+                        if (this.dataPlayer[i].id == this.loggedInUserID) {
                           this.helpCounter = this.dataPlayer[i].helpCounter;
                           this.helpCounter--;
                           firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({
@@ -323,34 +361,57 @@ export class MyGamesComponent implements OnInit {
                         }
                       }
                     }
-                    }
-                    this.counterOpen--;
-                    firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
-                      excuse: this.testRadioResult + ': ' +data.extra,
-                      state: 2
-                    }).then(() => {
-                      this.Utilities.countOpen();
-                    });
-                    this.loadData(false, null);
                   }
+                  this.counterOpen--;
+                  firebase.database().ref('clubs/12/invites/' + inviteItem.id).update({
+                    excuse: this.testRadioResult + ': ' + data.extra,
+                    state: 2
+                  }).then(() => {
+                    this.Utilities.countOpen();
+                  });
+                  //push-Benachrichtigung an alle Admins
+                  //Zugriff auf Spielerobjekt
+                  let match;
+                  for (let i in this.dataGames) {
+                    if (this.dataGames.id = inviteItem.match) {
+                      match = this.dataGames[i];
+                    }
+                  }
+                  console.log(this.pushIDsAdmins);
+                  if (this.pushIDsAdmins.length != 0) {
+                    console.log("ruft pushfunction");
+                    console.log(inviteItem.match);
+                    let excuseInfo;
+                    if (this.testRadioResult == "injured") {
+                      excuseInfo = "Verletzung";
+                    }
+                    else if (this.testRadioResult == "miscellaneous") {
+                      excuseInfo = "Sonstiges";
+                    }
+                    let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird nicht am Spiel am " + this.Utilities.transformTime(match.time) + " gegen " + match.opponent + " teilnehmen.\nGrund: " + excuseInfo;
+                    this.Utilities.sendPushNotification(this.pushIDsAdmins
+                      , matchInformationString);
+                  }
+                  this.loadData(false, null);
                 }
-              ]
-            });
-            prompt.present();
-          }
-       }
-     });
+              }
+            ]
+          });
+          prompt.present();
+        }
+      }
+    });
 
     alert.present().then(() => {
       this.testRadioOpen = true;
     });
   }
 
-   doRefresh(refresher) {
-      this.loadData(false, refresher);
-    }
+  doRefresh(refresher) {
+    this.loadData(false, refresher);
+  }
 
-  pendingToAccepted(matchID, userID){
+  pendingToAccepted(matchID, userID) {
     if (matchID != undefined && matchID != "0") {
       firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
         let playerArray = [];
@@ -364,7 +425,7 @@ export class MyGamesComponent implements OnInit {
               playerArray[counter] = null;
               counter--;
             }
-          counter++;
+            counter++;
           }
         }
         if (userPosition != undefined) {
@@ -389,7 +450,7 @@ export class MyGamesComponent implements OnInit {
     }
   }
 
-  pendingToDeclined(matchID, userID){
+  pendingToDeclined(matchID, userID) {
     if (matchID != undefined && matchID != "0") {
       firebase.database().ref('clubs/12/matches/' + matchID + '/pendingPlayers').once('value', snapshot => {
         let playerArray = [];
@@ -403,7 +464,7 @@ export class MyGamesComponent implements OnInit {
               playerArray[counter] = null;
               counter--;
             }
-          counter++;
+            counter++;
           }
         }
         if (userPosition != undefined) {
@@ -428,41 +489,41 @@ export class MyGamesComponent implements OnInit {
     }
   }
 
-  acceptedToDeclined(matchID, userID){
-      firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
-        let playerArray = [];
-        let counter = 0;
-        let userPosition;
-        for (var i = 0; i < snapshot.val().length; i++) {
-          playerArray[counter] = snapshot.val()[i];
-          if (snapshot.val()[i] != undefined) {
-            if (snapshot.val()[i] === userID) {
-              userPosition = i;
-              playerArray[counter] = null;
-              counter--;
-            }
-          counter++;
+  acceptedToDeclined(matchID, userID) {
+    firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers').once('value', snapshot => {
+      let playerArray = [];
+      let counter = 0;
+      let userPosition;
+      for (var i = 0; i < snapshot.val().length; i++) {
+        playerArray[counter] = snapshot.val()[i];
+        if (snapshot.val()[i] != undefined) {
+          if (snapshot.val()[i] === userID) {
+            userPosition = i;
+            playerArray[counter] = null;
+            counter--;
           }
-        }
-        if (userPosition != undefined) {
-          firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers/' + userPosition).remove();
-        }
-        firebase.database().ref('clubs/12/matches/' + matchID).update({
-          acceptedPlayers: playerArray
-        });
-      });
-      firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
-        let playersArray = [];
-        let counter = 0;
-        for (let i in snapshot.val()) {
-          playersArray[counter] = snapshot.val()[i];
           counter++;
         }
-        playersArray.push(userID);
-        firebase.database().ref('clubs/12/matches/' + matchID).update({
-          declinedPlayers: playersArray
-        });
+      }
+      if (userPosition != undefined) {
+        firebase.database().ref('clubs/12/matches/' + matchID + '/acceptedPlayers/' + userPosition).remove();
+      }
+      firebase.database().ref('clubs/12/matches/' + matchID).update({
+        acceptedPlayers: playerArray
       });
+    });
+    firebase.database().ref('clubs/12/matches/' + matchID + '/declinedPlayers').once('value', snapshot => {
+      let playersArray = [];
+      let counter = 0;
+      for (let i in snapshot.val()) {
+        playersArray[counter] = snapshot.val()[i];
+        counter++;
+      }
+      playersArray.push(userID);
+      firebase.database().ref('clubs/12/matches/' + matchID).update({
+        declinedPlayers: playersArray
+      });
+    });
   }
 
 }

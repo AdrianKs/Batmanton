@@ -13,10 +13,13 @@ export class EditRoleComponent {
     player: any;
     isTrainerOld: boolean;
     isSpielerOld: boolean;
-    isChanged: boolean;
+    roleChanged: boolean;
+    teamChanged: boolean = false;
     isDeleted: boolean;
     sameUser: boolean;
     editMode: boolean = false;
+    teamOld: string;
+    relevantTeams: Array<any> = [];
 
     /**
      * Constructor to initialize EditRoleComponent
@@ -34,9 +37,11 @@ export class EditRoleComponent {
         this.player = navParams.get('player');
         this.isTrainerOld = this.player.isTrainer;
         this.isSpielerOld = this.player.isPlayer;
-        this.isChanged = false;
+        this.roleChanged = false;
         this.isDeleted = false;
         this.sameUser = false;
+        this.teamOld = this.player.team;
+        this.relevantTeams = this.utilities.getRelevantTeams(this.player.birthday);
 
         if (this.player.id === this.utilities.user.uid) {
             this.sameUser = true;
@@ -47,6 +52,18 @@ export class EditRoleComponent {
     ionViewDidEnter() {
     }
 
+  /**
+   * Function to check if the selected team has been changed
+   * @param input
+   */
+  teamSelectChanged(input) {
+      if (this.teamOld != input) {
+        this.teamChanged = true;
+      } else {
+        this.teamChanged = false;
+      }
+    }
+
     /**
      * Functions checks if change in isTrainer or isPlayer was changed
      * @param ev event-handler
@@ -54,12 +71,12 @@ export class EditRoleComponent {
     changeValue(ev) {
         if (!(this.player.isPlayer == false && this.player.isTrainer == false)) {
             if (this.isSpielerOld != this.player.isPlayer || this.isTrainerOld != this.player.isTrainer) {
-                this.isChanged = true;
+                this.roleChanged = true;
             } else {
-                this.isChanged = false;
+                this.roleChanged = false;
             }
         } else {
-            this.isChanged = false;
+            this.roleChanged = false;
         }
     }
 
@@ -72,12 +89,13 @@ export class EditRoleComponent {
      * @param ev event-handler
      * @param player to update the right one
      */
-    changeRole(ev, player) {
+    onDonePress(player) {
         let successFlag = true;
 
         firebase.database().ref('clubs/12/players/' + player.id).update({
             isTrainer: player.isTrainer,
-            isPlayer: player.isPlayer
+            isPlayer: player.isPlayer,
+            team: player.team
         }).catch(function (error) {
             console.log(error);
             successFlag = false;
@@ -86,10 +104,14 @@ export class EditRoleComponent {
         if (successFlag) {
             if (this.sameUser) {
                 this.utilities.setUserData();
-                this.presentToast("Rolle wurde erfolgreich bearbeitet");
-                this.navCtrl.setRoot(MatchdayComponent);
+                this.presentToast("Änderungen wurden gespeichert");
+                if(this.player.isTrainer == true){
+                  this.navigateBackToList();
+                }else{
+                  this.navCtrl.setRoot(MatchdayComponent);
+                }
             } else {
-                this.presentToast("Rolle wurde erfolgreich bearbeitet");
+                this.presentToast("Änderungen wurden gespeichert");
                 this.navigateBackToList();
             }
         } else {

@@ -6,14 +6,18 @@ import firebase from 'firebase';
 import * as _ from 'lodash';
 import { AlertController } from "ionic-angular";
 import { PlayerComponent } from '../pages/gameDetails/player.component';
+import {Http, Response, Headers, RequestOptions} from "@angular/http";
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class Utilities {
   public fireAuth: any;
   user: any;
+  pushIDsAdmins: any;
   userData: any = {};
-  allTeams: Array<any>;
-  allTeamsVal: Array<any>;
+  allTeams: Array<any> = [];
+  allTeamsVal: Array<any> = [];
   teamsLoaded: boolean = false;
   userLoaded: boolean = false;
   allInvites: Array<any>;
@@ -22,13 +26,22 @@ export class Utilities {
   inRegister: boolean = false;
   loggedIn: boolean = false;
   LOCAL_TOKEN_KEY: string = 'Batmanton';
-  hashedPassword = 19045090;
+  hashedPassword = -1719170103;
   counterOpen: any;
 
-  constructor(public alertCtrl: AlertController) {
+  constructor(public alertCtrl: AlertController, public http:Http) {
     this.fireAuth = firebase.auth();
     this.setInvites();
     // this.setPlayers();
+  }
+
+  setPushIDsAdmins(){
+     for (let i in this.allPlayers) {
+      if (this.allPlayers[i].isAdmin) {
+        this.pushIDsAdmins.push(this.allPlayers[i].pushID)
+      }
+    }
+    return this.pushIDsAdmins;
   }
 
   setInRegister(): void {
@@ -58,7 +71,9 @@ export class Utilities {
         teamArray[counter].id = i;
         counter++;
       }
-      this.allTeamsVal = snapshot.val();
+      if (snapshot.val()){
+        this.allTeamsVal = snapshot.val();
+      }
       this.allTeams = teamArray;
       this.teamsLoaded = true;
     });
@@ -188,6 +203,10 @@ export class Utilities {
     return firebase.database().ref('clubs/12/players/' + userID).update(data);
   }
 
+  updateMatch(matchID: any, data: any): any {
+    return firebase.database().ref('clubs/12/matches/' + matchID).update(data);
+  }
+
   removePlayerFromTeam(teamID, userID) {
     if (teamID != undefined && teamID != "0") {
       firebase.database().ref('clubs/12/teams/' + teamID + '/players').once('value', snapshot => {
@@ -213,8 +232,10 @@ export class Utilities {
   }
 
   sendPushNotification(pushIds: Array<any>, content: String) {
-    let notificationObj = { contents: {en: content},
-      include_player_ids: pushIds};
+    let notificationObj = {
+      contents: {en: content},
+      include_player_ids: pushIds
+    };
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
         console.log("Notification Post Success:", successResponse);
@@ -224,6 +245,48 @@ export class Utilities {
         //alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
       }
     )
+  }
+
+  sendGameReminderDayBefore(pushIds: Array<any>, content: String, timeOfMatch: string, matchID: String) {
+    let reminderTime = new Date(timeOfMatch);
+    reminderTime.setDate(reminderTime.getDate() - 1);
+    let notificationObj = {
+      contents: {en: content},
+      send_after: reminderTime,
+      include_player_ids: pushIds
+    };
+    window["plugins"].OneSignal.postNotification(notificationObj,
+      function(successResponse) {
+        console.log("Notification Post Success:", successResponse);
+        firebase.database().ref('clubs/12/matches/' + matchID).update({delayedNotificationID: successResponse.id});
+      },
+      function (failedResponse) {
+        console.log("Notification Post Failed: ", failedResponse);
+        //alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
+      }
+    )
+  }
+
+  cancelPushNotification(notificationID: any) {
+    //window["plugins"].OneSignal.cancelNotification(notificationID);
+    let url = 'https://onesignal.com/api/v1/notifications/' + notificationID + '?app_id=c72ec221-4425-4844-83fe-288ffd22a55a';
+    console.log("in method cancelPushNotification");
+    // let headers = new Headers({'Authorization': 'Basic'});
+    let headers = new Headers({'Authorization': 'Basic NjhmYzZkZmQtZWNiMC00NjU5LWE4ZjEtZjA3ZWI4OTEwMzM3'});
+    let options = new RequestOptions({
+      headers: headers
+    });
+
+    this.http
+      .delete(url, options)
+      .toPromise()
+      .then((res:Response) => console.log(res))
+      .catch(this.handleError);
+  }
+
+  private handleError(error: any): Promise<any> {
+    console.error('An error occurred', error);
+    return Promise.reject(error.message || error);
   }
 
   hashPassword(password): any {
@@ -252,5 +315,12 @@ export class Utilities {
 
   openProfile(item, navCtrl){
     navCtrl.push(PlayerComponent, { player: item});
+  }
+
+  transformTime(time: String) {
+    if(time != undefined){
+      console.log(time.split("T")[0] + ", um " + time.split("T")[1].split("Z")[0]);
+      return time.split("T")[0] + ", um " + time.split("T")[1].split("Z")[0];
+    }
   }
 }
