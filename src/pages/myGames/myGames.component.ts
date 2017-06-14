@@ -211,7 +211,7 @@ export class MyGamesComponent implements OnInit {
     //Zugriff auf Spielerobjekt
     let match;
     for (let i in this.dataGames) {
-      if (this.dataGames.id = inviteItem.match) {
+      if (this.dataGames[i].id == inviteItem.match) {
         match = this.dataGames[i];
       }
     }
@@ -300,7 +300,7 @@ export class MyGamesComponent implements OnInit {
           //Zugriff auf Spielerobjekt
           let match;
           for (let i in this.dataGames) {
-            if (this.dataGames.id = inviteItem.match) {
+            if (this.dataGames[i].id == inviteItem.match) {
               match = this.dataGames[i];
             }
           }
@@ -373,7 +373,7 @@ export class MyGamesComponent implements OnInit {
                   //Zugriff auf Spielerobjekt
                   let match;
                   for (let i in this.dataGames) {
-                    if (this.dataGames.id = inviteItem.match) {
+                    if (this.dataGames[i].id == inviteItem.match) {
                       match = this.dataGames[i];
                     }
                   }

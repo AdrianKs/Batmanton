@@ -76,7 +76,7 @@ export class GameDetailsComponent implements OnInit {
   ionViewWillEnter() {
     this.dataUser = this.Utilities.userData;
     this.isTrainer();
-    this.maxYear = (parseInt(new Date().toISOString().slice(0,4))+1).toString();
+    this.maxYear = (parseInt(new Date().toISOString().slice(0, 4)) + 1).toString();
     this.loadData(true, null);
     if (this.dataLoaded == true) {
       this.setCounter();
@@ -513,12 +513,12 @@ export class GameDetailsComponent implements OnInit {
     this.playersEdited = true;
   }
 
-  confirmPlayer(){
+  confirmPlayer() {
     let pushIDs = [];
-    if (this.timeChanged == true || this.streetChanged == true || this.zipcodeChanged == true){
-      for (let i in this.acceptedArray){
-        for (let j in this.playerArray){
-          if (this.acceptedArray[i] == this.playerArray[j].id && this.playerArray[j].isDefault == false){
+    if (this.timeChanged == true || this.streetChanged == true || this.zipcodeChanged == true) {
+      for (let i in this.acceptedArray) {
+        for (let j in this.playerArray) {
+          if (this.acceptedArray[i] == this.playerArray[j].id && this.playerArray[j].isDefault == false) {
             this.pendingArray.push(this.acceptedArray[i]);
             this.acceptedCounter--;
             if (this.playerArray[j].gender == "m") {
@@ -579,8 +579,8 @@ export class GameDetailsComponent implements OnInit {
       }
     });
 
-    console.log("timeChanged: "+ this.timeChanged);
-    if(this.timeChanged == true || this.streetChanged == true || this.zipcodeChanged == true){
+    console.log("timeChanged: " + this.timeChanged);
+    if (this.timeChanged == true || this.streetChanged == true || this.zipcodeChanged == true) {
       firebase.database().ref('clubs/12/invites').once('value', snapshot => {
         for (let k in this.pendingArray) {
           for (let j in this.playerArray) {
@@ -643,6 +643,16 @@ export class GameDetailsComponent implements OnInit {
               }
             }
           }
+        }
+        if (pushIDs.length != 0) {
+          console.log("ruft pushfunction");
+          console.log(this.gameItem.id);
+          let matchInformationString = "" + this.Utilities.transformTime(this.gameItem.time) + " in " + this.gameItem.location.street + ", " + this.gameItem.location.zipcode + ", gegen " + this.gameItem.opponent
+          this.Utilities.sendPushNotification(pushIDs, 'Die Daten für das Spiel gegen ' + this.gameItem.opponent + ' wurden geändert: '  + matchInformationString);
+          if (this.gameItem.delayedNotificationID != undefined) {
+            this.Utilities.cancelPushNotification(this.gameItem.delayedNotificationID);
+          }
+          this.Utilities.sendGameReminderDayBefore(pushIDs, "Denken Sie an Ihr Spiel am " + matchInformationString, this.gameItem.time, this.gameItem.id);
         }
       });
     } else {
