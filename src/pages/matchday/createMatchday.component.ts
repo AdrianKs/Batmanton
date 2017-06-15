@@ -192,9 +192,6 @@ export class CreateMatchdayComponent implements OnInit {
       if (this.zipcodeChanged == false){
         this.match.location.zipcode = "";
       }
-      if (this.timeChanged == false){
-        this.match.time = "0";
-      }
 
       this.match.id = this.makeid();
       firebase.database().ref('clubs/12/matches/').child(this.match.id).set({
