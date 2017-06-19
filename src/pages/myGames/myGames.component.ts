@@ -141,7 +141,7 @@ export class MyGamesComponent implements OnInit {
    getFirstFourPicUrls(match) {
     let urlArray = [];
     let counter = 0;
-    for (let i of this.Utilities.allInvites) {
+    for (let i of this.dataInvites) {
       if (i.match == match.id && counter < 4){
           for(let j of this.Utilities.allPlayers){
             if(i.recipient == j.id){
