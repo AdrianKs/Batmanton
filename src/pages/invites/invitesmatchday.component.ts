@@ -33,7 +33,7 @@ export class InvitesMatchdayComponent {
   * @param toastCtrl controller that creates the possibility to show toast messages
   */
   constructor(public invitesProvider: InvitesProvider, private navCtrl: NavController, private navP: NavParams, private loadingCtrl: LoadingController, public utilities: Utilities, public alertCtrl: AlertController, public toastCtrl: ToastController) {
-    //Load data in array
+    //Load data in arrays
     this.matchday = navP.get('matchday');
     this.invites = navP.get('invites');
     this.counts = this.countStates(this.matchday);

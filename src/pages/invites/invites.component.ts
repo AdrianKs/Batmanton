@@ -25,6 +25,10 @@ export class InvitesComponent implements OnInit {
   today: String = new Date().toISOString();
   matchdayCount: any;
 
+  /**
+   * This methode is executed before the invites.component.html page is entered.
+   * In this case the data for invites, matchdays and players is loaded.
+   */
   ionViewWillEnter() {
     this.showLoadingElement();
     this.invitesProvider.setInvites();
@@ -43,7 +47,6 @@ export class InvitesComponent implements OnInit {
    * Constructor that initializes necessary items.
    */
   constructor(public invitesProvider: InvitesProvider, private navCtrl: NavController, private navP: NavParams, public utilities: Utilities, public loadingCtrl: LoadingController) {
-    //Load data in arrays
   }
 
   /**
