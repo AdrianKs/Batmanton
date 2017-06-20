@@ -123,17 +123,6 @@ export class MyApp {
     }
 
     this.utilities.updatePlayer(userID, {platform: tempPlat});
-
-    /*for (let i = 0; i <= this.utilities.allPlayers.length - 1; i++) {
-      console.log(userID + ' ' + this.utilities.allPlayers[i].id)
-      if (userID == this.utilities.allPlayers[i].id) {
-        if (this.utilities.allPlayers[i].platform != tempPlat) {
-          firebase.database().ref('clubs/12/players/' + userID).update({
-            platform: tempPlat
-          });
-        }
-      }
-    }*/
   }
 
   /**
@@ -147,9 +136,6 @@ export class MyApp {
   checkIfUserDeleted(userID: any): any {
     this.utilities.getPlayer(userID)
       .then(user => {
-        console.log("in then");
-        console.log(user);
-        console.log(user.val());
         if (user.val() != null) {
           if (!this.utilities.inRegister) {
             this.checkForVerification();
