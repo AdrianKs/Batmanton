@@ -1,6 +1,3 @@
-//todo
-//Notification (bzw. in Menüleiste)
-//counter für utilities
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
@@ -23,7 +20,6 @@ export class MyGamesComponent implements OnInit {
 
   ionViewWillEnter(){
     this.loadData(true, null);
-    console.log("Load dismissed.");
   }
 
 
@@ -155,7 +151,6 @@ export class MyGamesComponent implements OnInit {
   }
 
   openDetails(ev, value, option, inviteItem) {
-    console.log(inviteItem);
     this.navCtrl.push(GameDetailsComponent, { gameItem: value, option: option, inviteItem: inviteItem });
   }
 
@@ -249,7 +244,6 @@ export class MyGamesComponent implements OnInit {
         this.testRadioOpen = false;
         this.testRadioResult = data;
         if(this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private'){
-          console.log('Radio data:', data);
           inviteItem.state = 2;
           if (value == 0){
             this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
@@ -298,13 +292,11 @@ export class MyGamesComponent implements OnInit {
                 {
                   text: 'Abbrechen',
                   handler: data => {
-                    console.log('Cancel clicked');
                   }
                 },
                 {
                   text: 'Absenden',
                   handler: data => {
-                    console.log('Radio data:', this.testRadioResult + ': ' +data.extra);
                     inviteItem.state = 2;
                     if (value == 0){
                       this.pendingToDeclined(inviteItem.match, this.loggedInUserID);

@@ -1,6 +1,3 @@
-//todo
-//Adressvorlagen bearbeiten
-//Team (altersklasse, sklasse)
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component';
