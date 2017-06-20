@@ -39,7 +39,6 @@ export class CreateMatchdayProvider {
             }
             this.dataTeam = teamArray;
         });
-        //return this.dataPlayer;
     }
 
     setPlayer(Utilities, gameItem, acceptedArray, pendingArray, declinedArray) {
@@ -84,8 +83,6 @@ export class CreateMatchdayProvider {
         }
         this.playerArray = playerArray;
         this.playerArray = _.sortBy(this.playerArray, "lastname");
-        console.log("Player loaded");
-        console.log("Canceled.");
         if (gameItem.acceptedPlayers){
             for (let i in gameItem.acceptedPlayers){
             acceptedArray[i]=gameItem.acceptedPlayers[i];
@@ -101,7 +98,6 @@ export class CreateMatchdayProvider {
             declinedArray[i]=gameItem.declinedPlayers[i];
             }
         }
-        console.log(this.playerArray);
         });
     }
 }

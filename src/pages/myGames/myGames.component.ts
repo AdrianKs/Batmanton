@@ -1,13 +1,9 @@
-//todo
-//Notification (bzw. in Menüleiste)
-//counter für utilities
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
 import { MyGamesProvider } from '../../providers/myGames-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-myGames',
@@ -25,7 +21,6 @@ export class MyGamesComponent implements OnInit {
     this.dataUser = this.Utilities.userData;
     //this.pushIDsAdmins = this.Utilities.setPushIDsAdmins();
     this.loadData(true, null);
-    console.log("Load dismissed.");
   }
 
 
@@ -153,21 +148,20 @@ export class MyGamesComponent implements OnInit {
   getFirstFourPicUrls(match) {
     let urlArray = [];
     let counter = 0;
-    for (let i of this.Utilities.allInvites) {
-      if (i.match == match.id && counter < 4) {
-        for (let j of this.Utilities.allPlayers) {
-          if (i.recipient == j.id) {
-            urlArray[counter] = j.picUrl;
-            counter++;
+    for (let i of this.dataInvites) {
+      if (i.match == match.id && counter < 4){
+          for(let j of this.Utilities.allPlayers){
+            if(i.recipient == j.id){
+              urlArray[counter] = j.picUrl;
+              counter ++;
+            }
           }
         }
       }
-    }
     return urlArray;
-  }
+    }
 
   openDetails(ev, value, option, inviteItem) {
-    console.log(inviteItem);
     this.navCtrl.push(GameDetailsComponent, { gameItem: value, option: option, inviteItem: inviteItem });
   }
 
@@ -270,8 +264,7 @@ export class MyGamesComponent implements OnInit {
       handler: data => {
         this.testRadioOpen = false;
         this.testRadioResult = data;
-        if (this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private') {
-          console.log('Radio data:', data);
+        if(this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private'){
           inviteItem.state = 2;
           if (value == 0) {
             this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
@@ -324,35 +317,33 @@ export class MyGamesComponent implements OnInit {
           }
           this.loadData(false, null);
         }
-        if (this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous') {
-          let prompt = this.alertCtrl.create({
-            title: 'Verletzt/Sonstige',
-            message: "Bitte näher ausführen:",
-            inputs: [
-              {
-                name: 'extra',
-                placeholder: 'Wie lange wirst du ausfallen?'
-              },
-            ],
-            buttons: [
-              {
-                text: 'Abbrechen',
-                handler: data => {
-                  console.log('Cancel clicked');
-                }
-              },
-              {
-                text: 'Absenden',
-                handler: data => {
-                  console.log('Radio data:', this.testRadioResult + ': ' + data.extra);
-                  inviteItem.state = 2;
-                  if (value == 0) {
-                    this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
-                  } else {
-                    this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
-                    if (inviteItem.assist == true) {
-                      for (let i in this.dataPlayer) {
-                        if (this.dataPlayer[i].id == this.loggedInUserID) {
+        if(this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous'){
+            let prompt = this.alertCtrl.create({
+              title: 'Verletzt/Sonstige',
+              message: "Bitte näher ausführen:",
+              inputs: [
+                {
+                  name: 'extra',
+                  placeholder: 'Wie lange wirst du ausfallen?'
+                },
+              ],
+              buttons: [
+                {
+                  text: 'Abbrechen',
+                  handler: data => {
+                  }
+                },
+                {
+                  text: 'Absenden',
+                  handler: data => {
+                    inviteItem.state = 2;
+                    if (value == 0){
+                      this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
+                    } else {
+                      this.acceptedToDeclined(inviteItem.match, this.loggedInUserID);
+                    if (inviteItem.assist == true){
+                      for (let i in this.dataPlayer){
+                        if (this.dataPlayer[i].id == this.loggedInUserID){
                           this.helpCounter = this.dataPlayer[i].helpCounter;
                           this.helpCounter--;
                           firebase.database().ref('clubs/12/players/' + this.loggedInUserID).update({

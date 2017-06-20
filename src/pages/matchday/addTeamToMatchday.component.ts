@@ -1,11 +1,8 @@
-//todo
-//teams nicht aktuell
 import { Component, OnInit } from '@angular/core';
 import { NavController, NavParams, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-addTeamToMatchday',
@@ -53,8 +50,7 @@ export class AddTeamToMatchdayComponent implements OnInit {
     this.acceptedFemaleCounter = this.counterArray.acceptedFemaleCounter;
     this.pendingCounter = this.counterArray.pendingCounter;
     this.declinedCounter = this.counterArray.declinedCounter;
-    console.log(this.pendingArray);
-    if (this.editMode != true) {
+    if (this.editMode != true){
       this.loadData(true, null);
     }
     this.teamSelection = this.match.team;
@@ -130,8 +126,7 @@ export class AddTeamToMatchdayComponent implements OnInit {
 
   addPlayer(player) {
     let counter = 0;
-    console.log(this.allPlayers);
-    if (player.isDefault == true) {
+    if (player.isDefault == true){
       for (let i in this.acceptedArray) {
         counter++;
       }
@@ -164,18 +159,12 @@ export class AddTeamToMatchdayComponent implements OnInit {
         });
         alert.present();
       }
-      console.log('accepted:');
-      console.log(this.acceptedArray);
-      console.log(this.acceptedCounter);
     } else {
-      console.log('pls');
       for (let i in this.pendingArray) {
         counter++;
       }
-      console.log('have');
-      this.pendingArray[counter] = player.id;
+      this.pendingArray[counter]= player.id;
       this.pendingCounter++;
-      console.log('mercy');
       player.pending = true;
       player.deleted = false;
       if (player.isMainTeam == false) {
@@ -188,9 +177,6 @@ export class AddTeamToMatchdayComponent implements OnInit {
           alert.present();
         }
       }
-      console.log('pending:');
-      console.log(this.pendingArray);
-      console.log(this.pendingCounter);
     }
     for (let i in this.deletedArray) {
       if (this.deletedArray[i] == player.id) {
@@ -212,8 +198,6 @@ export class AddTeamToMatchdayComponent implements OnInit {
         this.pendingCounter--;
       }
       player.pending = false;
-      console.log('pending: ');
-      console.log(this.pendingArray);
     }
     counter = 0;
     if (player.accepted == true) {
@@ -243,10 +227,6 @@ export class AddTeamToMatchdayComponent implements OnInit {
         }
       }
       player.accepted = false;
-      console.log('accepted: ');
-      console.log(this.acceptedArray);
-      console.log('deleted: ');
-      console.log(this.deletedArray);
     }
     counter = 0;
     if (player.declined == true) {
@@ -258,8 +238,6 @@ export class AddTeamToMatchdayComponent implements OnInit {
         this.declinedCounter--;
       }
       player.declined = false;
-      console.log('declined: ');
-      console.log(this.declinedArray);
     }
     player.deleted = true;
     this.presentToast("Spieler entfernt");
@@ -293,12 +271,10 @@ export class AddTeamToMatchdayComponent implements OnInit {
     });
 
     firebase.database().ref('clubs/12/players').once('value', snapshot => {
-      console.log(this.allPlayers);
-      for (let i in snapshot.val()) {
-        for (let j in this.allPlayers) {
-          if (this.allPlayers[j].id == i) {
-            console.log(this.allPlayers[j].helpCounter);
-            firebase.database().ref('clubs/12/players/' + i).update({
+      for (let i in snapshot.val()){
+        for (let j in this.allPlayers){
+          if (this.allPlayers[j].id == i){
+            firebase.database().ref('clubs/12/players/' + i ).update({
               helpCounter: this.allPlayers[j].helpCounter
             });
           }
@@ -308,10 +284,8 @@ export class AddTeamToMatchdayComponent implements OnInit {
 
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       for (let i in snapshot.val()) {
-        for (let j in this.deletedArray) {
-          if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.deletedArray[j]) {
-            console.log("gefunden");
-            console.log(i);
+        for (let j in this.deletedArray){
+          if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.deletedArray[j]){
             firebase.database().ref('clubs/12/invites/' + i).remove();
           }
         }
@@ -325,7 +299,6 @@ export class AddTeamToMatchdayComponent implements OnInit {
             let inviteExists = false;
             for (let i in snapshot.val()) {
               if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.pendingArray[k]) {
-                console.log("inviteExists now true");
                 if (snapshot.val()[i].state != 0 || (this.allPlayers[j].isMainTeam == false && snapshot.val()[i].assist == false) || (this.allPlayers[j].isMainTeam == true && snapshot.val()[i].assist == false)) {
                   //push-Benachrichtigung an snapshot.val()[i].recipient
                   //Zugriff auf Spielerobjekt

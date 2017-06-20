@@ -1,24 +1,32 @@
-/*import { } from 'jasmine';
+import { } from 'jasmine';
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { MyGamesComponent } from './myGames.component';
-//import { TeamsProvider } from '../../providers/teams-provider';
+
 import { Utilities } from '../../app/utilities';
-import { App, Config, NavParams, AlertController, Form, IonicModule, Keyboard, MenuController, NavController, Platform, GestureController, LoadingController } from 'ionic-angular';
 import { UtilitiesMock } from '../../mocks/utilitiesMock';
-import { TeamsProviderMock } from '../../mocks/teamsProviderMock';
-import { NavParamsMock} from '../../mocks/navParamsMock';
+import { MyGamesProviderMock } from '../../mocks/MyGamesProviderMock';
+import { MatchTime } from '../../app/pipes/matchTime';
 import { Teams } from '../../app/pipes/teams';
-import { Birthday } from '../../app/pipes/birthday';
+
+import { NavParamsMock } from '../../mocks/navParamsMock';
+
+import { App, Config, NavParams, AlertController, Form, IonicModule, Keyboard, MenuController, NavController, Platform, GestureController, LoadingController } from 'ionic-angular';
+
+import { MyGamesComponent } from './myGames.component';
+import { MyGamesProvider } from '../../providers/myGames-provider';
 
 let component: MyGamesComponent;
 let fixture: ComponentFixture<MyGamesComponent>;
+
 let de: DebugElement;
 let el: HTMLElement;
-let gameId = "abcdefgh"
 
-describe("ViewTeamComponentTesting", () => {
+/**
+ * test file for matchday.component.ts. Creates the possibility to run unit tests. 
+ */
+
+describe("MyGamesComponentTesting", () => {
     let mockLoadingController;
     beforeEach(async(() => {
         mockLoadingController = {
@@ -30,91 +38,77 @@ describe("ViewTeamComponentTesting", () => {
         TestBed.overrideComponent(MyGamesComponent, {
             set: {
                 providers: [
-                    { provide: TeamsProvider, useClass: TeamsProviderMock }
+                    { provide: MyGamesProvider, useClass: MyGamesProviderMock }
                 ]
             }
         }).configureTestingModule({
-            declarations: [ViewTeamComponent, Teams, Birthday],
+            declarations: [MyGamesComponent, MatchTime, Teams],
             imports: [IonicModule],
-            providers: [NavController, TeamsProvider, Utilities, AlertController, App, Config, Form, Keyboard, MenuController, Platform, GestureController, LoadingController,
+            providers: [NavController, MyGamesProvider, Utilities, AlertController, App, Config, Form, Keyboard, MenuController, Platform, GestureController, LoadingController,
                 { provide: Utilities, useClass: UtilitiesMock },
-                { provide: TeamsProvider, useClass: TeamsProviderMock },
-                { provide: LoadingController, useValue: mockLoadingController },
-                { provide: NavParams, useClass: NavParamsMock }]
+                { provide: NavParams, useClass: NavParamsMock },
+                { provide: MyGamesProvider, useClass: MyGamesProviderMock },
+                { provide: LoadingController, useValue: mockLoadingController }]
         }).compileComponents();
-    }));
+    }))
 
-     beforeEach(() => {
-        fixture = TestBed.createComponent(ViewTeamComponent);
+    beforeEach(() => {
+        fixture = TestBed.createComponent(MyGamesComponent);
         component = fixture.componentInstance;
+        component.myGamesProvider.setGames();
+        component.myGamesProvider.setInvites();
+        component.myGamesProvider.setPlayers();
     })
 
-    it('is created', () => {
+    it('was created', () => {
         expect(fixture).toBeTruthy();
         expect(component).toBeTruthy();
+    })
+
+    it('fetches the invites', () => {
+        component.myGamesProvider.setInvites().then(() => {
+            component.dataInvites = component.myGamesProvider.dataInvites;
+            expect(component.dataInvites).toBeDefined();
+        }).catch(error => {
+            console.log(error.message);
+        })
     });
 
-    it('gets the current user', () => {
-        component.isTrainer();
-        expect(component.currentUser).toBeDefined();
+    it('fetches the games', () => {
+        component.myGamesProvider.setGames().then(() => {
+            component.dataGames = component.myGamesProvider.dataGames;
+            expect(component.dataGames).toBeDefined();
+        }).catch(error => {
+            console.log(error.message);
+        })
     });
 
-
-    it('has to be admin', () => {
-        component.isTrainer();
-        expect(component.isAdmin).toBeTruthy();
-    })
-
-    it('builds the team', () => {
-        component.teamsProvider.teamId = teamId;
-        component.teamsProvider.buildTeam().then(()=>{
-            component.team = component.teamsProvider.team;
-            component.teamNameOld = component.team.name;
-            component.altersklasse = component.team.ageLimit;
-            component.teamArt = component.team.type;
-            component.sKlasse = component.team.sclass;
-            expect(component.team).toBeDefined();
-            expect(component.teamNameOld).toEqual("Team 1");
-            expect(component.altersklasse).toEqual("15");
-            expect(component.teamArt).toEqual("1");
-            expect(component.sKlasse).toEqual("S1");
+    it('fetches the players', () => {
+        component.myGamesProvider.setPlayers().then(() => {
+            component.dataPlayer = component.myGamesProvider.dataPlayer;
+            expect(component.dataPlayer).toBeDefined();
+        }).catch(error => {
+            console.log(error.message);
         })
+    });
+
+    it('creates and shows loading element', () => {
+        component.createAndShowLoading();
+        expect(component.loading).toBeDefined();
+    });
+
+    it("gets first four picture URLs", () => {
+        component.dataInvites = component.myGamesProvider.dataInvites;
+        component.dataGames = component.myGamesProvider.dataGames;
+        for (let i of component.dataGames) {
+            let urls = component.getFirstFourPicUrls(i);
+            expect(urls).toBeDefined();
+        }
+
     })
 
-    it('refreshes the players', () => {
-        component.teamsProvider.refreshPlayers().then(() => {
-            component.allPlayers = component.teamsProvider.allPlayers;
-            expect(component.allPlayers).toBeDefined();
-            expect(component.allPlayers.length).toEqual(2);
-        })
+    afterAll(() => {
+        fixture.destroy();
+        component = null;
     })
-
-    it('checks if team has players', () => {
-        component.teamsProvider.checkIfTeamsHasPlayers().then(()=>{
-            component.teamHasPlayers = component.teamsProvider.teamHasPlayers;
-            expect(component.teamHasPlayers).toBeTruthy();
-        })
-    })
-
-    it('counts the genders', () => {
-        component.teamsProvider.countGenders().then(() => {
-            component.manCounter = component.teamsProvider.manCounter;
-            component.womanCounter = component.teamsProvider.womanCounter;
-            expect(component.manCounter).toEqual(1);
-            expect(component.womanCounter).toEqual(1);
-        })
-    })
-
-    /*it('updates the team infos', () => {
-        component.teamsProvider.teamId = teamId;
-        component.teamsProvider.updateTeamInfos("18", "Team 3", "1", "S2").then((status)=>{
-            console.log(status);
-            component.team = component.teamsProvider.team;
-            expect(component.team.ageLimit).toEqual("18");
-        })
-    })
-
-
-
-
-})*/
+})

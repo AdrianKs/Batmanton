@@ -1,15 +1,11 @@
-//todo
-//Adressvorlagen bearbeiten
-//Team (altersklasse, sklasse)
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component';
 import { TemplateComponent } from '../templates/template.component';
 import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-createMatchday',

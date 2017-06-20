@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
 
 @Component({
@@ -165,7 +164,6 @@ export class CreatePlayerComponent implements OnInit {
         if (!NAME_REGEXP.test(c.value.charAt(0))) {
             return { "incorrectNameFormat": true }
         }
-        let field = "firstname";
         return null;
     }
 
