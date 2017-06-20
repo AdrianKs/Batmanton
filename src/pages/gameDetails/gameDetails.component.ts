@@ -5,7 +5,6 @@ import { TemplateComponent } from '../templates/template.component'
 import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-gameDetails',

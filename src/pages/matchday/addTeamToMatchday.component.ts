@@ -3,7 +3,6 @@ import { NavController, NavParams, AlertController, LoadingController, ToastCont
 import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-addTeamToMatchday',
@@ -355,7 +354,7 @@ export class AddTeamToMatchdayComponent implements OnInit{
       this.navCtrl.pop();
     } else {
       this.navCtrl.popToRoot();
-    }   
+    }
   }
 }
 

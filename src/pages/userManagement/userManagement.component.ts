@@ -3,8 +3,6 @@ import { NavController, NavParams, LoadingController, AlertController } from 'io
 import { EditRoleComponent } from '../editRole/editRole.component';
 import { CreatePlayerComponent } from './createPlayer.component';
 import { Utilities } from '../../app/utilities';
-import firebase from 'firebase';
-import { document } from "@angular/platform-browser/src/facade/browser";
 
 
 @Component({
@@ -118,7 +116,7 @@ export class UserManagementComponent implements OnInit {
   /**
    * Navigates to EditRoleComponent if a player has been selectedPlayer
    * @param ev event-handler
-   * @param player value 
+   * @param player value
    */
   openEditor(ev, value) {
     this.selectedPlayer = value;

@@ -12,7 +12,6 @@ import { LoginComponent } from "../pages/login/login.component";
 import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
 import { firebaseConfigTest } from "./firebaseAppData";
-import { setUser } from "./globalVars";
 import { AuthData } from '../providers/auth-data';
 import { Utilities } from './utilities';
 import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
@@ -113,7 +112,6 @@ export class MyApp {
   }
 
   checkPlatform(userID) {
-    let flag = false;
     let tempPlat = "";
 
     if (this.platform.is('ios')) {
@@ -125,17 +123,6 @@ export class MyApp {
     }
 
     this.utilities.updatePlayer(userID, {platform: tempPlat});
-
-    /*for (let i = 0; i <= this.utilities.allPlayers.length - 1; i++) {
-      console.log(userID + ' ' + this.utilities.allPlayers[i].id)
-      if (userID == this.utilities.allPlayers[i].id) {
-        if (this.utilities.allPlayers[i].platform != tempPlat) {
-          firebase.database().ref('clubs/12/players/' + userID).update({
-            platform: tempPlat
-          });
-        }
-      }
-    }*/
   }
 
   /**
@@ -149,9 +136,6 @@ export class MyApp {
   checkIfUserDeleted(userID: any): any {
     this.utilities.getPlayer(userID)
       .then(user => {
-        console.log("in then");
-        console.log(user);
-        console.log(user.val());
         if (user.val() != null) {
           if (!this.utilities.inRegister) {
             this.checkForVerification();
