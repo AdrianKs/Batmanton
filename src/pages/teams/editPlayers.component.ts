@@ -54,8 +54,11 @@ export class EditPlayerComponent implements OnInit {
     }
 
     backToEditMode() {
-
-        this.nav.pop();
+        if (this.toRoot == true){
+            this.nav.popToRoot();
+        } else {
+            this.nav.pop();
+        }
     }
 
     initializePlayers() {

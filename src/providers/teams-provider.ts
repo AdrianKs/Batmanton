@@ -30,7 +30,7 @@ export class TeamsProvider {
   altersKOld: any;
   altersklasse: any;
   teamArt: any;
-  sKlasse: any;
+  rank: any;
   allPlayers: any;
   teamHasPlayers: any;
   manCounter: any = 0;
@@ -71,7 +71,7 @@ export class TeamsProvider {
       this.altersKOld = this.team.ageLimit;
       this.altersklasse = this.team.ageLimit;
       this.teamArt = this.team.type;
-      this.sKlasse = this.team.sclass;
+      this.rank = this.team.rank;
     })
   }
 
@@ -107,7 +107,6 @@ export class TeamsProvider {
     return firebase.database().ref('/clubs/12/players/').once('value', snapshot => {
       let players = snapshot.val();
       let player;
-      let age;
       for (let i in players) {
         player = players[i];
         if (player.team == this.teamId) {
@@ -121,22 +120,20 @@ export class TeamsProvider {
     })
   }
 
-  updateTeamInfos(ageLimit: string, name: string, type: string, sclass: string) {
+  updateTeamInfos(ageLimit: string, name: string, type: string, rank: number) {
     this.team.ageLimit = ageLimit;
     this.team.name = name;
     this.team.type = type;
-    this.team.sclass = sclass;
+    this.team.rank = rank;
     return firebase.database().ref('clubs/12/teams/' + this.teamId).update({
       ageLimit: ageLimit,
       name: name,
       type: type,
-      sclass: sclass
+      rank: rank
     });
   }
 
   removePlayer(p: any) {
-    let playerId = p.id;
-    let deleteId = "";
     return firebase.database().ref('/clubs/12/teams/' + this.teamId + '/players/').once('value', snapshot => {
       let justPlayersOfTeam = snapshot.val();
       for (let i in justPlayersOfTeam) {
@@ -258,7 +255,6 @@ export class TeamsProvider {
       }
       this.allPlayersEdit = relevantPlayers;
       let player;
-      let playerOfTeam;
       let teamOfPlayer;
       for (let i in this.allPlayersEdit) {
         player = this.allPlayersEdit[i];
@@ -347,12 +343,12 @@ export class TeamsProvider {
     }
   }
 
-  addNewTeam(id: string, ageLimit: string, name: string, type: string, sclass: string){
+  addNewTeam(id: string, ageLimit: string, name: string, type: string, rank: number){
     return firebase.database().ref('clubs/12/teams').child(id).set({
       ageLimit: ageLimit,
       name: name,
       type: type,
-      sclass: sclass
+      rank: rank
     })
   }
 }

@@ -39,6 +39,16 @@
         </div>
       </div>
     </div>
+    <div *ngIf="((option == 1) || (option == 2)) && (!editMode)" class="align-center accept-decline-container">
+      <button *ngIf="(option == 1)" ion-button round outline color="secondary" icon-left (click)="verifyAccept(inviteItem)" item-right>
+        <ion-icon name='checkmark'></ion-icon>
+          Zusagen
+      </button>
+      <button *ngIf="((option == 1) || (option == 2)) && (!editMode)" ion-button round outline color="danger" (click)="doRadio(inviteItem, 1)">
+        <ion-icon name='close'></ion-icon>
+          <p class="decline-button">Absagen</p>
+      </button>
+    </div>
     <div class="game-details-form right-form-inputs">
       <ion-item *ngIf="(!editMode)">
         <ion-label class="form-label">Gegner:</ion-label>
@@ -58,12 +68,12 @@
         <ion-select class="form-value" #team placeholder="Mannschaft" [(ngModel)]="gameItem.team"
                     placeholder="{{gameItem.team | teams}}"
                     (ionChange)="teamSelectChanged(gameItem.team)" doneText="Ok" cancelText="Abbrechen">
-          <ion-option value=0>keine Mannschaft</ion-option>
           <ion-option *ngFor="let item of teamArray" value="{{item.id}}">
             {{item.name}}
-            <div *ngIf="item.ageLimit==0">(Erw.</div>
+            <div *ngIf="item.ageLimit==0">(Erw.,</div>
             <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
-            S{{item.sclass}})
+             {{item.rank}},
+             {{item.type}})
           </ion-option>
         </ion-select>
       </ion-item>
@@ -117,7 +127,7 @@
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Wann:</ion-label>
-        <ion-datetime class="form-value" #time displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
+        <ion-datetime class="form-value" #time displayFormat="DD.MM.YYYY, HH:mm" max={{maxYear}} pickerFormat="DD MM YYYY HH mm"
                       [(ngModel)]="gameItem.time"
                       (ionChange)="timeSelectChanged(gameItem.time)"
                       doneText="Ok" cancelText="Abbrechen"></ion-datetime>

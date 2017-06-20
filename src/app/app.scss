@@ -154,8 +154,8 @@ form {
     height: 30px;
     border-top-left-radius: 100%;
     padding: 0;
-    margin-bottom: -4px;
-    margin-right: -4px;
+    margin-bottom: -2px;
+    margin-right: -2px;
     background-color: black;
 }
 
@@ -164,7 +164,7 @@ form {
     height: 30px;
     border-top-right-radius: 100%;
     padding: 0;
-    margin-bottom: -4px;
+    margin-bottom: -2px;
     background-color: black;
 }
 
@@ -173,7 +173,7 @@ form {
     height: 30px;
     border-bottom-right-radius: 100%;
     padding: 0;
-    margin-left: -4px;
+    margin-left: -2px;
     background-color: black;
 }
 
@@ -191,8 +191,8 @@ form {
   height: 55px;
   border-top-left-radius: 100%;
   padding: 0;
-  margin-bottom: 0px;
-  margin-right: 0px;
+  margin-bottom: -1px;
+  margin-right: -1px;
   background-color: black;
 }
 
@@ -201,7 +201,7 @@ form {
   height: 55px;
   border-top-right-radius: 100%;
   padding: 0;
-  margin-bottom: 0px;
+  margin-bottom: -1px;
   background-color: black;
 }
 
@@ -210,7 +210,7 @@ form {
   height: 55px;
   border-bottom-right-radius: 100%;
   padding: 0;
-  margin-left: 0px;
+  margin-left: -1px;
   background-color: black;
 }
 
@@ -409,13 +409,13 @@ form {
   color: black;
   background-color: #FFF200;
   border-radius: 50%;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   font-size: 0.8rem;
   font-weight: bold;
   padding: 3px;
   margin-left: 3px;
-  line-height: 10px;
+  line-height: 8px;
   position: absolute;
   top: 3px;
   text-align: center;

@@ -1,13 +1,9 @@
-//todo
-//Notification (bzw. in Menüleiste)
-//counter für utilities
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, NavParams, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from "../gameDetails/gameDetails.component";
 import { MyGamesProvider } from '../../providers/myGames-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-myGames',
@@ -23,7 +19,6 @@ export class MyGamesComponent implements OnInit {
 
   ionViewWillEnter(){
     this.loadData(true, null);
-    console.log("Load dismissed.");
   }
 
 
@@ -141,7 +136,7 @@ export class MyGamesComponent implements OnInit {
    getFirstFourPicUrls(match) {
     let urlArray = [];
     let counter = 0;
-    for (let i of this.Utilities.allInvites) {
+    for (let i of this.dataInvites) {
       if (i.match == match.id && counter < 4){
           for(let j of this.Utilities.allPlayers){
             if(i.recipient == j.id){
@@ -154,11 +149,12 @@ export class MyGamesComponent implements OnInit {
     return urlArray;
   }
 
-  openDetails(ev, value) {
-    this.navCtrl.push(GameDetailsComponent, { gameItem: value });
+  openDetails(ev, value, option, inviteItem) {
+    this.navCtrl.push(GameDetailsComponent, { gameItem: value, option: option, inviteItem: inviteItem });
   }
 
-  verifyAccept(inviteItem){
+  verifyAccept(event, inviteItem){
+    event.stopPropagation();
     this.counterOpen--;
     for (let i in this.dataGames){
       if (this.dataGames[i].id == inviteItem.match){
@@ -192,11 +188,20 @@ export class MyGamesComponent implements OnInit {
       message: 'Du wirst diesem Spieltag zugeteilt.',
       buttons: ['Ok']
     });
-    alert.present()
+    alert.present();
+    //push-Benachrichtigung an alle Admins
+    //Zugriff auf Spielerobjekt
+    /*for (let j in this.allPlayers){
+      let player;
+      if (this.allPlayers[j].isAdmin == true){
+        player = this.allPlayers[j];
+      }
+    }*/
     this.loadData(false, null);
   }
 
-  doRadio(inviteItem, value) {
+  doRadio(event, inviteItem, value) {
+    event.stopPropagation();
     let alert = this.alertCtrl.create();
     alert.setTitle('Grund der Abwesenheit:');
 
@@ -238,7 +243,6 @@ export class MyGamesComponent implements OnInit {
         this.testRadioOpen = false;
         this.testRadioResult = data;
         if(this.testRadioResult == 'sick' || this.testRadioResult == 'education' || this.testRadioResult == 'private'){
-          console.log('Radio data:', data);
           inviteItem.state = 2;
           if (value == 0){
             this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
@@ -263,6 +267,14 @@ export class MyGamesComponent implements OnInit {
           }).then(() => {
             this.Utilities.countOpen();
           });
+          //push-Benachrichtigung an alle Admins
+          //Zugriff auf Spielerobjekt
+          /*for (let j in this.allPlayers){
+            let player;
+            if (this.allPlayers[j].isAdmin == true){
+              player = this.allPlayers[j];
+            }
+          }*/
           this.loadData(false, null);
         }
         if(this.testRadioResult == 'injured' || this.testRadioResult == 'miscellaneous'){
@@ -279,13 +291,11 @@ export class MyGamesComponent implements OnInit {
                 {
                   text: 'Abbrechen',
                   handler: data => {
-                    console.log('Cancel clicked');
                   }
                 },
                 {
                   text: 'Absenden',
                   handler: data => {
-                    console.log('Radio data:', this.testRadioResult + ': ' +data.extra);
                     inviteItem.state = 2;
                     if (value == 0){
                       this.pendingToDeclined(inviteItem.match, this.loggedInUserID);
@@ -310,6 +320,14 @@ export class MyGamesComponent implements OnInit {
                     }).then(() => {
                       this.Utilities.countOpen();
                     });
+                    //push-Benachrichtigung an alle Admins
+                    //Zugriff auf Spielerobjekt
+                    /*for (let j in this.allPlayers){
+                      let player;
+                      if (this.allPlayers[j].isAdmin == true){
+                        player = this.allPlayers[j];
+                      }
+                    }*/
                     this.loadData(false, null);
                   }
                 }

@@ -22,6 +22,11 @@ let fixture: ComponentFixture<InvitesMatchdayComponent>;
 let de: DebugElement;
 let el: HTMLElement;
 
+/**
+ * Testfile for invitesmatchday.component.spec.ts 
+ * Provides the possibility to run unit tests. 
+ */
+
 describe("InvitesMatchdayComponentTesting", () => {
     let mockLoadingController;
     beforeEach(async(() => {
@@ -85,16 +90,6 @@ describe("InvitesMatchdayComponentTesting", () => {
         component.showLoadingElement();
         expect(component.loadingElement).toBeDefined();
     });
-
-    /*it('shows message invite sent', () => {
-        component.showMessage();
-        expect(component.showMessage).toBeDefined();
-    })*/
-
-    /*it('creates confirm dialogue', () => {
-        component.showConfirm();
-        expect(component.confirm).toBeDefined();
-    })*/
 
     afterAll(() => {
         fixture.destroy();

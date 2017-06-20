@@ -26,7 +26,7 @@
                 <ion-list>
                     <ion-list-header>Altersinformationen</ion-list-header>
                     <ion-item>
-                    <ion-label>Maximales Alter:</ion-label>
+                    <ion-label>Altersklasse:</ion-label>
                     <ion-select [(ngModel)]="altersklasse" placeholder="Auswählen" [ngModelOptions]="{standalone: true}" (ionInput)="selectAltersklasse(altersklasse)">
                         <ion-option value="9">U 09</ion-option>
                         <ion-option value="11">U 11</ion-option>
@@ -61,12 +61,13 @@
                 <ion-list>
                     <ion-list-header>Zusatzinfos</ion-list-header>
                     <ion-item>
-                        <ion-label>S-Klasse:</ion-label>
+                        <ion-input type="number" #TeamName placeholder="Rangnummer eingeben" [(ngModel)]="rank" [ngModelOptions]="{standalone: true}"></ion-input>
+                        <!--<ion-label>S-Klasse:</ion-label>
                         <ion-select [(ngModel)]="sKlasse" placeholder="Auswählen" [ngModelOptions]="{standalone:true}">
                             <ion-option value="1">1</ion-option>
                             <ion-option value="2">2</ion-option>
                             <ion-option value="3">3</ion-option>
-                        </ion-select>
+                        </ion-select>-->
                     </ion-item>
                 </ion-list>
                 <!--<ion-item>

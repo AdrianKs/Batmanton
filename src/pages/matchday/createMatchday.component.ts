@@ -1,15 +1,11 @@
-//todo
-//Adressvorlagen bearbeiten
-//Team (altersklasse, sklasse)
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
 import { AddTeamToMatchdayComponent } from './addTeamToMatchday.component';
 import { TemplateComponent } from '../templates/template.component';
 import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import firebase from 'firebase';
 import {Utilities} from '../../app/utilities';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-createMatchday',
@@ -21,7 +17,7 @@ export class CreateMatchdayComponent implements OnInit {
   public createMatchdayForm;
   templateChecked: boolean;
   dataTemplate: any;
-  match = {id: this.id, opponent: this.opponent, team: this.team, home: this.home, location: {street: this.street, zipcode: this.zipcode}, time: this.time, pendingPlayers: this.pendingPlayersArray};
+  match = {id: this.id, opponent: this.opponent, team: this.team, home: this.home, location: {street: this.street, zipcode: this.zipcode}, time: this.time = new Date().toISOString(), pendingPlayers: this.pendingPlayersArray};
   id: any;
   opponent: string;
   team: any;
@@ -29,6 +25,7 @@ export class CreateMatchdayComponent implements OnInit {
   street: string;
   zipcode: string;
   time: String;
+  maxYear: any;
   pendingPlayersArray = [];
   relevantTeams: any;
   formValid: boolean = true;
@@ -54,6 +51,7 @@ export class CreateMatchdayComponent implements OnInit {
     this.zipcodeChanged = false;
     this.timeChanged = false;
     this.templateChecked = false;
+    this.maxYear = (parseInt(new Date().toISOString().slice(0,4))+1).toString();
   }
 
 
@@ -189,9 +187,6 @@ export class CreateMatchdayComponent implements OnInit {
       }
       if (this.zipcodeChanged == false){
         this.match.location.zipcode = "";
-      }
-      if (this.timeChanged == false){
-        this.match.time = "0";
       }
 
       this.match.id = this.makeid();

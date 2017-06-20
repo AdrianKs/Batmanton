@@ -1,7 +1,7 @@
 /**
  * Created by kochsiek on 08.12.2016.
  */
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {NavController, LoadingController, AlertController} from 'ionic-angular';
 import {FormBuilder, Validators, FormControl} from '@angular/forms';
 import {AuthData} from '../../providers/auth-data';
@@ -20,14 +20,10 @@ export class RegisterComponent {
   public signupForm;
   public passwordGroup;
   gender: string = '';
-  team: string = '';
-  teams: any = [];
-  relevantTeams = this.utilities.allTeams;
   firstnameChanged: boolean = false;
   lastnameChanged: boolean = false;
   birthdayChanged: boolean = false;
   genderChanged: boolean = false;
-  teamChanged: boolean = false;
   emailChanged: boolean = false;
   passwordChanged: boolean = false;
   passwordConfirmChanged: boolean = false;
@@ -53,6 +49,11 @@ export class RegisterComponent {
     this.passwordGroup = this.signupForm.controls.passwords;
   }
 
+  /**
+   * This method checks if the two password fields match
+   * @param group
+   * @returns {any}
+   */
   matchPassword(group) {
     let password = group.controls.password;
     let confirm = group.controls.passwordConfirm;
@@ -71,16 +72,16 @@ export class RegisterComponent {
     this[field + "Changed"] = true;
   }
 
-  birthdaySelectChanged() {
-    this.relevantTeams = this.utilities.getRelevantTeams(this.signupForm.value.birthday);
-    if(this.team != undefined && this.utilities.allTeamsVal[this.team] != undefined) {
-      if (this.team != "0" && this.utilities.allTeamsVal[this.team].ageLimit != 0) {
-        if (this.utilities.allTeamsVal[this.team].ageLimit < this.utilities.calculateAge(this.signupForm.value.birthday)) {
-          this.team = "0";
-        }
-      }
-    }
-  }
+  // birthdaySelectChanged() {
+    // this.relevantTeams = this.utilities.getRelevantTeams(this.signupForm.value.birthday);
+    // if(this.team != undefined && this.utilities.allTeamsVal[this.team] != undefined) {
+    //   if (this.team != "0" && this.utilities.allTeamsVal[this.team].ageLimit != 0) {
+    //     if (this.utilities.allTeamsVal[this.team].ageLimit < this.utilities.calculateAge(this.signupForm.value.birthday)) {
+    //       this.team = "0";
+    //     }
+    //   }
+    // }
+  // }
 
   /**
    * This function is needed, since the select box can for some reason not be validated in formcontrol,
@@ -91,10 +92,10 @@ export class RegisterComponent {
     this.genderChanged = true;
   }
 
-  teamSelectChanged(input) {
-    this.team = input;
-    this.teamChanged = true;
-  }
+  // teamSelectChanged(input) {
+  //   this.team = input;
+  //   this.teamChanged = true;
+  // }
 
   /**
    * This function checks, if the input field starts with a capital letter
@@ -104,7 +105,6 @@ export class RegisterComponent {
     if (!NAME_REGEXP.test(c.value.charAt(0))) {
       return {"incorrectNameFormat": true}
     }
-    let field = "firstname";
     return null;
   }
 
@@ -132,10 +132,10 @@ export class RegisterComponent {
   signupUser() {
     this.submitAttempt = true;
 
-    if (!this.signupForm.valid || !this.gender || !this.team) {
+    // if (!this.signupForm.valid || !this.gender || !this.team) {
+    if (!this.signupForm.valid || !this.gender) {
       console.log(this.signupForm.value);
       console.log("gender: " + this.gender);
-      console.log("team: " + this.team);
     } else {
       this.utilities.setInRegister();
       this.authData.signupUser(
@@ -145,9 +145,9 @@ export class RegisterComponent {
         this.signupForm.value.lastname,
         this.signupForm.value.birthday,
         this.gender,
-        this.team
+        "0"
       ).then(() => {
-        this.utilities.addPlayerToTeam(this.team, this.utilities.user.uid);
+        // this.utilities.addPlayerToTeam(this.team, this.utilities.user.uid);
         this.showVerificationAlert();
       }, (error) => {
         this.loading.dismiss();
@@ -170,13 +170,16 @@ export class RegisterComponent {
     }
   }
 
+  /**
+   * This functions shows a alert to remind the user to verify his email
+   */
   private showVerificationAlert() {
       let confirm = this.alertCtrl.create({
         title: 'Bitte bestätigen Sie Ihre Email Adresse',
-        message: 'Ihnen wurde eine Bestäigunsmail zugesandt. Bitte bestätigen Sie Ihre Mail-Adresse.',
+        message: 'Ihnen wurde eine Bestäigungsmail zugesandt. Bitte bestätigen Sie Ihre Mail-Adresse.',
         buttons: [
           {
-            text: 'Okay',
+            text: 'Ok',
             handler: () => {
               this.navCtrl.setRoot(SelectProfilePictureComponent);
               this.utilities.setInRegister();

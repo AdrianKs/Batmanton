@@ -2,15 +2,12 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component, OnInit } from '@angular/core';
-import { ViewTeamComponent } from './viewTeam.component';
 import { NavController, AlertController } from 'ionic-angular';
 import { TeamsProvider } from '../../providers/teams-provider';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { EditPlayerComponent } from './editPlayers.component';
-import { document } from "@angular/platform-browser/src/facade/browser";
-import { Camera } from 'ionic-native';
 
 
 @Component({
@@ -34,7 +31,7 @@ export class CreateTeamComponent implements OnInit {
     teamPicId: any;
     changedPic: boolean = false;
     newTeamId: any;
-    sKlasse: any = "";
+    rank: number;
 
     ngOnInit(): void {
 
@@ -48,7 +45,8 @@ export class CreateTeamComponent implements OnInit {
         this.addTeamForm = formBuilder.group({
             TeamName: ['', Validators.compose([Validators.required])],
             maxAlt: ['', Validators.compose([Validators.required])],
-            altersBez: ['']
+            altersBez: [''],
+            rank: []
         });
         this.database = firebase.database();
     }
@@ -75,8 +73,8 @@ export class CreateTeamComponent implements OnInit {
         this.newTeamId = this.makeid();
         this.teamName = this.addTeamForm.value.TeamName;
         this.maxAlt = this.altersklasse;
-        if (this.teamName != "" && this.maxAlt != "" && this.teamArt != "" && this.sKlasse != "") {
-            this.teamsProvider.addNewTeam(this.newTeamId, this.maxAlt, this.teamName, this.teamArt, this.sKlasse).then(() => {
+        if (this.teamName != "" && this.maxAlt != "" && this.teamArt != "" && this.rank != 0) {
+            this.teamsProvider.addNewTeam(this.newTeamId, this.maxAlt, this.teamName, this.teamArt, this.rank).then(() => {
                 this.utilities.setTeams();
                 this.showSuccessAlert();
             })
@@ -118,7 +116,7 @@ export class CreateTeamComponent implements OnInit {
 
     addPlayers() {
         this.navCtrl.push(EditPlayerComponent, {
-            toRoot: 'yes',
+            toRoot: true,
             teamId: this.newTeamId,
             maxAge: this.maxAlt
         });

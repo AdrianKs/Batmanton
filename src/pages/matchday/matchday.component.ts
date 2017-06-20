@@ -1,5 +1,3 @@
-//todo
-//bilder
 import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, LoadingController } from 'ionic-angular';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component';
@@ -7,7 +5,6 @@ import { CreateMatchdayComponent } from './createMatchday.component';
 import { MyGamesProvider } from '../../providers/myGames-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-matchday',

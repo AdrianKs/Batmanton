@@ -28,7 +28,6 @@ export class Utilities {
   constructor(public alertCtrl: AlertController) {
     this.fireAuth = firebase.auth();
     this.setInvites();
-    // this.setPlayers();
   }
 
   setInRegister(): void {
@@ -41,7 +40,6 @@ export class Utilities {
   setUserData(): void {
     firebase.database().ref('clubs/12/players/' + this.user.uid).once('value', snapshot => {
       if (snapshot.val() != null) {
-        console.log("in snapshot");
         this.userData = snapshot.val();
         this.userLoaded = true;
       }
@@ -183,7 +181,7 @@ export class Utilities {
 
   getPlayer(userID: any): any {
     return firebase.database().ref('clubs/12/players/' + userID).once('value')
-      .then(user => {console.log("in utilities then"); return user});
+      .then(user => { return user;});
   }
 
   updatePlayer(userID: any, data: any): any {
@@ -214,6 +212,11 @@ export class Utilities {
     }
   }
 
+  /**
+   * This functions hashes the clubpassword, that the user needs to enter when he starts the app for the first time
+   * @param password entered by the user
+   * @returns {number} hashed password
+   */
   hashPassword(password): any {
     let hash = 0, i, chr, len;
     if (password.length === 0) return hash;
@@ -228,8 +231,6 @@ export class Utilities {
   countOpen(){
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       this.counterOpen = 0;
-      let inviteArray = [];
-      let counter = 0;
       for (let i in snapshot.val()) {
         if(snapshot.val()[i].recipient == this.user.uid && snapshot.val()[i].state == 0){
           this.counterOpen++;
