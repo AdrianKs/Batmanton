@@ -12,7 +12,6 @@ import { LoginComponent } from "../pages/login/login.component";
 import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
 import { firebaseConfigTest } from "./firebaseAppData";
-import { setUser } from "./globalVars";
 import { AuthData } from '../providers/auth-data';
 import { Utilities } from './utilities';
 import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
@@ -113,7 +112,6 @@ export class MyApp {
   }
 
   checkPlatform(userID) {
-    let flag = false;
     let tempPlat = "";
 
     if (this.platform.is('ios')) {

@@ -104,7 +104,6 @@ export class RegisterComponent {
     if (!NAME_REGEXP.test(c.value.charAt(0))) {
       return {"incorrectNameFormat": true}
     }
-    let field = "firstname";
     return null;
   }
 

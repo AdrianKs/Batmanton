@@ -228,8 +228,6 @@ export class Utilities {
   countOpen(){
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       this.counterOpen = 0;
-      let inviteArray = [];
-      let counter = 0;
       for (let i in snapshot.val()) {
         if(snapshot.val()[i].recipient == this.user.uid && snapshot.val()[i].state == 0){
           this.counterOpen++;
