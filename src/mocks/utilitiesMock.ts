@@ -244,7 +244,6 @@ export class UtilitiesMock {
   }
 
   setPlayers(): Promise<{status: string}> {
-      var test = this.allPlayers;
       return new Promise((resolve)=>{
          resolve('success');
       }).catch((reject)=>{
