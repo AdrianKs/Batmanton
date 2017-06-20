@@ -11,13 +11,13 @@ import { UserManagementComponent } from '../pages/userManagement/userManagement.
 import { LoginComponent } from "../pages/login/login.component";
 import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
-import { firebaseConfigTest } from "./firebaseAppData";
+import {firebaseConfig} from "./firebaseAppData";
 import { setUser } from "./globalVars";
 import { AuthData } from '../providers/auth-data';
 import { Utilities } from './utilities';
 import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
 
-firebase.initializeApp(firebaseConfigTest);
+firebase.initializeApp(firebaseConfig);
 
 @Component({
   templateUrl: 'app.html',

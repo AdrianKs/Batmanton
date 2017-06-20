@@ -10324,6 +10324,7 @@ ion-fab-list {
   flex-direction: column;
   -webkit-align-items: center;
   -ms-flex-align: center;
+  -ms-grid-row-align: center;
   align-items: center;
   margin: 66px 0;
   min-width: 56px;
@@ -10694,30 +10695,35 @@ ion-row[wrap] {
 ion-row[top] {
   -webkit-align-items: flex-start;
   -ms-flex-align: start;
+  -ms-grid-row-align: flex-start;
   align-items: flex-start;
 }
 
 ion-row[bottom] {
   -webkit-align-items: flex-end;
   -ms-flex-align: end;
+  -ms-grid-row-align: flex-end;
   align-items: flex-end;
 }
 
 ion-row[center] {
   -webkit-align-items: center;
   -ms-flex-align: center;
+  -ms-grid-row-align: center;
   align-items: center;
 }
 
 ion-row[stretch] {
   -webkit-align-items: stretch;
   -ms-flex-align: stretch;
+  -ms-grid-row-align: stretch;
   align-items: stretch;
 }
 
 ion-row[baseline] {
   -webkit-align-items: baseline;
   -ms-flex-align: baseline;
+  -ms-grid-row-align: baseline;
   align-items: baseline;
 }
 
@@ -10745,14 +10751,12 @@ ion-col[bottom] {
 ion-col[center] {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
-  -ms-grid-row-align: center;
   align-self: center;
 }
 
 ion-col[stretch] {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
-  -ms-grid-row-align: stretch;
   align-self: stretch;
 }
 
@@ -11099,6 +11103,7 @@ ion-textarea {
 .item.item-textarea {
   -webkit-align-items: stretch;
   -ms-flex-align: stretch;
+  -ms-grid-row-align: stretch;
   align-items: stretch;
 }
 
@@ -11511,6 +11516,7 @@ ion-item-divider[sticky] {
 ion-input.item {
   -webkit-align-items: flex-start;
   -ms-flex-align: start;
+  -ms-grid-row-align: flex-start;
   align-items: flex-start;
 }
 
@@ -11572,6 +11578,7 @@ ion-reorder {
   flex: 1;
   -webkit-align-items: center;
   -ms-flex-align: center;
+  -ms-grid-row-align: center;
   align-items: center;
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -12625,7 +12632,6 @@ ion-label[fixed] {
 .item-label-floating ion-label {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
-  -ms-grid-row-align: stretch;
   align-self: stretch;
   width: auto;
   max-width: 100%;
@@ -12650,7 +12656,6 @@ ion-label[floating] {
 .item-label-floating ion-select {
   -webkit-align-self: stretch;
   -ms-flex-item-align: stretch;
-  -ms-grid-row-align: stretch;
   align-self: stretch;
   max-width: 100%;
 }
@@ -14630,7 +14635,6 @@ ion-popover {
 .item-range ion-range ion-label {
   -webkit-align-self: center;
   -ms-flex-item-align: center;
-  -ms-grid-row-align: center;
   align-self: center;
 }
 
@@ -16643,7 +16647,6 @@ ion-select {
   position: relative;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
-  -ms-grid-row-align: center;
   align-self: center;
   width: 18px;
   height: 18px;
@@ -17691,7 +17694,6 @@ ion-spinner.spinner-paused svg {
   overflow: hidden;
   -webkit-align-self: center;
   -ms-flex-item-align: center;
-  -ms-grid-row-align: center;
   align-self: center;
   min-width: 26px;
   max-width: 100%;
@@ -26683,8 +26685,8 @@ form button {
   height: 30px;
   border-top-left-radius: 100%;
   padding: 0;
-  margin-bottom: -4px;
-  margin-right: -4px;
+  margin-bottom: -2px;
+  margin-right: -2px;
   background-color: black;
 }
 
@@ -26693,7 +26695,7 @@ form button {
   height: 30px;
   border-top-right-radius: 100%;
   padding: 0;
-  margin-bottom: -4px;
+  margin-bottom: -2px;
   background-color: black;
 }
 
@@ -26702,7 +26704,7 @@ form button {
   height: 30px;
   border-bottom-right-radius: 100%;
   padding: 0;
-  margin-left: -4px;
+  margin-left: -2px;
   background-color: black;
 }
 
@@ -26719,8 +26721,8 @@ form button {
   height: 55px;
   border-top-left-radius: 100%;
   padding: 0;
-  margin-bottom: 0px;
-  margin-right: 0px;
+  margin-bottom: -1px;
+  margin-right: -1px;
   background-color: black;
 }
 
@@ -26729,7 +26731,7 @@ form button {
   height: 55px;
   border-top-right-radius: 100%;
   padding: 0;
-  margin-bottom: 0px;
+  margin-bottom: -1px;
   background-color: black;
 }
 
@@ -26738,7 +26740,7 @@ form button {
   height: 55px;
   border-bottom-right-radius: 100%;
   padding: 0;
-  margin-left: 0px;
+  margin-left: -1px;
   background-color: black;
 }
 
