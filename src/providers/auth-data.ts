@@ -91,8 +91,6 @@ export class AuthData {
 
   changePushid(userid: string): any {
     window["plugins"].OneSignal.getIds(ids => {
-      console.log('getIds: ' + JSON.stringify(ids));
-      //alert("userId = " + ids.userId + ", pushToken = " + ids.pushToken);
       return firebase.database().ref('clubs/12/players/' + userid + '/pushid/' + ids.userId).set(
         true
       );
@@ -102,11 +100,8 @@ export class AuthData {
 
   logoutUser(): any {
     this.menuCtrl.close('mainMenu');
-    console.log("nach menu close");
     window["plugins"].OneSignal.getIds(ids => {
-      console.log('getIds: ' + JSON.stringify(ids));
       firebase.database().ref('clubs/12/players/' + this.utilities.user.uid + '/pushid').child(ids.userId).remove().then(() => {
-        console.log("in logout promise");
           return this.fireAuth.signOut();
       })
     })

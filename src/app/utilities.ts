@@ -236,11 +236,9 @@ export class Utilities {
     };
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
-        console.log("Notification Post Success:", successResponse);
       },
       function (failedResponse) {
         console.log("Notification Post Failed: ", failedResponse);
-        //alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
       }
     )
   }
@@ -255,21 +253,16 @@ export class Utilities {
     };
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
-        console.log("Notification Post Success:", successResponse);
         firebase.database().ref('clubs/12/matches/' + matchID).update({delayedNotificationID: successResponse.id});
       },
       function (failedResponse) {
         console.log("Notification Post Failed: ", failedResponse);
-        //alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
       }
     )
   }
 
   cancelPushNotification(notificationID: any) {
-    //window["plugins"].OneSignal.cancelNotification(notificationID);
     let url = 'https://onesignal.com/api/v1/notifications/' + notificationID + '?app_id=c72ec221-4425-4844-83fe-288ffd22a55a';
-    console.log("in method cancelPushNotification");
-    // let headers = new Headers({'Authorization': 'Basic'});
     let headers = new Headers({'Authorization': 'Basic NjhmYzZkZmQtZWNiMC00NjU5LWE4ZjEtZjA3ZWI4OTEwMzM3'});
     let options = new RequestOptions({
       headers: headers
@@ -278,7 +271,6 @@ export class Utilities {
     this.http
       .delete(url, options)
       .toPromise()
-      .then((res:Response) => console.log(res))
       .catch(this.handleError);
   }
 
@@ -320,7 +312,6 @@ export class Utilities {
 
   transformTime(time: String) {
     if(time != undefined){
-      console.log(time.split("T")[0] + ", um " + time.split("T")[1].split("Z")[0]);
       return time.split("T")[0] + ", um " + time.split("T")[1].split("Z")[0];
     }
   }
