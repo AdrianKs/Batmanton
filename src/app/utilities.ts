@@ -151,7 +151,7 @@ export class Utilities {
       let age = this.calculateAge(birthdayString);
       let relevantTeams: Array<any> = [];
       this.allTeams.forEach(function (team) {
-        if (team.ageLimit > age || team.ageLimit == 0) {
+        if (team.ageLimit > age || team.ageLimit === "0") {
           relevantTeams.push(team);
         }
       });

@@ -7,6 +7,7 @@ import { NavController, AlertController, LoadingController } from 'ionic-angular
 import { Utilities } from '../../app/utilities';
 import { CreateTeamComponent } from './createNewTeam.component';
 import { TeamsProvider } from '../../providers/teams-provider';
+import firebase from 'firebase';
 
 
 @Component({

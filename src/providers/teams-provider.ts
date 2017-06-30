@@ -58,9 +58,11 @@ export class TeamsProvider {
       for (let i in snapshot.val()) {
         teamArray[counter] = snapshot.val()[i];
         teamArray[counter].id = i;
+        teamArray[counter].rank = parseInt(snapshot.val()[i].rank);
         counter++;
       }
       this.teams = teamArray;
+      this.teams = _.sortBy(this.teams, "rank");
     })
   }
 
