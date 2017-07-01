@@ -217,7 +217,7 @@ export class MyGamesComponent implements OnInit {
       console.log(inviteItem.match);
       let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird am Spiel am " + this.Utilities.transformTime(match.time) + " gegen " + match.opponent + " teilnehmen.";
       this.Utilities.sendPushNotification(this.pushIDsAdmins
-        , matchInformationString, match);
+        , matchInformationString, match.id);
     }
     this.loadData(false, null);
   }
@@ -313,7 +313,7 @@ export class MyGamesComponent implements OnInit {
             }
             let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird nicht am Spiel am " + this.Utilities.transformTime(match.time) + " gegen " + match.opponent + " teilnehmen.\nGrund: " + excuseInfo;
             this.Utilities.sendPushNotification(this.pushIDsAdmins
-              , matchInformationString, match);
+              , matchInformationString, match.id);
           }
           this.loadData(false, null);
         }
@@ -381,7 +381,7 @@ export class MyGamesComponent implements OnInit {
                     }
                     let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird nicht am Spiel am " + this.Utilities.transformTime(match.time) + " gegen " + match.opponent + " teilnehmen.\nGrund: " + excuseInfo;
                     this.Utilities.sendPushNotification(this.pushIDsAdmins
-                      , matchInformationString, match);
+                      , matchInformationString, match.id);
                   }
                   this.loadData(false, null);
                 }

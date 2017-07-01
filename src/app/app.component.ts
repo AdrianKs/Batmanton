@@ -70,7 +70,10 @@ export class MyApp {
             if(this.notificationPressed){
               if(this.notificationGameItem){
                 this.rootPage = MatchdayComponent;
-                this.nav.push(GameDetailsComponent, { gameItem: this.notificationGameItem });
+                this.utilities.getGameDetails(this.notificationGameItem.matchId)
+                  .then((gameItem) => {
+                    this.nav.push(GameDetailsComponent, { gameItem: gameItem.val() });
+                  });
                 this.notificationGameItem = null;
               } else {
                 this.rootPage = MyGamesComponent;
@@ -113,12 +116,15 @@ export class MyApp {
       // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
 
       let notificationOpenedCallback = (jsonData) => {
-        console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+        console.log('notificationOpenedCallback: ');
         console.log(jsonData);
         this.notificationGameItem = jsonData.notification.payload.additionalData;
         if(this.authenticated){
           if(this.notificationGameItem){
-            this.nav.push(GameDetailsComponent, { gameItem: this.notificationGameItem });
+            this.utilities.getGameDetails(this.notificationGameItem.matchId)
+              .then((gameItem) => {
+                this.nav.push(GameDetailsComponent, { gameItem: gameItem.val() });
+            });
             this.notificationGameItem = null;
           } else {
             this.nav.push(MyGamesComponent);

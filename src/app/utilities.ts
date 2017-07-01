@@ -229,16 +229,17 @@ export class Utilities {
     }
   }
 
-  sendPushNotification(pushIds: Array<any>, content: String, matchItem?: any) {
+  getGameDetails(gameId: any){
+    return firebase.database().ref('clubs/12/matches/' + gameId).once('value');
+  }
+
+  sendPushNotification(pushIds: Array<any>, content: String, matchId?: any) {
     let notificationObj = {
       contents: {en: content},
       include_player_ids: pushIds
     };
-    if (matchItem){
-      console.log("matchItem defined");
-      notificationObj = Object.assign (notificationObj, {data: matchItem});
-      console.log("hier kommt das notification item in push test");
-      console.log(notificationObj);
+    if (matchId){
+      notificationObj = Object.assign (notificationObj, {data: {matchId: matchId}});
     }
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
