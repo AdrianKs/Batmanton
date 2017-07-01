@@ -244,7 +244,13 @@ export class ViewTeamComponent implements OnInit {
         } else {
             this.updateTeamInfos(true);
         }
-
+        let alert = this.alertCtrl.create({
+            title: 'Team überarbeitet!',
+            message: 'Die Daten für dieses Team wurden angepasst.',
+            buttons: ['OK']
+        });
+        alert.present();
+        this.navCtrl.popToRoot();
     }
 
     editTeam() {

@@ -263,96 +263,96 @@ export class AddTeamToMatchdayComponent implements OnInit{
   }
 
   confirmPlayer(){
-    firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
-      pendingPlayers: this.pendingArray,
-      acceptedPlayers: this.acceptedArray,
-      declinedPlayers: this.declinedArray
-    });
-
-    firebase.database().ref('clubs/12/players').once('value', snapshot => {
-      for (let i in snapshot.val()){
-        for (let j in this.allPlayers){
-          if (this.allPlayers[j].id == i){
-            firebase.database().ref('clubs/12/players/' + i ).update({
-              helpCounter: this.allPlayers[j].helpCounter
-            });
-          }
-        }
-      }
-    });
-
-    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-      for (let i in snapshot.val()) {
-        for (let j in this.deletedArray){
-          if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.deletedArray[j]){
-            firebase.database().ref('clubs/12/invites/' + i).remove();
-          }
-        }
-      }
-    });
-
-    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-      for (let k in this.pendingArray){
-        for (let j in this.allPlayers){
-          if (this.allPlayers[j].id == this.pendingArray[k] && this.allPlayers[j].isDefault == false){
-            let inviteExists = false;
-            for (let i in snapshot.val()) {
-              if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.pendingArray[k]){
-                if (this.allPlayers[j].isMainTeam == false){
-                  firebase.database().ref('clubs/12/invites/').child(i).update({
-                    assist: true
-                  });
-                } else {
-                  firebase.database().ref('clubs/12/invites/').child(i).update({
-                    assist: false
-                  });
-                }
-                if (snapshot.val()[i].state != 0){
-                  //push-Benachrichtigung an snapshot.val()[i].recipient
-                  //Zugriff auf Spielerobjekt
-                  /*for (let j in this.allPlayers){
-                    let player;
-                    if (this.allPlayers[j].id == snapshot.val()[i].recipient){
-                      player = this.allPlayers[j];
-                    }
-                  }*/
-                }
-                firebase.database().ref('clubs/12/invites/' + i).update({
-                  state: 0
-                });
-                inviteExists = true;
-              }
-            }
-            if (inviteExists == false){
-              let id = this.makeid();
-              firebase.database().ref('clubs/12/invites/').child(id).set({
-                assist: false,
-                match: this.match.id.toString(),
-                recipient: this.pendingArray[k],
-                sender: this.Utilities.user.uid,
-                state: 0
-              });
-              if (this.allPlayers[j].isMainTeam == false){
-                firebase.database().ref('clubs/12/invites/').child(id).update({
-                  assist: true
-                });
-              }
-              //push-Benachrichtigung an this.pendingArray[k]
-              //Zugriff auf Spielerobjekt
-              /*for (let l in this.allPlayers){
-                let player;
-                if (this.allPlayers[l].id == this.pendingArray[k]){
-                  player = this.allPlayers[l];
-                }
-              }*/
-            }
-          }
-        }
-      }
-    });
     if (this.editMode == true){
       this.navCtrl.pop();
     } else {
+      firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
+        pendingPlayers: this.pendingArray,
+        acceptedPlayers: this.acceptedArray,
+        declinedPlayers: this.declinedArray
+      });
+
+      firebase.database().ref('clubs/12/players').once('value', snapshot => {
+        for (let i in snapshot.val()){
+          for (let j in this.allPlayers){
+            if (this.allPlayers[j].id == i){
+              firebase.database().ref('clubs/12/players/' + i ).update({
+                helpCounter: this.allPlayers[j].helpCounter
+              });
+            }
+          }
+        }
+      });
+
+      firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+        for (let i in snapshot.val()) {
+          for (let j in this.deletedArray){
+            if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.deletedArray[j]){
+              firebase.database().ref('clubs/12/invites/' + i).remove();
+            }
+          }
+        }
+      });
+
+      firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+        for (let k in this.pendingArray){
+          for (let j in this.allPlayers){
+            if (this.allPlayers[j].id == this.pendingArray[k] && this.allPlayers[j].isDefault == false){
+              let inviteExists = false;
+              for (let i in snapshot.val()) {
+                if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.pendingArray[k]){
+                  if (this.allPlayers[j].isMainTeam == false){
+                    firebase.database().ref('clubs/12/invites/').child(i).update({
+                      assist: true
+                    });
+                  } else {
+                    firebase.database().ref('clubs/12/invites/').child(i).update({
+                      assist: false
+                    });
+                  }
+                  if (snapshot.val()[i].state != 0){
+                    //push-Benachrichtigung an snapshot.val()[i].recipient
+                    //Zugriff auf Spielerobjekt
+                    /*for (let j in this.allPlayers){
+                      let player;
+                      if (this.allPlayers[j].id == snapshot.val()[i].recipient){
+                        player = this.allPlayers[j];
+                      }
+                    }*/
+                  }
+                  firebase.database().ref('clubs/12/invites/' + i).update({
+                    state: 0
+                  });
+                  inviteExists = true;
+                }
+              }
+              if (inviteExists == false){
+                let id = this.makeid();
+                firebase.database().ref('clubs/12/invites/').child(id).set({
+                  assist: false,
+                  match: this.match.id.toString(),
+                  recipient: this.pendingArray[k],
+                  sender: this.Utilities.user.uid,
+                  state: 0
+                });
+                if (this.allPlayers[j].isMainTeam == false){
+                  firebase.database().ref('clubs/12/invites/').child(id).update({
+                    assist: true
+                  });
+                }
+                //push-Benachrichtigung an this.pendingArray[k]
+                //Zugriff auf Spielerobjekt
+                /*for (let l in this.allPlayers){
+                  let player;
+                  if (this.allPlayers[l].id == this.pendingArray[k]){
+                    player = this.allPlayers[l];
+                  }
+                }*/
+              }
+            }
+          }
+        }
+      });   
       this.navCtrl.popToRoot();
     }
   }

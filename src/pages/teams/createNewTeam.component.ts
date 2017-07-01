@@ -31,7 +31,7 @@ export class CreateTeamComponent implements OnInit {
     teamPicId: any;
     changedPic: boolean = false;
     newTeamId: any;
-    rank: number;
+    rank: any;
 
     ngOnInit(): void {
 
@@ -46,7 +46,7 @@ export class CreateTeamComponent implements OnInit {
             TeamName: ['', Validators.compose([Validators.required])],
             maxAlt: ['', Validators.compose([Validators.required])],
             altersBez: [''],
-            rank: []
+            rank: ['']
         });
         this.database = firebase.database();
     }
@@ -73,7 +73,7 @@ export class CreateTeamComponent implements OnInit {
         this.newTeamId = this.makeid();
         this.teamName = this.addTeamForm.value.TeamName;
         this.maxAlt = this.altersklasse;
-        if (this.teamName != "" && this.maxAlt != "" && this.teamArt != "" && this.rank != 0) {
+        if (this.teamName != "" && this.maxAlt != "" && this.teamArt != "" && this.rank != undefined) {
             this.teamsProvider.addNewTeam(this.newTeamId, this.maxAlt, this.teamName, this.teamArt, this.rank).then(() => {
                 this.utilities.setTeams();
                 this.showSuccessAlert();
