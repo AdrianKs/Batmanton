@@ -14,6 +14,7 @@ import {firebaseConfigTest} from "./firebaseAppData";
 import { AuthData } from '../providers/auth-data';
 import { Utilities } from './utilities';
 import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
+import {GameDetailsComponent} from "../pages/gameDetails/gameDetails.component";
 
 firebase.initializeApp(firebaseConfigTest);
 
@@ -39,6 +40,7 @@ export class MyApp {
   pages: Array<{ title: string, component: any, icon: string, visible: boolean }>;
   notificationPressed: boolean = false;
   authenticated: boolean = false;
+  notificationGameItem: any;
 
   constructor(public platform: Platform, public authData: AuthData, public utilities: Utilities, public alertCtrl: AlertController) {
 
@@ -66,7 +68,13 @@ export class MyApp {
         if (this.nav.getActive() == undefined) {
           if (this.loadUserCredentials()) {
             if(this.notificationPressed){
-              this.rootPage = MyGamesComponent;
+              if(this.notificationGameItem){
+                this.rootPage = MatchdayComponent;
+                this.nav.push(GameDetailsComponent, { gameItem: this.notificationGameItem });
+                this.notificationGameItem = null;
+              } else {
+                this.rootPage = MyGamesComponent;
+              }
             } else {
               this.rootPage = MatchdayComponent;
               this.authenticated = true;
@@ -106,8 +114,15 @@ export class MyApp {
 
       let notificationOpenedCallback = (jsonData) => {
         console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+        console.log(jsonData);
+        this.notificationGameItem = jsonData.notification.payload.additionalData;
         if(this.authenticated){
-          this.nav.push(MyGamesComponent);
+          if(this.notificationGameItem){
+            this.nav.push(GameDetailsComponent, { gameItem: this.notificationGameItem });
+            this.notificationGameItem = null;
+          } else {
+            this.nav.push(MyGamesComponent);
+          }
         }
         else{
           this.notificationPressed = true;

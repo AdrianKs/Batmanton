@@ -234,8 +234,11 @@ export class Utilities {
       contents: {en: content},
       include_player_ids: pushIds
     };
-    if (!matchItem.isUndefined()){
-      notificationObj = Object.assign (notificationObj, {additionalData: matchItem});
+    if (matchItem){
+      console.log("matchItem defined");
+      notificationObj = Object.assign (notificationObj, {data: matchItem});
+      console.log("hier kommt das notification item in push test");
+      console.log(notificationObj);
     }
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
