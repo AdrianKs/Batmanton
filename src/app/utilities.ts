@@ -229,11 +229,14 @@ export class Utilities {
     }
   }
 
-  sendPushNotification(pushIds: Array<any>, content: String) {
+  sendPushNotification(pushIds: Array<any>, content: String, matchItem?: any) {
     let notificationObj = {
       contents: {en: content},
       include_player_ids: pushIds
     };
+    if (!matchItem.isUndefined()){
+      notificationObj = Object.assign (notificationObj, {additionalData: matchItem});
+    }
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
       },

@@ -935,7 +935,7 @@ export class GameDetailsComponent implements OnInit {
       console.log("ruft pushfunction");
       console.log(inviteItem.match);
       let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird am Spiel am " + this.Utilities.transformTime(this.gameItem.time) + " gegen " + this.gameItem.opponent + " teilnehmen.";
-      this.Utilities.sendPushNotification(this.pushIDsAdmins, matchInformationString);
+      this.Utilities.sendPushNotification(this.pushIDsAdmins, matchInformationString, this.gameItem);
     }
     this.loadData(false, null);
   }
@@ -1024,7 +1024,7 @@ export class GameDetailsComponent implements OnInit {
             }
             let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird nicht am Spiel am " + this.Utilities.transformTime(this.gameItem.time) + " gegen " + this.gameItem.opponent + " teilnehmen.\nGrund: " + excuseInfo;
             this.Utilities.sendPushNotification(this.pushIDsAdmins
-              , matchInformationString);
+              , matchInformationString, this.gameItem);
           }
           this.loadData(false, null);
         }
@@ -1085,7 +1085,7 @@ export class GameDetailsComponent implements OnInit {
                     }
                     let matchInformationString = "" + this.dataUser.firstname + " " + this.dataUser.lastname + " wird nicht am Spiel am " + this.Utilities.transformTime(this.gameItem.time) + " gegen " + this.gameItem.opponent + " teilnehmen.\nGrund: " + excuseInfo;
                     this.Utilities.sendPushNotification(this.pushIDsAdmins
-                      , matchInformationString);
+                      , matchInformationString, this.gameItem);
                   }
                   this.loadData(false, null);
                 }
