@@ -26683,8 +26683,8 @@ form button {
   height: 30px;
   border-top-left-radius: 100%;
   padding: 0;
-  margin-bottom: -4px;
-  margin-right: -4px;
+  margin-bottom: -2px;
+  margin-right: -2px;
   background-color: black;
 }
 
@@ -26693,7 +26693,7 @@ form button {
   height: 30px;
   border-top-right-radius: 100%;
   padding: 0;
-  margin-bottom: -4px;
+  margin-bottom: -2px;
   background-color: black;
 }
 
@@ -26702,7 +26702,7 @@ form button {
   height: 30px;
   border-bottom-right-radius: 100%;
   padding: 0;
-  margin-left: -4px;
+  margin-left: -2px;
   background-color: black;
 }
 
@@ -26719,8 +26719,8 @@ form button {
   height: 55px;
   border-top-left-radius: 100%;
   padding: 0;
-  margin-bottom: 0px;
-  margin-right: 0px;
+  margin-bottom: -1px;
+  margin-right: -1px;
   background-color: black;
 }
 
@@ -26729,7 +26729,7 @@ form button {
   height: 55px;
   border-top-right-radius: 100%;
   padding: 0;
-  margin-bottom: 0px;
+  margin-bottom: -1px;
   background-color: black;
 }
 
@@ -26738,7 +26738,7 @@ form button {
   height: 55px;
   border-bottom-right-radius: 100%;
   padding: 0;
-  margin-left: 0px;
+  margin-left: -1px;
   background-color: black;
 }
 
@@ -27007,6 +27007,15 @@ page-gameDetails .game-details-form {
 
 page-gameDetails .picture-click:active {
   opacity: 0.5;
+}
+
+.accept-decline-container {
+  padding-top: 10px;
+  padding-bottom: 2px;
+}
+
+.decline-button {
+  padding-left: 6px;
 }
 
 .templates-alert .alert-wrapper {

@@ -25,7 +25,6 @@ export class MyGamesProvider {
             this.dataGames = gamesArray;
             this.dataGames = _.sortBy(this.dataGames, "time").reverse();
         });
-        //return this.dataGames;
     }
 
     setPlayers() {
@@ -40,7 +39,6 @@ export class MyGamesProvider {
             this.dataPlayer = playerArray;
             this.dataPlayer = _.sortBy(this.dataPlayer, "lastname");
         })
-        //return this.dataPlayer;
     }
 
     setInvites() {
@@ -54,7 +52,6 @@ export class MyGamesProvider {
             }
             this.dataInvites = inviteArray;
         });
-        //return this.dataInvites;
     }
 
 }

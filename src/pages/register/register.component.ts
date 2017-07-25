@@ -19,14 +19,10 @@ export class RegisterComponent {
   public signupForm;
   public passwordGroup;
   gender: string = '';
-  // team: string = '';
-  // teams: any = [];
-  // relevantTeams = this.utilities.allTeams;
   firstnameChanged: boolean = false;
   lastnameChanged: boolean = false;
   birthdayChanged: boolean = false;
   genderChanged: boolean = false;
-  // teamChanged: boolean = false;
   emailChanged: boolean = false;
   passwordChanged: boolean = false;
   passwordConfirmChanged: boolean = false;
@@ -52,6 +48,11 @@ export class RegisterComponent {
     this.passwordGroup = this.signupForm.controls.passwords;
   }
 
+  /**
+   * This method checks if the two password fields match
+   * @param group
+   * @returns {any}
+   */
   matchPassword(group) {
     let password = group.controls.password;
     let confirm = group.controls.passwordConfirm;
@@ -103,7 +104,6 @@ export class RegisterComponent {
     if (!NAME_REGEXP.test(c.value.charAt(0))) {
       return {"incorrectNameFormat": true}
     }
-    let field = "firstname";
     return null;
   }
 
@@ -135,7 +135,6 @@ export class RegisterComponent {
     if (!this.signupForm.valid || !this.gender) {
       console.log(this.signupForm.value);
       console.log("gender: " + this.gender);
-      // console.log("team: " + this.team);
     } else {
       window["plugins"].OneSignal.getIds(ids => {
         console.log('getIds: ' + JSON.stringify(ids));
@@ -173,13 +172,16 @@ export class RegisterComponent {
     }
   }
 
+  /**
+   * This functions shows a alert to remind the user to verify his email
+   */
   private showVerificationAlert() {
       let confirm = this.alertCtrl.create({
         title: 'Bitte bestätigen Sie Ihre Email Adresse',
-        message: 'Ihnen wurde eine Bestäigunsmail zugesandt. Bitte bestätigen Sie Ihre Mail-Adresse.',
+        message: 'Ihnen wurde eine Bestäigungsmail zugesandt. Bitte bestätigen Sie Ihre Mail-Adresse.',
         buttons: [
           {
-            text: 'Okay',
+            text: 'Ok',
             handler: () => {
               this.navCtrl.setRoot(SelectProfilePictureComponent);
               this.utilities.setInRegister();

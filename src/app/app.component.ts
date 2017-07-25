@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, AlertController } from 'ionic-angular';
 import { StatusBar, Splashscreen } from 'ionic-native';
-
 import { AboutComponent } from '../pages/about/about.component';
 import { InvitesComponent } from '../pages/invites/invites.component';
 import { MatchdayComponent } from '../pages/matchday/matchday.component';
@@ -11,11 +10,11 @@ import { UserManagementComponent } from '../pages/userManagement/userManagement.
 import { LoginComponent } from "../pages/login/login.component";
 import { TeamsComponent } from "../pages/teams/teams.component";
 import firebase from 'firebase';
-import { firebaseConfigTest } from "./firebaseAppData";
-import { setUser } from "./globalVars";
+import {firebaseConfigTest} from "./firebaseAppData";
 import { AuthData } from '../providers/auth-data';
 import { Utilities } from './utilities';
 import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
+import {GameDetailsComponent} from "../pages/gameDetails/gameDetails.component";
 
 firebase.initializeApp(firebaseConfigTest);
 
@@ -41,6 +40,7 @@ export class MyApp {
   pages: Array<{ title: string, component: any, icon: string, visible: boolean }>;
   notificationPressed: boolean = false;
   authenticated: boolean = false;
+  notificationGameItem: any;
 
   constructor(public platform: Platform, public authData: AuthData, public utilities: Utilities, public alertCtrl: AlertController) {
 
@@ -68,7 +68,16 @@ export class MyApp {
         if (this.nav.getActive() == undefined) {
           if (this.loadUserCredentials()) {
             if(this.notificationPressed){
-              this.rootPage = MyGamesComponent;
+              if(this.notificationGameItem){
+                this.rootPage = MatchdayComponent;
+                this.utilities.getGameDetails(this.notificationGameItem.matchId)
+                  .then((gameItem) => {
+                    this.nav.push(GameDetailsComponent, { gameItem: gameItem.val() });
+                  });
+                this.notificationGameItem = null;
+              } else {
+                this.rootPage = MyGamesComponent;
+              }
             } else {
               this.rootPage = MatchdayComponent;
               this.authenticated = true;
@@ -107,9 +116,19 @@ export class MyApp {
       // window["plugins"].OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
 
       let notificationOpenedCallback = (jsonData) => {
-        console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+        console.log('notificationOpenedCallback: ');
+        console.log(jsonData);
+        this.notificationGameItem = jsonData.notification.payload.additionalData;
         if(this.authenticated){
-          this.nav.push(MyGamesComponent);
+          if(this.notificationGameItem){
+            this.utilities.getGameDetails(this.notificationGameItem.matchId)
+              .then((gameItem) => {
+                this.nav.push(GameDetailsComponent, { gameItem: gameItem.val() });
+            });
+            this.notificationGameItem = null;
+          } else {
+            this.nav.push(MyGamesComponent);
+          }
         }
         else{
           this.notificationPressed = true;
@@ -139,7 +158,6 @@ export class MyApp {
   }
 
   checkPlatform(userID) {
-    let flag = false;
     let tempPlat = "";
 
     if (this.platform.is('ios')) {
@@ -151,17 +169,6 @@ export class MyApp {
     }
 
     this.utilities.updatePlayer(userID, {platform: tempPlat});
-
-    /*for (let i = 0; i <= this.utilities.allPlayers.length - 1; i++) {
-      console.log(userID + ' ' + this.utilities.allPlayers[i].id)
-      if (userID == this.utilities.allPlayers[i].id) {
-        if (this.utilities.allPlayers[i].platform != tempPlat) {
-          firebase.database().ref('clubs/12/players/' + userID).update({
-            platform: tempPlat
-          });
-        }
-      }
-    }*/
   }
 
   /**
@@ -175,9 +182,6 @@ export class MyApp {
   checkIfUserDeleted(userID: any): any {
     this.utilities.getPlayer(userID)
       .then(user => {
-        console.log("in then");
-        console.log(user);
-        console.log(user.val());
         if (user.val() != null) {
           if (!this.utilities.inRegister) {
             this.checkForVerification();

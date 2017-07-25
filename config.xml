@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.batmanton" version="0.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Batmanton</name>
+<widget id="com.batmanton" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Badminton Heimaterde</name>
     <description>An awesome Ionic/Cordova app.</description>
     <author email="project.batmanton@gmail.com" href="https://batmanton-f8643.firebaseapp.com/">Project Batmanton Team</author>
     <content src="index.html" />
@@ -63,12 +63,14 @@
     <feature name="StatusBar">
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
-    <icon src="resources/ios/icon/icon-small@3x.png" />
-    <plugin name="cordova-plugin-camera" spec="~2.3.1" />
-    <plugin name="cordova-plugin-device" spec="~1.1.3" />
-    <plugin name="cordova-plugin-splashscreen" spec="~4.0.0" />
-    <plugin name="cordova-plugin-statusbar" spec="~2.2.0" />
-    <plugin name="cordova-plugin-whitelist" spec="~1.3.0" />
-    <plugin name="ionic-plugin-keyboard" spec="~2.2.1" />
-    <plugin name="onesignal-cordova-plugin" spec="~2.0.11" />
+    <icon src="resources\android\icon\drawable-xhdpi-icon.png" />
+    <engine name="android" spec="^6.2.3" />
+    <plugin name="cordova-plugin-camera" spec="^2.3.1" />
+    <plugin name="cordova-plugin-console" spec="^1.0.7" />
+    <plugin name="cordova-plugin-device" spec="^1.1.6" />
+    <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
+    <plugin name="ionic-plugin-keyboard" spec="^2.2.1" />
+    <plugin name="onesignal-cordova-plugin" spec="^2.0.11" />
 </widget>

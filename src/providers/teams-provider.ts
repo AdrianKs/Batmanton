@@ -58,9 +58,11 @@ export class TeamsProvider {
       for (let i in snapshot.val()) {
         teamArray[counter] = snapshot.val()[i];
         teamArray[counter].id = i;
+        teamArray[counter].rank = parseInt(snapshot.val()[i].rank);
         counter++;
       }
       this.teams = teamArray;
+      this.teams = _.sortBy(this.teams, "rank");
     })
   }
 
@@ -107,7 +109,6 @@ export class TeamsProvider {
     return firebase.database().ref('/clubs/12/players/').once('value', snapshot => {
       let players = snapshot.val();
       let player;
-      let age;
       for (let i in players) {
         player = players[i];
         if (player.team == this.teamId) {
@@ -135,8 +136,6 @@ export class TeamsProvider {
   }
 
   removePlayer(p: any) {
-    let playerId = p.id;
-    let deleteId = "";
     return firebase.database().ref('/clubs/12/teams/' + this.teamId + '/players/').once('value', snapshot => {
       let justPlayersOfTeam = snapshot.val();
       for (let i in justPlayersOfTeam) {
@@ -258,7 +257,6 @@ export class TeamsProvider {
       }
       this.allPlayersEdit = relevantPlayers;
       let player;
-      let playerOfTeam;
       let teamOfPlayer;
       for (let i in this.allPlayersEdit) {
         player = this.allPlayersEdit[i];

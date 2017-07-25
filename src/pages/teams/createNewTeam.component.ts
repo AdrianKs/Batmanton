@@ -2,15 +2,12 @@
  * Created by kochsiek on 08.12.2016.
  */
 import { Component, OnInit } from '@angular/core';
-import { ViewTeamComponent } from './viewTeam.component';
 import { NavController, AlertController } from 'ionic-angular';
 import { TeamsProvider } from '../../providers/teams-provider';
 import { Utilities } from '../../app/utilities';
 import firebase from 'firebase';
 import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { EditPlayerComponent } from './editPlayers.component';
-import { document } from "@angular/platform-browser/src/facade/browser";
-import { Camera } from 'ionic-native';
 
 
 @Component({
@@ -119,7 +116,7 @@ export class CreateTeamComponent implements OnInit {
 
     addPlayers() {
         this.navCtrl.push(EditPlayerComponent, {
-            toRoot: 'yes',
+            toRoot: true,
             teamId: this.newTeamId,
             maxAge: this.maxAlt
         });

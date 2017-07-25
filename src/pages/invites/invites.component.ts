@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
 import { NavController, LoadingController, NavParams } from 'ionic-angular';
-
 import { InvitesMatchdayComponent } from "../invites/invitesmatchday.component";
-
 import { Utilities } from '../../app/utilities';
-
 import { InvitesProvider } from '../../providers/invites-provider';
-
-import { document } from "@angular/platform-browser/src/facade/browser";
 
 @Component({
   selector: 'page-invites',
@@ -25,6 +19,10 @@ export class InvitesComponent implements OnInit {
   today: String = new Date().toISOString();
   matchdayCount: any;
 
+  /**
+   * This methode is executed before the invites.component.html page is entered.
+   * In this case the data for invites, matchdays and players is loaded.
+   */
   ionViewWillEnter() {
     this.showLoadingElement();
     this.invitesProvider.setInvites();
@@ -43,7 +41,6 @@ export class InvitesComponent implements OnInit {
    * Constructor that initializes necessary items.
    */
   constructor(public invitesProvider: InvitesProvider, private navCtrl: NavController, private navP: NavParams, public utilities: Utilities, public loadingCtrl: LoadingController) {
-    //Load data in arrays
   }
 
   /**
@@ -84,7 +81,7 @@ export class InvitesComponent implements OnInit {
   }
 
   /**
-   * Counts the states of the invites that have been sent out for 
+   * Counts the states of the invites that have been sent out for
    * a specific match and returns the number for each accepted, pending and declined invites.
    * @param match The match of which the states should be counted.
    * @return Array with the numbers for accepted, pending and declined invites.
@@ -121,7 +118,7 @@ export class InvitesComponent implements OnInit {
   }
 
   /**
-  * Shows a Circle. Meant for instances where the user has to wait for data to be loaded. 
+  * Shows a Circle. Meant for instances where the user has to wait for data to be loaded.
   */
   showLoadingElement() {
     this.loadingElement = this.loadingCtrl.create({

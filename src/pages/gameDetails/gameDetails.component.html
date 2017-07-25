@@ -68,12 +68,12 @@
         <ion-select class="form-value" #team placeholder="Mannschaft" [(ngModel)]="gameItem.team"
                     placeholder="{{gameItem.team | teams}}"
                     (ionChange)="teamSelectChanged(gameItem.team)" doneText="Ok" cancelText="Abbrechen">
-          <ion-option value=0>keine Mannschaft</ion-option>
           <ion-option *ngFor="let item of teamArray" value="{{item.id}}">
             {{item.name}}
             <div *ngIf="item.ageLimit==0">(Erw.,</div>
             <div *ngIf="item.ageLimit!=0">(U{{item.ageLimit}},</div>
-             {{item.rank}})
+             {{item.rank}},
+             {{item.type}})
           </ion-option>
         </ion-select>
       </ion-item>
@@ -127,7 +127,7 @@
       </ion-item>
       <ion-item *ngIf="(editMode)">
         <ion-label color="primary">Wann:</ion-label>
-        <ion-datetime class="form-value" #time displayFormat="DD.MM.YYYY, HH:mm" pickerFormat="DD MM YYYY HH mm"
+        <ion-datetime class="form-value" #time displayFormat="DD.MM.YYYY, HH:mm" max={{maxYear}} pickerFormat="DD MM YYYY HH mm"
                       [(ngModel)]="gameItem.time"
                       (ionChange)="timeSelectChanged(gameItem.time)"
                       doneText="Ok" cancelText="Abbrechen"></ion-datetime>

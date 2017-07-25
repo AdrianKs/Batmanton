@@ -32,7 +32,6 @@ export class Utilities {
   constructor(public alertCtrl: AlertController, public http:Http) {
     this.fireAuth = firebase.auth();
     this.setInvites();
-    // this.setPlayers();
   }
 
   setPushIDsAdmins(){
@@ -54,7 +53,6 @@ export class Utilities {
   setUserData(): void {
     firebase.database().ref('clubs/12/players/' + this.user.uid).once('value', snapshot => {
       if (snapshot.val() != null) {
-        console.log("in snapshot");
         this.userData = snapshot.val();
         this.userLoaded = true;
       }
@@ -153,7 +151,7 @@ export class Utilities {
       let age = this.calculateAge(birthdayString);
       let relevantTeams: Array<any> = [];
       this.allTeams.forEach(function (team) {
-        if (team.ageLimit > age || team.ageLimit == 0) {
+        if (team.ageLimit > age || team.ageLimit === "0") {
           relevantTeams.push(team);
         }
       });
@@ -196,7 +194,7 @@ export class Utilities {
 
   getPlayer(userID: any): any {
     return firebase.database().ref('clubs/12/players/' + userID).once('value')
-      .then(user => {console.log("in utilities then"); return user});
+      .then(user => { return user;});
   }
 
   updatePlayer(userID: any, data: any): any {
@@ -231,18 +229,23 @@ export class Utilities {
     }
   }
 
-  sendPushNotification(pushIds: Array<any>, content: String) {
+  getGameDetails(gameId: any){
+    return firebase.database().ref('clubs/12/matches/' + gameId).once('value');
+  }
+
+  sendPushNotification(pushIds: Array<any>, content: String, matchId?: any) {
     let notificationObj = {
       contents: {en: content},
       include_player_ids: pushIds
     };
+    if (matchId){
+      notificationObj = Object.assign (notificationObj, {data: {matchId: matchId}});
+    }
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
-        console.log("Notification Post Success:", successResponse);
       },
       function (failedResponse) {
         console.log("Notification Post Failed: ", failedResponse);
-        //alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
       }
     )
   }
@@ -257,21 +260,16 @@ export class Utilities {
     };
     window["plugins"].OneSignal.postNotification(notificationObj,
       function(successResponse) {
-        console.log("Notification Post Success:", successResponse);
         firebase.database().ref('clubs/12/matches/' + matchID).update({delayedNotificationID: successResponse.id});
       },
       function (failedResponse) {
         console.log("Notification Post Failed: ", failedResponse);
-        //alert("Notification Post Failed:\n" + JSON.stringify(failedResponse));
       }
     )
   }
 
   cancelPushNotification(notificationID: any) {
-    //window["plugins"].OneSignal.cancelNotification(notificationID);
     let url = 'https://onesignal.com/api/v1/notifications/' + notificationID + '?app_id=c72ec221-4425-4844-83fe-288ffd22a55a';
-    console.log("in method cancelPushNotification");
-    // let headers = new Headers({'Authorization': 'Basic'});
     let headers = new Headers({'Authorization': 'Basic NjhmYzZkZmQtZWNiMC00NjU5LWE4ZjEtZjA3ZWI4OTEwMzM3'});
     let options = new RequestOptions({
       headers: headers
@@ -280,7 +278,6 @@ export class Utilities {
     this.http
       .delete(url, options)
       .toPromise()
-      .then((res:Response) => console.log(res))
       .catch(this.handleError);
   }
 
@@ -289,6 +286,11 @@ export class Utilities {
     return Promise.reject(error.message || error);
   }
 
+  /**
+   * This functions hashes the clubpassword, that the user needs to enter when he starts the app for the first time
+   * @param password entered by the user
+   * @returns {number} hashed password
+   */
   hashPassword(password): any {
     let hash = 0, i, chr, len;
     if (password.length === 0) return hash;
@@ -303,8 +305,6 @@ export class Utilities {
   countOpen(){
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       this.counterOpen = 0;
-      let inviteArray = [];
-      let counter = 0;
       for (let i in snapshot.val()) {
         if(snapshot.val()[i].recipient == this.user.uid && snapshot.val()[i].state == 0){
           this.counterOpen++;
@@ -319,7 +319,6 @@ export class Utilities {
 
   transformTime(time: String) {
     if(time != undefined){
-      console.log(time.split("T")[0] + ", um " + time.split("T")[1].split("Z")[0]);
       return time.split("T")[0] + ", um " + time.split("T")[1].split("Z")[0];
     }
   }
