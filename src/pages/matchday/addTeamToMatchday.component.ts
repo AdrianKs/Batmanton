@@ -264,33 +264,36 @@ export class AddTeamToMatchdayComponent implements OnInit {
 
   confirmPlayer() {
     let pushIDs = [];
-    firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
-      pendingPlayers: this.pendingArray,
-      acceptedPlayers: this.acceptedArray,
-      declinedPlayers: this.declinedArray
-    });
+    if (this.editMode == true){
+      this.navCtrl.pop();
+    } else {
+      firebase.database().ref('clubs/12/matches/' + this.match.id + '/').update({
+        pendingPlayers: this.pendingArray,
+        acceptedPlayers: this.acceptedArray,
+        declinedPlayers: this.declinedArray
+      });
 
-    firebase.database().ref('clubs/12/players').once('value', snapshot => {
-      for (let i in snapshot.val()){
-        for (let j in this.allPlayers){
-          if (this.allPlayers[j].id == i){
-            firebase.database().ref('clubs/12/players/' + i ).update({
-              helpCounter: this.allPlayers[j].helpCounter
-            });
+      firebase.database().ref('clubs/12/players').once('value', snapshot => {
+        for (let i in snapshot.val()){
+          for (let j in this.allPlayers){
+            if (this.allPlayers[j].id == i){
+              firebase.database().ref('clubs/12/players/' + i ).update({
+                helpCounter: this.allPlayers[j].helpCounter
+              });
+            }
           }
         }
-      }
-    });
+      });
 
-    firebase.database().ref('clubs/12/invites').once('value', snapshot => {
-      for (let i in snapshot.val()) {
-        for (let j in this.deletedArray){
-          if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.deletedArray[j]){
-            firebase.database().ref('clubs/12/invites/' + i).remove();
+      firebase.database().ref('clubs/12/invites').once('value', snapshot => {
+        for (let i in snapshot.val()) {
+          for (let j in this.deletedArray){
+            if (snapshot.val()[i].match == this.match.id && snapshot.val()[i].recipient == this.deletedArray[j]){
+              firebase.database().ref('clubs/12/invites/' + i).remove();
+            }
           }
         }
-      }
-    });
+      });
 
     firebase.database().ref('clubs/12/invites').once('value', snapshot => {
       for (let k in this.pendingArray) {
@@ -319,6 +322,7 @@ export class AddTeamToMatchdayComponent implements OnInit {
                   firebase.database().ref('clubs/12/invites/').child(i).update({
                     assist: false
                   });
+                  inviteExists = true;
                 }
                 firebase.database().ref('clubs/12/invites/' + i).update({
                   state: 0
@@ -370,6 +374,7 @@ export class AddTeamToMatchdayComponent implements OnInit {
       this.navCtrl.pop();
     } else {
       this.navCtrl.popToRoot();
+    }
     }
   }
 

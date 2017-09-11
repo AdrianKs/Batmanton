@@ -20,6 +20,9 @@ export class MyGamesProvider {
             for (let i in snapshot.val()) {
                 gamesArray[counter] = snapshot.val()[i];
                 gamesArray[counter].id = i;
+                gamesArray[counter].accepted = false;
+                gamesArray[counter].pending = false;
+                gamesArray[counter].declined = false;
                 counter++;
             }
             this.dataGames = gamesArray;

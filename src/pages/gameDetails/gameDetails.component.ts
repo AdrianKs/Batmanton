@@ -287,6 +287,13 @@ export class GameDetailsComponent implements OnInit {
       this.timeChanged = false;
       this.editMode = false;
       this.playersEdited = false;
+      let alert = this.alertCtrl.create({
+        title: 'Spieltag überarbeitet!',
+        message: 'Die Daten für diesen Spieltag wurden angepasst.',
+        buttons: ['OK']
+      });
+      alert.present();
+      this.navCtrl.popToRoot();
     }
   }
 

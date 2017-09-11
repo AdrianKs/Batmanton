@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { MyGamesProvider } from '../../providers/myGames-provider';
+import firebase from 'firebase';
 
 @Component({
     selector: 'page-player',
@@ -8,16 +9,20 @@ import { MyGamesProvider } from '../../providers/myGames-provider';
     providers: [MyGamesProvider]
 })
 export class PlayerComponent {
+
     ionViewWillEnter() {
-    this.loadData(true, null);
+    //this.loadData(true, null);
   }
 
     player: any;
     playerStatus: String = "accepted";
     dataGames: any;
     loading: any;
+    acceptedCounter = 0;
+    pendingCounter = 0;
+    declinedCounter = 0;
 
-    constructor(private navCtrl: NavController, private navParams: NavParams, private myGamesProvider: MyGamesProvider, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
+    constructor(private navCtrl: NavController, private navParams: NavParams, public myGamesProvider: MyGamesProvider, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
         this.player = navParams.get('player');
     }
 
@@ -28,8 +33,27 @@ export class PlayerComponent {
     
     this.myGamesProvider.setGames().then((data) => {
     this.dataGames = this.myGamesProvider.dataGames;
-    for (let i of this.dataGames) {
-        console.log(this.dataGames[i].acceptedPlayers);
+    console.log(this.dataGames);
+    console.log(this.player.id);
+    for (let i in this.dataGames) {
+        for (let j in this.dataGames[i].acceptedPlayers){
+            if (this.dataGames[i].acceptedPlayers[j]==this.player.id){
+                this.dataGames[i].accepted=true;
+                this.acceptedCounter++;
+            }
+        }
+        for (let j in this.dataGames[i].pendingPlayers){
+            if (this.dataGames[i].pendingPlayers[j]==this.player.id){
+                this.dataGames[i].pending=true;
+                this.pendingCounter++;
+            }
+        }
+        for (let j in this.dataGames[i].declinedPlayers){
+            if (this.dataGames[i].declinedPlayers[j]==this.player.id){
+                this.dataGames[i].declined=true;
+                this.declinedCounter++;
+            }
+        }
     }
     if (showLoading) {
         this.loading.dismiss().catch((error) => console.log("error caught"));
@@ -37,7 +61,7 @@ export class PlayerComponent {
     if (event != null) {
         event.complete();
     }
-    }).catch(function (error) {
+    }).catch((error) => {
     if (showLoading) {
         this.createAndShowErrorAlert(error);
     }
@@ -61,6 +85,8 @@ export class PlayerComponent {
     this.loading.present();
   }
 
+  getFirstFourPicUrls(match) {
+  }
     goBack(){
         this.navCtrl.pop();
     }
