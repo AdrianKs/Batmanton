@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavController, NavParams} from 'ionic-angular';
+import {Utilities} from "../../app/utilities";
 
 @Component({
     selector: 'page-player',
-    templateUrl: 'player.component.html'
+    templateUrl: 'player.component.html',
 })
 export class PlayerComponent {
 
     player: any;
 
-    constructor(private navCtrl: NavController, private navParams: NavParams) {
+    constructor(private navCtrl: NavController, private navParams: NavParams, public utilities: Utilities) {
         this.player = navParams.get('player');
     }
 

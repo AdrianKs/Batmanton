@@ -3,6 +3,7 @@ import { NavController, NavParams, AlertController, LoadingController, ToastCont
 import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
+import {Functions} from "../../app/funcions";
 
 @Component({
   selector: 'page-addTeamToMatchday',
@@ -69,7 +70,14 @@ export class AddTeamToMatchdayComponent implements OnInit{
     }
   }
 
-  constructor(private navCtrl: NavController, public createMatchdayProvider: CreateMatchdayProvider, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController, public toastCtrl: ToastController) {
+  constructor(private navCtrl: NavController,
+              public createMatchdayProvider: CreateMatchdayProvider,
+              private navP: NavParams,
+              private Utilities: Utilities,
+              public functions: Functions,
+              private alertCtrl: AlertController,
+              private loadingCtrl: LoadingController,
+              public toastCtrl: ToastController) {
     this.match = navP.get('matchItem');
     this.allPlayers = navP.get('playerArray');
     this.statusArray = navP.get('statusArray');

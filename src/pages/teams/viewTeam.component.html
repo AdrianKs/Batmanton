@@ -134,7 +134,7 @@
           <ion-item class="less-label-margin" *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
             <div>
               <div class="itemPlayerLeft">
-                <img src="{{p.picUrl}}" class="player-item-image picture-click" (click)="this.utils.openProfile(p, this.navCtrl)" onError="this.src='assets/images/user-shape-64.png'" />
+                <img src="{{p.picUrl}}" class="player-item-image picture-click" (click)="this.functions.openProfile(p, this.navCtrl)" onError="this.src='assets/images/user-shape-64.png'" />
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">
@@ -160,7 +160,7 @@
           <ion-item class="less-label-margin" *ngIf="p.team==teamId" [(ngModel)]="p.lastname" ngDefaultControl>
             <div>
               <div class="itemPlayerLeft">
-                <img src="{{p.picUrl}}" class="player-item-image picture-click" (click)="this.utils.openProfile(p, this.navCtrl)" onError="this.src='assets/images/user-shape-64.png'" />
+                <img src="{{p.picUrl}}" class="player-item-image picture-click" (click)="this.functions.openProfile(p, this.navCtrl)" onError="this.src='assets/images/user-shape-64.png'" />
               </div>
               <div class="itemPlayerRight">
                 <div class="mainDetails">

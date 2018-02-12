@@ -8,6 +8,7 @@ import { EditPlayerComponent } from './editPlayers.component';
 import { FormBuilder} from '@angular/forms';
 import { EditRoleComponent } from '../editRole/editRole.component';
 import { TeamsProvider } from '../../providers/teams-provider';
+import {Functions} from "../../app/funcions";
 
 
 @Component({
@@ -169,6 +170,7 @@ export class ViewTeamComponent implements OnInit {
         private navP: NavParams,
         public alertCtrl: AlertController,
         public utils: Utilities,
+        public functions: Functions,
         public formBuilder: FormBuilder,
         public loadingCtrl: LoadingController,
         public teamsProvider: TeamsProvider) {

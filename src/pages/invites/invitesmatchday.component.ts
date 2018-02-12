@@ -3,6 +3,7 @@ import { NavController, NavParams, AlertController, ToastController, LoadingCont
 import { Utilities } from '../../app/utilities';
 import { GameDetailsComponent } from '../gameDetails/gameDetails.component'
 import { InvitesProvider } from '../../providers/invites-provider';
+import {Functions} from "../../app/funcions";
 
 @Component({
   selector: 'page-invitesmatchday',
@@ -32,7 +33,14 @@ export class InvitesMatchdayComponent {
   * @param alertCtrl controller that creates the possibility to show different variations of alerts
   * @param toastCtrl controller that creates the possibility to show toast messages
   */
-  constructor(public invitesProvider: InvitesProvider, private navCtrl: NavController, private navP: NavParams, private loadingCtrl: LoadingController, public utilities: Utilities, public alertCtrl: AlertController, public toastCtrl: ToastController) {
+  constructor(public invitesProvider: InvitesProvider,
+              private navCtrl: NavController,
+              private navP: NavParams,
+              private loadingCtrl: LoadingController,
+              public utilities: Utilities,
+              public functions: Functions,
+              public alertCtrl: AlertController,
+              public toastCtrl: ToastController) {
     //Load data in arrays
     this.matchday = navP.get('matchday');
     this.invites = navP.get('invites');

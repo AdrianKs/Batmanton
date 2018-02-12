@@ -5,7 +5,6 @@ import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import * as _ from 'lodash';
 import { AlertController } from "ionic-angular";
-import { PlayerComponent } from '../pages/gameDetails/player.component';
 
 @Injectable()
 export class Utilities {
@@ -22,7 +21,8 @@ export class Utilities {
   inRegister: boolean = false;
   loggedIn: boolean = false;
   LOCAL_TOKEN_KEY: string = 'Batmanton';
-  hashedPassword = 19045090;
+  //hashedPassword = 19045090;
+  hashedPassword = -1719170103;
   counterOpen: any;
 
   constructor(public alertCtrl: AlertController) {
@@ -225,6 +225,7 @@ export class Utilities {
       hash  = ((hash << 5) - hash) + chr;
       hash |= 0; // Convert to 32bit integer
     }
+    console.log(hash);
     return hash;
   };
 
@@ -239,9 +240,7 @@ export class Utilities {
     });
   }
 
-  openProfile(item, navCtrl){
-    navCtrl.push(PlayerComponent, { player: item});
-  }
+
 }
 
 
