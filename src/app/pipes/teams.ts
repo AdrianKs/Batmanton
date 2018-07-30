@@ -14,6 +14,7 @@ export class Teams {
       if(inputTeamID === "0" || inputTeamID === "" || inputTeamID === 0){
         return "keine Mannschaft"
       }else{
+        console.log(this.utilities.allTeamsVal);
         if(this.utilities.allTeamsVal[inputTeamID].name!=undefined){
         return this.utilities.allTeamsVal[inputTeamID].name;
         }else{

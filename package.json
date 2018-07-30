@@ -21,6 +21,7 @@
         "@ionic/storage": "1.1.6",
         "angularfire2": "^2.0.0-beta.6",
         "cordova-android": "^6.2.3",
+        "cordova-plugin-app-name": "^1.0.4",
         "cordova-plugin-camera": "^2.3.1",
         "cordova-plugin-compat": "^1.1.0",
         "cordova-plugin-console": "^1.0.7",
@@ -82,7 +83,10 @@
             "cordova-plugin-statusbar": {},
             "cordova-plugin-whitelist": {},
             "ionic-plugin-keyboard": {},
-            "onesignal-cordova-plugin": {}
+            "onesignal-cordova-plugin": {},
+            "cordova-plugin-app-name": {
+                "APP_NAME": "Badminton Heimaterde"
+            }
         },
         "platforms": [
             "android"
