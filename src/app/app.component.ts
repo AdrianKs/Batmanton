@@ -14,13 +14,17 @@ import {firebaseConfig} from "./firebaseAppData";
 import { AuthData } from '../providers/auth-data';
 import { Utilities } from './utilities';
 import {ClubPasswordComponent} from "../pages/club-password/clubPassword.component";
+<<<<<<< HEAD
 import {GameDetailsComponent} from "../pages/gameDetails/gameDetails.component";
+=======
+import {Functions} from "./funcions";
+>>>>>>> master
 
 firebase.initializeApp(firebaseConfig);
 
 @Component({
   templateUrl: 'app.html',
-  providers: [AuthData, Utilities]
+  providers: [AuthData, Utilities, Functions]
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
@@ -257,4 +261,5 @@ export class MyApp {
   }
 
 }
+
 }

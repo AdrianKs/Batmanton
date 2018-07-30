@@ -1,5 +1,8 @@
 {
   "name": "Batmanton",
-  "app_id": "7371746b",
-  "type": "ionic-angular"
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "pro_id": "7371746b"
 }

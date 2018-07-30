@@ -3,6 +3,7 @@ import { NavController, NavParams, ToastController, AlertController } from 'ioni
 import { Utilities } from '../../app/utilities';
 import { MatchdayComponent } from '../matchday/matchday.component';
 import firebase from 'firebase';
+import {Functions} from "../../app/funcions";
 
 @Component({
     selector: 'edit-role',
@@ -32,7 +33,8 @@ export class EditRoleComponent {
         private navParams: NavParams,
         public toastCtrl: ToastController,
         public alertCtrl: AlertController,
-        public utilities: Utilities) {
+        public utilities: Utilities,
+        public functions: Functions) {
 
         this.player = navParams.get('player');
         this.isTrainerOld = this.player.isTrainer;

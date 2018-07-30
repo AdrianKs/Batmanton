@@ -5,6 +5,7 @@ import { TemplateComponent } from '../templates/template.component'
 import { CreateMatchdayProvider } from '../../providers/createMatchday-provider';
 import firebase from 'firebase';
 import { Utilities } from '../../app/utilities';
+import {Functions} from "../../app/funcions";
 
 @Component({
   selector: 'page-gameDetails',
@@ -77,7 +78,16 @@ export class GameDetailsComponent implements OnInit {
     }
   }
 
-  constructor(private navCtrl: NavController, public createMatchdayProvider: CreateMatchdayProvider, private navP: NavParams, private Utilities: Utilities, private alertCtrl: AlertController, private loadingCtrl: LoadingController, public actionSheetCtrl: ActionSheetController, public toastCtrl: ToastController, public modalCtrl: ModalController) {
+  constructor(private navCtrl: NavController,
+              public createMatchdayProvider: CreateMatchdayProvider,
+              private navP: NavParams,
+              private Utilities: Utilities,
+              public functions: Functions,
+              private alertCtrl: AlertController,
+              private loadingCtrl: LoadingController,
+              public actionSheetCtrl: ActionSheetController,
+              public toastCtrl: ToastController,
+              public modalCtrl: ModalController) {
     this.gameItem = navP.get('gameItem');
     this.option = navP.get('option');
     this.inviteItem = navP.get('inviteItem');
