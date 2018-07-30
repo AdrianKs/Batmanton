@@ -5,13 +5,9 @@ import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import * as _ from 'lodash';
 import { AlertController } from "ionic-angular";
-<<<<<<< HEAD
-import { PlayerComponent } from '../pages/gameDetails/player.component';
-import {Http, Response, Headers, RequestOptions} from "@angular/http";
+import {Http, Headers, RequestOptions} from "@angular/http";
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/toPromise';
-=======
->>>>>>> master
 
 @Injectable()
 export class Utilities {
@@ -29,10 +25,7 @@ export class Utilities {
   inRegister: boolean = false;
   loggedIn: boolean = false;
   LOCAL_TOKEN_KEY: string = 'Batmanton';
-<<<<<<< HEAD
-=======
   //hashedPassword = 19045090;
->>>>>>> master
   hashedPassword = -1719170103;
   counterOpen: any;
 
@@ -321,16 +314,6 @@ export class Utilities {
     });
   }
 
-<<<<<<< HEAD
-  openProfile(item, navCtrl){
-    navCtrl.push(PlayerComponent, { player: item});
-  }
-=======
-
-}
-
-
->>>>>>> master
 
   transformTime(time: String) {
     if(time != undefined){

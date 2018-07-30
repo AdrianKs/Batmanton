@@ -1,21 +1,11 @@
-<<<<<<< HEAD
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { MyGamesProvider } from '../../providers/myGames-provider';
-import firebase from 'firebase';
-=======
-import {Component} from '@angular/core';
-import {NavController, NavParams} from 'ionic-angular';
-import {Utilities} from "../../app/utilities";
->>>>>>> master
 
 @Component({
     selector: 'page-player',
     templateUrl: 'player.component.html',
-<<<<<<< HEAD
     providers: [MyGamesProvider]
-=======
->>>>>>> master
 })
 export class PlayerComponent {
 
@@ -31,11 +21,7 @@ export class PlayerComponent {
     pendingCounter = 0;
     declinedCounter = 0;
 
-<<<<<<< HEAD
     constructor(private navCtrl: NavController, private navParams: NavParams, public myGamesProvider: MyGamesProvider, private loadingCtrl: LoadingController, private alertCtrl: AlertController) {
-=======
-    constructor(private navCtrl: NavController, private navParams: NavParams, public utilities: Utilities) {
->>>>>>> master
         this.player = navParams.get('player');
     }
 
@@ -43,7 +29,7 @@ export class PlayerComponent {
     if (showLoading) {
       this.createAndShowLoading();
     }
-    
+
     this.myGamesProvider.setGames().then((data) => {
     this.dataGames = this.myGamesProvider.dataGames;
     console.log(this.dataGames);
